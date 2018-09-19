@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$TRAVIS_NODE_VERSION" != "lts/*" ]; then
-    echo "Only deploy on production Python build"
+    echo "Only deploy on Node LTS build"
     exit 0
 fi
 
