@@ -25,7 +25,7 @@
     "codecov": "codecov",
     "eject": "react-scripts eject",
     "lint": "eslint .",
-    "precommit": "npm test && npm run lint"
+    "precommit": "yarn test && yarn run lint"
   },
   "devDependencies": {
     "babel-eslint": "^9.0.0",
