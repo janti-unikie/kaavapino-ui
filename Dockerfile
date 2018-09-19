@@ -4,9 +4,9 @@ WORKDIR /kaavapino-ui
 
 ENV APP_NAME kaavapino-ui
 
-COPY package.json package-lock.json* ./
-RUN npm install && npm cache clean --force
+COPY package.json yarn.lock ./
+RUN yarn install && yarn cache clean --force
 
 COPY . .
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
