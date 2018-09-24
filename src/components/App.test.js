@@ -20,7 +20,7 @@ describe('<App />', () => {
 
   it('updates value when button is clicked', () => {
     const value = app.find('.current-value')
-    const btn = app.find(Button)
+    const btn = app.find(Button).at(0)
     btn.simulate('click')
     app.update()
     // Service is mocked to always return 10

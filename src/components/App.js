@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { requestValue } from '../actions/exampleActions'
 import { exampleValueSelector } from '../selectors/exampleSelector'
 import Button from './common/Button'
+import LoginPage from './loginPage'
 
 class App extends Component {
   handleClick = () => this.props.requestValue()
@@ -12,6 +13,7 @@ class App extends Component {
       <div>
         <p className='current-value'>{this.props.value}</p>
         <Button value='request new value' handleClick={this.handleClick} />
+        <LoginPage />
       </div>
     )
   }
