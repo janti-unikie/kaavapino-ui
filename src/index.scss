@@ -1,10 +1,11 @@
 @import 'components/App.scss';
+@import 'components/common/Common.scss';
 
-$color: purple;
+$color: grey;
 
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background-color: $color;
+  background-color: white;
 }

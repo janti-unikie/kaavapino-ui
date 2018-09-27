@@ -1,8 +1,13 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { createBrowserHistory } from 'history'
+import { connectRouter, routerMiddleware } from 'connected-react-router'
+import { loadUser } from 'redux-oidc'
 import createSagaMiddleware from 'redux-saga'
 import reducers from './reducers'
 import sagas from './sagas'
+import userManager from './utils/userManager'
 
+export const history = createBrowserHistory()
 const sagaMiddleware = createSagaMiddleware()
 
 const combinedReducers = combineReducers({
@@ -10,10 +15,15 @@ const combinedReducers = combineReducers({
 })
 
 const store = createStore(
-  combinedReducers,
-  applyMiddleware(sagaMiddleware)
+  connectRouter(history)(combinedReducers),
+  applyMiddleware(
+    sagaMiddleware,
+    routerMiddleware(history)
+  )
 )
 
 sagaMiddleware.run(sagas)
+
+loadUser(store, userManager)
 
 export default store
