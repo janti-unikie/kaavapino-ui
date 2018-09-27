@@ -19,7 +19,7 @@ class HomePage extends Component {
 }
 
 HomePage.propTypes = {
-  value: PropTypes.number
+  value: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ])
 }
 
 const mapStateToProps = (state) => {

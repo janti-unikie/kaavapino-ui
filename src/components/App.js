@@ -9,6 +9,7 @@ import { authUserSelector, authUserLoadingSelector } from '../selectors/authSele
 import LoginPage from './auth/Login'
 import LogoutPage from './auth/Logout'
 import LoginCallbackPage from './auth/LoginCallback'
+import LogoutCallbackPage from './auth/LogoutCallback'
 import ProtectedRoute from './common/ProtectedRoute'
 import HomePage from './home'
 
@@ -19,7 +20,8 @@ const App = (props) => {
         <Switch>
           <Route path='/login' render={() => <LoginPage />} />
           <Route path='/callback' render={() => <LoginCallbackPage />} />
-          <Route path='/logout'  render={() => <LogoutPage handleLogout={ props.logout } /> } />
+          <Route exact path='/logout'  render={() => <LogoutPage handleLogout={ props.logout } /> } />
+          <Route path='/logout/callback'  render={() => <LogoutCallbackPage /> } />
           <ProtectedRoute exact path='/' render={() => <HomePage />} pred={ (props.user !== null || props.userLoading) } />
         </Switch>
       </ConnectedRouter>
