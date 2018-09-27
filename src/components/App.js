@@ -1,43 +1,46 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Route, Switch } from 'react-router-dom'
+import { ConnectedRouter } from 'connected-react-router'
+import { history } from '../store'
 import { connect } from 'react-redux'
-import { requestValue } from '../actions/exampleActions'
-import { exampleValueSelector } from '../selectors/exampleSelector'
-import Button from './common/Button'
-import LoginPage from './loginPage'
+import { logout } from '../actions/authActions'
+import { authUserSelector, authUserLoadingSelector } from '../selectors/authSelector'
+import LoginPage from './auth/Login'
+import LogoutPage from './auth/Logout'
+import LoginCallbackPage from './auth/LoginCallback'
+import ProtectedRoute from './common/ProtectedRoute'
+import HomePage from './home'
 
-class App extends Component {
-  handleClick = () => this.props.requestValue()
+const App = (props) => {
+  return (
+    <div>
+      <ConnectedRouter history={history}>
+        <Switch>
+          <Route path='/login' render={() => <LoginPage />} />
+          <Route path='/callback' render={() => <LoginCallbackPage />} />
+          <Route path='/logout'  render={() => <LogoutPage handleLogout={ props.logout } /> } />
+          <ProtectedRoute exact path='/' render={() => <HomePage />} pred={ (props.user !== null || props.userLoading) } />
+        </Switch>
+      </ConnectedRouter>
+    </div>
+  )
+}
 
-  render = () => {
-    return (
-      <div>
-        <Router>
-          <div>
-            <Route exact path='/' render={() => {
-              return (
-                <div>
-                  <p className='current-value'>{this.props.value}</p>
-                  <Button value='request new value' handleClick={this.handleClick} />
-                  <LoginPage />
-                </div>
-              )
-            }} />
-          </div>
-        </Router>
-      </div>
-    )
-  }
+App.propTypes = {
+  user: PropTypes.object,
+  userLoading: PropTypes.bool
+}
+
+const mapDispatchToProps = {
+  logout
 }
 
 const mapStateToProps = (state) => {
   return {
-    value: exampleValueSelector(state)
+    user: authUserSelector(state),
+    userLoading: authUserLoadingSelector(state)
   }
-}
-
-const mapDispatchToProps = {
-  requestValue
 }
 
 export default connect(

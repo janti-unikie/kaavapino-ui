@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import Button from '../common/Button'
 import userManager from '../../utils/userManager'
 
 class LoginPage extends Component {
+  componentDidMount = () => this.handleLogin()
+
   handleLogin = () => userManager.signinRedirect()
 
-  render = () => <Button value={'LOGIN'} handleClick={this.handleLogin} />
+  render = () => <p>Redirecting...</p>
 }
 
 export default LoginPage
