@@ -11,7 +11,7 @@ import LogoutPage from './auth/Logout'
 import LoginCallbackPage from './auth/LoginCallback'
 import LogoutCallbackPage from './auth/LogoutCallback'
 import ProtectedRoute from './common/ProtectedRoute'
-import HomePage from './home'
+import ProjectPage from './project'
 
 const App = (props) => {
   return (
@@ -22,7 +22,7 @@ const App = (props) => {
           <Route path='/callback' render={() => <LoginCallbackPage />} />
           <Route exact path='/logout'  render={() => <LogoutPage handleLogout={ props.logout } /> } />
           <Route path='/logout/callback'  render={() => <LogoutCallbackPage /> } />
-          <ProtectedRoute exact path='/' render={() => <HomePage />} pred={ (props.user !== null || props.userLoading) } />
+          <ProtectedRoute exact path='/' render={() => <ProjectPage />} pred={ (props.user !== null || props.userLoading) } />
         </Switch>
       </ConnectedRouter>
     </div>

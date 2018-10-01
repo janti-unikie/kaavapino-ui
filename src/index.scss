@@ -1,11 +1,11 @@
 @import 'components/App.scss';
 @import 'components/common/Common.scss';
-
-$color: grey;
+@import 'components/input/Input.scss';
+@import 'components/project/Project.scss';
 
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-  background-color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #ebedf1;
 }

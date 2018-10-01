@@ -1,7 +1,11 @@
-.navbar-logout-button {
-  color: black;
+.navbar-container {
+  width: 100%;
 
-  .navbar-logout-text {
-    margin-left: 10px;
+  .navbar-logout-button {
+    color: black;
+  
+    .navbar-logout-text {
+      margin-left: 10px;
+    }
   }
 }

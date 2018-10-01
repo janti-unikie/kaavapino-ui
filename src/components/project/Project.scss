@@ -1,0 +1,232 @@
+.project-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-header-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #97c9ef;
+  height: 200px;
+  padding: 45px;
+  width: 100%;
+
+  .nav-header-inner-container {
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 0 0 10px 10px;
+
+    .nav-header-route {
+      color: black;
+
+      .nav-header-route-items {
+        font-weight: 100;
+
+        span a {
+          color: black;
+        }
+
+        span::after {
+          color: #0072c6;
+          content: "/";
+          margin-left: 15px;
+          margin-right: 15px;
+        }
+
+        span:last-child::after {
+          content: "";
+        }
+      }
+    }
+
+    .nav-header-title {
+      color: black;
+      font-size: 25px;
+      font-weight: bold;
+    }
+  }
+}
+
+.timeline-container {
+  background-color: white;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+
+  .timeline-title {
+    font-weight: 600;
+  }
+
+  .timeline-items {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+    background-color: white;
+
+    .timeline-item-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      text-align: center;
+      position: relative;
+
+      .timeline-item-number {
+        height: 40px;
+        width: 40px;
+        border: 1px solid black;
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+        background-color: white;
+        z-index: 1;
+        border-color: #aab2be;
+        color: #aab2be;
+        font-weight: 550;
+        cursor: pointer;
+        user-select: none;
+
+        &.active {
+          background-color: #00963b;
+          color: white;
+          border-color: white;
+        }
+      }
+
+      .timeline-item-title {
+        font-size: 12px;
+        font-weight: bold;
+        color: #aab2be;
+
+        &.active {
+          color: black;
+        }
+      }
+    }
+
+    div:not(:first-child)::before {
+      content: "";
+      border-top: 2px solid #aab2be;
+      display: block;
+      position: absolute;
+      top: 20%;
+      width: 50%;
+      left: 0;
+      z-index: 0;
+    }
+
+    div.active:not(:first-child)::before {
+      border-color: black;
+    }
+
+    div:not(:last-child)::after {
+      content: "";
+      border-top: 2px solid #aab2be;
+      display: block;
+      position: absolute;
+      top: 20%;
+      width: 50%;
+      right: 0;
+      z-index: 0;
+    }
+
+    div.active:not(:last-child)::after {
+      border-color: black;
+    }
+  }
+}
+
+.form-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 90%;
+  margin-top: 40px;
+  background-color: white;
+  padding: 20px 25px 0 25px;
+
+  .form-title {
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  &>div:not(:first-child) {
+    margin-bottom: 25px;
+  }
+}
+
+.project-input-container {
+  display: flex;
+  width: 90%;
+  align-items: flex-start;
+}
+
+.input-container {
+  margin-bottom: 30px;
+}
+
+.quicknav-container {
+  display: flex;
+  flex-direction: column;
+  flex: 0.4;
+  background-color: white;
+  margin-top: 40px;
+  top: 40px;
+  margin-left: 40px;
+  max-width: 250px;
+  position: sticky;
+}
+
+.quicknav-title {
+  margin: 10px;
+  font-weight: bold;
+}
+
+.quicknav-item {
+  cursor: pointer;
+  margin: 0 0 10px 10px;
+
+  &.active {
+    font-weight: bold;
+    color: green;
+    border-left: 3px solid;
+    padding-left: 10px;
+  }
+}
+
+.input-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.input-info {
+  background-color: black;
+  color: white;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 5px;
+  border-radius: 100%;
+  padding: 5px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}

@@ -27,7 +27,7 @@ class CustomNavbar extends Component {
 
   render() {
     return (
-      <div>
+      <div className='navbar-container'>
         <Navbar color='white' light expand='md'>
           <NavbarBrand href='/'><b>Kaavapino</b></NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
