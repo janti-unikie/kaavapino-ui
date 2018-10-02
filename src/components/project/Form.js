@@ -9,6 +9,7 @@ import Date from '../input/Date'
 import Multiple from '../input/Multiple'
 import Number from '../input/Number'
 import List from '../input/List'
+import Button from '../common/Button'
 
 class Form extends Component {
   constructor(props) {
@@ -92,14 +93,16 @@ class Form extends Component {
           const i = index
           return (
             <div key={index}>
-              <div>
-                <span id={`title-${section.title}`} className='form-title'>{ section.title }</span>
-                <hr />
-              </div>
+              <span id={`title-${section.title}`} className='form-title'>{ section.title }</span>
+              <hr />
               { section.fields && section.fields.map((input, j) => this.renderInput(input, i, j)) }
             </div>
           )
         }) }
+        <div className='form-button-container'>
+          <Button value='Tallenna' check />
+          <Button value='Tallenna ja tarkista' check />
+        </div>
       </div>
     )
   }

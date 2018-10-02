@@ -166,6 +166,12 @@
   &>div:not(:first-child) {
     margin-bottom: 25px;
   }
+
+  .form-button-container {
+    :nth-child(n) {
+      margin-right: 5px;
+    }
+  }
 }
 
 .project-input-container {

@@ -1,8 +1,8 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faCheck } from '@fortawesome/free-solid-svg-icons'
 
 const initIcons = () => {
-  library.add(faUser)
+  library.add(faUser, faCheck)
 }
 
 export default {
