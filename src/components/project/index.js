@@ -5,8 +5,9 @@ import { requestValue } from '../../actions/exampleActions'
 import { fetchInputs } from '../../actions/projectActions'
 import { exampleValueSelector } from '../../selectors/exampleSelector'
 import { projectInputsSelector } from '../../selectors/projectSelector'
-import Navbar from '../common/Navbar'
-import NavHeader from './NavHeader'
+import Header from '../common/Header'
+import NavHeader from '../common/NavHeader'
+import Footer from '../common/Footer'
 import Timeline from './Timeline'
 import Form from './Form'
 import QuickNav from './QuickNav'
@@ -32,13 +33,14 @@ class ProjectPage extends Component {
   render = () => {
     return (
       <div className='project-container'>
-        <Navbar />
+        <Header />
         <NavHeader />
         <Timeline tab={ this.state.tab } changeTab={ this.changeTab } />
         <div className='project-input-container'>
           <Form inputs={ this.props.inputs } />
           <QuickNav inputs={ this.props.inputs } />
         </div>
+        <Footer />
       </div>
     )
   }
