@@ -1,61 +1,66 @@
 import React, { Component } from 'react'
 import { Tooltip } from 'reactstrap'
-import TextInput from '../input/TextInput'
-import CheckInput from '../input/CheckInput'
 import SelectInput from '../input/SelectInput'
 import TextArea from '../input/TextArea'
 import Radio from '../input/Radio'
-import Date from '../input/Date'
-import Multiple from '../input/Multiple'
-import Number from '../input/Number'
 import List from '../input/List'
 import Button from '../common/Button'
+import Input from '../input/Input'
+import { Form } from 'semantic-ui-react'
 
-class Form extends Component {
+class ProjectForm extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { opened: null }
+    this.updates = {}
+
+    this.state = {
+      opened: null
+    }
   }
 
-  getInput = (input) => {
+  handleChange = (id, newValues) => {
+    this.updates[id] = newValues
+  }
+
+  getInput = (input, id) => {
     switch (input.type) {
       case 'text': {
-        return <TextInput title={ input.title } />
-      }
-
-      case 'check': {
-        return <CheckInput title={ input.title } />
+        return <Input type='text' handleChange={this.handleChange} name={id} placeholder={ input.title } />
       }
 
       case 'select': {
-        return <SelectInput options={ input.options } />
+        return <SelectInput multiple={false} handleChange={this.handleChange} name={id} options={ input.options } />
       }
 
       case 'radio': {
-        return <Radio title={ input.title } />
+        return <Radio handleChange={this.handleChange} name={id} title={ input.title } />
       }
 
       case 'date': {
-        return <Date />
+        return <Input type='date' handleChange={this.handleChange} name={id} />
       }
 
       case 'multiple': {
-        return <Multiple options={ input.options } />
+        return <SelectInput multiple handleChange={this.handleChange} name={id} options={ input.options } />
       }
 
       case 'number': {
-        return <Number />
+        return <Input type='number' handleChange={this.handleChange} name={id} placeholder={0} />
       }
 
       case 'list': {
-        return <List />
+        return <List handleChange={this.handleChange} name={id} />
       }
 
       default: {
-        return <TextArea title={ input.title } />
+        return <TextArea handleChange={this.handleChange} name={id} title={ input.title } />
       }
     }
+  }
+
+  handleSubmit = () => {
+    console.log('updates:', this.updates)
   }
 
   openTooltip = (i) => {
@@ -67,7 +72,7 @@ class Form extends Component {
   }
 
   renderInput = (input, i, j) => {
-    const id = `input-${i}-${j}`
+    const id = `input-${i}-${j}-${this.props.tab}`
     return (
       <div className='input-container' key={id}>
         <div className='input-header'>
@@ -80,7 +85,7 @@ class Form extends Component {
             </span>
           )}
         </div>
-        { this.getInput(input) }
+        { this.getInput(input, id) }
       </div>
     )
   }
@@ -88,7 +93,7 @@ class Form extends Component {
   render = () => {
     const { inputs } = this.props
     return (
-      <div className='form-container'>
+      <Form className='form-container'>
         { inputs.sections && inputs.sections.map((section, index) => {
           const i = index
           return (
@@ -100,12 +105,12 @@ class Form extends Component {
           )
         }) }
         <div className='form-button-container'>
-          <Button value='Tallenna' check />
+          <Button handleClick={this.handleSubmit} value='Tallenna' check />
           <Button value='Tallenna ja tarkista' check />
         </div>
-      </div>
+      </Form>
     )
   }
 }
 
-export default Form
+export default ProjectForm

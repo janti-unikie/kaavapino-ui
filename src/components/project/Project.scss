@@ -101,9 +101,22 @@
         user-select: none;
 
         &.active {
-          background-color: #00963b;
           color: white;
           border-color: white;
+
+          &.green {
+            background-color: #00963b;
+          }
+
+          &.yellow {
+            background-color: #ffc61e;
+          }
+
+          &.completed {
+            background-color: white;
+            color: black;
+            border-color: black;
+          }
         }
       }
 
@@ -185,15 +198,72 @@
   margin-bottom: 30px;
 }
 
-.quicknav-container {
+.project-input-right {
   display: flex;
   flex-direction: column;
   flex: 0.4;
-  background-color: white;
   top: 40px;
-  margin-left: 40px;
-  max-width: 250px;
   position: sticky;
+  margin-left: 40px;
+  max-width: 360px;
+}
+
+.comment-list-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+  min-height: 300px;
+  margin-top: 40px;
+  background-color: white;
+
+  .comments {
+    overflow: hidden;
+    overflow-y: auto;
+    flex: 0.5;
+    min-height: 270px;
+    max-height: 270px;
+    background-color: ghostwhite;
+
+    .comment-container {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 0 0 10px;
+      border-bottom: 1px solid #dededf;
+      overflow-wrap: break-word;
+      background-color: white;
+
+      .comment-header {
+        font-size: 13px;
+        font-weight: bold;
+      }
+
+      .comment-content {
+      }
+
+      .comment-footer {
+        font-size: 13px;
+        margin-top: 10px;
+        margin: 10px 6px 0 0;
+        align-self: flex-end;
+      }
+    }
+  }
+
+  .comment-submit-container {
+    display: flex;
+    flex-direction: column;
+    flex: 0.5;
+  }
+
+  .comment-send-button {
+    width: 100%;
+  }
+}
+
+.quicknav-container {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
 }
 
 .quicknav-title {

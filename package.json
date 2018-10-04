@@ -20,7 +20,9 @@
     "redux": "^4.0.0",
     "redux-oidc": "^3.0.2",
     "redux-saga": "^0.16.0",
-    "reselect": "^3.0.1"
+    "reselect": "^3.0.1",
+    "semantic-ui-css": "^2.4.0",
+    "semantic-ui-react": "^0.82.5"
   },
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./src/index.scss --include-path ./node_modules src/index.scss -o src/",
@@ -34,7 +36,7 @@
     "codecov": "codecov",
     "eject": "react-scripts eject",
     "lint": "eslint .",
-    "lint-fix":"eslint . --fix",
+    "lint-fix": "eslint . --fix",
     "precommit": "yarn test && yarn run lint"
   },
   "devDependencies": {

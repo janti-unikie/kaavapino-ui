@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <div className='footer-container'>
       <div className='footer-image-container'>
-        <a href='https://www.hel.fi/helsinki/fi'><img src='/helsinki.svg'/></a>
+        <a href='https://www.hel.fi/helsinki/fi'><img alt='Helsinki' src='/helsinki.svg'/></a>
       </div>
       <div className='footer-info-container'>
         <div className='footer-info-items-container'>

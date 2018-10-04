@@ -1,12 +1,23 @@
 import React from 'react'
-import { FormGroup, Input } from 'reactstrap'
+import { TextArea } from 'semantic-ui-react'
 
-const TextArea = ({ title }) => {
-  return (
-    <FormGroup>
-      <Input className='input text-area' type='textarea' placeholder={ title } rows={8} />
-    </FormGroup>
-  )
+class CustomTextArea extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      value: ''
+    }
+  }
+
+  handleChange = (e) => {
+    this.setState({ value: e.target.value })
+    this.props.handleChange(this.props.name, e.target.value)
+  }
+  render() {
+    const { title, name } = this.props
+    return <TextArea onChange={this.handleChange} name={name} placeholder={title} />
+  }
 }
 
-export default TextArea
+export default CustomTextArea
