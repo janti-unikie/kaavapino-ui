@@ -17,8 +17,6 @@ class CustomRadio extends React.Component {
   }
 
   render() {
-    console.log('öö', this.state.value)
-    /* return <Radio onChange={this.handleChange} toggle checked={this.state.checked} /> */
     return (
       <div className='radio-input-container'>
         <Radio
