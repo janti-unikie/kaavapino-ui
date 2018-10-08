@@ -9,9 +9,10 @@ import Header from '../common/Header'
 import NavHeader from '../common/NavHeader'
 import Footer from '../common/Footer'
 import Timeline from './Timeline'
-import Form from './Form'
-import QuickNav from './QuickNav'
-import CommentList from './CommentList'
+import FormPage from '../form'
+import SummaryPage from '../summary'
+import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class ProjectPage extends Component {
   constructor(props) {
@@ -31,19 +32,25 @@ class ProjectPage extends Component {
     this.props.fetchInputs(tab)
   }
 
+  getActions = () => {
+    return (
+      <div>
+        <Link to='/edit'><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
+      </div>
+    )
+  }
+
   render = () => {
+    const { edit } = this.props
+    const projectName = 'Testitie 27'
+    const title = edit ? `${projectName}, muokkaa` : `${projectName}, hankekortti`
     return (
       <div className='project-container'>
         <Header />
-        <NavHeader />
+        <NavHeader title={title} project={ projectName } edit={edit} actions={!edit ? this.getActions() : null} />
         <Timeline tab={ this.state.tab } changeTab={ this.changeTab } />
-        <div className='project-input-container'>
-          <Form inputs={ this.props.inputs } tab={ this.state.tab } />
-          <div className='project-input-right'>
-            <QuickNav inputs={ this.props.inputs } />
-            <CommentList />
-          </div>
-        </div>
+        { edit && <FormPage tab={ this.state.tab } inputs={ this.props.inputs } /> }
+        { !edit && <SummaryPage /> }
         <Footer />
       </div>
     )

@@ -2,11 +2,11 @@ import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-const ProtectedRoute = ({ render: Component, pred, ...rest }) => {
+const ProtectedRoute = ({ render: Component, pred, children, ...rest }) => {
   return (
     <Route {...rest} render={(props) => (
       pred
-        ? <Component {...props} />
+        ? (Component && <Component {...props} />) || children
         : (
           <Redirect to={{
             pathname: '/login',

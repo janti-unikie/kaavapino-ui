@@ -22,7 +22,10 @@ const App = (props) => {
           <Route path='/callback' render={() => <LoginCallbackPage />} />
           <Route exact path='/logout'  render={() => <LogoutPage handleLogout={ props.logout } /> } />
           <Route path='/logout/callback'  render={() => <LogoutCallbackPage /> } />
-          <ProtectedRoute exact path='/' render={() => <ProjectPage />} pred={ (props.user !== null || props.userLoading) } />
+          <ProtectedRoute path='/' pred={ (props.user !== null || props.userLoading) }>
+            <Route exact path='/' render={() => <ProjectPage />} />
+            <Route exact path='/edit' render={() => <ProjectPage edit />} />
+          </ProtectedRoute>
         </Switch>
       </ConnectedRouter>
     </div>

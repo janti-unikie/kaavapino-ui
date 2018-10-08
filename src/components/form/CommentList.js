@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Form, Input, Button } from 'semantic-ui-react'
 
 let mockComments = [
-  { creator: 'Pekka Pekkanen', content: 'Hello World!', date: '10.10.2018' },
-  { creator: 'Essi Esimerkki', content: 'Hello World!', date: '10.10.2018' },
-  { creator: 'Juuso Jussinen', content: 'Hello World!', date: '10.10.2018' }
+  { creator: 'Pekka Pekkanen', content: 'Tein muutoksen', date: '05.10.2018' },
+  { creator: 'Essi Esimerkki', content: 'Muutin päivämäärää', date: '06.10.2018' },
+  { creator: 'Juuso Jussinen', content: 'Jatkan tuota kohtaa myöhemmin', date: '08.10.2018' }
 ]
 
 const Comment = ({ creator, content, date }) => {
@@ -30,8 +30,16 @@ class CommentList extends Component {
     this.setState({ value: e.target.value })
   }
 
+  getDate = () => {
+    const date = new Date()
+    let day = date.getDate()
+    let month = date.getMonth() + 1
+    let year = date.getFullYear()
+    return `${day < 10 ? `0${day}` : day}.${month < 10 ? `0${month}` : month}.${year}`
+  }
+
   handleSubmit = () => {
-    mockComments = mockComments.concat({ creator: 'Testi Testersson', content: this.state.value, date: '10.10.2018' })
+    mockComments = mockComments.concat({ creator: 'Testi Testersson', content: this.state.value, date: this.getDate() })
     this.setState({ value: '' })
   }
 

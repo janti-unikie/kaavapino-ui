@@ -1,0 +1,23 @@
+.project-summary-container {
+  width: 100%;
+  display: flex;
+  padding: 40px 80px 80px 80px;
+
+  .project-info {
+    flex: 0.5;
+    display: flex;
+    flex-direction: column;
+    margin-right: 40px;
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: 600px;
+
+    div {
+      margin-bottom: 20px;
+    }
+  }
+
+  .project-image {
+    flex: 0.5;
+  }
+}
