@@ -1,25 +1,47 @@
 import React from 'react'
-import { FormGroup, Label, Input } from 'reactstrap'
+import { Radio } from 'semantic-ui-react'
 
-const Radio = ({ title }) => {
-  return (
-    <FormGroup inline={true}>
-      <div className='radio-container'>
-        <FormGroup check>
-          <Label check>
-            <Input type="radio" name={`radio-${title}`}/>{' '}
-          Kyllä
-          </Label>
-        </FormGroup>
-        <FormGroup check>
-          <Label check>
-            <Input type="radio" name={`radio-${title}`} />{' '}
-            Ei
-          </Label>
-        </FormGroup>
+class CustomRadio extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      value: '-'
+    }
+  }
+
+  handleChange = (e, data) => {
+    this.setState({ value: data.value })
+    this.props.handleChange(this.props.name, data.checked)
+  }
+
+  render() {
+    return (
+      <div className='radio-input-container'>
+        <Radio
+          label='Kyllä'
+          name={`radio-${this.props.name}`}
+          value='y'
+          checked={this.state.value === 'y'}
+          onChange={this.handleChange}
+        />
+        <Radio
+          label='Ei'
+          name={`radio-${this.props.name}`}
+          value='n'
+          checked={this.state.value === 'n'}
+          onChange={this.handleChange}
+        />
+        <Radio
+          label='Tieto puuttuu'
+          name={`radio-${this.props.name}`}
+          value='-'
+          checked={this.state.value === '-'}
+          onChange={this.handleChange}
+        />
       </div>
-    </FormGroup>
-  )
+    )
+  }
 }
 
-export default Radio
+export default CustomRadio

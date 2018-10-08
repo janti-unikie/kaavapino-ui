@@ -1,47 +1,20 @@
-.input {
-  border: none;
-  border-bottom: 2px solid;
-  
-  &:focus {
-    outline: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    border-color: blue;
-  }
-
-  &::placeholder {
-    color: lightgray;
-  }
-
-  &.text-area {
-    border: 2px solid;
-  }
-
-  &.multiple{
-    border: 2px solid;
-  }
-}
-
-.radio-container {
-  display: flex;
-
-  :nth-child(n) {
-    margin-right: 10px;
-  }
-}
-
 .list-buttons {
   margin-top: 10px;
-
-  :nth-child(n) {
-    margin-right: 10px;
-    width: 40px;
-    height: 40px;
-  }
 }
 
 .list-items {
+  display: flex;
+  flex-direction: column;
+
   :nth-child(n) {
     margin-bottom: 20px;
+  }
+}
+
+.radio-input-container {
+  display: flex;
+
+  :nth-child(n):not(:first-child) {
+    margin-left: 10px;
   }
 }

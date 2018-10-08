@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Button = ({ handleClick, value, check }) => {
   return (
-    <button className='button' onClick={handleClick}>
+    <button className='form-button' onClick={handleClick}>
       { check && <FontAwesomeIcon icon='check' /> }
       { check && '   ' }
       { value }

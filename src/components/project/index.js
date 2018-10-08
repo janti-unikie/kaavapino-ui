@@ -11,6 +11,7 @@ import Footer from '../common/Footer'
 import Timeline from './Timeline'
 import Form from './Form'
 import QuickNav from './QuickNav'
+import CommentList from './CommentList'
 
 class ProjectPage extends Component {
   constructor(props) {
@@ -37,8 +38,11 @@ class ProjectPage extends Component {
         <NavHeader />
         <Timeline tab={ this.state.tab } changeTab={ this.changeTab } />
         <div className='project-input-container'>
-          <Form inputs={ this.props.inputs } />
-          <QuickNav inputs={ this.props.inputs } />
+          <Form inputs={ this.props.inputs } tab={ this.state.tab } />
+          <div className='project-input-right'>
+            <QuickNav inputs={ this.props.inputs } />
+            <CommentList />
+          </div>
         </div>
         <Footer />
       </div>

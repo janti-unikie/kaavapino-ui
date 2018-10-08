@@ -19,7 +19,6 @@ export default {
 // The following is mock data
 
 const exampleNames = [
-  '-',
   'Essi Esimerkki',
   'Pentti Juusonen',
   'Sirpa Siilinen',
@@ -34,7 +33,7 @@ const mockPhaseOne = {
       fields: [
         { title: 'Diaarinumero', type: 'text', info: 'Katso Ahjosta' },
         { title: 'Hankenumero', type: 'text', info: 'Merkitse PW:n hankenumero' },
-        { title: 'Mitä kaupunginosaa kaavahanke koskee', type: 'select', options: ['-', 'Vuosaari', 'Katajanokka', 'Hakaniemi'], info: 'Valitse kaupunginosat alasvetovalikosta' },
+        { title: 'Mitä kaupunginosaa kaavahanke koskee', type: 'select', options: ['Vuosaari', 'Katajanokka', 'Hakaniemi'], info: 'Valitse kaupunginosat alasvetovalikosta' },
         { title: 'Kaavahankkeen nimi', type: 'text', info: 'Anna kaavahankkeelle lyhyt ja selkeä nimi. Nimenä voi käyttää osoitetta, älä käytä korttelinumeroita' },
         { title: 'Hanke näkyy raportoinnissa', type: 'radio', info: 'Oletuksena on Kyllä. Jos hanke on epävarma, vaihda tähän EI.' },
         { title: 'Suunnittelualueen kuvaus', type: 'textarea', info: 'Laadi lyhyt ja selkeä hankekuvausteksti kuntalaisia ja ylintä johtoa varten' },
@@ -45,7 +44,7 @@ const mockPhaseOne = {
         { title: 'Hakijan (1…n) tontti (korttelinro/tonttitonttinro)', type: 'multiple', options: exampleNames, info: 'Katso hakemus Ahjosta' },
         { title: 'Mitä haetaan, hakemuksessa (1…n) esitetyt perustelut', type: 'multiple', options: exampleNames, info: 'Katso hakemus Ahjosta' },
         { title: 'Vastuuhenkilö', type: 'select', options: exampleNames, info: 'Valitse listasta oma nimesi' },
-        { title: 'Vastuuyksikkö', type: 'select', options: ['-', 'Yksikkö 1', 'Yksikkö 2'], info: 'Valitse listasta yksikkö, joka vastaa hankkeesta' },
+        { title: 'Vastuuyksikkö', type: 'select', options: ['Yksikkö 1', 'Yksikkö 2'], info: 'Valitse listasta yksikkö, joka vastaa hankkeesta' },
         { title: 'Suunnitteluavustajan nimi', type: 'select', options: exampleNames, info: 'Valitse listasta' }
       ]
     },
@@ -96,8 +95,8 @@ const mockPhaseOne = {
       title: 'Muuta',
       fields: [
         { title: 'hanketyyppi', type: 'text' },
-        { title: 'prosessin kokoluokka (XS/S/M/L/XL)', type: 'select', options: ['-', 'XS', 'S', 'M', 'L', 'XL'] },
-        { title: 'Kaavan hyväksyjätaho', type: 'select', options: ['-', 'kaupunginvaltuusto', 'kaupunkiympäristölautakunta'] },
+        { title: 'prosessin kokoluokka (XS/S/M/L/XL)', type: 'select', options: ['XS', 'S', 'M', 'L', 'XL'] },
+        { title: 'Kaavan hyväksyjätaho', type: 'select', options: ['kaupunginvaltuusto', 'kaupunkiympäristölautakunta'] },
         { title: 'priorisointimerkintä', type: 'radio' },
         { title: 'aloituskokous (suunniteltu pvm)', type: 'date' },
         { title: 'kaavahanke viedään johdon käsittelyyn (jos palvelujen välisiä kysymyksiä)', type: 'radio' },
@@ -110,7 +109,7 @@ const mockPhaseOne = {
         { title: 'OAS-vaiheessa tarvitaan keskustelutilaisuus', type: 'radio' },
         { title: 'OAS-vaiheessa tarvitaan lehti-ilmoitus', type: 'radio' },
         { title: 'Vuorovaikutusta on syytä järjestää tavallista enemmän', type: 'radio' },
-        { title: 'Alueella on voimassa asemakaava(t) numero(t)', type: 'multiple', options: [1, 2, 3, 4] },
+        { title: 'Alueella on voimassa asemakaava(t) numero(t)', type: 'textarea' },
         { title: 'Sisältyykö suunnittelualueeseen kaavoittamatonta aluetta', type: 'radio' },
         { title: 'Arvioitu ennakkotieto milloin OAS esilläolo alkaa', type: 'date' },
         { title: 'OAS-aineiston määräaika, jolloin aineiston tulee olla tarkastettu', type: 'date' },
@@ -130,7 +129,7 @@ const mockPhaseTwo = {
     {
       title: 'A',
       fields: [
-        { title: 'Vireilletulo, kenen aloitteesta', type: 'select', options: ['-', 'Kaupunki', 'Omistaja'], info: 'Kerro aloitteentekijätaho' },
+        { title: 'Vireilletulo, kenen aloitteesta', type: 'select', options: ['Kaupunki', 'Omistaja'], info: 'Kerro aloitteentekijätaho' },
         { title: 'Vireilletulovuosi', type: 'number', info: 'Kerro vuosi (esim. hakemuksen saapuminen tai OAS:n valmistelun aloitus' },
         { title: 'Vuosi jolloin hanke on ollut kaavoituskatsauksessa', type: 'number' },
         { title: 'Kaupungin maanomistus', type: 'text', info: 'Kerro mitkä alueet ovat kaupungin omistuksessa' },
@@ -138,7 +137,7 @@ const mockPhaseTwo = {
         { title: 'Maankäyttösopimus', type: 'radio' },
         { title: 'Alueella voimassa olevat asemakaavat ovat saaneet lainvoiman vuosina', type: 'list' },
         { title: 'Voimassa olevien asemakaavojen sisältö: pääkohdat', type: 'textarea' },
-        { title: 'Valtakunnalliset alueidenkäyttötavoitteet', type: 'select', options: ['-', 'hupi', 'liikunta'] }
+        { title: 'Valtakunnalliset alueidenkäyttötavoitteet', type: 'select', options: ['hupi', 'liikunta'] }
       ]
     },
     {
