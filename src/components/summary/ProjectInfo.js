@@ -4,7 +4,12 @@ const ProjectInfo = () => {
   return (
     <div className='project-info'>
       <div>
-        <b>Diarinumero</b>
+        <b>Hankenumero</b>
+        <p>5644_1</p>
+      </div>
+
+      <div>
+        <b>Diaarinumero</b>
         <p>HEL2017-009847</p>
       </div>
 
@@ -14,13 +19,18 @@ const ProjectInfo = () => {
       </div>
 
       <div>
+        <b>Kaavaprosessi</b>
+        <p>L</p>
+      </div>
+
+      <div>
         <b>Uusi asuminen</b>
-        <p>30 k-m^2</p>
+        <p>0 k-m^2</p>
       </div>
 
       <div>
         <b>Uudet toimitilat</b>
-        <p>26 k-m^2</p>
+        <p>0 k-m^2</p>
       </div>
 
       <div>
@@ -37,11 +47,6 @@ const ProjectInfo = () => {
         <b>Vastuuhenkilöt</b>
         <p>TESTI TESTERSSON</p>
         <p>ESSI ESIMERKKI</p>
-      </div>
-
-      <div>
-        <b>Prosessin koko</b>
-        <p>M</p>
       </div>
 
       <div>

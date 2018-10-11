@@ -44,7 +44,7 @@ class ProjectPage extends Component {
 
   render = () => {
     const { edit } = this.props
-    const projectName = 'Testitie 27'
+    const projectName = 'Vallilanlaakson raitiotie'
     const title = edit ? `${projectName}, muokkaa` : `${projectName}, hankekortti`
     return (
       <div className='project-container'>

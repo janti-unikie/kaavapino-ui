@@ -44,18 +44,18 @@ export default {
 
 // The following is mock data for projects
 const ownProjects = [
-  { name: 'Testitie 27', status: 'Käynnistys', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
+  { name: 'Vallilanlaakson raitiotie', status: 'Käynnistys', created: Date.now(), edited: Date.now(), size: 'L', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
   { name: 'Testitie 27', status: 'OAS', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
-  { name: 'Testitie 27', status: 'Ehdotus', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' }
+  { name: 'Testi 10', status: 'Ehdotus', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' }
 ]
 
 const allProjects = [
   ...ownProjects,
-  { name: 'Joku prokkis', status: 'Kanslia-Khs-Valtuusto', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
-  { name: 'Joku prokkis', status: 'OAS', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
+  { name: 'Uusi kirjasto', status: 'Kanslia-Khs-Valtuusto', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
+  { name: 'Puiston laajennus', status: 'OAS', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
   { name: 'Joku prokkis', status: 'Ehdotus', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
-  { name: 'Joku prokkis', status: 'Voimaantulo', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
-  { name: 'Joku prokkis', status: 'Tarkistettu ehdotus', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
+  { name: 'Urheilukenttä', status: 'Voimaantulo', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
+  { name: 'Kauppakeskus', status: 'Tarkistettu ehdotus', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
   { name: 'Joku prokkis', status: 'Kanslia-Khs-Valtuusto', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' }
 ]
 
