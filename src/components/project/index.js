@@ -35,7 +35,9 @@ class ProjectPage extends Component {
   getActions = () => {
     return (
       <div>
-        <Link to='/edit'><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
+        <Link to='/project/edit'><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
+        <Link to='/project'><FontAwesomeIcon icon='file'/>Luo dokumentteja</Link>
+        <Link to='/project'><FontAwesomeIcon icon='forward'/>Lopeta vaihe</Link>
       </div>
     )
   }

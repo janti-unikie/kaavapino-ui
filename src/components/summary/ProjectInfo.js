@@ -9,6 +9,11 @@ const ProjectInfo = () => {
       </div>
 
       <div>
+        <b>Kaavanumero</b>
+        <p>12xxx</p>
+      </div>
+
+      <div>
         <b>Uusi asuminen</b>
         <p>30 k-m^2</p>
       </div>

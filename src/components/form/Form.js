@@ -6,6 +6,7 @@ import Radio from '../input/Radio'
 import List from '../input/List'
 import Button from '../common/Button'
 import Input from '../input/Input'
+import File from '../input/File'
 import { Form } from 'semantic-ui-react'
 
 class ProjectForm extends Component {
@@ -51,6 +52,10 @@ class ProjectForm extends Component {
 
       case 'list': {
         return <List handleChange={this.handleChange} name={id} />
+      }
+
+      case 'file': {
+        return <File handleChange={this.handleChange} name={id} />
       }
 
       default: {

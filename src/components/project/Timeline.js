@@ -38,8 +38,19 @@ class Timeline extends Component {
 
   changeTab = (newTab) => this.props.changeTab(newTab)
 
+  getColor = (tab) => {
+    switch (tab) {
+      case 1: return 'green'
+      case 2: return 'yellow'
+      case 3: return 'orange'
+      case 4: return 'blue'
+      case 5: return 'black'
+      default: return 'white'
+    }
+  }
+
   render = () => {
-    const color = this.props.tab === 1 ? 'green' : 'yellow'
+    const color = this.getColor(this.props.tab)
     return (
       <div className='timeline-container'>
         <span className='timeline-title'>Hankkeen vaihe</span>

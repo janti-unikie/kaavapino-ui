@@ -64,6 +64,23 @@
             background-color: #ffc61e;
           }
 
+          &.orange {
+            background-color: #fd4f00;
+          }
+
+          &.blue {
+            background-color: #2400c7;
+          }
+
+          &.black {
+            background-color: black;
+          }
+
+          &.white {
+            color: black;
+            border-color: black;
+          }
+
           &.completed {
             background-color: white;
             color: black;

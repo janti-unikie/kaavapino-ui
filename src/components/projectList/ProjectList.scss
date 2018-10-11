@@ -1,0 +1,72 @@
+.project-list-container {
+  margin: 5% 10% 10% 10%;
+  min-height: 273px;
+
+  .project-list {
+    background-color: white;
+    padding: 10px 20px 10px 20px;
+    border: 1px solid #d4d4d5;
+    border-top: none;
+
+    .project-list-header,
+    .project-list-item {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      margin-top: 20px;
+    }
+
+    .project-list-item {
+      padding: 0 0 10px 0;
+      border-bottom: 1px solid #dedfe1;
+      font-size: 16px;
+
+      .project-status {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 100%;
+        margin-right: 5px;
+      }
+
+      .project-name {
+        color: black;
+        text-decoration: underline;
+
+        &:hover {
+          color: blue;
+        }
+      }
+    }
+
+    .project-list-header {
+      border-bottom: 2px solid black;
+      padding-bottom: 10px;
+      
+      .header-item {
+        font-size: 16px;
+        font-weight: bold;
+      }
+    }
+
+    .project-list-button {
+      background-color: black;
+      color: white;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 5px 10px 5px 10px;
+      border-radius: 5px;
+      margin-right: 10px;
+      max-height: 30px;
+
+      :nth-child(n) {
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+.date-container {
+  display: flex;
+  flex-direction: column;
+}
