@@ -9,4 +9,6 @@ RUN yarn install && yarn cache clean --force
 
 COPY . .
 
+RUN mkdir -p build
+
 CMD ["yarn", "start"]
