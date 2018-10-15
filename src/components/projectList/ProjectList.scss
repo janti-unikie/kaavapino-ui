@@ -11,7 +11,8 @@
     .project-list-header,
     .project-list-item {
       display: grid;
-      grid-template-columns: repeat(8, 1fr);
+      grid-template-columns: repeat(7, 1fr);
+      column-gap: 10px;
       margin-top: 20px;
     }
 
@@ -45,6 +46,8 @@
       .header-item {
         font-size: 16px;
         font-weight: bold;
+        user-select: none;
+        cursor: pointer;
       }
     }
 
@@ -64,9 +67,10 @@
       }
     }
   }
-}
 
-.date-container {
-  display: flex;
-  flex-direction: column;
+  .empty-list-info {
+    margin-top: 20px;
+    display: block;
+    font-size: 16px;
+  }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Input } from 'semantic-ui-react'
 
 const Status = ({ status }) => {
   let color
@@ -22,42 +23,41 @@ const Status = ({ status }) => {
   )
 }
 
-const ListHeader = () => {
+const getArrowIcon = (dir) => dir === 0 ? <FontAwesomeIcon icon='angle-up'/> : <FontAwesomeIcon icon='angle-down'/>
+
+const ListHeader = ({ filter, handleClick, selected, dir }) => {
+  const items = ['Nimi', 'Vaihe', 'Muokattu', 'Koko', 'Seuraava määräaika', 'Vastuuhenkilö']
   return (
     <div className='project-list-header'>
-      <span className='header-item'>Nimi</span>
-      <span className='header-item'>Vaihe</span>
-      <span className='header-item'>Luotu</span>
-      <span className='header-item'>Muokattu</span>
-      <span className='header-item'>Koko</span>
-      <span className='header-item'>Seuraava määräaika</span>
-      <span className='header-item'>Luoja</span>
+      { items.map((item, i) => <span className='header-item' key={i} onClick={() => handleClick(i)}>{ item } { selected === i && getArrowIcon(dir) }</span>) }
+      <Input onChange={(e) => filter(e.target.value)} icon='search' type='text' fluid placeholder='Haku' />
     </div>
   )
 }
 
-const DateItem = ({ value }) => {
+const formatDate = (value) => {
   const date = new Date(value)
   const day = date.getDate()
   const month = date.getMonth() + 1
   const year = date.getFullYear()
-  const hours = date.getHours()
-  const minutes = date.getMinutes()
+
+  return `${day < 10 ? `0${day}` : day}.${month < 10 ? `0${month}` : month}.${year}`
+}
+
+const DateItem = ({ value }) => {
   return (
-    <div className='date-container'>
-      <span>{ `${day < 10 ? `0${day}` : day}.${month < 10 ? `0${month}` : month}.${year}` }</span>
-      <span>{ `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}` }</span>
+    <div>
+      <span>{ formatDate(value) }</span>
     </div>
   )
 }
 
 const ListItem = ({ item }) => {
-  const {  name, status, created, edited, size, nextDeadline, creator  } = item
+  const {  name, status, edited, size, nextDeadline, creator  } = item
   return (
     <div className='project-list-item'>
       <span><Status status={status} /> <Link className='project-name' to='/project'>{ name }</Link></span>
       <span>{ status }</span>
-      <DateItem value={created} />
       <DateItem value={edited} />
       <span>{ size }</span>
       <DateItem value={nextDeadline} />
@@ -68,14 +68,68 @@ const ListItem = ({ item }) => {
 }
 
 class List extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      filter: '',
+      sort: -1,
+      dir: 0
+    }
+  }
+
+  setFilter = (value) => this.setState({ filter: value })
+
+  filterItems = (items) => {
+    const { filter } = this.state
+    const filtered = items.filter((item) => {
+      let includes = false
+      Object.keys(item).forEach((key) => {
+        const i = String(isNaN(item[key]) ? item[key] : formatDate(new Date(item[key])))
+        if (i.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) > -1) {
+          includes = true
+        }
+      })
+      return includes
+    })
+    return filtered
+  }
+
+  setSort = (type) => {
+    this.setState((prevState) => {
+      if (type === prevState.sort) {
+        if (prevState.dir === 0) {
+          return { dir: 1 }
+        } else {
+          return { dir: 0 }
+        }
+      }
+
+      return { sort: type, dir: 0 }
+    })
+  }
+
+  sortItems = (items) => {
+    const { sort, dir } = this.state
+    if (sort < 0) { return items }
+    return items.sort((a, b) => {
+      const item1 = a[Object.keys(a)[sort]]
+      const item2 = b[Object.keys(b)[sort]]
+      return dir === 0 ? item1 > item2 : item1 < item2
+    })
+  }
+
   render() {
     const { items } = this.props
+    const { sort, dir } = this.state
+    const filteredItems = this.sortItems(this.filterItems(items))
     return (
       <div className='project-list'>
-        <ListHeader />
-        { items.map((item, i) => {
+        <ListHeader selected={sort} dir={dir} handleClick={this.setSort} filter={this.setFilter} />
+        { filteredItems.map((item, i) => {
           return <ListItem key={i} item={item} />
         }) }
+        { filteredItems.length === 0 && <span className='empty-list-info'>Ei hankkeita!</span> }
       </div>
     )
   }

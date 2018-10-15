@@ -51,12 +51,12 @@ const ownProjects = [
 
 const allProjects = [
   ...ownProjects,
-  { name: 'Uusi kirjasto', status: 'Kanslia-Khs-Valtuusto', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
-  { name: 'Puiston laajennus', status: 'OAS', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
-  { name: 'Joku prokkis', status: 'Ehdotus', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
-  { name: 'Urheilukenttä', status: 'Voimaantulo', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
-  { name: 'Kauppakeskus', status: 'Tarkistettu ehdotus', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
-  { name: 'Joku prokkis', status: 'Kanslia-Khs-Valtuusto', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' }
+  { name: 'Uusi kirjasto', status: 'Kanslia-Khs-Valtuusto', edited: Date.now(), size: 'M', nextDeadline: Date.now(), responsibility: 'Essi Esimerkki' },
+  { name: 'Puiston laajennus', status: 'OAS', edited: Date.now(), size: 'M', nextDeadline: Date.now(), responsibility: 'Essi Esimerkki' },
+  { name: 'Joku prokkis', status: 'Ehdotus', edited: Date.now(), size: 'M', nextDeadline: Date.now(), responsibility: 'Essi Esimerkki' },
+  { name: 'Urheilukenttä', status: 'Voimaantulo', edited: Date.now(), size: 'M', nextDeadline: Date.now(), responsibility: 'Essi Esimerkki' },
+  { name: 'Kauppakeskus', status: 'Tarkistettu ehdotus', edited: Date.now(), size: 'M', nextDeadline: Date.now(), responsibility: 'Essi Esimerkki' },
+  { name: 'Joku prokkis', status: 'Kanslia-Khs-Valtuusto', edited: Date.now(), size: 'M', nextDeadline: Date.now(), responsibility: 'Essi Esimerkki' }
 ]
 
 // The following is mock data for inputs

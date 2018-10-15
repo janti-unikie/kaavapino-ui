@@ -1,12 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const Button = ({ handleClick, value, check }) => {
+const Button = ({ handleClick, value, icon }) => {
   return (
     <button className='form-button' onClick={handleClick}>
-      { check && <FontAwesomeIcon icon='check' /> }
-      { check && '   ' }
+      { icon }
+      { icon && ' ' }
       { value }
     </button>
   )

@@ -32,12 +32,20 @@ class ProjectPage extends Component {
     this.props.fetchInputs(tab)
   }
 
-  getActions = () => {
+  getSummaryActions = () => {
     return (
       <div>
         <Link to='/project/edit'><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
         <Link to='/project'><FontAwesomeIcon icon='file'/>Luo dokumentteja</Link>
         <Link to='/project'><FontAwesomeIcon icon='forward'/>Lopeta vaihe</Link>
+      </div>
+    )
+  }
+
+  getEditActions = () => {
+    return (
+      <div>
+        <Link to='/project'><FontAwesomeIcon icon='arrow-left'/>Hankekortti</Link>
       </div>
     )
   }
@@ -49,7 +57,7 @@ class ProjectPage extends Component {
     return (
       <div className='project-container'>
         <Header />
-        <NavHeader title={title} project={ projectName } edit={edit} actions={!edit ? this.getActions() : null} />
+        <NavHeader title={title} project={ projectName } edit={edit} actions={!edit ? this.getSummaryActions() : this.getEditActions()} />
         <Timeline tab={ this.state.tab } changeTab={ this.changeTab } />
         { edit && <FormPage tab={ this.state.tab } inputs={ this.props.inputs } /> }
         { !edit && <SummaryPage /> }
