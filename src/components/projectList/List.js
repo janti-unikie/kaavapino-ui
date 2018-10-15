@@ -26,7 +26,7 @@ const Status = ({ status }) => {
 const getArrowIcon = (dir) => dir === 0 ? <FontAwesomeIcon icon='angle-up'/> : <FontAwesomeIcon icon='angle-down'/>
 
 const ListHeader = ({ filter, handleClick, selected, dir }) => {
-  const items = ['Nimi', 'Vaihe', 'Muokattu', 'Koko', 'Seuraava määräaika', 'Vastuuhenkilö']
+  const items = ['Nimi', 'Vaihe', 'Seuraava määräaika', 'Koko', 'Muokattu', 'Vastuuhenkilö']
   return (
     <div className='project-list-header'>
       { items.map((item, i) => <span className='header-item' key={i} onClick={() => handleClick(i)}>{ item } { selected === i && getArrowIcon(dir) }</span>) }
@@ -58,9 +58,9 @@ const ListItem = ({ item }) => {
     <div className='project-list-item'>
       <span><Status status={status} /> <Link className='project-name' to='/project'>{ name }</Link></span>
       <span>{ status }</span>
-      <DateItem value={edited} />
-      <span>{ size }</span>
       <DateItem value={nextDeadline} />
+      <span>{ size }</span>
+      <DateItem value={edited} />
       <span>{ creator }</span>
       <Link className='project-list-button' to='/project/edit'><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
     </div>

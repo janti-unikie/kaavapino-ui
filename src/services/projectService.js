@@ -44,19 +44,18 @@ export default {
 
 // The following is mock data for projects
 const ownProjects = [
-  { name: 'Vallilanlaakson raitiotie', status: 'Käynnistys', created: Date.now(), edited: Date.now(), size: 'L', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
-  { name: 'Testitie 27', status: 'OAS', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' },
-  { name: 'Testi 10', status: 'Ehdotus', created: Date.now(), edited: Date.now(), size: 'M', nextDeadline: Date.now(), creator: 'Essi Esimerkki' }
+  { name: 'Vallilanlaakson raitiotie', status: 'Käynnistys', nextDeadline: Date.now(), size: 'L', edited: Date.now(), creator: 'Essi Esimerkki' },
+  { name: 'Testitie 27', status: 'OAS', nextDeadline: Date.now(), size: 'M', edited: Date.now(), creator: 'Essi Esimerkki' },
+  { name: 'Testi 10', status: 'Ehdotus', nextDeadline: Date.now(), size: 'M', edited: Date.now(), creator: 'Essi Esimerkki' }
 ]
 
 const allProjects = [
   ...ownProjects,
-  { name: 'Uusi kirjasto', status: 'Kanslia-Khs-Valtuusto', edited: Date.now(), size: 'M', nextDeadline: Date.now(), responsibility: 'Essi Esimerkki' },
-  { name: 'Puiston laajennus', status: 'OAS', edited: Date.now(), size: 'M', nextDeadline: Date.now(), responsibility: 'Essi Esimerkki' },
-  { name: 'Joku prokkis', status: 'Ehdotus', edited: Date.now(), size: 'M', nextDeadline: Date.now(), responsibility: 'Essi Esimerkki' },
-  { name: 'Urheilukenttä', status: 'Voimaantulo', edited: Date.now(), size: 'M', nextDeadline: Date.now(), responsibility: 'Essi Esimerkki' },
-  { name: 'Kauppakeskus', status: 'Tarkistettu ehdotus', edited: Date.now(), size: 'M', nextDeadline: Date.now(), responsibility: 'Essi Esimerkki' },
-  { name: 'Joku prokkis', status: 'Kanslia-Khs-Valtuusto', edited: Date.now(), size: 'M', nextDeadline: Date.now(), responsibility: 'Essi Esimerkki' }
+  { name: 'Uusi kirjasto', status: 'Kanslia-Khs-Valtuusto', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Essi Esimerkki' },
+  { name: 'Puiston laajennus', status: 'OAS', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Essi Esimerkki' },
+  { name: 'Joku prokkis', status: 'Ehdotus', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Essi Esimerkki' },
+  { name: 'Urheilukenttä', status: 'Voimaantulo', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Essi Esimerkki' },
+  { name: 'Joku prokkis', status: 'Kanslia-Khs-Valtuusto', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Essi Esimerkki' }
 ]
 
 // The following is mock data for inputs
