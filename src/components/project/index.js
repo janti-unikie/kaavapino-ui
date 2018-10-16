@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { requestValue } from '../../actions/exampleActions'
-import { fetchInputs } from '../../actions/projectActions'
+import { fetchInputs, fetchProject } from '../../actions/projectActions'
 import { exampleValueSelector } from '../../selectors/exampleSelector'
-import { projectInputsSelector } from '../../selectors/projectSelector'
+import { projectInputsSelector, selectCurrentProject } from '../../selectors/projectSelector'
 import Header from '../common/Header'
 import NavHeader from '../common/NavHeader'
 import Footer from '../common/Footer'
@@ -13,6 +13,7 @@ import FormPage from '../form'
 import SummaryPage from '../summary'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Loader } from 'semantic-ui-react'
 
 class ProjectPage extends Component {
   constructor(props) {
@@ -23,7 +24,16 @@ class ProjectPage extends Component {
     }
   }
 
-  componentDidMount = () => this.props.fetchInputs(this.state.tab)
+  componentDidMount = () => {
+    this.props.fetchInputs(this.state.tab)
+    this.props.fetchProject(this.props.id)
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.currentProject) {
+      document.title = nextProps.currentProject.name
+    }
+  }
 
   handleClick = () => this.props.requestValue()
 
@@ -35,32 +45,42 @@ class ProjectPage extends Component {
   getSummaryActions = () => {
     return (
       <div>
-        <Link to='/project/edit'><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
-        <Link to='/project'><FontAwesomeIcon icon='file'/>Luo dokumentteja</Link>
-        <Link to='/project'><FontAwesomeIcon icon='forward'/>Lopeta vaihe</Link>
+        <Link to={`/project/${this.props.id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
+        <Link to={`/project/${this.props.id}`}><FontAwesomeIcon icon='file'/>Luo dokumentteja</Link>
+        <Link to={`/project/${this.props.id}`}><FontAwesomeIcon icon='forward'/>Lopeta vaihe</Link>
       </div>
     )
   }
 
   getEditActions = () => {
+    console.log('ID', this.props.id)
     return (
       <div>
-        <Link to='/project'><FontAwesomeIcon icon='arrow-left'/>Hankekortti</Link>
+        <Link to={`/project/${this.props.id}`}><FontAwesomeIcon icon='arrow-left'/>Hankekortti</Link>
       </div>
     )
   }
 
   render = () => {
-    const { edit } = this.props
-    const projectName = 'Vallilanlaakson raitiotie'
-    const title = edit ? `${projectName}, muokkaa` : `${projectName}, hankekortti`
+    const { edit, currentProject } = this.props
+    let id = currentProject ? currentProject.id : 1
+    let projectName = ''
+    let title = ''
+    if (currentProject) {
+      title = edit ? `${currentProject.name}, muokkaa` : `${currentProject.name}, hankekortti`
+      projectName = currentProject.name
+    }
+    console.log(projectName)
     return (
       <div className='project-container'>
         <Header />
-        <NavHeader title={title} project={ projectName } edit={edit} actions={!edit ? this.getSummaryActions() : this.getEditActions()} />
+        <NavHeader id={id} title={title} project={ projectName } edit={edit} actions={!edit ? this.getSummaryActions() : this.getEditActions()} />
         <Timeline tab={ this.state.tab } changeTab={ this.changeTab } />
-        { edit && <FormPage tab={ this.state.tab } inputs={ this.props.inputs } /> }
-        { !edit && <SummaryPage /> }
+        <div className='project-content'>
+          { currentProject && edit && <FormPage tab={ this.state.tab } inputs={ this.props.inputs } /> }
+          { currentProject && !edit && <SummaryPage project={ currentProject } /> }
+          { !currentProject && <Loader active /> }
+        </div>
         <Footer />
       </div>
     )
@@ -74,13 +94,15 @@ ProjectPage.propTypes = {
 const mapStateToProps = (state) => {
   return {
     value: exampleValueSelector(state),
-    inputs: projectInputsSelector(state)
+    inputs: projectInputsSelector(state),
+    currentProject: selectCurrentProject(state)
   }
 }
 
 const mapDispatchToProps = {
   requestValue,
-  fetchInputs
+  fetchInputs,
+  fetchProject
 }
 
 export default connect(

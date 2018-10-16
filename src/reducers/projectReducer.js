@@ -1,13 +1,15 @@
 import {
   FETCH_INPUTS_SUCCESSFUL,
   FETCH_OWN_PROJECTS_SUCCESSFUL,
-  FETCH_ALL_PROJECTS_SUCCESSFUL
+  FETCH_ALL_PROJECTS_SUCCESSFUL,
+  FETCH_PROJECT_SUCCESSFUL
 } from '../actions/projectActions'
 
 const initialState = {
   inputs: {},
   ownProjects: [],
-  allProjects: []
+  allProjects: [],
+  currentProject: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -30,6 +32,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         allProjects: action.payload
+      }
+    }
+
+    case FETCH_PROJECT_SUCCESSFUL: {
+      return {
+        ...state,
+        currentProject: action.payload
       }
     }
 

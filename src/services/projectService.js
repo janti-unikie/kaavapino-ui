@@ -28,6 +28,12 @@ const getInputs = (phase) => {
   }
 }
 
+const getProject = (id) => {
+  const foundProject = projectData.find((project) => project.id === parseInt(id))
+  if (!foundProject) { return projectData[0] }
+  return foundProject
+}
+
 const getOwnProjects = () => {
   return ownProjects
 }
@@ -39,23 +45,63 @@ const getAllProjects = () => {
 export default {
   getInputs,
   getOwnProjects,
-  getAllProjects
+  getAllProjects,
+  getProject
 }
 
-// The following is mock data for projects
+const projectData = [
+  {
+    id: 1,
+    name: 'Vallilanlaakson raitiotie',
+    projectNumber: '5644_1',
+    diaari: 'HEL2017-009847',
+    projectCode: '12xxx',
+    size: 'L',
+    newResidency: 0,
+    newBusinessPremises: 0,
+    schedule: ['OAS 03.12.2018'],
+    landowning: 'Kaupunki',
+    inCharge: ['TESTI TESTERSSON', 'ESSI ESIMERKKI'],
+    strategicGoals: ['1.2 Liikkumisen sujuvuus ja kestävät kulkumuodot', '1.4 Moderni ilmastovastuu'],
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu orci lorem. Integer faucibus pharetra faucibus. Aliquam imperdiet, tortor semper condimentum gravida, sapien augue suscipit diam, ut congue nulla tortor vitae felis. Nullam et sapien ut ante dignissim auctor. Sed sodales malesuada risus sed maximus.
+
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu orci lorem. Integer faucibus pharetra faucibus. Aliquam imperdiet, tortor semper condimentum gravida, sapien augue suscipit diam, ut congue nulla tortor vitae felis. Nullam et sapien ut ante dignissim auctor. Sed sodales malesuada risus sed maximus.
+    
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu orci lorem. Integer faucibus pharetra faucibus. Aliquam imperdiet, tortor semper condimentum gravida, sapien augue suscipit diam, ut congue nulla tortor vitae felis. Nullam et sapien ut ante dignissim auctor. Sed sodales malesuada risus sed maximus.`,
+    image: '/hankekuva.png'
+
+  },
+  {
+    id: 2,
+    name: 'Kuusiniementie 15, asemakaavan muutos',
+    projectNumber: '0740_51',
+    diaari: 'HEL 2017-007951',
+    projectCode: '19xxx',
+    size: 'S',
+    newResidency: 786,
+    newBusinessPremises: 0,
+    schedule: ['Osallistumis- ja arviointisuunnitelma ja kaavan valmisteluaineisto (hakijan laatima viitesuunnitelma)  ovat esillä 20.11.–11.12.2017 Helsingin kaupungin verkkosivuilla www.hel.fi/suunnitelmat.', 'Mielipiteet osallistumis- ja arviointisuunnitelmasta sekä valmisteluaineistosta pyydetään esittämään viimeistään 11.12.2017', 'Kaupunkiympäristölautakunta hyväksyy kaavan arviolta keväällä 2018'],
+    landowning: 'Yksityinen',
+    inCharge: ['TESTI TESTERSSON', 'ESSI ESIMERKKI'],
+    strategicGoals: [],
+    description: 'Kaavaratkaisu mahdollistaa tontin tiivistämistä Kuusisaaren asemakaavan muutosperiaatteiden mukaisesti. Periaatteet on hyväksytty kaupunkisuunnittelulautakunnassa 10.3.2005. Rakennusoikeus nostetaan nykytilanteen mukaisesta tonttitehokkuudesta e=0.25 tonttitehokkuuteen e=0.28. Puretun asuinrakennuksen tilalle rakennetaan neljä uutta asuinrakennusta. Uudet asuinrakennukset ovat kaksikerroksisia, kivirakenteisia, vaaleaksi rapattuja yhden perheen asuinrakennuksia. Rantaan rakennetaan asukkaiden yhteiskäyttöinen laituri ja oleskeluterassi. Ranta-alue säilytetään luonnonmukaisena. Katunäkymä säilytetään vehreänä puu- ja pensasistutuksin.',
+    image: '/kaava2.png'
+  }
+]
+
 const ownProjects = [
-  { name: 'Vallilanlaakson raitiotie', status: 'Käynnistys', nextDeadline: Date.now(), size: 'L', edited: Date.now(), creator: 'Essi Esimerkki' },
-  { name: 'Testitie 27', status: 'OAS', nextDeadline: Date.now(), size: 'M', edited: Date.now(), creator: 'Essi Esimerkki' },
-  { name: 'Testi 10', status: 'Ehdotus', nextDeadline: Date.now(), size: 'M', edited: Date.now(), creator: 'Essi Esimerkki' }
+  { id: 1, name: 'Vallilanlaakson raitiotie', status: 'Käynnistys', nextDeadline: Date.now(), size: 'L', edited: Date.now(), responsibility: 'Essi Esimerkki' },
+  { id: 2, name: 'Kuusiniementie 15, asemakaavan muutos', status: 'OAS', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Pekka Juusonen' },
+  { id: 1, name: 'Testi 10', status: 'Ehdotus', nextDeadline: Date.now(), size: 'XL', edited: Date.now(), responsibility: 'Testi Testersson' }
 ]
 
 const allProjects = [
   ...ownProjects,
-  { name: 'Uusi kirjasto', status: 'Kanslia-Khs-Valtuusto', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Essi Esimerkki' },
-  { name: 'Puiston laajennus', status: 'OAS', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Essi Esimerkki' },
-  { name: 'Joku prokkis', status: 'Ehdotus', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Essi Esimerkki' },
-  { name: 'Urheilukenttä', status: 'Voimaantulo', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Essi Esimerkki' },
-  { name: 'Joku prokkis', status: 'Kanslia-Khs-Valtuusto', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Essi Esimerkki' }
+  { id: 1, name: 'Uusi kirjasto', status: 'Kanslia-Khs-Valtuusto', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Heikki Kallenen' },
+  { id: 1, name: 'Puiston laajennus', status: 'OAS', nextDeadline: Date.now(), size: 'L', edited: Date.now(), responsibility: 'Essi Esimerkki' },
+  { id: 1, name: 'Joku prokkis', status: 'Ehdotus', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Essi Esimerkki' },
+  { id: 1, name: 'Urheilukenttä', status: 'Voimaantulo', nextDeadline: Date.now(), size: 'S', edited: Date.now(), responsibility: 'Essi Esimerkki' },
+  { id: 1, name: 'Joku prokkis', status: 'Kanslia-Khs-Valtuusto', nextDeadline: Date.now(), size: 'XS', edited: Date.now(), responsibility: 'Kalle Heikkinen' }
 ]
 
 // The following is mock data for inputs

@@ -4,10 +4,11 @@ import ProjectInfo from './ProjectInfo'
 
 class Summary extends Component {
   render = () => {
+    const { project } = this.props
     return (
       <div className='project-summary-container'>
-        <ProjectInfo />
-        <ProjectImage />
+        <ProjectInfo project={project} />
+        <ProjectImage src={project.image} />
       </div>
     )
   }

@@ -16,3 +16,8 @@ export const allProjectsSelector = createSelector(
   selectProject,
   (project) => project.allProjects
 )
+
+export const selectCurrentProject = createSelector(
+  selectProject,
+  (project) => project.currentProject
+)

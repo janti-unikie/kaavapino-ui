@@ -16,21 +16,19 @@ import ProjectListPage from './projectList'
 
 const App = (props) => {
   return (
-    <div>
-      <ConnectedRouter history={history}>
-        <Switch>
-          <Route path='/login' render={() => <LoginPage />} />
-          <Route path='/callback' render={() => <LoginCallbackPage />} />
-          <Route exact path='/logout'  render={() => <LogoutPage handleLogout={ props.logout } /> } />
-          <Route path='/logout/callback'  render={() => <LogoutCallbackPage /> } />
-          <ProtectedRoute path='/' pred={(props.user !== null || props.userLoading)}>
-            <Route exact path='/' render={() => <ProjectListPage />} />
-            <Route exact path='/project' render={() => <ProjectPage />} />
-            <Route exact path='/project/edit' render={() => <ProjectPage edit />} />
-          </ProtectedRoute>
-        </Switch>
-      </ConnectedRouter>
-    </div>
+    <ConnectedRouter history={history}>
+      <Switch>
+        <Route path='/login' render={() => <LoginPage />} />
+        <Route path='/callback' render={() => <LoginCallbackPage />} />
+        <Route exact path='/logout'  render={() => <LogoutPage handleLogout={ props.logout } /> } />
+        <Route path='/logout/callback'  render={() => <LogoutCallbackPage /> } />
+        <ProtectedRoute path='/' pred={(props.user !== null || props.userLoading)}>
+          <Route exact path='/' render={() => <ProjectListPage />} />
+          <Route exact path='/project/:id' render={({ match }) => <ProjectPage id={match.params.id} />} />
+          <Route exact path='/project/:id/edit' render={({ match }) => <ProjectPage edit id={match.params.id} />} />
+        </ProtectedRoute>
+      </Switch>
+    </ConnectedRouter>
   )
 }
 

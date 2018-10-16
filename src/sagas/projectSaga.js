@@ -3,7 +3,8 @@ import projectService from '../services/projectService'
 import {
   FETCH_INPUTS, fetchInputsSuccessful,
   FETCH_OWN_PROJECTS, fetchOwnProjectsSuccessful,
-  FETCH_ALL_PROJECTS, fetchAllProjectsSuccessful
+  FETCH_ALL_PROJECTS, fetchAllProjectsSuccessful,
+  FETCH_PROJECT, fetchProjectSuccessful
 } from '../actions/projectActions'
 
 function* fetchInputs(action) {
@@ -21,10 +22,16 @@ function* fetchAllProjects() {
   yield put(fetchAllProjectsSuccessful(allProjects))
 }
 
+function* fetchProject(action) {
+  const project = yield projectService.getProject(action.payload)
+  yield put(fetchProjectSuccessful(project))
+}
+
 export function* projectSaga() {
   yield all([
     takeLatest(FETCH_INPUTS, fetchInputs),
     takeLatest(FETCH_OWN_PROJECTS, fetchOwnProjects),
-    takeLatest(FETCH_ALL_PROJECTS, fetchAllProjects)
+    takeLatest(FETCH_ALL_PROJECTS, fetchAllProjects),
+    takeLatest(FETCH_PROJECT, fetchProject)
   ])
 }

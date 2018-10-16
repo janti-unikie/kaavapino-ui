@@ -38,7 +38,7 @@ class File extends Component {
   onChangeFile = (e) => {
     const fileButton = document.getElementById(this.id)
     const file = fileButton ? fileButton.files[0] : null
-    this.props.handleChange(file)
+    this.props.handleChange(this.props.name, file)
     const path = e.target.value.split('\\')
     this.setState({ current: path[path.length - 1] })
   }

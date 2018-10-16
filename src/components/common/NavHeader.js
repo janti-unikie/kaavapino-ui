@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom'
 class NavHeader extends Component {
   render = () => {
     let mockRoute = [ { value: 'Etusivu', path: '/' }, { value: 'Kaavahankkeet', path: '/' } ]
-    const { largeTitle } = this.props
+    const { largeTitle, id } = this.props
     if (this.props.project) {
-      mockRoute = mockRoute.concat({ value: this.props.project, path: '/project' })
+      mockRoute = mockRoute.concat({ value: this.props.project, path: `/project/${id}` })
     }
 
     if (this.props.edit) {
-      mockRoute = mockRoute.concat({ value: 'Muokkaa', path: '/project/edit' })
+      mockRoute = mockRoute.concat({ value: 'Muokkaa', path: `/project/${id}/edit` })
     }
     return (
       <div className='nav-header-container'>

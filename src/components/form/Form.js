@@ -112,7 +112,7 @@ class ProjectForm extends Component {
         }) }
         <div className='form-button-container'>
           <Button handleClick={this.handleSubmit} value='Tallenna' icon={<FontAwesomeIcon icon='check' />} />
-          <Button value='Tallenna ja tarkista' icon={<FontAwesomeIcon icon='check' />} />
+          <Button value='Tarkista' icon={<FontAwesomeIcon icon='check' />} />
           <Button value='Luo dokumentteja' icon={<FontAwesomeIcon icon='file'/>} />
           <Button value='Lopeta vaihe' icon={<FontAwesomeIcon icon='forward'/>} />
         </div>

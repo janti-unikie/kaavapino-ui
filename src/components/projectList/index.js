@@ -11,6 +11,11 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class ProjectListPage extends Component {
+  constructor(props) {
+    super(props)
+    document.title = 'Kaavapino'
+  }
+
   componentDidMount() {
     this.props.fetchOwnProjects()
     this.props.fetchAllProjects()
@@ -18,7 +23,7 @@ class ProjectListPage extends Component {
 
   render() {
     const panes = [
-      { menuItem: 'Omat hankkeet', render: () => <List items={this.props.ownProjects} /> },
+      { menuItem: 'Omat hankkeet', render: () => <List items={this.props.ownProjects} graph /> },
       { menuItem: 'Kaikki hankkeet', render: () => <List items={this.props.allProjects} /> }
     ]
     return (

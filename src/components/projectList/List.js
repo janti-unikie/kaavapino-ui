@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Input } from 'semantic-ui-react'
+import Graph from './Graph'
 
 const Status = ({ status }) => {
   let color
@@ -53,16 +54,16 @@ const DateItem = ({ value }) => {
 }
 
 const ListItem = ({ item }) => {
-  const {  name, status, edited, size, nextDeadline, creator  } = item
+  const {  id, name, status, edited, size, nextDeadline, responsibility  } = item
   return (
     <div className='project-list-item'>
-      <span><Status status={status} /> <Link className='project-name' to='/project'>{ name }</Link></span>
+      <span><Status status={status} /> <Link className='project-name' to={`/project/${id}`}>{ name }</Link></span>
       <span>{ status }</span>
       <DateItem value={nextDeadline} />
       <span>{ size }</span>
       <DateItem value={edited} />
-      <span>{ creator }</span>
-      <Link className='project-list-button' to='/project/edit'><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
+      <span>{ responsibility }</span>
+      <Link className='project-list-button' to={`/project/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
     </div>
   )
 }
@@ -120,7 +121,7 @@ class List extends Component {
   }
 
   render() {
-    const { items } = this.props
+    const { items, graph } = this.props
     const { sort, dir } = this.state
     const filteredItems = this.sortItems(this.filterItems(items))
     return (
@@ -130,6 +131,7 @@ class List extends Component {
           return <ListItem key={i} item={item} />
         }) }
         { filteredItems.length === 0 && <span className='empty-list-info'>Ei hankkeita!</span> }
+        {graph && <Graph />}
       </div>
     )
   }
