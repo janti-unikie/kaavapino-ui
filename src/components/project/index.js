@@ -27,11 +27,18 @@ class ProjectPage extends Component {
   componentDidMount = () => {
     this.props.fetchInputs(this.state.tab)
     this.props.fetchProject(this.props.id)
+    if (this.props.currentProject) {
+      document.title = this.props.currentProject.name
+      this.setState({ tab: this.props.currentProject.stage })
+    }
   }
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.currentProject) {
       document.title = nextProps.currentProject.name
+      if ((!this.props.currentProject || this.props.currentProject.id !== nextProps.currentProject.id) && nextProps.currentProject) {
+        this.setState({ tab: nextProps.currentProject.stage })
+      }
     }
   }
 
@@ -47,13 +54,11 @@ class ProjectPage extends Component {
       <div>
         <Link to={`/project/${this.props.id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
         <Link to={`/project/${this.props.id}`}><FontAwesomeIcon icon='file'/>Luo dokumentteja</Link>
-        <Link to={`/project/${this.props.id}`}><FontAwesomeIcon icon='forward'/>Lopeta vaihe</Link>
       </div>
     )
   }
 
   getEditActions = () => {
-    console.log('ID', this.props.id)
     return (
       <div>
         <Link to={`/project/${this.props.id}`}><FontAwesomeIcon icon='arrow-left'/>Hankekortti</Link>
@@ -70,12 +75,11 @@ class ProjectPage extends Component {
       title = edit ? `${currentProject.name}, muokkaa` : `${currentProject.name}, hankekortti`
       projectName = currentProject.name
     }
-    console.log(projectName)
     return (
       <div className='project-container'>
         <Header />
         <NavHeader id={id} title={title} project={ projectName } edit={edit} actions={!edit ? this.getSummaryActions() : this.getEditActions()} />
-        <Timeline tab={ this.state.tab } changeTab={ this.changeTab } />
+        <Timeline edit={edit} tab={ this.state.tab } changeTab={ this.changeTab } />
         <div className='project-content'>
           { currentProject && edit && <FormPage tab={ this.state.tab } inputs={ this.props.inputs } /> }
           { currentProject && !edit && <SummaryPage project={ currentProject } /> }

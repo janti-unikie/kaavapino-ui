@@ -28,6 +28,10 @@
     margin-top: 10px;
     background-color: white;
 
+    &.disabled .timeline-item-container .timeline-item-number {
+      cursor: default;
+    }
+
     .timeline-item-container {
       display: flex;
       flex-direction: column;

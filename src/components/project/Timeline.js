@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const mockTimelineItems = [
   { title: 'KÄYNNISTYS', active: true },
@@ -36,7 +36,7 @@ class Timeline extends Component {
     })
   }
 
-  changeTab = (newTab) => this.props.changeTab(newTab)
+  changeTab = (newTab) => this.props.edit ? this.props.changeTab(newTab) : null
 
   getColor = (tab) => {
     switch (tab) {
@@ -51,17 +51,19 @@ class Timeline extends Component {
 
   render = () => {
     const color = this.getColor(this.props.tab)
+    const { edit } = this.props
     return (
       <div className='timeline-container'>
         <span className='timeline-title'>Hankkeen vaihe</span>
-        <div className='timeline-items'>
+        <div className={`timeline-items ${edit ? null : 'disabled'}`}>
           { mockTimelineItems.map((item, i) => {
             const isCompleted = this.props.tab  > i + 1
             return (
               <div key={i} className={`timeline-item-container ${item.active ? `active ${color} ${isCompleted ? 'completed' : ''}` : ''}`}>
                 <span onClick={() => this.changeTab(i + 1)} className={`timeline-item-number ${item.active ? `active ${color} ${isCompleted ? 'completed' : ''}` : ''}`}>
-                  { !isCompleted && i + 1 }
-                  { isCompleted && <FontAwesomeIcon icon='check' /> }
+                  { i + 1 }
+                  { /* !isCompleted && i + 1 */ }
+                  { /* isCompleted && <FontAwesomeIcon icon='check' /> */ }
                 </span>
                 <span className={`timeline-item-title ${(item.active) ? `active ${color} ${isCompleted ? 'completed' : ''}` : ''}`}>{ item.title }</span>
               </div>

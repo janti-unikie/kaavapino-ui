@@ -11,8 +11,9 @@ class CustomRadio extends React.Component {
   }
 
   handleChange = (e, data) => {
+    const result = data.value === 'y' ? true : data.value === 'n' ? false : null
     this.setState({ value: data.value })
-    this.props.handleChange(this.props.name, data.checked)
+    this.props.handleChange(this.props.name, result)
   }
 
   render() {

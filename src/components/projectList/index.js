@@ -13,12 +13,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 class ProjectListPage extends Component {
   constructor(props) {
     super(props)
-    document.title = 'Kaavapino'
   }
 
   componentDidMount() {
     this.props.fetchOwnProjects()
     this.props.fetchAllProjects()
+    document.title = 'Kaavapino'
   }
 
   render() {

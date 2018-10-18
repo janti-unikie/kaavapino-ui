@@ -74,7 +74,7 @@ class List extends Component {
 
     this.state = {
       filter: '',
-      sort: -1,
+      sort: 2,
       dir: 0
     }
   }
@@ -114,8 +114,8 @@ class List extends Component {
     const { sort, dir } = this.state
     if (sort < 0) { return items }
     return items.sort((a, b) => {
-      const item1 = a[Object.keys(a)[sort]]
-      const item2 = b[Object.keys(b)[sort]]
+      const item1 = a[Object.keys(a)[sort + 1]]
+      const item2 = b[Object.keys(b)[sort + 1]]
       return dir === 0 ? item1 > item2 : item1 < item2
     })
   }

@@ -68,8 +68,8 @@ const projectData = [
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu orci lorem. Integer faucibus pharetra faucibus. Aliquam imperdiet, tortor semper condimentum gravida, sapien augue suscipit diam, ut congue nulla tortor vitae felis. Nullam et sapien ut ante dignissim auctor. Sed sodales malesuada risus sed maximus.
     
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu orci lorem. Integer faucibus pharetra faucibus. Aliquam imperdiet, tortor semper condimentum gravida, sapien augue suscipit diam, ut congue nulla tortor vitae felis. Nullam et sapien ut ante dignissim auctor. Sed sodales malesuada risus sed maximus.`,
-    image: '/hankekuva.png'
-
+    image: '/hankekuva.png',
+    stage: 1
   },
   {
     id: 2,
@@ -85,7 +85,8 @@ const projectData = [
     inCharge: ['TESTI TESTERSSON', 'ESSI ESIMERKKI'],
     strategicGoals: [],
     description: 'Kaavaratkaisu mahdollistaa tontin tiivistämistä Kuusisaaren asemakaavan muutosperiaatteiden mukaisesti. Periaatteet on hyväksytty kaupunkisuunnittelulautakunnassa 10.3.2005. Rakennusoikeus nostetaan nykytilanteen mukaisesta tonttitehokkuudesta e=0.25 tonttitehokkuuteen e=0.28. Puretun asuinrakennuksen tilalle rakennetaan neljä uutta asuinrakennusta. Uudet asuinrakennukset ovat kaksikerroksisia, kivirakenteisia, vaaleaksi rapattuja yhden perheen asuinrakennuksia. Rantaan rakennetaan asukkaiden yhteiskäyttöinen laituri ja oleskeluterassi. Ranta-alue säilytetään luonnonmukaisena. Katunäkymä säilytetään vehreänä puu- ja pensasistutuksin.',
-    image: '/kaava2.png'
+    image: '/kaava2.png',
+    stage: 2
   }
 ]
 
