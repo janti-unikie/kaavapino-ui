@@ -14,6 +14,7 @@ import SummaryPage from '../summary'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Loader } from 'semantic-ui-react'
+import DocumentsPage from '../documents'
 
 class ProjectPage extends Component {
   constructor(props) {
@@ -53,12 +54,12 @@ class ProjectPage extends Component {
     return (
       <div>
         <Link to={`/project/${this.props.id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
-        <Link to={`/project/${this.props.id}`}><FontAwesomeIcon icon='file'/>Luo dokumentteja</Link>
+        <Link to={`/project/${this.props.id}/documents`}><FontAwesomeIcon icon='file'/>Luo dokumentteja</Link>
       </div>
     )
   }
 
-  getEditActions = () => {
+  goBackActions = () => {
     return (
       <div>
         <Link to={`/project/${this.props.id}`}><FontAwesomeIcon icon='arrow-left'/>Hankekortti</Link>
@@ -67,22 +68,24 @@ class ProjectPage extends Component {
   }
 
   render = () => {
-    const { edit, currentProject } = this.props
+    const { edit, currentProject, document } = this.props
     let id = currentProject ? currentProject.id : 1
     let projectName = ''
     let title = ''
     if (currentProject) {
       title = edit ? `${currentProject.name}, muokkaa` : `${currentProject.name}, hankekortti`
+      title = `${currentProject.name}, ${edit ? 'muokkaa' : document ? 'dokumentit' : 'hankekortti'}`
       projectName = currentProject.name
     }
     return (
       <div className='project-container'>
         <Header />
-        <NavHeader id={id} title={title} project={ projectName } edit={edit} actions={!edit ? this.getSummaryActions() : this.getEditActions()} />
-        <Timeline edit={edit} tab={ this.state.tab } changeTab={ this.changeTab } />
+        <NavHeader id={id} title={title} project={ projectName } edit={edit} document={document} actions={!(edit || document) ? this.getSummaryActions() : this.goBackActions()} />
+        <Timeline disabled={edit} tab={ this.state.tab } changeTab={ this.changeTab } />
         <div className='project-content'>
-          { currentProject && edit && <FormPage tab={ this.state.tab } inputs={ this.props.inputs } /> }
-          { currentProject && !edit && <SummaryPage project={ currentProject } /> }
+          { currentProject && edit && <FormPage project={ projectName } id={id} tab={ this.state.tab } inputs={ this.props.inputs } /> }
+          { currentProject && document && <DocumentsPage /> }
+          { currentProject && !edit && !document && <SummaryPage project={ currentProject } /> }
           { !currentProject && <Loader active /> }
         </div>
         <Footer />

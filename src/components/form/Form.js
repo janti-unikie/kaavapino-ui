@@ -9,6 +9,7 @@ import Input from '../input/Input'
 import File from '../input/File'
 import { Form } from 'semantic-ui-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Link } from 'react-router-dom'
 
 class ProjectForm extends Component {
   constructor(props) {
@@ -97,7 +98,7 @@ class ProjectForm extends Component {
   }
 
   render = () => {
-    const { inputs } = this.props
+    const { inputs, id } = this.props
     return (
       <Form className='form-container'>
         { inputs.sections && inputs.sections.map((section, index) => {
@@ -113,7 +114,7 @@ class ProjectForm extends Component {
         <div className='form-button-container'>
           <Button handleClick={this.handleSubmit} value='Tallenna' icon={<FontAwesomeIcon icon='check' />} />
           <Button value='Tarkista' icon={<FontAwesomeIcon icon='search' />} />
-          <Button value='Luo dokumentteja' icon={<FontAwesomeIcon icon='file'/>} />
+          <Link to={`/project/${id}/documents`}><Button value='Luo dokumentteja' icon={<FontAwesomeIcon icon='file'/>} /></Link>
           <Button value='Lopeta vaihe' icon={<FontAwesomeIcon icon='forward'/>} />
         </div>
       </Form>

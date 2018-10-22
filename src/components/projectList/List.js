@@ -2,7 +2,13 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Input } from 'semantic-ui-react'
-import Graph from './Graph'
+import Graph from '../common/Graph'
+
+const data = [
+  { title: 'Vallilanlaakson raitiotie', phases: [ new Date(2017, 10, 1), new Date(2018, 6, 1), new Date(2018, 11, 1), new Date(2019, 2, 1), new Date(2019, 3, 1), new Date(2019, 5, 1), new Date(2019, 8, 1) ] },
+  { title: 'Testitie 27', phases: [ new Date(2018, 3, 1), new Date(2018, 5, 1), new Date(2018, 7, 1), new Date(2018, 9, 1), new Date(2018, 10, 1), new Date(2018, 11, 1), new Date(2019, 2, 1) ] },
+  { title: 'Testi 10', phases: [ new Date(2017, 9, 1), new Date(2018, 3, 1), new Date(2018, 5, 1), new Date(2018, 10, 1), new Date(2019, 3, 1), new Date(2019, 5, 1), new Date(2019, 6, 1) ] }
+]
 
 const Status = ({ status }) => {
   let color
@@ -131,7 +137,7 @@ class List extends Component {
           return <ListItem key={i} item={item} />
         }) }
         { filteredItems.length === 0 && <span className='empty-list-info'>Ei hankkeita!</span> }
-        {graph && <Graph />}
+        {graph && <Graph data={data} height={'230px'} />}
       </div>
     )
   }

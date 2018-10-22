@@ -12,6 +12,10 @@ class NavHeader extends Component {
     if (this.props.edit) {
       mockRoute = mockRoute.concat({ value: 'Muokkaa', path: `/project/${id}/edit` })
     }
+
+    if (this.props.document) {
+      mockRoute = mockRoute.concat({ value: 'Dokumentit', path: `/project/${id}/document` })
+    }
     return (
       <div className='nav-header-container'>
         <div className='nav-header-inner-container'>

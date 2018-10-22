@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Button } from 'semantic-ui-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class File extends Component {
   constructor(props) {
@@ -19,19 +20,29 @@ class File extends Component {
     this.inputRef.current.click()
   }
 
+  reset = () => {
+    this.inputRef.current.value = ''
+    this.props.handleChange(this.props.name, null)
+    this.setState({ current: null })
+  }
+
   render() {
+    const { current } = this.state
     return (
       <div>
-        <Button
-          icon='upload'
-          as="label"
-          htmlFor={this.id}
-          label={{
-            basic: true,
-            content: `${this.state.current || 'Valitse tiedosto'}`
-          }}
-          onClick={this.handleClick}
-        />
+        <div className='file-input-container'>
+          <Button
+            icon='upload'
+            as="label"
+            htmlFor={this.id}
+            label={{
+              basic: true,
+              content: `${this.state.current || 'Valitse tiedosto'}`
+            }}
+            onClick={this.handleClick}
+          />
+          { current && <FontAwesomeIcon size='lg' color='red' className='remove-file-icon' icon='times' onClick={this.reset} /> }
+        </div>
         <br />
         <input
           ref={this.inputRef}
@@ -41,7 +52,7 @@ class File extends Component {
           type="file"
           onChange={this.onChangeFile}
         />
-        <img className='image-preview' ref={this.imageRef} />
+        { current && <img className='image-preview' ref={this.imageRef} alt='preview' /> }
       </div>
     )
   }

@@ -5,11 +5,13 @@ import {
   faPen,
   faPlus,
   faFile,
+  faFileAlt,
   faForward,
   faArrowLeft,
   faAngleUp,
   faAngleDown,
-  faSearch
+  faSearch,
+  faTimes
 } from '@fortawesome/free-solid-svg-icons'
 
 const initIcons = () => {
@@ -19,11 +21,13 @@ const initIcons = () => {
     faPen,
     faPlus,
     faFile,
+    faFileAlt,
     faForward,
     faArrowLeft,
     faAngleUp,
     faAngleDown,
-    faSearch
+    faSearch,
+    faTimes,
   )
 }
 

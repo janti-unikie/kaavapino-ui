@@ -36,7 +36,7 @@ class Timeline extends Component {
     })
   }
 
-  changeTab = (newTab) => this.props.edit ? this.props.changeTab(newTab) : null
+  changeTab = (newTab) => this.props.disabled ? this.props.changeTab(newTab) : null
 
   getColor = (tab) => {
     switch (tab) {
@@ -51,11 +51,11 @@ class Timeline extends Component {
 
   render = () => {
     const color = this.getColor(this.props.tab)
-    const { edit } = this.props
+    const { disabled } = this.props
     return (
       <div className='timeline-container'>
         <span className='timeline-title'>Hankkeen vaihe</span>
-        <div className={`timeline-items ${edit ? null : 'disabled'}`}>
+        <div className={`timeline-items ${disabled ? null : 'disabled'}`}>
           { mockTimelineItems.map((item, i) => {
             const isCompleted = this.props.tab  > i + 1
             return (

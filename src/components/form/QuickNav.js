@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Divider } from 'semantic-ui-react'
 
 class QuickNav extends Component {
   constructor(props) {
@@ -61,7 +62,8 @@ class QuickNav extends Component {
   render() {
     return (
       <div className='quicknav-container'>
-        <span className='quicknav-title'>{ this.props.inputs.title }</span>
+        <span className='quicknav-title'>{ this.props.project}</span>
+        <Divider style={{ whiteSpace: 'pre-wrap' }} horizontal>{ this.props.inputs.title }</Divider>
         { this.state.sectionHeights && this.state.sectionHeights.map((section, i) => {
           return (
             <span key={i} className={`quicknav-item ${i === this.state.active ? 'active' : ''}`} onClick={() => this.handleClick(section.title)}>{ section.title }</span>

@@ -1,7 +1,6 @@
 .project-summary-container {
   width: 100%;
   display: flex;
-  padding: 40px 80px 80px 80px;
 
   .project-info {
     flex: 0.5;
@@ -20,4 +19,8 @@
   .project-image {
     flex: 0.5;
   }
+}
+
+.project-summary-graph-container {
+  padding: 0 40px 0 40px;
 }

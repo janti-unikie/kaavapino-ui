@@ -3,12 +3,12 @@ import Form from './Form'
 import CommentList from './CommentList'
 import QuickNav from './QuickNav'
 
-const FormPage = ({ tab, inputs }) => {
+const FormPage = ({ tab, inputs, project, id }) => {
   return (
     <div className='project-input-container'>
-      <Form inputs={ inputs } tab={ tab } />
+      <Form id={id} inputs={ inputs } tab={ tab } />
       <div className='project-input-right'>
-        <QuickNav inputs={ inputs } />
+        <QuickNav project={project} inputs={ inputs } />
         <CommentList />
       </div>
     </div>

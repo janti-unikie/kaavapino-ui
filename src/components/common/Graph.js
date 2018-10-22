@@ -1,12 +1,6 @@
 import React, { Component } from 'react'
 import { Chart } from 'react-google-charts'
 
-const data = [
-  { title: 'Vallilanlaakson raitiotie', phases: [ new Date(2017, 10, 1), new Date(2018, 6, 1), new Date(2018, 11, 1), new Date(2019, 2, 1), new Date(2019, 3, 1), new Date(2019, 5, 1), new Date(2019, 8, 1) ] },
-  { title: 'Testitie 27', phases: [ new Date(2018, 3, 1), new Date(2018, 5, 1), new Date(2018, 7, 1), new Date(2018, 9, 1), new Date(2018, 10, 1), new Date(2018, 11, 1), new Date(2019, 2, 1) ] },
-  { title: 'Testi 10', phases: [ new Date(2017, 9, 1), new Date(2018, 3, 1), new Date(2018, 5, 1), new Date(2018, 10, 1), new Date(2019, 3, 1), new Date(2019, 5, 1), new Date(2019, 6, 1) ] }
-]
-
 class Graph extends Component {
   constructor(props) {
     super(props)
@@ -37,6 +31,7 @@ class Graph extends Component {
   }
 
   formatRows = () => {
+    const { data } = this.props
     let rows = []
     data.forEach((obj) => {
       for (let i = 0; i < obj.phases.length - 1; i++) {
@@ -64,14 +59,14 @@ class Graph extends Component {
     }
 
     const rows = this.formatRows()
-
+    const { height } = this.props
     return (
       <div className='chart'>
         <Chart
           chartType='Timeline'
           data={[this.columns, ...rows]}
           width='100%'
-          height='230px'
+          height={height}
           options={options}
         />
       </div>

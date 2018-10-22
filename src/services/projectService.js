@@ -29,7 +29,7 @@ const getInputs = (phase) => {
 }
 
 const getProject = (id) => {
-  const foundProject = projectData.find((project) => project.id === parseInt(id))
+  const foundProject = projectData.find((project) => project.id === parseInt(id, 10))
   if (!foundProject) { return projectData[0] }
   return foundProject
 }
@@ -237,7 +237,8 @@ const mockPhaseOne = {
 }
 
 const mockPhaseTwo = {
-  title: 'Osallistumis- ja arviointisuunnitelma (OAS)',
+  //title: 'Osallistumis- ja arviointisuunnitelma (OAS)',
+  title: 'OAS',
   sections: [
     {
       title: 'Hankkeen perustiedot',

@@ -26,6 +26,7 @@ const App = (props) => {
           <Route exact path='/' render={() => <ProjectListPage />} />
           <Route exact path='/project/:id' render={({ match }) => <ProjectPage id={match.params.id} />} />
           <Route exact path='/project/:id/edit' render={({ match }) => <ProjectPage edit id={match.params.id} />} />
+          <Route exact path='/project/:id/documents' render={({ match }) => <ProjectPage document id={match.params.id} />} />
         </ProtectedRoute>
       </Switch>
     </ConnectedRouter>
