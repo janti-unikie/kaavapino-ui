@@ -11,6 +11,17 @@ class QuickNav extends Component {
     }
   }
 
+  getPosition = (element) => {
+    var yPosition = 0
+
+    while (element) {
+      yPosition += (element.offsetTop - element.scrollTop + element.clientTop)
+      element = element.offsetParent
+    }
+
+    return yPosition
+  }
+
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll)
     this.setState({ sectionHeights: this.initSections(this.props.inputs.sections) })
@@ -33,7 +44,7 @@ class QuickNav extends Component {
     }
     sections.forEach((section) => {
       const c = document.getElementById(`title-${section.title}`)
-      sectionHeights.push({ title: section.title, y: c.offsetTop })
+      sectionHeights.push({ title: section.title, y: this.getPosition(c) })
     })
     return sectionHeights.sort((a, b) => a.y - b.y)
   }
@@ -44,7 +55,7 @@ class QuickNav extends Component {
       return
     }
     this.state.sectionHeights.forEach((section, i) => {
-      if (section.y < window.scrollY + 60) {
+      if (section.y - 20 < window.scrollY) {
         activeTitle = i
       }
     })
