@@ -12,7 +12,7 @@ class QuickNav extends Component {
   }
 
   getPosition = (element) => {
-    var yPosition = 0
+    let yPosition = 0
 
     while (element) {
       yPosition += (element.offsetTop - element.scrollTop + element.clientTop)
