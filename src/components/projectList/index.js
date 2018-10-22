@@ -9,11 +9,20 @@ import { ownProjectsSelector, allProjectsSelector } from '../../selectors/projec
 import { fetchOwnProjects, fetchAllProjects } from '../../actions/projectActions'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import CreateForm from './CreateForm'
 
 class ProjectListPage extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      formOpen: false
+    }
   }
+
+  openForm = () => this.setState({ formOpen: true })
+
+  closeForm = () => this.setState({ formOpen: false })
 
   componentDidMount() {
     this.props.fetchOwnProjects()
@@ -29,7 +38,8 @@ class ProjectListPage extends Component {
     return (
       <div>
         <Header />
-        <NavHeader title='Kaavahankkeet' largeTitle actions={<Link className='project-list-button' to='/'><FontAwesomeIcon icon='plus'/>Luo uusi hanke</Link>} />
+        <NavHeader title='Kaavahankkeet' largeTitle actions={<Link onClick={this.openForm} className='project-list-button' to='/'><FontAwesomeIcon icon='plus'/>Luo uusi hanke</Link>} />
+        <CreateForm open={this.state.formOpen} handleClose={this.closeForm} />
         <div className='project-list-container'>
           <Tab panes={panes} />
         </div>
