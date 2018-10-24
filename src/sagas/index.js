@@ -1,11 +1,9 @@
 import { all } from 'redux-saga/effects'
-import { incrementSaga } from './exampleSaga'
-import { authError } from './authSaga'
+import authSaga from './authSaga'
 
 const sagas = function* sagas() {
   yield all([
-    incrementSaga(),
-    authError()
+    authSaga()
   ])
 }
 

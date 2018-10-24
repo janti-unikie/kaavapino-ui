@@ -1,7 +1,7 @@
-import example from './exampleReducer'
 import { reducer as auth } from 'redux-oidc'
+import { reducer as form } from 'redux-form'
 
 export default {
-  example,
-  auth
+  auth,
+  form
 }

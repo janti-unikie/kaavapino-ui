@@ -10,7 +10,7 @@ import {
   NavLink
 } from 'reactstrap'
 
-class CustomNavbar extends Component {
+class Header extends Component {
   constructor(props) {
     super(props)
 
@@ -19,15 +19,11 @@ class CustomNavbar extends Component {
     }
   }
 
-  toggle = () => {
-    this.setState({
-      isOpen: !this.state.isOpen
-    })
-  }
+  toggle = () => this.setState((prevState) => ({ isOpen: !prevState.isOpen }))
 
   render() {
     return (
-      <div>
+      <div className='navbar-container'>
         <Navbar color='white' light expand='md'>
           <NavbarBrand href='/'><b>Kaavapino</b></NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
@@ -47,4 +43,4 @@ class CustomNavbar extends Component {
   }
 }
 
-export default CustomNavbar
+export default Header
