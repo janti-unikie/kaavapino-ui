@@ -33,7 +33,7 @@ const Status = ({ status }) => {
 const getArrowIcon = (dir) => dir === 0 ? <FontAwesomeIcon icon='angle-up'/> : <FontAwesomeIcon icon='angle-down'/>
 
 const ListHeader = ({ filter, handleClick, selected, dir }) => {
-  const items = ['Nimi', 'Vaihe', 'Seuraava määräaika', 'Koko', 'Muokattu', 'Vastuuhenkilö']
+  const items = ['Nimi', 'Vaihe', 'Seuraava määräaika', 'Koko', 'Muokattu', 'Vastuuhenkilö', 'Viimeisin kommentti']
   return (
     <div className='project-list-header'>
       { items.map((item, i) => <span className='header-item' key={i} onClick={() => handleClick(i)}>{ item } { selected === i && getArrowIcon(dir) }</span>) }
@@ -59,16 +59,32 @@ const DateItem = ({ value }) => {
   )
 }
 
+const convertSizeToText = (size) => {
+  switch (size) {
+    case 0:
+      return 'XS'
+    case 1:
+      return 'S'
+    case 2:
+      return 'M'
+    case 3:
+      return 'L'
+    case 4:
+      return 'XL'
+  }
+}
+
 const ListItem = ({ item }) => {
-  const {  id, name, status, edited, size, nextDeadline, responsibility  } = item
+  const {  id, name, status, edited, size, nextDeadline, responsibility, latestComment  } = item
   return (
     <div className='project-list-item'>
-      <span><Status status={status} /> <Link className='project-name' to={`/project/${id}`}>{ name }</Link></span>
+      <span className='project-list-item-name'><Status status={status} /> <Link className='project-name' to={`/project/${id}`}>{ name }</Link></span>
       <span>{ status }</span>
       <DateItem value={nextDeadline} />
-      <span>{ size }</span>
+      <span>{ convertSizeToText(size) }</span>
       <DateItem value={edited} />
       <span>{ responsibility }</span>
+      <DateItem value={latestComment} />
       <Link className='project-list-button' to={`/project/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
     </div>
   )

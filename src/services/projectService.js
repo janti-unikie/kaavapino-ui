@@ -91,18 +91,18 @@ const projectData = [
 ]
 
 const ownProjects = [
-  { id: 1, name: 'Vallilanlaakson raitiotie', status: 'Käynnistys', nextDeadline: Date.now(), size: 'L', edited: Date.now(), responsibility: 'Essi Esimerkki' },
-  { id: 2, name: 'Kuusiniementie 15, asemakaavan muutos', status: 'OAS', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Pekka Juusonen' },
-  { id: 1, name: 'Testi 10', status: 'Ehdotus', nextDeadline: Date.now(), size: 'XL', edited: Date.now(), responsibility: 'Testi Testersson' }
+  { id: 1, name: 'Vallilanlaakson raitiotie', status: 'Käynnistys', nextDeadline: Date.now(), size: 3, edited: Date.now(), responsibility: 'Essi Esimerkki', latestComment: Date.now() },
+  { id: 2, name: 'Kuusiniementie 15, asemakaavan muutos', status: 'OAS', nextDeadline: Date.now(), size: 2, edited: Date.now(), responsibility: 'Pekka Juusonen', latestComment: Date.now() },
+  { id: 1, name: 'Testi 10', status: 'Ehdotus', nextDeadline: Date.now(), size: 4, edited: Date.now(), responsibility: 'Testi Testersson', latestComment: Date.now() }
 ]
 
 const allProjects = [
   ...ownProjects,
-  { id: 1, name: 'Uusi kirjasto', status: 'Kanslia-Khs-Valtuusto', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Heikki Kallenen' },
-  { id: 1, name: 'Puiston laajennus', status: 'OAS', nextDeadline: Date.now(), size: 'L', edited: Date.now(), responsibility: 'Essi Esimerkki' },
-  { id: 1, name: 'Joku prokkis', status: 'Ehdotus', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Essi Esimerkki' },
-  { id: 1, name: 'Urheilukenttä', status: 'Voimaantulo', nextDeadline: Date.now(), size: 'S', edited: Date.now(), responsibility: 'Essi Esimerkki' },
-  { id: 1, name: 'Joku prokkis', status: 'Kanslia-Khs-Valtuusto', nextDeadline: Date.now(), size: 'XS', edited: Date.now(), responsibility: 'Kalle Heikkinen' }
+  { id: 1, name: 'Uusi kirjasto', status: 'Kanslia-Khs-Valtuusto', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Heikki Kallenen', latestComment: Date.now() },
+  { id: 1, name: 'Puiston laajennus', status: 'OAS', nextDeadline: Date.now(), size: 'L', edited: Date.now(), responsibility: 'Essi Esimerkki', latestComment: Date.now() },
+  { id: 1, name: 'Joku prokkis', status: 'Ehdotus', nextDeadline: Date.now(), size: 'M', edited: Date.now(), responsibility: 'Essi Esimerkki', latestComment: Date.now() },
+  { id: 1, name: 'Urheilukenttä', status: 'Voimaantulo', nextDeadline: Date.now(), size: 'S', edited: Date.now(), responsibility: 'Essi Esimerkki', latestComment: Date.now() },
+  { id: 1, name: 'Joku prokkis', status: 'Kanslia-Khs-Valtuusto', nextDeadline: Date.now(), size: 'XS', edited: Date.now(), responsibility: 'Kalle Heikkinen', latestComment: Date.now() }
 ]
 
 // The following is mock data for inputs
