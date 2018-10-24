@@ -3,7 +3,7 @@ import userManager from '../utils/userManager'
 import { push } from 'connected-react-router'
 import { LOGOUT, LOGIN_SUCCESSFUL, LOGOUT_SUCCESSFUL } from '../actions/authActions'
 
-export function* authError() {
+export default function* authSaga() {
   yield all([
     takeLatest(LOGIN_SUCCESSFUL, loginSuccessful),
     takeLatest(LOGOUT, logout),
