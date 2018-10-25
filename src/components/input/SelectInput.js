@@ -11,13 +11,14 @@ const SelectInput = ({ input, options, ...custom }) => (
     search
     selection
     placeholder='Klikkaa avataksesi'
+    noResultsMessage='Ei tuloksia'
     options={ options.map((option) => ({ key: option, value: option, text: option })) }
   />
 )
 
 SelectInput.propTypes = {
   input: PropTypes.object.isRequired,
-  options: PropTypes.array
+  options: PropTypes.array.isRequired
 }
 
 export default SelectInput
