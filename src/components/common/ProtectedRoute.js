@@ -2,14 +2,15 @@ import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-const ProtectedRoute = ({ render: Component, pred, children, ...rest }) => {
+const ProtectedRoute = ({ render: Component, pred, children, redirect, ...rest }) => {
   return (
     <Route {...rest} render={(props) => (
       pred
-        ? (Component && <Component {...props} />) || children.map((c, i) => React.cloneElement(c, { ...props, key: i }))
+        ? (Component && <Component {...props} />) ||
+          React.Children.toArray(children).map((c, i) => React.cloneElement(c, { ...props, key: i }))
         : (
           <Redirect to={{
-            pathname: '/login',
+            pathname: redirect,
             state: { from: props.location }
           }} />
         )
@@ -19,7 +20,8 @@ const ProtectedRoute = ({ render: Component, pred, children, ...rest }) => {
 
 ProtectedRoute.propTypes = {
   render: PropTypes.func,
-  pred: PropTypes.bool
+  pred: PropTypes.bool,
+  redirect: PropTypes.string.isRequired
 }
 
 export default ProtectedRoute
