@@ -2,7 +2,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 import SelectInput from './SelectInput'
 
-describe.only('<SelectInput />', () => {
+describe('<SelectInput />', () => {
   let selectInputComponent
   const options = ['a', 'b', 'c']
   let change

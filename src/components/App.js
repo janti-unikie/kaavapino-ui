@@ -23,7 +23,7 @@ const App = (props) => {
           <Route path='/callback' render={() => <LoginCallbackPage />} />
           <Route exact path='/logout'  render={() => <LogoutPage handleLogout={ props.logout } /> } />
           <Route path='/logout/callback'  render={() => <LogoutCallbackPage /> } />
-          <ProtectedRoute path='/' pred={(props.user !== null || props.userLoading)}>
+          <ProtectedRoute path='/' pred={(props.user !== null || props.userLoading)} redirect='/login'>
             <Header />
             <Route exact path='/' render={() => <ProjectListPage />} />
           </ProtectedRoute>
