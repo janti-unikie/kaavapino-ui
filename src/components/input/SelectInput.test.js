@@ -21,6 +21,7 @@ describe.only('<SelectInput />', () => {
     expect(dropwDownComponent.props().name).toBe('test')
     expect(dropwDownComponent.props().placeholder).toBe('Klikkaa avataksesi')
     expect(dropwDownComponent.props().noResultsMessage).toBe('Ei tuloksia')
+    expect(change).toBeNull()
   })
 
   it('has all option components', () => {
