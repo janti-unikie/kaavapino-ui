@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Tab } from 'semantic-ui-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { fetchProjects } from '../../actions/projectActions'
+import { projectsSelector } from '../../selectors/projectSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import FormModal from './FormModal'
 import List from './List'
@@ -10,8 +13,8 @@ class ProjectListPage extends Component {
     super(props)
 
     this.panes = [
-      { menuItem: 'Omat hankkeet', render: () => <List /> },
-      { menuItem: 'Kaikki hankeet', render: () => <List /> }
+      { menuItem: 'Omat hankkeet', render: () => <List projects={props.projects} /> },
+      { menuItem: 'Kaikki hankeet', render: () => <List projects={props.projects} /> }
     ]
 
     this.state = {
@@ -19,9 +22,13 @@ class ProjectListPage extends Component {
     }
   }
 
+  componentDidMount() {
+    this.props.fetchProjects()
+  }
+
   toggleForm = (opened) => this.setState({ formOpen: opened })
 
-  render () {
+  render() {
     return (
       <div>
         <NavHeader
@@ -43,4 +50,17 @@ class ProjectListPage extends Component {
   }
 }
 
-export default ProjectListPage
+const mapStateToProps = (state) => {
+  return {
+    projects: projectsSelector(state)
+  }
+}
+
+const mapDispatchToProps = {
+  fetchProjects
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProjectListPage)
