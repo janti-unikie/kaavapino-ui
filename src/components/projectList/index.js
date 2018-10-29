@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Tab } from 'semantic-ui-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { NavHeader, NavAction } from '../common/NavHeader'
+import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import FormModal from './FormModal'
 import List from './List'
 
@@ -13,12 +13,6 @@ class ProjectListPage extends Component {
       { menuItem: 'Omat hankkeet', render: () => <List /> },
       { menuItem: 'Kaikki hankeet', render: () => <List /> }
     ]
-
-    /* eslint-disable */
-    this.navActions = [
-      <NavAction onClick={() => this.toggleForm(true)}><FontAwesomeIcon icon='plus'/>Luo uusi hanke</NavAction>
-    ]
-    /* eslint-enable */
 
     this.state = {
       formOpen: false
@@ -34,7 +28,11 @@ class ProjectListPage extends Component {
           routeItems={[ { value: 'Kaavahankkeet', path: '/' } ]}
           title='Kaavahankkeet'
           large
-          actions={this.navActions}
+          actions={() => (
+            <NavActions>
+              <NavAction onClick={() => this.toggleForm(true)}><FontAwesomeIcon icon='plus'/>Luo uusi hanke</NavAction>
+            </NavActions>
+          )}
         />
         <FormModal open={this.state.formOpen} handleClose={() => this.toggleForm(false)} />
         <div className='project-list-container'>
