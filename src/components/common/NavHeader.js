@@ -14,6 +14,8 @@ NavAction.propTypes = {
   to: PropTypes.string
 }
 
+export const NavActions = (props) => <div className='nav-header-actions' {...props} />
+
 export const NavHeader = ({ routeItems, actions, large, title }) => {
   return (
     <div className='nav-header-container'>
@@ -26,9 +28,7 @@ export const NavHeader = ({ routeItems, actions, large, title }) => {
           </div>
         </div>
         <span className={`nav-header-title ${ large ? 'large' : '' }`}>{ title }</span>
-        <div className='nav-header-actions'>
-          { actions.map((action, i) => React.cloneElement(action, { key: i })) }
-        </div>
+        { actions() }
       </div>
     </div>
   )
@@ -36,7 +36,7 @@ export const NavHeader = ({ routeItems, actions, large, title }) => {
 
 NavHeader.propTypes = {
   routeItems: PropTypes.array,
-  actions: PropTypes.array,
+  actions: PropTypes.func,
   large: PropTypes.bool,
   title: PropTypes.string
 }
