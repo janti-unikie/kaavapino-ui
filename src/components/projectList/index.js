@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { usersSelector } from '../../selectors/userSelector'
 import { Tab } from 'semantic-ui-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { fetchProjects } from '../../actions/projectActions'
+import { fetchProjects, createProject } from '../../actions/projectActions'
 import { projectsSelector } from '../../selectors/projectSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import FormModal from './FormModal'
@@ -11,11 +12,6 @@ import List from './List'
 class ProjectListPage extends Component {
   constructor (props) {
     super(props)
-
-    this.panes = [
-      { menuItem: 'Omat hankkeet', render: () => <List projects={props.projects} /> },
-      { menuItem: 'Kaikki hankeet', render: () => <List projects={props.projects} /> }
-    ]
 
     this.state = {
       formOpen: false
@@ -29,6 +25,11 @@ class ProjectListPage extends Component {
   toggleForm = (opened) => this.setState({ formOpen: opened })
 
   render() {
+    const { users } = this.props
+    const panes = [
+      { menuItem: 'Omat hankkeet', render: () => <List users={users} items={this.props.projects} /> },
+      { menuItem: 'Kaikki hankeet', render: () => <List users={users} items={this.props.projects} /> }
+    ]
     return (
       <div>
         <NavHeader
@@ -41,9 +42,14 @@ class ProjectListPage extends Component {
             </NavActions>
           )}
         />
-        <FormModal open={this.state.formOpen} handleClose={() => this.toggleForm(false)} />
+        <FormModal
+          open={this.state.formOpen}
+          handleSubmit={this.props.createProject}
+          handleClose={() => this.toggleForm(false)}
+          users={users}
+        />
         <div className='project-list-container'>
-          <Tab panes={this.panes} />
+          <Tab panes={panes} />
         </div>
       </div>
     )
@@ -52,12 +58,14 @@ class ProjectListPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    projects: projectsSelector(state)
+    projects: projectsSelector(state),
+    users: usersSelector(state)
   }
 }
 
 const mapDispatchToProps = {
-  fetchProjects
+  fetchProjects,
+  createProject
 }
 
 export default connect(
