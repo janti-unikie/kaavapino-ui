@@ -1,10 +1,10 @@
 import { all } from 'redux-saga/effects'
 import authSaga from './authSaga'
+import projectSaga from './projectSaga'
 
-const sagas = function* sagas() {
+export default function* sagas() {
   yield all([
-    authSaga()
+    authSaga(),
+    projectSaga()
   ])
 }
-
-export default sagas
