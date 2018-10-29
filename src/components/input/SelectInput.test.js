@@ -11,7 +11,8 @@ describe('<SelectInput />', () => {
     selectInputComponent = mount(
       <SelectInput
         input={{ name: 'test', onChange: (value) => change = value }}
-        options={options}
+        meta={{}}
+        options={options.map((option) => ({ key: option, value: option, text: option }))}
       />
     )
   })

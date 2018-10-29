@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Dropdown } from 'semantic-ui-react'
+import inputUtils from '../../utils/inputUtils'
 
-const SelectInput = ({ input, options, ...custom }) => (
+const SelectInput = ({ input, meta: { error }, options, ...custom }) => (
   <Dropdown
     { ...input }
     { ...custom }
@@ -10,9 +11,11 @@ const SelectInput = ({ input, options, ...custom }) => (
     fluid
     search
     selection
+    clearable
     placeholder='Klikkaa avataksesi'
     noResultsMessage='Ei tuloksia'
-    options={ options.map((option) => ({ key: option, value: option, text: option })) }
+    options={ options }
+    error={inputUtils.hasError(error)}
   />
 )
 
