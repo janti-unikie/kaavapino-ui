@@ -13,8 +13,8 @@ class ProjectListPage extends Component {
     super(props)
 
     this.panes = [
-      { menuItem: 'Omat hankkeet', render: () => <List /> },
-      { menuItem: 'Kaikki hankeet', render: () => <List /> }
+      { menuItem: 'Omat hankkeet', render: () => <List projects={props.projects} /> },
+      { menuItem: 'Kaikki hankeet', render: () => <List projects={props.projects} /> }
     ]
 
     this.state = {
@@ -29,7 +29,6 @@ class ProjectListPage extends Component {
   toggleForm = (opened) => this.setState({ formOpen: opened })
 
   render() {
-    console.log('props', this.props)
     return (
       <div>
         <NavHeader
