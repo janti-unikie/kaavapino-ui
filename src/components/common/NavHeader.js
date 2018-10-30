@@ -28,7 +28,7 @@ export const NavHeader = ({ routeItems, actions, large, title }) => {
           </div>
         </div>
         <span className={`nav-header-title ${ large ? 'large' : '' }`}>{ title }</span>
-        { actions() }
+        { actions && actions() }
       </div>
     </div>
   )

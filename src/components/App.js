@@ -6,25 +6,30 @@ import { history } from '../store'
 import { connect } from 'react-redux'
 import { logout } from '../actions/authActions'
 import { fetchUsers } from '../actions/userActions'
+import { fetchProjects } from '../actions/projectActions'
 import { authUserSelector, authUserLoadingSelector } from '../selectors/authSelector'
+import { loadingSelector } from '../selectors/projectSelector'
 import LoginPage from './auth/Login'
 import LogoutPage from './auth/Logout'
 import LoginCallbackPage from './auth/LoginCallback'
 import LogoutCallbackPage from './auth/LogoutCallback'
 import ProtectedRoute from './common/ProtectedRoute'
 import ProjectListPage from './projectList'
+import ProjectPage from './project'
 import Header from './common/Header'
+import Footer from './common/Footer'
 
 class App extends Component {
-  componentDidUpdate(prevProps) {
-    if (prevProps.userLoading && this.props.user) {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.userLoading && nextProps.user) {
       this.props.fetchUsers()
+      this.props.fetchProjects()
     }
   }
 
   render() {
-    if (this.props.userLoading) {
-      return <p>Loading user...</p>
+    if (this.props.userLoading || this.props.projectsLoading) {
+      return <div />
     }
     return (
       <div>
@@ -37,6 +42,8 @@ class App extends Component {
             <ProtectedRoute path='/' pred={(this.props.user !== null)} redirect='/login'>
               <Header />
               <Route exact path='/' render={() => <ProjectListPage />} />
+              <Route exact path='/:id/edit' render={({ match }) => <ProjectPage edit id={match.params.id} />} />
+              <Footer />
             </ProtectedRoute>
           </Switch>
         </ConnectedRouter>
@@ -52,13 +59,15 @@ App.propTypes = {
 
 const mapDispatchToProps = {
   logout,
-  fetchUsers
+  fetchUsers,
+  fetchProjects
 }
 
 const mapStateToProps = (state) => {
   return {
     user: authUserSelector(state),
-    userLoading: authUserLoadingSelector(state)
+    userLoading: authUserLoadingSelector(state),
+    projectsLoading: loadingSelector(state)
   }
 }
 

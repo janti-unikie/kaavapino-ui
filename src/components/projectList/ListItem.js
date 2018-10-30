@@ -26,7 +26,7 @@ const ListItem = ({ item, getUsersName }) => {
       <DateItem value={modified_at} />
       <span>{ getUsersName(user) }</span>
       { 'TODO' }
-      <Link className='project-list-button' to={`/project/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
+      <Link className='project-list-button' to={`/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
     </div>
   )
 }

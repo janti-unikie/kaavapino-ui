@@ -1,12 +1,17 @@
 @import 'components/App.scss';
 @import 'components/common/Common.scss';
 @import 'components/projectList/ProjectList.scss';
-
-$color: grey;
+@import 'components/project/Project.scss';
+@import 'components/projectEdit/ProjectEdit.scss';
 
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-  background-color: white;
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #ebedf1;
+}
+
+#root {
+  height: 100%;
 }

@@ -1,0 +1,139 @@
+.project-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .project-content {
+    flex: 1;
+    width: 100%;
+    padding: 40px 80px 40px 80px;
+  }
+}
+
+.timeline-container {
+  background-color: white;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+
+  .timeline-title {
+    font-weight: 600;
+  }
+
+  .timeline-items {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+    background-color: white;
+
+    &.disabled .timeline-item-container .timeline-item-number {
+      cursor: default;
+    }
+
+    .timeline-item-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      text-align: center;
+      position: relative;
+
+      .timeline-item-number {
+        height: 40px;
+        width: 40px;
+        border: 1px solid black;
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+        background-color: white;
+        z-index: 1;
+        border-color: #aab2be;
+        color: #aab2be;
+        font-weight: 550;
+        cursor: pointer;
+        user-select: none;
+
+        &.active {
+          color: white;
+          border-color: white;
+
+          &.color--tram {
+            background-color: #009246;
+          }
+
+          &.color--summer {
+            background-color: #ffc61e;
+          }
+
+          &.color--metro {
+            background-color: #fd4f00;
+          }
+
+          &.color--bus {
+            background-color: #0000bf;
+          }
+
+          &.color--black {
+            background-color: #000000;
+          }
+
+          &.color--white {
+            color: black;
+            border-color: black;
+          }
+
+          &.completed {
+            background-color: white;
+            color: black;
+            border-color: black;
+          }
+        }
+      }
+
+      .timeline-item-title {
+        font-size: 12px;
+        font-weight: bold;
+        color: #aab2be;
+
+        &.active {
+          color: black;
+        }
+      }
+    }
+
+    div:not(:first-child)::before {
+      content: "";
+      border-top: 2px solid #aab2be;
+      display: block;
+      position: absolute;
+      top: 20px;
+      width: 50%;
+      left: 0;
+      z-index: 0;
+    }
+
+    div.active:not(:first-child)::before {
+      border-color: black;
+    }
+
+    div:not(:last-child)::after {
+      content: "";
+      border-top: 2px solid #aab2be;
+      display: block;
+      position: absolute;
+      top: 20px;
+      width: 50%;
+      right: 0;
+      z-index: 0;
+    }
+
+    div.active:not(:last-child)::after {
+      border-color: black;
+    }
+  }
+}
