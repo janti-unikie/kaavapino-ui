@@ -6,9 +6,9 @@ import { history } from '../store'
 import { connect } from 'react-redux'
 import { logout } from '../actions/authActions'
 import { fetchUsers } from '../actions/userActions'
-import { fetchProjects } from '../actions/projectActions'
+import { fetchPhases } from '../actions/phaseActions'
 import { authUserSelector, authUserLoadingSelector } from '../selectors/authSelector'
-import { loadingSelector } from '../selectors/projectSelector'
+import { phasesSelector } from '../selectors/phaseSelector'
 import LoginPage from './auth/Login'
 import LogoutPage from './auth/Logout'
 import LoginCallbackPage from './auth/LoginCallback'
@@ -20,34 +20,33 @@ import Header from './common/Header'
 import Footer from './common/Footer'
 
 class App extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (this.props.userLoading && nextProps.user) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.userLoading && this.props.user) {
       this.props.fetchUsers()
-      this.props.fetchProjects()
+      this.props.fetchPhases()
     }
   }
 
   render() {
-    if (this.props.userLoading || this.props.projectsLoading) {
+    if (this.props.userLoading || !this.props.phases) {
       return <div />
     }
     return (
-      <div>
-        <ConnectedRouter history={history}>
-          <Switch>
-            <Route path='/login' render={() => <LoginPage />} />
-            <Route path='/callback' render={() => <LoginCallbackPage />} />
-            <Route exact path='/logout'  render={() => <LogoutPage handleLogout={ this.props.logout } /> } />
-            <Route path='/logout/callback'  render={() => <LogoutCallbackPage /> } />
-            <ProtectedRoute path='/' pred={(this.props.user !== null)} redirect='/login'>
-              <Header />
-              <Route exact path='/' render={() => <ProjectListPage />} />
-              <Route exact path='/:id/edit' render={({ match }) => <ProjectPage edit id={match.params.id} />} />
-              <Footer />
-            </ProtectedRoute>
-          </Switch>
-        </ConnectedRouter>
-      </div>
+      <ConnectedRouter history={history}>
+        <Switch>
+          <Route path='/login' render={() => <LoginPage />} />
+          <Route path='/callback' render={() => <LoginCallbackPage />} />
+          <Route exact path='/logout'  render={() => <LogoutPage handleLogout={ this.props.logout } /> } />
+          <Route path='/logout/callback'  render={() => <LogoutCallbackPage /> } />
+          <ProtectedRoute path='/' pred={(this.props.user !== null)} redirect='/login'>
+            <Header />
+            <Route exact path='/' render={() => <ProjectListPage />} />
+            <Route exact path='/:id' render={({ match }) => <ProjectPage id={match.params.id} />} />
+            <Route exact path='/:id/edit' render={({ match }) => <ProjectPage edit id={match.params.id} />} />
+            <Footer />
+          </ProtectedRoute>
+        </Switch>
+      </ConnectedRouter>
     )
   }
 }
@@ -60,14 +59,14 @@ App.propTypes = {
 const mapDispatchToProps = {
   logout,
   fetchUsers,
-  fetchProjects
+  fetchPhases
 }
 
 const mapStateToProps = (state) => {
   return {
     user: authUserSelector(state),
     userLoading: authUserLoadingSelector(state),
-    projectsLoading: loadingSelector(state)
+    phases: phasesSelector(state)
   }
 }
 

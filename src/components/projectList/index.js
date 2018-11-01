@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { fetchProjects } from '../../actions/projectActions'
 import { usersSelector } from '../../selectors/userSelector'
 import { Tab } from 'semantic-ui-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,6 +17,10 @@ class ProjectListPage extends Component {
     this.state = {
       formOpen: false
     }
+  }
+
+  componentDidMount() {
+    this.props.fetchProjects()
   }
 
   toggleForm = (opened) => this.setState({ formOpen: opened })
@@ -60,7 +65,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  createProject
+  createProject,
+  fetchProjects
 }
 
 export default connect(

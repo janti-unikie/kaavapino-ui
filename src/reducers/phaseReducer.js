@@ -3,7 +3,7 @@ import {
 } from '../actions/phaseActions'
 
 const initialState = {
-  phases: []
+  phases: null
 }
 
 export const reducer = (state = initialState, action) => {

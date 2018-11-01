@@ -12,7 +12,7 @@ export const currentProjectSelector = createSelector(
   (project) => project.currentProject
 )
 
-export const loadingSelector = createSelector(
+export const currentProjectLoadedSelector = createSelector(
   selectProject,
-  (project) => project.loading
+  (project) => project.currentProjectLoaded
 )

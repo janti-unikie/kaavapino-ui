@@ -1,15 +1,17 @@
 import {
   FETCH_PROJECTS_SUCCESSFUL,
   FETCH_PROJECTS,
+  FETCH_PROJECT_SUCCESSFUL,
   CREATE_PROJECT_SUCCESSFUL,
-  SET_CURRENT_PROJECT
+  INITIALIZE_PROJECT,
+  INITIALIZE_PROJECT_SUCCESSFUL
 } from '../actions/projectActions'
 
 const initialState = {
   projects: [],
   users: [],
   currentProject: null,
-  loading: false
+  currentProjectLoaded: false
 }
 
 export const reducer = (state = initialState, action) => {
@@ -17,15 +19,15 @@ export const reducer = (state = initialState, action) => {
     case FETCH_PROJECTS: {
       return {
         ...state,
-        loading: true
+        currentProject: null,
+        currentProjectLoaded: false
       }
     }
 
     case FETCH_PROJECTS_SUCCESSFUL: {
       return {
         ...state,
-        projects: action.payload,
-        loading: false
+        projects: action.payload
       }
     }
 
@@ -36,10 +38,26 @@ export const reducer = (state = initialState, action) => {
       }
     }
 
-    case SET_CURRENT_PROJECT: {
+    case INITIALIZE_PROJECT: {
       return {
         ...state,
-        currentProject: state.projects.find((project) => String(project.id) === action.payload)
+        currentProject: null,
+        project: [],
+        currentProjectLoaded: false
+      }
+    }
+
+    case INITIALIZE_PROJECT_SUCCESSFUL: {
+      return {
+        ...state,
+        currentProjectLoaded: true
+      }
+    }
+
+    case FETCH_PROJECT_SUCCESSFUL: {
+      return {
+        ...state,
+        currentProject: action.payload
       }
     }
 
