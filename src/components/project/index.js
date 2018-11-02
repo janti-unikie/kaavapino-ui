@@ -73,7 +73,7 @@ class ProjectPage extends Component {
 
   render() {
     const { edit, currentProject, phases, currentProjectLoaded } = this.props
-    if (!currentProjectLoaded) {
+    if (!currentProjectLoaded || !phases) {
       return <div className='project-container' />
     }
     const { selectedPhase } = this.state

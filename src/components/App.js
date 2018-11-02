@@ -28,7 +28,7 @@ class App extends Component {
   }
 
   render() {
-    if (this.props.userLoading || !this.props.phases) {
+    if (this.props.userLoading) {
       return <div />
     }
     return (

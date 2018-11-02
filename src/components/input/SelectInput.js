@@ -16,6 +16,7 @@ const SelectInput = ({ input, meta: { error }, options, ...custom }) => (
     noResultsMessage='Ei tuloksia'
     options={ options }
     error={inputUtils.hasError(error)}
+    onBlur={() => input.onBlur(input.value.value)}
   />
 )
 
