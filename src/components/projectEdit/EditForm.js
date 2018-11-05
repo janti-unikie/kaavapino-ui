@@ -5,7 +5,12 @@ import FormSection from './FormSection'
 
 class EditForm extends Component {
   componentDidMount() {
-    /* this.props.initialize({ name: '123' }) */
+    /* this.props.initialize({
+      kaavan_hyvaksyjataho: 'foo',
+      asuminen_kerrostalo_uusi_k_m2muut: 20,
+      uutta_tai_siirrettavaa_infraa: true,
+      kaavan_valmistelijan_nimi: ['1']
+    }) */
   }
 
   render() {

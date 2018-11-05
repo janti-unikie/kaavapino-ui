@@ -5,14 +5,13 @@ class Timeline extends Component {
   render = () => {
     const { items, type, disabled, phase, switchPhase } = this.props
     const timelineItems = items.filter((item) => item.project_type === type)
-      .map((timelineItem) => timelineItem.index <= phase - 1 ? { ...timelineItem, active: true } : timelineItem)
-
+      .map((timelineItem) => timelineItem.index <= phase ? { ...timelineItem, active: true } : timelineItem)
     return (
       <div className='timeline-container'>
         <span className='timeline-title'>Hankkeen vaihe</span>
         <div className={`timeline-items ${disabled ? 'disabled' : ''}`}>
           { timelineItems.map((item, i) => {
-            const isCompleted = phase > item.index + 1
+            const isCompleted = phase > item.index
             const color = item.color
             return (
               <div key={i} className={`timeline-item-container ${item.active ? `active ${color} ${isCompleted ? 'completed' : ''}` : ''}`}>

@@ -94,6 +94,7 @@ class List extends Component {
       <div className='project-list'>
         <ListHeader items={headerItems} selected={sort} dir={dir} filter={this.setFilter} sort={this.setSort} />
         { items && items.map((item, i) => <ListItem key={i} item={item} getUsersName={this.getUsersName} />) }
+        { items && items.length === 0 && <span className='empty-list-info'>Ei hankkeita!</span> }
       </div>
     )
   }

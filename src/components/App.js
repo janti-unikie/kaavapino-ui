@@ -21,7 +21,7 @@ import Footer from './common/Footer'
 
 class App extends Component {
   componentDidUpdate(prevProps) {
-    if (prevProps.userLoading && this.props.user) {
+    if (!prevProps.user && this.props.user) {
       this.props.fetchUsers()
       this.props.fetchPhases()
     }

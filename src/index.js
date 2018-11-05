@@ -19,7 +19,7 @@ axios.interceptors.request.use((config) => ({
   headers: {
     ...config.headers,
     'Content-Type': 'application/json',
-    'Authorization': apiUtils.getToken()
+    'Authorization': `bearer ${apiUtils.getToken()}`
   }
 }))
 

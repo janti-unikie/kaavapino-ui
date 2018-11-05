@@ -32,7 +32,7 @@ class ProjectListPage extends Component {
       { menuItem: 'Kaikki hankeet', render: () => <List users={users} items={this.props.projects} /> }
     ]
     return (
-      <div>
+      <div className='project-list-page'>
         <NavHeader
           routeItems={[ { value: 'Kaavahankkeet', path: '/' } ]}
           title='Kaavahankkeet'

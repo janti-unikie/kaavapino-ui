@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Input from './Input'
 import SelectInput from './SelectInput'
+import Radio from './Radio'
 import { Field } from 'redux-form'
 
 class CustomField extends Component {
@@ -21,9 +22,14 @@ class CustomField extends Component {
     return <SelectInput multiple={multiple_choice} options={this.formatOptions(choices)} {...props} />
   }
 
+  renderRadio = (props) => <Radio {...props} />
+
   getInput = (field) => {
+    const { type } = field
     if (field.choices) {
       return this.renderSelect
+    } else if (type === 'boolean') {
+      return this.renderRadio
     }
     return this.renderNumber
   }
