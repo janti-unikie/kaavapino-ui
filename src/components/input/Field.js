@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Input from './Input'
 import SelectInput from './SelectInput'
 import Radio from './Radio'
+import TextArea from './TextArea'
 import { Field } from 'redux-form'
 
 class CustomField extends Component {
@@ -17,6 +18,12 @@ class CustomField extends Component {
 
   renderNumber = (props) => <Input type='number' {...props} />
 
+  renderString = (props) => <Input type='text' {...props} />
+
+  renderTextArea = (props) => <TextArea {...props} />
+
+  renderDate = (props) => <Input type='date' {...props} />
+
   renderSelect = (props) => {
     const { choices, multiple_choice } = this.props.field
     return <SelectInput multiple={multiple_choice} options={this.formatOptions(choices)} {...props} />
@@ -25,13 +32,17 @@ class CustomField extends Component {
   renderRadio = (props) => <Radio {...props} />
 
   getInput = (field) => {
-    const { type } = field
     if (field.choices) {
       return this.renderSelect
-    } else if (type === 'boolean') {
-      return this.renderRadio
     }
-    return this.renderNumber
+
+    switch (field.type) {
+      case 'boolean': return this.renderRadio
+      case 'short_string': return this.renderString
+      case 'long_string': return this.renderTextArea
+      case 'date': return this.renderDate
+      default: return this.renderNumber
+    }
   }
 
   render() {
