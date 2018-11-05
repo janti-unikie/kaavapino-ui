@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Loader } from 'semantic-ui-react'
 import ListHeader from './ListHeader'
 import ListItem from './ListItem'
 import projectUtils from '../../utils/projectUtils'
@@ -88,13 +89,17 @@ class List extends Component {
 
   render() {
     const { sort, dir } = this.state
+    console.log(this.props.items)
+    if (!this.props.items) {
+      return <Loader active>Ladataan</Loader>
+    }
     const items = this.sortItems(this.filterItems(this.props.items))
     const headerItems = ['Nimi', 'Vaihe', 'Seuraava määräaika', 'Koko', 'Muokattu', 'Vastuuhenkilö', 'Viimeisin kommentti']
     return (
       <div className='project-list'>
         <ListHeader items={headerItems} selected={sort} dir={dir} filter={this.setFilter} sort={this.setSort} />
-        { items && items.map((item, i) => <ListItem key={i} item={item} getUsersName={this.getUsersName} />) }
-        { items && items.length === 0 && <span className='empty-list-info'>Ei hankkeita!</span> }
+        { items.map((item, i) => <ListItem key={i} item={item} getUsersName={this.getUsersName} />) }
+        { items.length === 0 && <span className='empty-list-info'>Ei hankkeita!</span> }
       </div>
     )
   }

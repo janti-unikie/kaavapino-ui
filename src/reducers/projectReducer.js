@@ -8,7 +8,7 @@ import {
 } from '../actions/projectActions'
 
 const initialState = {
-  projects: [],
+  projects: null,
   users: [],
   currentProject: null,
   currentProjectLoaded: false
