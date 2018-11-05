@@ -2,6 +2,8 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { connectRouter, routerMiddleware } from 'connected-react-router'
 import { loadUser, USER_FOUND } from 'redux-oidc'
 import createSagaMiddleware from 'redux-saga'
+import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction'
+import { createLogger } from 'redux-logger'
 import { createBrowserHistory } from 'history'
 import reducers from './reducers'
 import sagas from './sagas'
@@ -23,12 +25,27 @@ const apiMiddleware = () => next => action => {
   next(action)
 }
 
+const middlewareArray = [
+  routerMiddleware(history),
+  sagaMiddleware,
+  apiMiddleware
+]
+
+if (process.env.NODE_ENV === 'development') {
+  const logger = createLogger({
+    collapsed: true
+  })
+  middlewareArray.push(logger)
+}
+
+const composeEnhancers = composeWithDevTools({})
+
 const store = createStore(
   connectRouter(history)(combinedReducers),
-  applyMiddleware(
-    sagaMiddleware,
-    routerMiddleware(history),
-    apiMiddleware
+  composeEnhancers(
+    applyMiddleware(
+      ...middlewareArray
+    ),
   )
 )
 
