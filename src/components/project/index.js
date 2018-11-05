@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { initializeProject } from '../../actions/projectActions'
 import { currentProjectSelector, currentProjectLoadedSelector } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
-import { NavHeader } from '../common/NavHeader'
+import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import Timeline from './Timeline'
 import ProjectEditPage from '../projectEdit'
 
@@ -34,6 +35,7 @@ class ProjectPage extends Component {
     const { currentProject } = this.props
     if (!prevProps.currentProject && currentProject) {
       this.setState({ selectedPhase: currentProject.phase })
+      document.title = currentProject.name
     }
   }
 
@@ -54,7 +56,7 @@ class ProjectPage extends Component {
     if (edit) {
       return `${name}, muokkaa`
     }
-    return name
+    return `${name}, hankekortti`
   }
 
   switchPhase = (phase) => {
@@ -71,6 +73,22 @@ class ProjectPage extends Component {
     }
   }
 
+  getNavActions = () => {
+    const { edit, currentProject: { id } } = this.props
+    return (
+      <NavActions>
+        {
+          !edit &&
+          <NavAction to={`/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</NavAction>
+        }
+        {
+          edit &&
+          <NavAction to={`/${id}`}><FontAwesomeIcon icon='arrow-left'/>Hankekortti</NavAction>
+        }
+      </NavActions>
+    )
+  }
+
   render() {
     const { edit, currentProject, phases, currentProjectLoaded } = this.props
     if (!currentProjectLoaded || !phases) {
@@ -82,6 +100,7 @@ class ProjectPage extends Component {
         <NavHeader
           routeItems={this.getRouteItems()}
           title={this.getTitle(currentProject.name)}
+          actions={this.getNavActions()}
         />
         <Timeline
           phase={ selectedPhase }

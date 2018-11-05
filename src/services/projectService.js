@@ -3,22 +3,28 @@ import axios from 'axios'
 const apiUrl = '/v1/projects/'
 
 const getProjects = async () => {
-  const projects = await axios.get(apiUrl)
-  return projects.data
+  const { data } = await axios.get(apiUrl)
+  return data
 }
 
 const getProject = async (id) => {
-  const project = await axios.get(`${apiUrl}/${id}/`)
-  return project.data
+  const { data } = await axios.get(`${apiUrl}/${id}/`)
+  return data
 }
 
 const createProject = async (project) => {
-  const newProject = await axios.post(apiUrl, project)
-  return newProject.data
+  const { data } = await axios.post(apiUrl, project)
+  return data
+}
+
+const saveProject = async (id, updatedFields) => {
+  const { data } = await axios.patch(`${apiUrl}/${id}/`, updatedFields)
+  return data
 }
 
 export default {
   getProjects,
   getProject,
-  createProject
+  createProject,
+  saveProject
 }

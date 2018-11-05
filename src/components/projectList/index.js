@@ -20,6 +20,7 @@ class ProjectListPage extends Component {
   }
 
   componentDidMount() {
+    document.title = 'Kaavapino'
     this.props.fetchProjects()
   }
 
@@ -37,7 +38,7 @@ class ProjectListPage extends Component {
           routeItems={[ { value: 'Kaavahankkeet', path: '/' } ]}
           title='Kaavahankkeet'
           large
-          actions={() => (
+          actions={(
             <NavActions>
               <NavAction onClick={() => this.toggleForm(true)}><FontAwesomeIcon icon='plus'/>Luo uusi hanke</NavAction>
             </NavActions>

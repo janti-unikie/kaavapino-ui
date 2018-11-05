@@ -4,14 +4,17 @@ import {
   FETCH_PROJECT_SUCCESSFUL,
   CREATE_PROJECT_SUCCESSFUL,
   INITIALIZE_PROJECT,
-  INITIALIZE_PROJECT_SUCCESSFUL
+  INITIALIZE_PROJECT_SUCCESSFUL,
+  SAVE_PROJECT,
+  SAVE_PROJECT_SUCCESSFUL
 } from '../actions/projectActions'
 
 const initialState = {
   projects: null,
   users: [],
   currentProject: null,
-  currentProjectLoaded: false
+  currentProjectLoaded: false,
+  saving: false
 }
 
 export const reducer = (state = initialState, action) => {
@@ -58,6 +61,20 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         currentProject: action.payload
+      }
+    }
+
+    case SAVE_PROJECT: {
+      return {
+        ...state,
+        saving: true
+      }
+    }
+
+    case SAVE_PROJECT_SUCCESSFUL: {
+      return {
+        ...state,
+        saving: false
       }
     }
 
