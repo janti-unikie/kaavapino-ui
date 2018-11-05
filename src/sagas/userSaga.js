@@ -1,6 +1,5 @@
 
-import { takeLatest, put, all, call, select } from 'redux-saga/effects'
-import { userIdSelector } from '../selectors/authSelector'
+import { takeLatest, put, all, call } from 'redux-saga/effects'
 import {
   FETCH_USERS, fetchUsersSuccessful
 } from '../actions/userActions'
@@ -13,7 +12,6 @@ export default function* userSaga() {
 }
 
 function* fetchUsers() {
-  const token = yield select(userIdSelector)
-  const users = yield call(userService.getUsers, token)
+  const users = yield call(userService.getUsers)
   yield put(fetchUsersSuccessful(users))
 }

@@ -1,0 +1,7 @@
+.radio-input-container {
+  display: flex;
+
+  :nth-child(n):not(:first-child) {
+    margin-left: 10px;
+  }
+}

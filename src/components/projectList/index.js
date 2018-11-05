@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { fetchProjects } from '../../actions/projectActions'
 import { usersSelector } from '../../selectors/userSelector'
 import { Tab } from 'semantic-ui-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { fetchProjects, createProject } from '../../actions/projectActions'
+import { createProject } from '../../actions/projectActions'
 import { projectsSelector } from '../../selectors/projectSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import FormModal from './FormModal'
@@ -19,6 +20,7 @@ class ProjectListPage extends Component {
   }
 
   componentDidMount() {
+    document.title = 'Kaavapino'
     this.props.fetchProjects()
   }
 
@@ -31,12 +33,12 @@ class ProjectListPage extends Component {
       { menuItem: 'Kaikki hankeet', render: () => <List users={users} items={this.props.projects} /> }
     ]
     return (
-      <div>
+      <div className='project-list-page'>
         <NavHeader
           routeItems={[ { value: 'Kaavahankkeet', path: '/' } ]}
           title='Kaavahankkeet'
           large
-          actions={() => (
+          actions={(
             <NavActions>
               <NavAction onClick={() => this.toggleForm(true)}><FontAwesomeIcon icon='plus'/>Luo uusi hanke</NavAction>
             </NavActions>
@@ -64,8 +66,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  fetchProjects,
-  createProject
+  createProject,
+  fetchProjects
 }
 
 export default connect(

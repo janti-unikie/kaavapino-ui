@@ -2,21 +2,29 @@ import axios from 'axios'
 
 const apiUrl = '/v1/projects/'
 
-const getHeaders = (token) => ({
-  'Authorization': `bearer ${ token }`
-})
-
-const getProjects = async (token) => {
-  const projects = await axios.get(apiUrl, getHeaders(token))
-  return projects.data
+const getProjects = async () => {
+  const { data } = await axios.get(apiUrl)
+  return data
 }
 
-const createProject = async (token, project) => {
-  const newProject = await axios.post(apiUrl, project, getHeaders(token))
-  return newProject.data
+const getProject = async (id) => {
+  const { data } = await axios.get(`${apiUrl}/${id}/`)
+  return data
+}
+
+const createProject = async (project) => {
+  const { data } = await axios.post(apiUrl, project)
+  return data
+}
+
+const saveProject = async (id, updatedFields) => {
+  const { data } = await axios.patch(`${apiUrl}/${id}/`, updatedFields)
+  return data
 }
 
 export default {
   getProjects,
-  createProject
+  getProject,
+  createProject,
+  saveProject
 }

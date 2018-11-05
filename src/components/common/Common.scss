@@ -86,6 +86,9 @@
   font-weight: bold;
   padding: 16px;
   cursor: pointer;
+  &:focus {
+    outline: none;
+  }
 }
 
 .footer-container {

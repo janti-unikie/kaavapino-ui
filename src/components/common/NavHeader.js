@@ -3,11 +3,13 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 export const NavAction = ({ children, to, ...rest }) => {
-  return (
-    <span {...rest} className='action-item'>
-      { to ? <Link to={to}>{ children }</Link> : children }
-    </span>
-  )
+  return to ?
+    <Link className='action-item' to={to}>{ children }</Link> :
+    (
+      <span {...rest} className='action-item'>
+        { children }
+      </span>
+    )
 }
 
 NavAction.propTypes = {
@@ -28,7 +30,7 @@ export const NavHeader = ({ routeItems, actions, large, title }) => {
           </div>
         </div>
         <span className={`nav-header-title ${ large ? 'large' : '' }`}>{ title }</span>
-        { actions() }
+        { actions && actions }
       </div>
     </div>
   )
@@ -36,7 +38,7 @@ export const NavHeader = ({ routeItems, actions, large, title }) => {
 
 NavHeader.propTypes = {
   routeItems: PropTypes.array,
-  actions: PropTypes.func,
+  actions: PropTypes.object,
   large: PropTypes.bool,
   title: PropTypes.string
 }
