@@ -7,7 +7,8 @@ import {
   fetchProjectSuccessful,
   CREATE_PROJECT, createProjectSuccessful,
   INITIALIZE_PROJECT, initializeProjectSuccessful,
-  SAVE_PROJECT, saveProjectSuccessful
+  SAVE_PROJECT, saveProjectSuccessful,
+  CHANGE_PROJECT_PHASE, changeProjectPhaseSuccessful
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 
@@ -16,7 +17,8 @@ export default function* projectSaga() {
     takeLatest(FETCH_PROJECTS, fetchProjects),
     takeLatest(INITIALIZE_PROJECT, initializeProject),
     takeLatest(CREATE_PROJECT, createProject),
-    takeLatest(SAVE_PROJECT, saveProject)
+    takeLatest(SAVE_PROJECT, saveProject),
+    takeLatest(CHANGE_PROJECT_PHASE, changeProjectPhase)
   ])
 }
 
@@ -54,4 +56,11 @@ function* saveProject() {
     yield put(fetchProjectSuccessful(updatedProject))
   }
   yield put(saveProjectSuccessful())
+}
+
+function* changeProjectPhase({ payload }) {
+  const currentProject = yield select(currentProjectSelector)
+  const updatedProject = yield call(projectService.changeProjectPhase, currentProject.id, payload)
+  yield put(changeProjectPhaseSuccessful(updatedProject))
+  window.scrollTo(0, 0)
 }

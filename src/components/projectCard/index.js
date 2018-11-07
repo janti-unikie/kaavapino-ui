@@ -44,7 +44,7 @@ class ProjectCardPage extends Component {
     let result = []
     currentMetadata.forEach(({ label, name, type }) => {
       const data = { label, type }
-      if (Object.keys(attributeData).includes(name) && attributeData[name]) {
+      if (Object.keys(attributeData).includes(name) && attributeData[name] !== null) {
         data['value'] = attributeData[name]
       } else {
         data['empty'] = true

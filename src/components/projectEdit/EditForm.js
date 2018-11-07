@@ -12,7 +12,7 @@ class EditForm extends Component {
   }
 
   render() {
-    const { sections, saving } = this.props
+    const { sections, saving, isCurrentPhase, changingPhase } = this.props
     return (
       <Form className='form-container'>
         { sections.map((section, i) => <FormSection key={i} section={section} /> ) }
@@ -22,6 +22,14 @@ class EditForm extends Component {
           icon={<FontAwesomeIcon icon='check' />}
           loading={saving}
         />
+        { isCurrentPhase && (
+          <Button
+            handleClick={this.props.changePhase}
+            value='Lopeta vaihe'
+            icon={<FontAwesomeIcon icon='forward' />}
+            loading={changingPhase}
+          />
+        )}
       </Form>
     )
   }

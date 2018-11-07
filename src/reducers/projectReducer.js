@@ -6,7 +6,9 @@ import {
   INITIALIZE_PROJECT,
   INITIALIZE_PROJECT_SUCCESSFUL,
   SAVE_PROJECT,
-  SAVE_PROJECT_SUCCESSFUL
+  SAVE_PROJECT_SUCCESSFUL,
+  CHANGE_PROJECT_PHASE,
+  CHANGE_PROJECT_PHASE_SUCCESSFUL
 } from '../actions/projectActions'
 
 const initialState = {
@@ -14,7 +16,8 @@ const initialState = {
   users: [],
   currentProject: null,
   currentProjectLoaded: false,
-  saving: false
+  saving: false,
+  changingPhase: false
 }
 
 export const reducer = (state = initialState, action) => {
@@ -75,6 +78,21 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         saving: false
+      }
+    }
+
+    case CHANGE_PROJECT_PHASE: {
+      return {
+        ...state,
+        changingPhase: true
+      }
+    }
+
+    case CHANGE_PROJECT_PHASE_SUCCESSFUL: {
+      return {
+        ...state,
+        currentProject: action.payload,
+        changingPhase: false
       }
     }
 
