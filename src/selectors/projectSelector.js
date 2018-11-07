@@ -17,7 +17,12 @@ export const currentProjectLoadedSelector = createSelector(
   (project) => project.currentProjectLoaded
 )
 
-export const savingSelector = (createSelector(
+export const savingSelector = createSelector(
   selectProject,
   (project) => project.saving
-))
+)
+
+export const changingPhaseSelector = createSelector(
+  selectProject,
+  (project) => project.changingPhase
+)

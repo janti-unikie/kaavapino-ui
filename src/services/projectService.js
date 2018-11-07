@@ -22,9 +22,15 @@ const saveProject = async (id, updatedFields) => {
   return data
 }
 
+const changeProjectPhase = async (id, phase) => {
+  const { data } = await axios.patch(`${apiUrl}/${id}/`, { phase })
+  return data
+}
+
 export default {
   getProjects,
   getProject,
   createProject,
-  saveProject
+  saveProject,
+  changeProjectPhase
 }

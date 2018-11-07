@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { initializeProject } from '../../actions/projectActions'
-import { currentProjectSelector, currentProjectLoadedSelector } from '../../selectors/projectSelector'
+import {
+  currentProjectSelector,
+  currentProjectLoadedSelector,
+  changingPhaseSelector
+} from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import Timeline from './Timeline'
@@ -33,8 +37,8 @@ class ProjectPage extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { currentProject } = this.props
-    if (!prevProps.currentProject && currentProject) {
+    const { currentProject, changingPhase } = this.props
+    if ((!prevProps.currentProject && currentProject) || (prevProps.changingPhase && !changingPhase)) {
       this.setState({ selectedPhase: currentProject.phase })
       document.title = currentProject.name
     }
@@ -70,7 +74,7 @@ class ProjectPage extends Component {
     const { edit, currentProject } = this.props
     const { selectedPhase } = this.state
     if (edit) {
-      return <ProjectEditPage phase={selectedPhase} project={currentProject} />
+      return <ProjectEditPage selectedPhase={selectedPhase} project={currentProject} />
     }
 
     return (
@@ -112,6 +116,7 @@ class ProjectPage extends Component {
         />
         <Timeline
           phase={ selectedPhase }
+          projectPhase={ currentProject.phase }
           items={phases}
           type={currentProject.type}
           disabled={!edit}
@@ -133,7 +138,8 @@ const mapStateToProps = (state) => {
   return {
     currentProject: currentProjectSelector(state),
     phases: phasesSelector(state),
-    currentProjectLoaded: currentProjectLoadedSelector(state)
+    currentProjectLoaded: currentProjectLoadedSelector(state),
+    changingPhase: changingPhaseSelector(state)
   }
 }
 

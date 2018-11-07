@@ -93,7 +93,11 @@ class List extends Component {
   render() {
     const { sort, dir } = this.state
     if (!this.props.items) {
-      return <Loader inline={'centered'} active>Ladataan</Loader>
+      return (
+        <div className='project-list'>
+          <Loader inline={'centered'} active>Ladataan</Loader>
+        </div>
+      )
     }
     const items = this.sortItems(this.filterItems(this.props.items))
     const headerItems = ['Nimi', 'Vaihe', 'Seuraava määräaika', 'Koko', 'Muokattu', 'Vastuuhenkilö', 'Viimeisin kommentti']
