@@ -7,6 +7,7 @@ import { phasesSelector } from '../../selectors/phaseSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import Timeline from './Timeline'
 import ProjectEditPage from '../projectEdit'
+import ProjectCardPage from '../projectCard'
 
 class ProjectPage extends Component {
   constructor(props) {
@@ -71,6 +72,13 @@ class ProjectPage extends Component {
     if (edit) {
       return <ProjectEditPage phase={selectedPhase} project={currentProject} />
     }
+
+    return (
+      <ProjectCardPage
+        attributeData={currentProject.attribute_data}
+        type={currentProject.type}
+      />
+    )
   }
 
   getNavActions = () => {

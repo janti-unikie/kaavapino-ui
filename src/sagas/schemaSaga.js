@@ -5,7 +5,7 @@ import {
 } from '../actions/schemaActions'
 import schemaService from '../services/schemaService'
 
-export default function* userSaga() {
+export default function* schemaSaga() {
   yield all([
     takeLatest(FETCH_SCHEMAS, fetchSchemas)
   ])

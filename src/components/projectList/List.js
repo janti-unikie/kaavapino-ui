@@ -27,7 +27,10 @@ class List extends Component {
 
   getUsersName = (id) => {
     const user = this.props.users.find((user) => user.id === id)
-    return user ? `${user.first_name} ${user.last_name}` : ''
+    if (user) {
+      return (user.first_name && user.last_name) ? `${user.first_name} ${user.last_name}` : user.email
+    }
+    return ''
   }
 
   setSort = (type) => {

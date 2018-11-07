@@ -11,17 +11,13 @@ class EditForm extends Component {
     initialize(attributeData)
   }
 
-  handleClick = () => {
-    this.props.handleSave()
-  }
-
   render() {
     const { sections, saving } = this.props
     return (
       <Form className='form-container'>
         { sections.map((section, i) => <FormSection key={i} section={section} /> ) }
         <Button
-          handleClick={this.handleClick}
+          handleClick={this.props.handleSave}
           value='Tallenna'
           icon={<FontAwesomeIcon icon='check' />}
           loading={saving}
