@@ -4,6 +4,7 @@ import projectSaga from './projectSaga'
 import userSaga from './userSaga'
 import phaseSaga from './phaseSaga'
 import schemaSaga from './schemaSaga'
+import projectTypeSaga from './projectTypeSaga'
 
 export default function* sagas() {
   yield all([
@@ -11,6 +12,7 @@ export default function* sagas() {
     projectSaga(),
     userSaga(),
     phaseSaga(),
-    schemaSaga()
+    schemaSaga(),
+    projectTypeSaga()
   ])
 }

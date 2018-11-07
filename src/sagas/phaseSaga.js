@@ -5,7 +5,7 @@ import {
 } from '../actions/phaseActions'
 import phaseService from '../services/phaseService'
 
-export default function* userSaga() {
+export default function* phaseSaga() {
   yield all([
     takeLatest(FETCH_PHASES, fetchPhases)
   ])

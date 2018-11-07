@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { logout } from '../actions/authActions'
 import { fetchUsers } from '../actions/userActions'
 import { fetchPhases } from '../actions/phaseActions'
+import { fetchProjectTypes } from '../actions/projectTypeActions'
 import { authUserSelector, authUserLoadingSelector } from '../selectors/authSelector'
 import { phasesSelector } from '../selectors/phaseSelector'
 import LoginPage from './auth/Login'
@@ -24,6 +25,7 @@ class App extends Component {
     if (!prevProps.user && this.props.user) {
       this.props.fetchUsers()
       this.props.fetchPhases()
+      this.props.fetchProjectTypes()
     }
   }
 
@@ -59,7 +61,8 @@ App.propTypes = {
 const mapDispatchToProps = {
   logout,
   fetchUsers,
-  fetchPhases
+  fetchPhases,
+  fetchProjectTypes
 }
 
 const mapStateToProps = (state) => {

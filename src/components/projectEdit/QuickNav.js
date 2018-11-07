@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Divider } from 'semantic-ui-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Button from '../common/Button'
 
 class QuickNav extends Component {
   constructor(props) {
@@ -75,11 +77,21 @@ class QuickNav extends Component {
       <div className='quicknav-container'>
         <span className='quicknav-title'>{ this.props.projectName}</span>
         <Divider style={{ whiteSpace: 'pre-wrap' }} horizontal>{ this.props.phaseTitle }</Divider>
-        { this.state.sectionHeights && this.state.sectionHeights.map((section, i) => {
-          return (
-            <span key={i} className={`quicknav-item ${i === this.state.active ? 'active' : ''}`} onClick={() => this.handleClick(section.title)}>{ section.title }</span>
-          )
-        }) }
+        <div className='quicknav-content'>
+          { this.state.sectionHeights && this.state.sectionHeights.map((section, i) => {
+            return (
+              <span key={i} className={`quicknav-item ${i === this.state.active ? 'active' : ''}`} onClick={() => this.handleClick(section.title)}>{ section.title }</span>
+            )
+          }) }
+        </div>
+        <div className='quicknav-buttons'>
+          <Button
+            handleClick={this.props.handleSave}
+            value='Tallenna'
+            icon={<FontAwesomeIcon icon='check' />}
+            loading={this.props.saving}
+          />
+        </div>
       </div>
     )
   }

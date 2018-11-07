@@ -37,9 +37,11 @@ class ProjectEditPage extends Component {
         />
         <div className='project-input-right'>
           <QuickNav
+            handleSave={saveProject}
             projectName={ name }
             sections={ currentSchema.sections }
             phaseTitle={ currentSchema.title }
+            saving={saving}
           />
         </div>
       </div>

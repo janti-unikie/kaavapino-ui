@@ -1,0 +1,33 @@
+.project-card-container {
+  width: 100%;
+  display: flex;
+
+  .summary {
+    flex: 0.5;
+    display: flex;
+    flex-direction: column;
+    margin-right: 40px;
+    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: auto;
+    max-height: 600px;
+
+    div {
+      margin-bottom: 20px;
+    }
+  }
+
+  .project-image-container {
+    flex: 0.5;
+    .project-image {
+      max-width: 600px;
+      max-height: 600px;
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+.project-card-graph-container {
+  padding: 0 40px 0 40px;
+}

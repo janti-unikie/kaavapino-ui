@@ -99,25 +99,39 @@
   max-height: 45vh;
   overflow: hidden;
   overflow-y: auto;
-}
 
-.quicknav-title {
-  text-align: center;
-    margin: 10px 10px 0 10px;
-    font-size: 16px;
-    margin-top: 10px;
-    font-weight: bold;
-}
+  .quicknav-title {
+    text-align: center;
+      margin: 10px 10px 0 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      font-weight: bold;
+  }
 
-.quicknav-item {
-  cursor: pointer;
-  margin: 0 10px 10px 10px;
+  .quicknav-content {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    max-height: 45vh;
+    overflow: hidden;
+    overflow-y: auto;
+    
+    .quicknav-item {
+      cursor: pointer;
+      margin: 0 10px 10px 10px;
+    
+      &.active {
+        font-weight: bold;
+        color: green;
+        border-left: 3px solid;
+        padding-left: 10px;
+      }
+    }
+  }
 
-  &.active {
-    font-weight: bold;
-    color: green;
-    border-left: 3px solid;
-    padding-left: 10px;
+  .quicknav-buttons {
+    padding: 5px 0 10px 0;
+    align-self: center;
   }
 }
 
