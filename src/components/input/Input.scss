@@ -12,4 +12,21 @@
   input {
     align-self: flex-start;
   }
+
+  .matrix {
+    :nth-child(n) {
+      padding: 5px;
+
+      .ui.form textarea {
+        background: yellow !important;
+      }
+      .highlighted {
+        background: yellow !important;
+      }
+    }
+  }
+}
+
+.highlighted {
+  background-color: yellow;
 }

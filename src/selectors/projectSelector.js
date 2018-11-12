@@ -26,3 +26,13 @@ export const changingPhaseSelector = createSelector(
   selectProject,
   (project) => project.changingPhase
 )
+
+export const validatingSelector = createSelector(
+  selectProject,
+  ({ validating }) => validating
+)
+
+export const hasErrorsSelector = createSelector(
+  selectProject,
+  ({ hasErrors }) => hasErrors
+)

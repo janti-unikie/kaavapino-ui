@@ -7,8 +7,11 @@ import {
   INITIALIZE_PROJECT_SUCCESSFUL,
   SAVE_PROJECT,
   SAVE_PROJECT_SUCCESSFUL,
+  VALIDATE_PROJECT_FIELDS,
+  VALIDATE_PROJECT_FIELDS_SUCCESSFUL,
   CHANGE_PROJECT_PHASE,
-  CHANGE_PROJECT_PHASE_SUCCESSFUL
+  CHANGE_PROJECT_PHASE_SUCCESSFUL,
+  CHANGE_PROJECT_PHASE_FAILURE
 } from '../actions/projectActions'
 
 const initialState = {
@@ -17,7 +20,9 @@ const initialState = {
   currentProject: null,
   currentProjectLoaded: false,
   saving: false,
-  changingPhase: false
+  changingPhase: false,
+  validating: false,
+  hasErrors: false
 }
 
 export const reducer = (state = initialState, action) => {
@@ -81,6 +86,21 @@ export const reducer = (state = initialState, action) => {
       }
     }
 
+    case VALIDATE_PROJECT_FIELDS: {
+      return {
+        ...state,
+        validating: true
+      }
+    }
+
+    case VALIDATE_PROJECT_FIELDS_SUCCESSFUL: {
+      return {
+        ...state,
+        validating: false,
+        hasErrors: action.payload
+      }
+    }
+
     case CHANGE_PROJECT_PHASE: {
       return {
         ...state,
@@ -92,6 +112,13 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         currentProject: action.payload,
+        changingPhase: false
+      }
+    }
+
+    case CHANGE_PROJECT_PHASE_FAILURE: {
+      return {
+        ...state,
         changingPhase: false
       }
     }
