@@ -46,11 +46,12 @@ class CustomField extends Component {
   }
 
   render() {
-    const { field } = this.props
+    const { field, ...custom } = this.props
     const fieldProps = {
       name: field.name,
       placeholder: field.label,
       component: this.getInput(field),
+      ...custom,
       ...(field.multiple_choice ? { type: 'select-multiple' } : {})
     }
     return <Field {...fieldProps} />

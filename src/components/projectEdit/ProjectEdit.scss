@@ -28,6 +28,12 @@
 
 .input-container {
   margin-bottom: 30px;
+
+  .input-title {
+    &.highlight {
+      background-color: yellow;
+    }
+  }
 }
 
 .project-input-right {
@@ -102,10 +108,10 @@
 
   .quicknav-title {
     text-align: center;
-      margin: 10px 10px 0 10px;
-      font-size: 16px;
-      margin-top: 10px;
-      font-weight: bold;
+    margin: 10px 10px 0 10px;
+    font-size: 16px;
+    margin-top: 10px;
+    font-weight: bold;
   }
 
   .quicknav-content {
@@ -130,7 +136,7 @@
   }
 
   .quicknav-buttons {
-    padding: 5px 0 10px 0;
+    padding: 5px 5px 10px 5px;
     align-self: center;
   }
 }

@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Loader } from 'semantic-ui-react'
-import { saveProject, changeProjectPhase } from '../../actions/projectActions'
+import { saveProject, changeProjectPhase, validateProjectFields } from '../../actions/projectActions'
 import { fetchSchemas } from '../../actions/schemaActions'
-import { savingSelector, changingPhaseSelector } from '../../selectors/projectSelector'
+import { savingSelector, changingPhaseSelector, validatingSelector, hasErrorsSelector } from '../../selectors/projectSelector'
 import { schemaSelector } from '../../selectors/schemaSelector'
 import EditForm from './EditForm'
 import QuickNav from './QuickNav'
 
 class ProjectEditPage extends Component {
+  state = {
+    checking: false
+  }
+
   componentDidMount() {
     const { project } = this.props
     this.props.fetchSchemas(project.type)
@@ -16,15 +20,24 @@ class ProjectEditPage extends Component {
 
   changePhase = () => this.props.changeProjectPhase(this.props.project.phase + 1)
 
+  handleSave = () => {
+    this.props.saveProject()
+    this.setState({ checking: false })
+  }
+
+  setChecking = (value) => this.setState({ checking: value })
+
   render() {
     const {
-      project: { name },
       schema,
       selectedPhase,
       saveProject,
-      project: { attribute_data, phase },
+      project: { name, attribute_data, phase },
       saving,
-      changingPhase
+      changingPhase,
+      validateProjectFields,
+      validating,
+      hasErrors
     } = this.props
     if (!schema) {
       return <Loader inline={'centered'} active>Ladataan</Loader>
@@ -40,10 +53,17 @@ class ProjectEditPage extends Component {
           attributeData={attribute_data}
           saving={saving}
           changingPhase={changingPhase}
+          phase={phase}
+          checking={this.state.checking}
+          setChecking={this.setChecking}
+          validateProjectFields={validateProjectFields}
+          validating={validating}
+          hasErrors={hasErrors}
         />
         <div className='project-input-right'>
           <QuickNav
-            handleSave={saveProject}
+            handleSave={this.handleSave}
+            handleCheck={() => this.setState(({ checking }) => ({ checking: !checking }))}
             projectName={ name }
             sections={ currentSchema.sections }
             phaseTitle={ currentSchema.title }
@@ -59,14 +79,17 @@ const mapStateToProps = (state) => {
   return {
     schema: schemaSelector(state),
     saving: savingSelector(state),
-    changingPhase: changingPhaseSelector(state)
+    changingPhase: changingPhaseSelector(state),
+    validating: validatingSelector(state),
+    hasErrors: hasErrorsSelector(state)
   }
 }
 
 const mapDispatchToProps = {
   fetchSchemas,
   saveProject,
-  changeProjectPhase
+  changeProjectPhase,
+  validateProjectFields
 }
 
 export default connect(

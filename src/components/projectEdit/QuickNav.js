@@ -80,7 +80,13 @@ class QuickNav extends Component {
         <div className='quicknav-content'>
           { this.state.sectionHeights && this.state.sectionHeights.map((section, i) => {
             return (
-              <span key={i} className={`quicknav-item ${i === this.state.active ? 'active' : ''}`} onClick={() => this.handleClick(section.title)}>{ section.title }</span>
+              <span
+                key={i}
+                className={`quicknav-item ${i === this.state.active ? 'active' : ''}`}
+                onClick={() => this.handleClick(section.title)}
+              >
+                { section.title }
+              </span>
             )
           }) }
         </div>
@@ -90,6 +96,11 @@ class QuickNav extends Component {
             value='Tallenna'
             icon={<FontAwesomeIcon icon='check' />}
             loading={this.props.saving}
+          />
+          <Button
+            handleClick={this.props.handleCheck}
+            value='Tarkista'
+            icon={<FontAwesomeIcon icon='search' />}
           />
         </div>
       </div>
