@@ -1,5 +1,6 @@
 import React from 'react'
 import Field from '../input/Field'
+import Matrix from '../input/Matrix'
 
 const FormSection = ({ section: { title, fields } }) => {
   return (
@@ -12,7 +13,8 @@ const FormSection = ({ section: { title, fields } }) => {
             <div className='input-header'>
               <span className='input-title'>{ field.label }</span>
             </div>
-            <Field field={field} />
+            { field.type === 'matrix' && <Matrix field={field} /> }
+            { field.type !== 'matrix' && <Field field={field} /> }
           </div>
         )
       }) }

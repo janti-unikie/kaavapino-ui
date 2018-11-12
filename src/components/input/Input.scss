@@ -5,3 +5,11 @@
     margin-left: 10px;
   }
 }
+
+.matrix-container {
+  overflow: auto;
+
+  input {
+    align-self: flex-start;
+  }
+}
