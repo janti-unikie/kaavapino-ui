@@ -16,6 +16,12 @@
       border-bottom: none;
       user-select: none;
 
+      .document-title {
+        overflow: hidden;
+        white-space: normal;
+        text-overflow: ellipsis;
+      }
+
       &.disabled {
         color: #abb2bd;
         cursor: default;

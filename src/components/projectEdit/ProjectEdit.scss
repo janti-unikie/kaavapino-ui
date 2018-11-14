@@ -18,12 +18,25 @@
       margin-right: 5px;
     }
   }
+
+  @media screen and (max-width: 545px) {
+    margin-top: 20px;
+  }
 }
 
 .project-input-container {
   display: flex;
   align-items: flex-start;
   margin: 40px auto 40px auto;
+
+  @media screen and (max-width: 695px) {
+    margin: 0 0 40px 0;
+  }
+
+  @media screen and (max-width: 545px) {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
 }
 
 .input-container {
@@ -44,6 +57,10 @@
   position: sticky;
   margin-left: 40px;
   max-width: 360px;
+
+  @media screen and (max-width: 545px) {
+    margin-left: 0;
+  }
 }
 
 .comment-list-container {
@@ -137,7 +154,11 @@
 
   .quicknav-buttons {
     padding: 5px 5px 10px 5px;
-    align-self: center;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 545px) {
+    border: 1px solid gainsboro;
   }
 }
 

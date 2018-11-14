@@ -56,6 +56,10 @@
 
     .large {
       font-size: 55px;
+
+      @media screen and (max-width: 500px) {
+        font-size: 35px;
+      }
     }
 
     .nav-header-actions {
@@ -70,6 +74,7 @@
         cursor: pointer;
         padding: 10px 20px 10px 20px;
         margin-right: 10px;
+        white-space: nowrap;
 
         :nth-child(n) {
           margin-right: 10px;
