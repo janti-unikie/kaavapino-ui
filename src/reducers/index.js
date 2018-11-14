@@ -5,6 +5,7 @@ import { reducer as user } from './userReducer'
 import { reducer as phase } from './phaseReducer'
 import { reducer as schema } from './schemaReducer'
 import { reducer as projectType } from './projectTypeReducer'
+import { reducer as document } from './documentReducer'
 
 export default {
   auth,
@@ -13,5 +14,6 @@ export default {
   user,
   phase,
   schema,
-  projectType
+  projectType,
+  document
 }
