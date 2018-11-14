@@ -1,0 +1,29 @@
+.documents-page-container {
+  > div:not(:first-child) {
+    margin-top: 40px;
+  }
+  
+  .document-group {
+    border-bottom: 1px solid #aab2be;
+    .document {
+      display: flex;
+      align-items: flex-end;
+      cursor: pointer;
+      background-color: white;
+      padding: 15px;
+      font-size: 16px;
+      border: 1px solid #aab2be;
+      border-bottom: none;
+      user-select: none;
+
+      &.disabled {
+        color: #abb2bd;
+        cursor: default;
+      }
+
+      :nth-child(n):not(:first-child) {
+        margin-left: 12px;
+      }
+    }
+  }
+}

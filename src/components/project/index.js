@@ -12,6 +12,7 @@ import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import Timeline from './Timeline'
 import ProjectEditPage from '../projectEdit'
 import ProjectCardPage from '../projectCard'
+import ProjectDocumentsPage from '../projectDocuments'
 
 class ProjectPage extends Component {
   constructor(props) {
@@ -44,6 +45,12 @@ class ProjectPage extends Component {
     }
   }
 
+  switchPhase = (phase) => {
+    if (this.props.edit) {
+      this.setState({ selectedPhase: phase })
+    }
+  }
+
   getRouteItems = () => {
     const { currentProject, edit } = this.props
     const path = [
@@ -57,24 +64,22 @@ class ProjectPage extends Component {
   }
 
   getTitle = (name) => {
-    const { edit } = this.props
+    const { edit, documents } = this.props
     if (edit) {
       return `${name}, muokkaa`
+    } else if (documents) {
+      return `${name}, dokumentit`
     }
     return `${name}, hankekortti`
   }
 
-  switchPhase = (phase) => {
-    if (this.props.edit) {
-      this.setState({ selectedPhase: phase })
-    }
-  }
-
   getProjectPageContent = () => {
-    const { edit, currentProject } = this.props
+    const { edit, documents, currentProject } = this.props
     const { selectedPhase } = this.state
     if (edit) {
       return <ProjectEditPage selectedPhase={selectedPhase} project={currentProject} />
+    } else if (documents) {
+      return <ProjectDocumentsPage />
     }
 
     return (
@@ -86,17 +91,22 @@ class ProjectPage extends Component {
   }
 
   getNavActions = () => {
-    const { edit, currentProject: { id } } = this.props
+    const { edit, documents, currentProject: { id } } = this.props
     return (
       <NavActions>
         {
-          !edit &&
-          <NavAction to={`/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</NavAction>
-        }
+          !(edit || documents) && (
+            <div>
+              <NavAction to={`/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</NavAction>
+              <NavAction to={`/${id}/documents`}> <FontAwesomeIcon icon='file'/>Luo dokumentteja</NavAction>
+            </div>
+          )}
         {
-          edit &&
-          <NavAction to={`/${id}`}><FontAwesomeIcon icon='arrow-left'/>Hankekortti</NavAction>
-        }
+          (edit || documents) && (
+            <div>
+              <NavAction to={`/${id}`}><FontAwesomeIcon icon='arrow-left'/>Hankekortti</NavAction>
+            </div>
+          )}
       </NavActions>
     )
   }

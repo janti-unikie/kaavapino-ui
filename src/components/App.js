@@ -45,6 +45,7 @@ class App extends Component {
             <Route exact path='/' render={() => <ProjectListPage />} />
             <Route exact path='/:id' render={({ match }) => <ProjectPage id={match.params.id} />} />
             <Route exact path='/:id/edit' render={({ match }) => <ProjectPage edit id={match.params.id} />} />
+            <Route exact path='/:id/documents' render={({ match }) => <ProjectPage documents id={match.params.id} />} />
             <Footer />
           </ProtectedRoute>
         </Switch>
