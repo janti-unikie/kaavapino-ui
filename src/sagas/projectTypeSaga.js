@@ -4,6 +4,7 @@ import {
   FETCH_PROJECT_TYPES, fetchProjectTypesSuccessful
 } from '../actions/projectTypeActions'
 import projectTypeService from '../services/projectTypeService'
+import { executeService } from './apiSaga'
 
 export default function* projectTypeSaga() {
   yield all([
@@ -12,6 +13,6 @@ export default function* projectTypeSaga() {
 }
 
 function* fetchProjectTypes() {
-  const projectTypes = yield call(projectTypeService.getProjectTypes)
+  const projectTypes = yield call(executeService, projectTypeService.getProjectTypes)
   yield put(fetchProjectTypesSuccessful(projectTypes))
 }

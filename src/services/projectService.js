@@ -1,31 +1,16 @@
-import axios from 'axios'
+import apiUtils from '../utils/apiUtils'
 
 const apiUrl = '/v1/projects/'
 
-const getProjects = async () => {
-  const { data } = await axios.get(apiUrl)
-  return data
-}
+const getProjects = async () => await apiUtils.get(apiUrl)
 
-const getProject = async (id) => {
-  const { data } = await axios.get(`${apiUrl}/${id}/`)
-  return data
-}
+const getProject = async (id) => await apiUtils.get(`${apiUrl}/${id}/`)
 
-const createProject = async (project) => {
-  const { data } = await axios.post(apiUrl, project)
-  return data
-}
+const createProject = async (project) => await apiUtils.post(apiUrl, project)
 
-const saveProject = async (id, updatedFields) => {
-  const { data } = await axios.patch(`${apiUrl}/${id}/`, updatedFields)
-  return data
-}
+const saveProject = async (id, updatedFields) =>  await apiUtils.patch(`${apiUrl}/${id}/`, updatedFields)
 
-const changeProjectPhase = async (id, phase) => {
-  const { data } = await axios.patch(`${apiUrl}/${id}/`, { phase })
-  return data
-}
+const changeProjectPhase = async (id, phase) =>  await apiUtils.patch(`${apiUrl}/${id}/`, { phase })
 
 export default {
   getProjects,
