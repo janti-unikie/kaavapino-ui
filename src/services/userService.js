@@ -1,11 +1,8 @@
-import axios from 'axios'
+import apiUtils from '../utils/apiUtils'
 
 const apiUrl = '/v1/users/'
 
-const getUsers = async () => {
-  const users = await axios.get(apiUrl)
-  return users.data
-}
+const getUsers = async () => await apiUtils.get(apiUrl)
 
 export default {
   getUsers

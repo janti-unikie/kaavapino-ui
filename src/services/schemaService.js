@@ -1,11 +1,8 @@
-import axios from 'axios'
+import apiUtils from '../utils/apiUtils'
 
 const apiUrl = '/v1/schemas/'
 
-const getSchemas = async () => {
-  const schemas = await axios.get(apiUrl)
-  return schemas.data
-}
+const getSchemas = async () => await apiUtils.get(apiUrl)
 
 export default {
   getSchemas

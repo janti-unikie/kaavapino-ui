@@ -1,11 +1,8 @@
-import axios from 'axios'
+import apiUtils from '../utils/apiUtils'
 
 const apiUrl = '/v1/phases/'
 
-const getPhases = async () => {
-  const phases = await axios.get(apiUrl)
-  return phases.data
-}
+const getPhases = async () => await apiUtils.get(apiUrl)
 
 export default {
   getPhases
