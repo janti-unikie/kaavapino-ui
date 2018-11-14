@@ -1,10 +1,18 @@
-import { call } from 'redux-saga/effects'
+import { takeLatest, put, all } from 'redux-saga/effects'
+import { push } from 'connected-react-router'
+import { ERROR } from '../actions/apiActions'
 
-export function* executeService(service, ...params) {
-  try {
-    const result = yield call(service, ...params)
-    return result
-  } catch (e) {
-    throw Error(e)
+export default function* apiSaga() {
+  yield all([
+    takeLatest(ERROR, handleError)
+  ])
+}
+
+function* handleError({ payload }) {
+  const { status } = payload.response
+  if (status === 401) {
+    yield put(push('/logout'))
+  } else {
+    yield put(push(`/error/${status}`))
   }
 }

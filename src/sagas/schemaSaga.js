@@ -4,7 +4,7 @@ import {
   FETCH_SCHEMAS, fetchSchemasSuccessful
 } from '../actions/schemaActions'
 import schemaService from '../services/schemaService'
-import { executeService } from './apiSaga'
+import { error } from '../actions/apiActions'
 
 export default function* schemaSaga() {
   yield all([
@@ -13,7 +13,11 @@ export default function* schemaSaga() {
 }
 
 function* fetchSchemas({ payload: type }) {
-  const schemas = yield call(executeService, schemaService.getSchemas)
-  const schema = schemas.find((schema) => schema.type === type)
-  yield put(fetchSchemasSuccessful(schema))
+  try {
+    const schemas = yield call(schemaService.getSchemas)
+    const schema = schemas.find((schema) => schema.type === type)
+    yield put(fetchSchemasSuccessful(schema))
+  } catch (e) {
+    yield put(error(e))
+  }
 }

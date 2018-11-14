@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import { history } from '../store'
 import { connect } from 'react-redux'
@@ -17,6 +17,7 @@ import LogoutCallbackPage from './auth/LogoutCallback'
 import ProtectedRoute from './common/ProtectedRoute'
 import ProjectListPage from './projectList'
 import ProjectPage from './project'
+import ErrorPage from './error'
 import Header from './common/Header'
 import Footer from './common/Footer'
 
@@ -42,10 +43,14 @@ class App extends Component {
           <Route path='/logout/callback'  render={() => <LogoutCallbackPage /> } />
           <ProtectedRoute path='/' pred={(this.props.user !== null)} redirect='/login'>
             <Header />
-            <Route exact path='/' render={() => <ProjectListPage />} />
-            <Route exact path='/:id' render={({ match }) => <ProjectPage id={match.params.id} />} />
-            <Route exact path='/:id/edit' render={({ match }) => <ProjectPage edit id={match.params.id} />} />
-            <Route exact path='/:id/documents' render={({ match }) => <ProjectPage documents id={match.params.id} />} />
+            <Switch>
+              <Route exact path='/' render={() => <ProjectListPage />} />
+              <Route exact path='/:id' render={({ match }) => <ProjectPage id={match.params.id} />} />
+              <Route exact path='/:id/edit' render={({ match }) => <ProjectPage edit id={match.params.id} />} />
+              <Route exact path='/:id/documents' render={({ match }) => <ProjectPage documents id={match.params.id} />} />
+              <Route exact path='/error/:code' component={ErrorPage} />
+              <Redirect to='/error/404' />
+            </Switch>
             <Footer />
           </ProtectedRoute>
         </Switch>

@@ -4,7 +4,7 @@ import {
   FETCH_USERS, fetchUsersSuccessful
 } from '../actions/userActions'
 import userService from '../services/userService'
-import { executeService } from './apiSaga'
+import { error } from '../actions/apiActions'
 
 export default function* userSaga() {
   yield all([
@@ -13,6 +13,10 @@ export default function* userSaga() {
 }
 
 function* fetchUsers() {
-  const users = yield call(executeService, userService.getUsers)
-  yield put(fetchUsersSuccessful(users))
+  try {
+    const users = yield call(userService.getUsers)
+    yield put(fetchUsersSuccessful(users))
+  } catch (e) {
+    yield put(error(e))
+  }
 }
