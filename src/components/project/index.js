@@ -52,13 +52,15 @@ class ProjectPage extends Component {
   }
 
   getRouteItems = () => {
-    const { currentProject, edit } = this.props
+    const { currentProject, edit, documents } = this.props
     const path = [
       { value: 'Kaavahankkeet', path: '/' },
       { value: `${currentProject.name}`, path: `/${currentProject.id}` }
     ]
     if (edit) {
       path.push({ value: 'Muokkaa', path: `/${currentProject.id}/edit` })
+    } else if (documents) {
+      path.push({ value: 'Dokumentit', path: `/${currentProject.id}/documents` })
     }
     return path
   }
@@ -92,23 +94,18 @@ class ProjectPage extends Component {
 
   getNavActions = () => {
     const { edit, documents, currentProject: { id } } = this.props
-    return (
-      <NavActions>
-        {
-          !(edit || documents) && (
-            <div>
-              <NavAction to={`/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</NavAction>
-              <NavAction to={`/${id}/documents`}> <FontAwesomeIcon icon='file'/>Luo dokumentteja</NavAction>
-            </div>
-          )}
-        {
-          (edit || documents) && (
-            <div>
-              <NavAction to={`/${id}`}><FontAwesomeIcon icon='arrow-left'/>Hankekortti</NavAction>
-            </div>
-          )}
-      </NavActions>
-    )
+    return !(edit || documents) ?
+      (
+        <NavActions>
+          <NavAction to={`/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</NavAction>
+          <NavAction to={`/${id}/documents`}> <FontAwesomeIcon icon='file'/>Luo dokumentteja</NavAction>
+        </NavActions>
+      ) :
+      (
+        <NavActions>
+          <NavAction to={`/${id}`}><FontAwesomeIcon icon='arrow-left'/>Hankekortti</NavAction>
+        </NavActions>
+      )
   }
 
   render() {

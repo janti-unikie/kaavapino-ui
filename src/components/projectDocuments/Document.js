@@ -5,7 +5,7 @@ const Document = ({ title, disabled }) => {
   return (
     <div className={`document${disabled ? ' disabled' : ''}`}>
       <FontAwesomeIcon icon='file-alt' size='3x' />
-      <p>{ title }</p>
+      <p className='document-title'>{ title }</p>
     </div>
   )
 }

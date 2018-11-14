@@ -16,6 +16,14 @@
         grid-template-columns: repeat(8, 1fr);
         column-gap: 10px;
         margin-top: 20px;
+
+        >* {
+          overflow: auto;
+        }
+
+        @media screen and (max-width: 500px) {
+          grid-template-columns: repeat(1, 1fr);
+        }
       }
 
       .project-list-item {
@@ -55,6 +63,7 @@
       }
 
       .project-list-button {
+        white-space: nowrap;
         background-color: black;
         color: white;
         border: none;
@@ -69,6 +78,10 @@
         :nth-child(n) {
           margin-right: 10px;
         }
+      }
+
+      .project-list-item-name {
+        white-space: nowrap;
       }
     }
 
