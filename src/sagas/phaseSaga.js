@@ -3,7 +3,7 @@ import {
   FETCH_PHASES, fetchPhasesSuccessful
 } from '../actions/phaseActions'
 import phaseService from '../services/phaseService'
-import { executeService } from './apiSaga'
+import { error } from '../actions/apiActions'
 
 export default function* phaseSaga() {
   yield all([
@@ -12,6 +12,10 @@ export default function* phaseSaga() {
 }
 
 function* fetchPhases() {
-  const phases = yield call(executeService, phaseService.getPhases)
-  yield put(fetchPhasesSuccessful(phases))
+  try {
+    const phases = yield call(phaseService.getPhases)
+    yield put(fetchPhasesSuccessful(phases))
+  } catch (e) {
+    yield put(error(e))
+  }
 }

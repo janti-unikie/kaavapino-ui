@@ -3,13 +3,17 @@ import {
   FETCH_DOCUMENTS, fetchDocumentsSuccessful
 } from '../actions/documentActions'
 import documentService from '../services/documentService'
-import { executeService } from './apiSaga'
+import { error } from '../actions/apiActions'
 
 export default function* documentSaga() {
   yield takeLatest(FETCH_DOCUMENTS, fetchDocuments)
 }
 
 function* fetchDocuments() {
-  const documents = yield call(executeService, documentService.fetchDocuments)
-  yield put(fetchDocumentsSuccessful(documents))
+  try {
+    const documents = yield call(documentService.fetchDocuments)
+    yield put(fetchDocumentsSuccessful(documents))
+  } catch (e) {
+    yield put(error(e))
+  }
 }

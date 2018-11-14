@@ -13,7 +13,7 @@ import {
   VALIDATE_PROJECT_FIELDS, validateProjectFieldsSuccessful
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
-import { executeService } from './apiSaga'
+import { error } from '../actions/apiActions'
 
 export default function* projectSaga() {
   yield all([
@@ -27,25 +27,37 @@ export default function* projectSaga() {
 }
 
 function* fetchProjects() {
-  const projects = yield call(executeService, projectService.getProjects)
-  yield put(fetchProjectsSuccessful(projects))
+  try {
+    const projects = yield call(projectService.getProjects)
+    yield put(fetchProjectsSuccessful(projects))
+  } catch (e) {
+    yield put(error(e))
+  }
 }
 
 function* initializeProject({ payload }) {
-  const project = yield call(executeService, projectService.getProject, payload)
-  yield put(fetchProjectSuccessful(project))
-  yield put(initializeProjectSuccessful())
+  try {
+    const project = yield call(projectService.getProject, payload)
+    yield put(fetchProjectSuccessful(project))
+    yield put(initializeProjectSuccessful())
+  } catch (e) {
+    yield put(error(e))
+  }
 }
 
 function* createProject() {
   yield put(startSubmit('modal'))
   const { values } = yield select(modalSelector)
   try {
-    const createdProject = yield call(executeService, projectService.createProject, values)
+    const createdProject = yield call(projectService.createProject, values)
     yield put(createProjectSuccessful(createdProject))
     yield put(setSubmitSucceeded('modal'))
   } catch (e) {
-    yield put(stopSubmit('modal', e.response.data))
+    if (e.response.status === 400) {
+      yield put(stopSubmit('modal', e.response.data))
+    } else {
+      yield put(error(e))
+    }
   }
 }
 
@@ -56,8 +68,12 @@ function* saveProject() {
     const attribute_data = {
       ...values
     }
-    const updatedProject = yield call(executeService, projectService.saveProject, currentProject.id, { attribute_data })
-    yield put(fetchProjectSuccessful(updatedProject))
+    try {
+      const updatedProject = yield call(projectService.saveProject, currentProject.id, { attribute_data })
+      yield put(fetchProjectSuccessful(updatedProject))
+    } catch (e) {
+      yield put(error(e))
+    }
   }
   yield put(saveProjectSuccessful())
 }
@@ -91,7 +107,11 @@ function* validateProjectFields() {
 function* changeProjectPhase({ payload }) {
   yield call(saveProject)
   const currentProject = yield select(currentProjectSelector)
-  const updatedProject = yield call(executeService, projectService.changeProjectPhase, currentProject.id, payload)
-  yield put(changeProjectPhaseSuccessful(updatedProject))
-  window.scrollTo(0, 0)
+  try {
+    const updatedProject = yield call(projectService.changeProjectPhase, currentProject.id, payload)
+    yield put(changeProjectPhaseSuccessful(updatedProject))
+    window.scrollTo(0, 0)
+  } catch (e) {
+    yield put(error(e))
+  }
 }
