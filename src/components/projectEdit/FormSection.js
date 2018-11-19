@@ -1,7 +1,6 @@
 import React from 'react'
 import { Form } from 'semantic-ui-react'
-import Field from '../input/Field'
-import Matrix from '../input/Matrix'
+import FormField from './FormField'
 
 const FormSection = ({ section: { title, fields }, checking, attributeData }) => {
   return (
@@ -17,8 +16,7 @@ const FormSection = ({ section: { title, fields }, checking, attributeData }) =>
                 <label className={`input-title${required ? ' highlight': ''}`}>{ field.label }</label>
               </Form.Field>
             </div>
-            { field.type === 'matrix' && <Matrix field={field} checking={checking} attributeData={attributeData} /> }
-            { field.type !== 'matrix' && <Field field={field} /> }
+            <FormField field={field} checking={checking} attributeData={attributeData} />
           </div>
         )
       }) }

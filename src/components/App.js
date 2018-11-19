@@ -5,7 +5,6 @@ import { ConnectedRouter } from 'connected-react-router'
 import { history } from '../store'
 import { connect } from 'react-redux'
 import { logout } from '../actions/authActions'
-import { fetchUsers } from '../actions/userActions'
 import { fetchPhases } from '../actions/phaseActions'
 import { fetchProjectTypes } from '../actions/projectTypeActions'
 import { authUserSelector, authUserLoadingSelector } from '../selectors/authSelector'
@@ -24,7 +23,6 @@ import Footer from './common/Footer'
 class App extends Component {
   componentDidUpdate(prevProps) {
     if (!prevProps.user && this.props.user) {
-      this.props.fetchUsers()
       this.props.fetchPhases()
       this.props.fetchProjectTypes()
     }
@@ -66,7 +64,6 @@ App.propTypes = {
 
 const mapDispatchToProps = {
   logout,
-  fetchUsers,
   fetchPhases,
   fetchProjectTypes
 }

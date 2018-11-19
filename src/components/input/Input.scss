@@ -30,3 +30,20 @@
 .highlighted {
   background-color: yellow;
 }
+
+.image-preview {
+  margin-top: 10px;
+  max-width: 100%;
+  height: auto;
+  max-height: 400px;
+}
+
+.file-input-container {
+  display: flex;
+  align-items: center;
+
+  .remove-file-icon {
+    margin-left: 5px;
+    cursor: pointer;
+  }
+}

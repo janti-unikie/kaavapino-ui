@@ -12,6 +12,7 @@ export const VALIDATE_PROJECT_FIELDS_SUCCESSFUL = 'Validate project fields succe
 export const CHANGE_PROJECT_PHASE = 'Change phase'
 export const CHANGE_PROJECT_PHASE_SUCCESSFUL = 'Change phase successful'
 export const CHANGE_PROJECT_PHASE_FAILURE = 'Change phase failure'
+export const PROJECT_FILE_UPLOAD = 'Project file upload'
 
 export const fetchProjects = () => ({ type: FETCH_PROJECTS })
 export const fetchProjectsSuccessful = (projects) => ({ type: FETCH_PROJECTS_SUCCESSFUL, payload: projects })
@@ -36,3 +37,5 @@ export const changeProjectPhaseSuccessful = (updatedProject) => ({
   payload: updatedProject
 })
 export const changeProjectPhaseFailure = () => ({ type: CHANGE_PROJECT_PHASE_FAILURE })
+
+export const projectFileUpload = (fileObject) => ({ type: PROJECT_FILE_UPLOAD, payload: fileObject })

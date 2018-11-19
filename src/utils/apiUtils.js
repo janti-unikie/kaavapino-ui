@@ -4,12 +4,12 @@ let token = null
 
 const initAxios = () => {
   axios.interceptors.request.use((config) => ({
-    ...config,
     responseType: 'json',
+    ...config,
     headers: {
-      ...config.headers,
       'Content-Type': 'application/json',
-      'Authorization': `bearer ${getToken()}`
+      'Authorization': `bearer ${getToken()}`,
+      ...config.headers
     }
   }))
 }
@@ -23,13 +23,18 @@ const get = async (apiUrl) => {
   return data
 }
 
-const post = async (apiUrl, body = {}) => {
-  const { data } = await axios.post(apiUrl, body)
+const post = async (apiUrl, body = {}, headers = {}) => {
+  const { data } = await axios.post(apiUrl, body, { headers })
   return data
 }
 
-const patch = async (apiUrl, body = {}) => {
-  const { data } = await axios.patch(apiUrl, body)
+const patch = async (apiUrl, body = {}, headers = {}) => {
+  const { data } = await axios.patch(apiUrl, body, { headers })
+  return data
+}
+
+const put = async (apiUrl, body = {}, headers = {}) => {
+  const { data } = await axios.put(apiUrl, body, { headers })
   return data
 }
 
@@ -39,5 +44,6 @@ export default {
   getToken,
   get,
   post,
-  patch
+  patch,
+  put
 }
