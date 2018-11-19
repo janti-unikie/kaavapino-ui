@@ -39,6 +39,7 @@ class ProjectEditPage extends Component {
       validating,
       hasErrors
     } = this.props
+
     if (!schema) {
       return <Loader inline={'centered'} active>Ladataan</Loader>
     }

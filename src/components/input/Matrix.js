@@ -15,19 +15,21 @@ const Matrix = ({ field: { matrix: { rows, columns, fields } }, checking, attrib
       <div className='matrix' style={ matrixStyle }>
         <b />
         { columns.map((c, i) => <b key={i}> { c } </b>) }
-        { fields.map((field, i) => {
-          const highlighted = checking && field.required && !attributeData[field.name]
-          const fieldStyle = highlighted ? { backgroundColor: 'yellow' } : {}
-          if ((i % columns.length === 0)) {
-            return (
-              <span style={{ display: 'contents' }} key={i}>
-                <b>{ rows[i / columns.length] }</b>
-                <Field style={fieldStyle} field={field} />
-              </span>
-            )
-          }
-          return <Field style={fieldStyle} key={i} field={field} />
-        }) }
+        {
+          fields.map((field, i) => {
+            const highlighted = checking && field.required && !attributeData[field.name]
+            const fieldStyle = highlighted ? { backgroundColor: 'yellow' } : {}
+            if ((i % columns.length === 0)) {
+              return (
+                <span style={{ display: 'contents' }} key={i}>
+                  <b>{ rows[i / columns.length] }</b>
+                  <Field style={fieldStyle} field={field} />
+                </span>
+              )
+            }
+            return <Field style={fieldStyle} key={i} field={field} />
+          })
+        }
       </div>
     </div>
   )

@@ -10,7 +10,8 @@ import {
   INITIALIZE_PROJECT, initializeProjectSuccessful,
   SAVE_PROJECT, saveProjectSuccessful,
   CHANGE_PROJECT_PHASE, changeProjectPhaseSuccessful,
-  VALIDATE_PROJECT_FIELDS, validateProjectFieldsSuccessful
+  VALIDATE_PROJECT_FIELDS, validateProjectFieldsSuccessful,
+  PROJECT_FILE_UPLOAD
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
@@ -22,7 +23,8 @@ export default function* projectSaga() {
     takeLatest(CREATE_PROJECT, createProject),
     takeLatest(SAVE_PROJECT, saveProject),
     takeLatest(CHANGE_PROJECT_PHASE, changeProjectPhase),
-    takeLatest(VALIDATE_PROJECT_FIELDS, validateProjectFields)
+    takeLatest(VALIDATE_PROJECT_FIELDS, validateProjectFields),
+    takeLatest(PROJECT_FILE_UPLOAD, projectFileUpload)
   ])
 }
 
@@ -114,4 +116,12 @@ function* changeProjectPhase({ payload }) {
   } catch (e) {
     yield put(error(e))
   }
+}
+
+function* projectFileUpload({ payload: { attribute, file } }) {
+  const { id } = yield select(currentProjectSelector)
+  const formData = new FormData()
+  formData.append('attribute', attribute)
+  formData.append('file', file)
+  yield projectService.projectFileUpload(id, formData)
 }
