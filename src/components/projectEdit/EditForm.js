@@ -16,10 +16,12 @@ class EditForm extends Component {
   componentDidMount() {
     const { initialize, attributeData } = this.props
     initialize(attributeData)
+    this.autoSave = setInterval(() => this.props.handleSave(), 180000)
   }
 
   componentWillUnmount() {
     clearTimeout(this.timeout)
+    clearInterval(this.autoSave)
   }
 
   componentDidUpdate(prevProps) {
