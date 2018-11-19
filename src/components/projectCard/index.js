@@ -9,9 +9,15 @@ class ProjectCardPage extends Component {
   constructor(props) {
     super(props)
 
+    let imageSrc = null
+    if (props.attributeData.hankekortin_kuva) {
+      imageSrc = props.attributeData.hankekortin_kuva
+    }
+
     this.state = {
       metadata: null,
-      extended: false
+      extended: false,
+      imageSrc
     }
   }
 
@@ -59,7 +65,7 @@ class ProjectCardPage extends Component {
   }
 
   render() {
-    const { metadata, extended } = this.state
+    const { metadata, extended, imageSrc } = this.state
     if (!metadata) {
       return <Loader inline={'centered'} active>Ladataan</Loader>
     }
@@ -70,7 +76,7 @@ class ProjectCardPage extends Component {
           <Summary
             attributeData={attributeData}
           />
-          <Image />
+          <Image src={imageSrc} />
         </div>
         <div>
           <Radio onChange={this.handleExtendedChange} toggle label='Laajennettu' checked={extended} />

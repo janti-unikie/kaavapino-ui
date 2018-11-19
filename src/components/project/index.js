@@ -38,10 +38,14 @@ class ProjectPage extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { currentProject, changingPhase } = this.props
+    const { currentProject, changingPhase, edit } = this.props
     if ((!prevProps.currentProject && currentProject) || (prevProps.changingPhase && !changingPhase)) {
       this.setState({ selectedPhase: currentProject.phase })
       document.title = currentProject.name
+    }
+
+    if (prevProps.edit && !edit) {
+      this.setState({ selectedPhase: currentProject.phase })
     }
   }
 

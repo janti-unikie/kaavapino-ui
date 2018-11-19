@@ -23,7 +23,7 @@ class EditForm extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { setChecking, hasErrors } = this.props
+    const { setChecking, hasErrors, saving, initialize, attributeData } = this.props
     if (prevProps.validating && !this.props.validating) {
       if (!hasErrors) {
         this.setState({ verifying: true, endPhaseError: false })
@@ -34,6 +34,10 @@ class EditForm extends Component {
         this.timeout = setTimeout(() => this.setState({ endPhaseError: false }), 5000)
         setChecking(true)
       }
+    }
+
+    if (prevProps.saving && !saving) {
+      initialize(attributeData)
     }
   }
 
@@ -87,5 +91,6 @@ class EditForm extends Component {
 }
 
 export default reduxForm({
-  form: 'editForm'
+  form: 'editForm',
+  enableReinitialize: true
 })(EditForm)
