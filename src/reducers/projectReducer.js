@@ -2,6 +2,7 @@ import {
   FETCH_PROJECTS_SUCCESSFUL,
   FETCH_PROJECTS,
   FETCH_PROJECT_SUCCESSFUL,
+  UPDATE_PROJECT,
   CREATE_PROJECT_SUCCESSFUL,
   INITIALIZE_PROJECT,
   INITIALIZE_PROJECT_SUCCESSFUL,
@@ -11,7 +12,9 @@ import {
   VALIDATE_PROJECT_FIELDS_SUCCESSFUL,
   CHANGE_PROJECT_PHASE,
   CHANGE_PROJECT_PHASE_SUCCESSFUL,
-  CHANGE_PROJECT_PHASE_FAILURE
+  CHANGE_PROJECT_PHASE_FAILURE,
+  PROJECT_FILE_UPLOAD_SUCCESSFUL,
+  PROJECT_FILE_REMOVE_SUCCESSFUL
 } from '../actions/projectActions'
 
 const initialState = {
@@ -65,10 +68,12 @@ export const reducer = (state = initialState, action) => {
       }
     }
 
+    case UPDATE_PROJECT:
     case FETCH_PROJECT_SUCCESSFUL: {
       return {
         ...state,
-        currentProject: action.payload
+        currentProject: action.payload,
+        saving: false
       }
     }
 
@@ -120,6 +125,30 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         changingPhase: false
+      }
+    }
+
+    case PROJECT_FILE_UPLOAD_SUCCESSFUL: {
+      const updatedAttributeData = { ...state.currentProject.attribute_data }
+      updatedAttributeData[action.payload.attribute] = action.payload.file
+      return {
+        ...state,
+        currentProject: {
+          ...state.currentProject,
+          attribute_data: { ...updatedAttributeData }
+        }
+      }
+    }
+
+    case PROJECT_FILE_REMOVE_SUCCESSFUL: {
+      const updatedAttributeData = { ...state.currentProject.attribute_data }
+      delete updatedAttributeData[action.payload]
+      return {
+        ...state,
+        currentProject: {
+          ...state.currentProject,
+          attribute_data: { ...updatedAttributeData }
+        }
       }
     }
 

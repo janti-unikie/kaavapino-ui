@@ -5,15 +5,16 @@ import { schemaSelector } from '../selectors/schemaSelector'
 import projectService from '../services/projectService'
 import {
   FETCH_PROJECTS, fetchProjectsSuccessful,
-  fetchProjectSuccessful,
+  fetchProjectSuccessful, updateProject,
   CREATE_PROJECT, createProjectSuccessful,
   INITIALIZE_PROJECT, initializeProjectSuccessful,
   SAVE_PROJECT, saveProjectSuccessful,
   CHANGE_PROJECT_PHASE, changeProjectPhaseSuccessful,
   VALIDATE_PROJECT_FIELDS, validateProjectFieldsSuccessful,
-  PROJECT_FILE_UPLOAD, PROJECT_FILE_REMOVE
+  PROJECT_FILE_UPLOAD, PROJECT_FILE_REMOVE,
+  projectFileUploadSuccessful, projectFileRemoveSuccessful
 } from '../actions/projectActions'
-import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
+import { startSubmit, stopSubmit, setSubmitSucceeded, change } from 'redux-form'
 import { error } from '../actions/apiActions'
 
 export default function* projectSaga() {
@@ -73,7 +74,7 @@ function* saveProject() {
     }
     try {
       const updatedProject = yield call(projectService.saveProject, currentProject.id, { attribute_data })
-      yield put(fetchProjectSuccessful(updatedProject))
+      yield put(updateProject(updatedProject))
     } catch (e) {
       yield put(error(e))
     }
@@ -125,7 +126,9 @@ function* projectFileUpload({ payload: { attribute, file } }) {
     const formData = new FormData()
     formData.append('attribute', attribute)
     formData.append('file', file)
-    yield call(projectService.projectFileUpload, id, formData)
+    const newFile = yield call(projectService.projectFileUpload, id, formData)
+    yield put(projectFileUploadSuccessful(newFile))
+    yield put(change('editForm', newFile.attribute, newFile.file))
   } catch (e) {
     yield put(error(e))
   }
@@ -137,6 +140,8 @@ function* projectFileRemove({ payload }) {
     const attribute_data = {}
     attribute_data[payload] = null
     yield call(projectService.saveProject, id, { attribute_data })
+    yield put(projectFileRemoveSuccessful(payload))
+    yield put(change('editForm', payload, null))
   } catch (e) {
     yield put(error(e))
   }
