@@ -13,6 +13,7 @@ export const CHANGE_PROJECT_PHASE = 'Change phase'
 export const CHANGE_PROJECT_PHASE_SUCCESSFUL = 'Change phase successful'
 export const CHANGE_PROJECT_PHASE_FAILURE = 'Change phase failure'
 export const PROJECT_FILE_UPLOAD = 'Project file upload'
+export const PROJECT_FILE_REMOVE = 'Project file remove'
 
 export const fetchProjects = () => ({ type: FETCH_PROJECTS })
 export const fetchProjectsSuccessful = (projects) => ({ type: FETCH_PROJECTS_SUCCESSFUL, payload: projects })
@@ -39,3 +40,4 @@ export const changeProjectPhaseSuccessful = (updatedProject) => ({
 export const changeProjectPhaseFailure = () => ({ type: CHANGE_PROJECT_PHASE_FAILURE })
 
 export const projectFileUpload = (fileObject) => ({ type: PROJECT_FILE_UPLOAD, payload: fileObject })
+export const projectFileRemove = (attribute) => ({ type: PROJECT_FILE_REMOVE, payload: attribute })

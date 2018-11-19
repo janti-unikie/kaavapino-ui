@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { projectFileUpload } from '../../actions/projectActions'
+import { projectFileUpload, projectFileRemove } from '../../actions/projectActions'
 import { Button } from 'semantic-ui-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -34,8 +34,10 @@ class File extends Component {
   }
 
   reset = () => {
+    const { projectFileRemove, field: { name } } = this.props
     this.inputRef.current.value = ''
     this.setState({ current: null })
+    projectFileRemove(name)
   }
 
   render() {
@@ -90,7 +92,8 @@ class File extends Component {
 }
 
 const mapDispatchToProps = {
-  projectFileUpload
+  projectFileUpload,
+  projectFileRemove
 }
 
 export default connect(
