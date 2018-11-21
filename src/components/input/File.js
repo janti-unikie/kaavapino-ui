@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 class File extends Component {
   constructor(props) {
     super(props)
-
     let current = null
     if (props.src) {
       const { src } = props
@@ -18,6 +17,21 @@ class File extends Component {
     this.inputRef = React.createRef()
     if (props.image) {
       this.imageRef = React.createRef()
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.src !== this.props.src && !prevProps.uploading) {
+      const { src } = this.props
+      if (!src) {
+        this.inputRef.current.value = ''
+        this.imageRef.current.src = ''
+        this.setState({ current: null })
+        return
+      }
+      const urlParts = src.split('/')
+      this.setState({ current: urlParts[urlParts.length - 1] })
+      this.imageRef.current.src = src
     }
   }
 
@@ -45,11 +59,11 @@ class File extends Component {
       this.cancelToken.cancel()
     }
     this.inputRef.current.value = ''
-    this.setState({ percentCompleted: 0, current: null, uploading: false, reading: false })
+    this.setState({ percentCompleted: 0, uploading: false, reading: false })
   }
 
   render() {
-    const { current, uploading, percentCompleted, reading } = this.state
+    const { current, uploading, percentCompleted } = this.state
     const { field, image } = this.props
     return (
       <div>
@@ -67,7 +81,7 @@ class File extends Component {
             ref={this.inputButtonRef}
             style={{ overflow: 'auto' }}
           />
-          { current && <FontAwesomeIcon size='lg' color='red' className='remove-file-icon' icon='times' onClick={this.reset} /> }
+          { !uploading && current && <FontAwesomeIcon size='lg' color='red' className='remove-file-icon' icon='times' onClick={this.reset} /> }
           { uploading && <FontAwesomeIcon size='lg' color='red' className='remove-file-icon' icon='times' onClick={this.cancel} /> }
         </div>
         <br />
@@ -79,8 +93,8 @@ class File extends Component {
           type="file"
           onChange={this.onChangeFile}
         />
-        { current && image && <img className='image-preview' ref={this.imageRef} alt={reading ? null : current} /> }
         { uploading && <Progress percent={percentCompleted} progress indicating /> }
+        { <img style={{ display: `${(current && image) ? 'block' : 'none'}` }} className='image-preview' ref={this.imageRef} alt={current ? current : ''} /> }
       </div>
     )
   }
@@ -121,10 +135,7 @@ class File extends Component {
       callback: (e) => this.callback(e, onCompleted),
       setCancelToken: (token) => this.cancelToken = token
     })
-    this.setState({ uploading: true, percentCompleted: 0, current: null })
-    if (this.imageRef.current) {
-      this.imageRef.current.src = null
-    }
+    this.setState({ uploading: true, percentCompleted: 0 })
   }
 }
 
