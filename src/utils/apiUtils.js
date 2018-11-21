@@ -33,8 +33,8 @@ const patch = async (apiUrl, body = {}, headers = {}) => {
   return data
 }
 
-const put = async (apiUrl, body = {}, headers = {}) => {
-  const { data } = await axios.put(apiUrl, body, { headers })
+const put = async (apiUrl, body = {}, config = {}) => {
+  const { data } = await axios.put(apiUrl, body, { ...config })
   return data
 }
 

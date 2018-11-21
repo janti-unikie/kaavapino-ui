@@ -1,8 +1,26 @@
 .navbar-container {
   width: 100%;
+  background-color: white;
+  padding: 13px;
+
+  .navbar-title {
+    font-size: 18px;
+    color: black;
+    font-weight: bolder;
+  }
 
   .navbar-logout-button {
     color: black;
+    float: right;
+    color: rgba(0,0,0,.5);
+
+    > a {
+      color: rgba(0,0,0,.5);
+
+      &:hover {
+        color: rgba(0,0,0,.7);
+      }
+    }
   
     .navbar-logout-text {
       margin-left: 10px;

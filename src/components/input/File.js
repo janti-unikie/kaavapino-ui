@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { projectFileUpload, projectFileRemove } from '../../actions/projectActions'
-import { Button } from 'semantic-ui-react'
+import { Button, Progress } from 'semantic-ui-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class File extends Component {
@@ -14,7 +14,7 @@ class File extends Component {
       const urlParts = src.split('/')
       current = urlParts[urlParts.length - 1]
     }
-    this.state = { current }
+    this.state = { percentCompleted: 0, current, uploading: false, reading: false }
     this.inputRef = React.createRef()
     if (props.image) {
       this.imageRef = React.createRef()
@@ -40,24 +40,35 @@ class File extends Component {
     projectFileRemove(name)
   }
 
+  cancel = () => {
+    if (this.cancelToken) {
+      this.cancelToken.cancel()
+    }
+    this.inputRef.current.value = ''
+    this.setState({ percentCompleted: 0, current: null, uploading: false, reading: false })
+  }
+
   render() {
-    const { current } = this.state
+    const { current, uploading, percentCompleted, reading } = this.state
     const { field, image } = this.props
     return (
       <div>
         <div className='file-input-container'>
           <Button
+            disabled={uploading}
             icon='upload'
             as='label'
             htmlFor={field.name}
             label={{
               basic: true,
-              content: `${this.state.current || 'Valitse tiedosto'}`
+              content: `${this.state.current || (uploading && 'Ladataan...') || 'Valitse tiedosto'}`
             }}
             onClick={this.handleClick}
             ref={this.inputButtonRef}
+            style={{ overflow: 'auto' }}
           />
           { current && <FontAwesomeIcon size='lg' color='red' className='remove-file-icon' icon='times' onClick={this.reset} /> }
+          { uploading && <FontAwesomeIcon size='lg' color='red' className='remove-file-icon' icon='times' onClick={this.cancel} /> }
         </div>
         <br />
         <input
@@ -68,25 +79,51 @@ class File extends Component {
           type="file"
           onChange={this.onChangeFile}
         />
-        { current && image && <img className='image-preview' ref={this.imageRef} alt={current} /> }
+        { current && image && <img className='image-preview' ref={this.imageRef} alt={reading ? null : current} /> }
+        { uploading && <Progress percent={percentCompleted} progress indicating /> }
       </div>
     )
+  }
+
+  callback = (progressEvent, onCompleted) => {
+    let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
+    this.setState({ percentCompleted })
+    if (percentCompleted === 100) {
+      setTimeout(() => {
+        this.setState({ uploading: false })
+        onCompleted()
+      }, 300)
+    }
   }
 
   onChangeFile = (e) => {
     const { field, image, projectFileUpload } = this.props
     const file = this.inputRef.current.files[0]
-    projectFileUpload({ attribute: field.name, file })
     const path = e.target.value.split('\\')
-    this.setState({ current: path[path.length - 1] })
-    try {
-      const reader = new FileReader()
-      if (image) {
-        reader.onloadend = () => this.imageRef.current.src = reader.result
+    const onCompleted = () => {
+      this.setState({ current: path[path.length - 1], reading: true })
+      try {
+        const reader = new FileReader()
+        if (image) {
+          reader.onloadend = () => {
+            this.imageRef.current.src = reader.result
+            this.setState({ reading: false })
+          }
+        }
+        reader.readAsDataURL(file)
+      } catch (e) {
+        return
       }
-      reader.readAsDataURL(e.target.files[0])
-    } catch (e) {
-      return
+    }
+    projectFileUpload({
+      attribute: field.name,
+      file,
+      callback: (e) => this.callback(e, onCompleted),
+      setCancelToken: (token) => this.cancelToken = token
+    })
+    this.setState({ uploading: true, percentCompleted: 0, current: null })
+    if (this.imageRef.current) {
+      this.imageRef.current.src = null
     }
   }
 }

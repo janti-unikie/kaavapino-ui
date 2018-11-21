@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { takeLatest, put, all, call, select } from 'redux-saga/effects'
 import { modalSelector, editFormSelector } from '../selectors/formSelector'
 import { currentProjectSelector } from '../selectors/projectSelector'
@@ -120,17 +121,19 @@ function* changeProjectPhase({ payload }) {
   }
 }
 
-function* projectFileUpload({ payload: { attribute, file } }) {
+function* projectFileUpload({ payload: { attribute, file, callback, setCancelToken } }) {
   const { id } = yield select(currentProjectSelector)
   try {
     const formData = new FormData()
     formData.append('attribute', attribute)
     formData.append('file', file)
-    const newFile = yield call(projectService.projectFileUpload, id, formData)
+    const newFile = yield call(projectService.projectFileUpload, id, formData, callback, setCancelToken)
     yield put(projectFileUploadSuccessful(newFile))
     yield put(change('editForm', newFile.attribute, newFile.file))
   } catch (e) {
-    yield put(error(e))
+    if (!axios.isCancel(e)) {
+      yield put(error(e))
+    }
   }
 }
 
