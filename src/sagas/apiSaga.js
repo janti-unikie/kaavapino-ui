@@ -9,10 +9,12 @@ export default function* apiSaga() {
 }
 
 function* handleError({ payload }) {
-  const { status } = payload.response
-  if (status === 401) {
-    yield put(push('/logout'))
-  } else {
-    yield put(push(`/error/${status}`))
+  if (payload.response) {
+    const { status } = payload.response
+    if (status === 401) {
+      yield put(push('/logout'))
+    } else {
+      yield put(push(`/error/${status}`))
+    }
   }
 }

@@ -1,3 +1,4 @@
+import axios from 'axios'
 import apiUtils from '../utils/apiUtils'
 
 const apiUrl = '/v1/projects/'
@@ -12,13 +13,22 @@ const saveProject = async (id, updatedFields) => await apiUtils.patch(`${apiUrl}
 
 const changeProjectPhase = async (id, phase) => await apiUtils.patch(`${apiUrl}${id}/`, { phase })
 
-const projectFileUpload = async (id, fileFormData) => (
-  await apiUtils.put(
-    `${apiUrl}${id}/files/`,
-    fileFormData,
-    { 'Content-Type': 'multipart/form-data' }
+const projectFileUpload = async (id, fileFormData, callback, setCancelToken) => {
+  const CancelToken = axios.CancelToken
+  const src = CancelToken.source()
+  setCancelToken(src)
+  return (
+    await apiUtils.put(
+      `${apiUrl}${id}/files/`,
+      fileFormData,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress: callback,
+        cancelToken: src.token
+      }
+    )
   )
-)
+}
 
 export default {
   getProjects,

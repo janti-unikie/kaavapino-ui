@@ -1,14 +1,6 @@
 import React, { Component } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink
-} from 'reactstrap'
+import { Link } from 'react-router-dom'
 
 class Header extends Component {
   constructor(props) {
@@ -24,20 +16,13 @@ class Header extends Component {
   render() {
     return (
       <div className='navbar-container'>
-        <Navbar color='white' light expand='md'>
-          <NavbarBrand href='/'><b>Kaavapino</b></NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className='ml-auto' navbar>
-              <NavItem>
-                <NavLink href='/logout' className='navbar-logout-button'>
-                  <FontAwesomeIcon icon='user' />
-                  <span className='navbar-logout-text'>Kirjaudu ulos</span>
-                </NavLink>
-              </NavItem>
-            </Nav>
-          </Collapse>
-        </Navbar>
+        <Link to='/' className='navbar-title'>Kaavapino</Link>
+        <div className='navbar-logout-button'>
+          <Link to='/logout'>
+            <FontAwesomeIcon icon='user' />
+            <span className='navbar-logout-text'>Kirjaudu ulos</span>
+          </Link>
+        </div>
       </div>
     )
   }

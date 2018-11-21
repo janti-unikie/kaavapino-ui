@@ -7,7 +7,6 @@ import store from './store'
 import userManager from './utils/userManager'
 import iconHandler from './utils/iconHandler'
 import apiUtils from './utils/apiUtils'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import 'semantic-ui-css/semantic.min.css'
 import './index.css'
 

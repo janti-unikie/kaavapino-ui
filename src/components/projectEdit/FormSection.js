@@ -1,12 +1,12 @@
 import React from 'react'
-import { Form } from 'semantic-ui-react'
+import { Form, Divider } from 'semantic-ui-react'
 import FormField from './FormField'
 
 const FormSection = ({ section: { title, fields }, checking, attributeData }) => {
   return (
     <div>
       <span id={`title-${title}`} className='form-title'>{ title }</span>
-      <hr />
+      <Divider />
       { fields.map((field, i) => {
         const required = checking && field.required && !attributeData[field.name]
         return (
