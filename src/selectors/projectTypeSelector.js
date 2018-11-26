@@ -6,3 +6,8 @@ export const projectTypesSelector = createSelector(
   selectProjectType,
   ({ projectTypes }) => projectTypes
 )
+
+export const projectSubtypesSelector = createSelector(
+  selectProjectType,
+  ({ projectSubtypes }) => projectSubtypes
+)

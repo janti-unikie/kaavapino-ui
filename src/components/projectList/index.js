@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchProjects } from '../../actions/projectActions'
+import { fetchProjectSubtypes } from '../../actions/projectTypeActions'
 import { fetchUsers } from '../../actions/userActions'
+import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { Tab } from 'semantic-ui-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -24,15 +26,16 @@ class ProjectListPage extends Component {
     document.title = 'Kaavapino'
     this.props.fetchProjects()
     this.props.fetchUsers()
+    this.props.fetchProjectSubtypes()
   }
 
   toggleForm = (opened) => this.setState({ formOpen: opened })
 
   render() {
-    const { users } = this.props
+    const { users, projectSubtypes } = this.props
     const panes = [
-      { menuItem: 'Omat hankkeet', render: () => <List users={users} items={this.props.projects} /> },
-      { menuItem: 'Kaikki hankeet', render: () => <List users={users} items={this.props.projects} /> }
+      { menuItem: 'Omat hankkeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={this.props.projects} /> },
+      { menuItem: 'Kaikki hankeet', render: () => <List projectSubtypes={projectSubtypes} items={this.props.projects} /> }
     ]
     return (
       <div className='project-list-page'>
@@ -51,6 +54,7 @@ class ProjectListPage extends Component {
           handleSubmit={this.props.createProject}
           handleClose={() => this.toggleForm(false)}
           users={users}
+          projectSubtypes={projectSubtypes}
         />
         <div className='project-list-container'>
           <Tab panes={panes} />
@@ -63,14 +67,16 @@ class ProjectListPage extends Component {
 const mapStateToProps = (state) => {
   return {
     projects: projectsSelector(state),
-    users: usersSelector(state)
+    users: usersSelector(state),
+    projectSubtypes: projectSubtypesSelector(state)
   }
 }
 
 const mapDispatchToProps = {
   createProject,
   fetchProjects,
-  fetchUsers
+  fetchUsers,
+  fetchProjectSubtypes
 }
 
 export default connect(

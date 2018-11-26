@@ -1,9 +1,13 @@
 import apiUtils from '../utils/apiUtils'
 
-const apiUrl = '/v1/projecttypes/'
+const typeUrl = '/v1/projecttypes/'
+const subTypeUrl = '/v1/projectsubtypes/'
 
-const getProjectTypes = async () => await apiUtils.get(apiUrl)
+const getProjectTypes = async () => await apiUtils.get(typeUrl)
+
+const getProjectSubtypes = async () => await apiUtils.get(subTypeUrl)
 
 export default {
-  getProjectTypes
+  getProjectTypes,
+  getProjectSubtypes
 }

@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { phasesSelector } from '../../selectors/phaseSelector'
 import { Loader } from 'semantic-ui-react'
 import ListHeader from './ListHeader'
 import ListItem from './ListItem'
@@ -12,7 +14,7 @@ class List extends Component {
       'name',
       'phase',
       null,
-      'type',
+      'subtype',
       'modified_at',
       'user',
       null
@@ -25,13 +27,20 @@ class List extends Component {
     }
   }
 
-  getUsersName = (id) => {
+  formatUser = (id) => {
     const user = this.props.users.find((user) => user.id === id)
     if (user) {
       return (user.first_name && user.last_name) ? `${user.first_name} ${user.last_name}` : user.email
     }
     return ''
   }
+
+  formatPhase = (id) => {
+    const { name, color_code } = this.props.phases.find((phase) => phase.id === id)
+    return { phaseName: name, phaseColor: color_code }
+  }
+
+  formatSubtype = (id) => this.props.projectSubtypes.find((subtype) => subtype.id === id).name
 
   setSort = (type) => {
     this.setState((prevState) => {
@@ -63,12 +72,12 @@ class List extends Component {
   setFilter = (value) => this.setState({ filter: value })
 
   formatFilterItem = (item) => {
-    const user = this.getUsersName(item.user)
+    const user = this.formatUser(item.user)
     const modified_at = projectUtils.formatDate(item.modified_at)
-    const phase = projectUtils.statusToText(item.phase)
-    const type = projectUtils.projectSizeToText(item.type)
+    const phase = this.formatPhase(item.phase).phaseName
+    const subtype = item.subtype
     const name = item.name
-    return { name, user, modified_at, phase, type }
+    return { name, user, modified_at, phase, subtype }
   }
 
   filterItems = (items) => {
@@ -77,11 +86,11 @@ class List extends Component {
       const filterFields = this.formatFilterItem(item)
       let includes = false
       Object.keys(filterFields).forEach((key) => {
-        const fieldValue = String(filterFields[key])
+        const fieldValue = filterFields[key]
         if (!fieldValue) {
           return
         }
-        if (fieldValue.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) > -1) {
+        if (String(fieldValue).trim().toLowerCase().indexOf(filter.trim().toLowerCase()) > -1) {
           includes = true
         }
       })
@@ -92,7 +101,7 @@ class List extends Component {
 
   render() {
     const { sort, dir } = this.state
-    if (!this.props.items) {
+    if (!this.props.items || !this.props.phases) {
       return (
         <div className='project-list'>
           <Loader inline={'centered'} active>Ladataan</Loader>
@@ -104,11 +113,32 @@ class List extends Component {
     return (
       <div className='project-list'>
         <ListHeader items={headerItems} selected={sort} dir={dir} filter={this.setFilter} sort={this.setSort} />
-        { items.map((item, i) => <ListItem key={i} item={item} getUsersName={this.getUsersName} />) }
+        { items.map(({ name, id, modified_at, user, subtype, phase }, i) => {
+          const listItem = {
+            ...this.formatPhase(phase),
+            name,
+            id,
+            modified_at: projectUtils.formatDate(modified_at),
+            user: this.formatUser(user),
+            subtype: this.formatSubtype(subtype)
+          }
+          return (
+            <ListItem
+              key={i}
+              item={listItem}
+            />
+          )
+        })}
         { items.length === 0 && <span className='empty-list-info'>Ei hankkeita!</span> }
       </div>
     )
   }
 }
 
-export default List
+const mapStateToProps = (state) => ({
+  phases: phasesSelector(state)
+})
+
+export default connect(
+  mapStateToProps
+)(List)

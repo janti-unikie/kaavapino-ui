@@ -92,7 +92,8 @@ function* validateProjectFields() {
   yield call(saveProject)
   const currentProject = yield select(currentProjectSelector)
   const schema = yield select(schemaSelector)
-  const { sections } = schema.phases[currentProject.phase - 1]
+  const currentSchema = schema.phases.find((s) => s.id === currentProject.phase)
+  const { sections } = currentSchema
   const attributeData = currentProject.attribute_data
   let missingFields = false
   sections.forEach(({ fields }) => {
