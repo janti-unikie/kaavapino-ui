@@ -15,7 +15,7 @@ class ProjectEditPage extends Component {
 
   componentDidMount() {
     const { project } = this.props
-    this.props.fetchSchemas(project.type)
+    this.props.fetchSchemas(project.subtype)
   }
 
   changePhase = () => this.props.changeProjectPhase(this.props.project.phase + 1)
@@ -43,7 +43,7 @@ class ProjectEditPage extends Component {
     if (!schema) {
       return <Loader inline={'centered'} active>Ladataan</Loader>
     }
-    const currentSchema = schema.phases[selectedPhase - 1]
+    const currentSchema = schema.phases.find((s) => s.id === selectedPhase)
     return (
       <div className='project-input-container'>
         <EditForm

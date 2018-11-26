@@ -45,7 +45,7 @@
       .timeline-item-number {
         height: 40px;
         width: 40px;
-        border: 1px solid black;
+        border: 1px solid;
         border-radius: 100%;
         display: flex;
         justify-content: center;
@@ -62,26 +62,6 @@
         &.active {
           color: white;
           border-color: white;
-
-          &.color--tram {
-            background-color: #009246;
-          }
-
-          &.color--summer {
-            background-color: #ffc61e;
-          }
-
-          &.color--metro {
-            background-color: #fd4f00;
-          }
-
-          &.color--bus {
-            background-color: #0000bf;
-          }
-
-          &.color--black {
-            background-color: #000000;
-          }
 
           &.color--white {
             color: black;

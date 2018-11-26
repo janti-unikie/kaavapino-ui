@@ -12,11 +12,10 @@ export default function* schemaSaga() {
   ])
 }
 
-function* fetchSchemas({ payload: type }) {
+function* fetchSchemas({ payload: subtype }) {
   try {
-    const schemas = yield call(schemaService.getSchemas)
-    const schema = schemas.find((schema) => schema.type === type)
-    yield put(fetchSchemasSuccessful(schema))
+    const [ { subtypes } ] = yield call(schemaService.getSchemas, subtype)
+    yield put(fetchSchemasSuccessful(subtypes[0]))
   } catch (e) {
     yield put(error(e))
   }

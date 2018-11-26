@@ -117,7 +117,13 @@ class ProjectPage extends Component {
     if (!currentProjectLoaded || !phases) {
       return <div className='project-container' />
     }
-    const { selectedPhase } = this.state
+    const { type, subtype, phase } = currentProject
+    const currentPhases = phases.filter(({ project_type, project_subtype }) => {
+      return project_type === type && project_subtype === subtype
+    })
+    const projectPhase = currentPhases.find((p) => p.id === phase)
+    const selectedPhase = currentPhases.find((phase) => phase.id === this.state.selectedPhase)
+
     return (
       <div className='project-container'>
         <NavHeader
@@ -126,9 +132,9 @@ class ProjectPage extends Component {
           actions={this.getNavActions()}
         />
         <Timeline
-          phase={ selectedPhase }
-          projectPhase={ currentProject.phase }
-          items={phases}
+          phase={selectedPhase}
+          projectPhase={projectPhase}
+          items={currentPhases}
           type={currentProject.type}
           disabled={!edit}
           switchPhase={this.switchPhase}

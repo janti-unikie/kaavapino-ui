@@ -14,6 +14,14 @@ class FormModal extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.submitting && this.props.submitSucceeded) {
+      this.handleClose()
+    } else if (prevProps.submitting && this.props.submitFailed && !this.props.submitSucceeded && this.state.loading) {
+      this.setState({ loading: false })
+    }
+  }
+
   getUsersName = (user) => {
     if (user) {
       return (user.first_name && user.last_name) ? `${user.first_name} ${user.last_name}` : user.email
@@ -21,7 +29,7 @@ class FormModal extends Component {
     return ''
   }
 
-  formatOptions = () => {
+  formatUsers = () => {
     return this.props.users.map((user) => {
       return {
         key: user.id,
@@ -31,17 +39,19 @@ class FormModal extends Component {
     })
   }
 
+  formatSubtypes = () => {
+    return this.props.projectSubtypes.map((subtype) => ({
+      key: subtype.id,
+      value: subtype.id,
+      text: subtype.name
+    }))
+  }
+
   projectNameInput = (props) => <Input placeholder='Hankkeen nimi' type='text' {...props} />
 
-  projectPersonInput = (props) => <SelectInput options={this.formatOptions()} {...props} />
+  projectPersonInput = (props) => <SelectInput options={this.formatUsers()} {...props} />
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.submitting && this.props.submitSucceeded) {
-      this.handleClose()
-    } else if (prevProps.submitting && this.props.submitFailed && !this.props.submitSucceeded && this.state.loading) {
-      this.setState({ loading: false })
-    }
-  }
+  projectSubtypeInput = (props) => <SelectInput options={this.formatSubtypes()} {...props} />
 
   handleSubmit = () => {
     this.setState({ loading: true })
@@ -56,7 +66,6 @@ class FormModal extends Component {
 
   render() {
     const { loading } = this.state
-    this.formatOptions()
     return (
       <Modal closeOnDimmerClick={false} open={this.props.open} onClose={this.props.handleClose} centered={false} size='small' basic>
         <Modal.Header>Luo uusi hanke</Modal.Header>
@@ -66,6 +75,8 @@ class FormModal extends Component {
             <Field name='name' component={this.projectNameInput} />
             <h3>Hankkeen vastuuhenkilö</h3>
             <Field name='user' component={this.projectPersonInput} />
+            <h3>Hankkeen koko</h3>
+            <Field name='subtype' component={this.projectSubtypeInput} />
           </Form>
         </Modal.Content>
         <Modal.Actions>
