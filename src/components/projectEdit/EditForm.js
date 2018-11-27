@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { checkingSelector } from '../../selectors/projectSelector'
 import { Form } from 'semantic-ui-react'
 import { reduxForm } from 'redux-form'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -92,7 +94,15 @@ class EditForm extends Component {
   }
 }
 
-export default reduxForm({
-  form: 'editForm',
-  enableReinitialize: true
-})(EditForm)
+const mapStateToProps = (state) => ({
+  checking: checkingSelector(state)
+})
+
+export default connect(
+  mapStateToProps
+)(
+  reduxForm({
+    form: 'editForm',
+    enableReinitialize: true
+  })(EditForm)
+)

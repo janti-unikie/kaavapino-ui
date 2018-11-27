@@ -14,7 +14,8 @@ import {
   CHANGE_PROJECT_PHASE_SUCCESSFUL,
   CHANGE_PROJECT_PHASE_FAILURE,
   PROJECT_FILE_UPLOAD_SUCCESSFUL,
-  PROJECT_FILE_REMOVE_SUCCESSFUL
+  PROJECT_FILE_REMOVE_SUCCESSFUL,
+  PROJECT_SET_CHECKING
 } from '../actions/projectActions'
 
 const initialState = {
@@ -25,7 +26,8 @@ const initialState = {
   saving: false,
   changingPhase: false,
   validating: false,
-  hasErrors: false
+  hasErrors: false,
+  checking: false
 }
 
 export const reducer = (state = initialState, action) => {
@@ -149,6 +151,13 @@ export const reducer = (state = initialState, action) => {
           ...state.currentProject,
           attribute_data: { ...updatedAttributeData }
         }
+      }
+    }
+
+    case PROJECT_SET_CHECKING: {
+      return {
+        ...state,
+        checking: !state.checking
       }
     }
 

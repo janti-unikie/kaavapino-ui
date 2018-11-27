@@ -12,6 +12,11 @@ export const currentProjectSelector = createSelector(
   (project) => project.currentProject
 )
 
+export const attributeDataSelector = createSelector(
+  currentProjectSelector,
+  ({ attribute_data }) => attribute_data
+)
+
 export const currentProjectLoadedSelector = createSelector(
   selectProject,
   (project) => project.currentProjectLoaded
@@ -35,4 +40,9 @@ export const validatingSelector = createSelector(
 export const hasErrorsSelector = createSelector(
   selectProject,
   ({ hasErrors }) => hasErrors
+)
+
+export const checkingSelector = createSelector(
+  selectProject,
+  ({ checking }) => checking
 )

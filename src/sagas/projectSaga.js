@@ -90,24 +90,38 @@ function* saveProject() {
 
 function* validateProjectFields() {
   yield call(saveProject)
+  // Gather up required data
   const currentProject = yield select(currentProjectSelector)
   const schema = yield select(schemaSelector)
   const currentSchema = schema.phases.find((s) => s.id === currentProject.phase)
   const { sections } = currentSchema
   const attributeData = currentProject.attribute_data
   let missingFields = false
+  // Go through every single field
   sections.forEach(({ fields }) => {
     fields.forEach((field) => {
+      // Matrices can contain any kinds of fields, so
+      // we must go through them seperately
       if (field.type === 'matrix') {
         const { matrix } = field
-        matrix.fields.forEach((f) => {
-          if (f.required && !attributeData[f.name]) {
+        matrix.fields.forEach(({ required, name }) => {
+          if (required && !attributeData[name]) {
             missingFields = true
-            return
           }
         })
-      }
-      if (field.required && !attributeData[field.name]) {
+        // Fieldsets can contain any fields (except matrices)
+        // multiple times, so we need to go through them all
+      } else if (field.type === 'fieldset') {
+        const { fieldset_attributes } = field
+        const fieldsets = attributeData[field.name]
+        fieldsets.forEach((set) => {
+          fieldset_attributes.forEach(({ required, name }) => {
+            if (required && !set[name]) {
+              missingFields = true
+            }
+          })
+        })
+      } else if (field.required && !attributeData[field.name]) {
         missingFields = true
       }
     })
