@@ -4,9 +4,17 @@ import SelectInput from './SelectInput'
 import Radio from './Radio'
 import TextArea from './TextArea'
 import File from './File'
-import { Field } from 'redux-form'
+import FieldSet from './FieldSet'
+import { Field, FieldArray } from 'redux-form'
 
 class CustomField extends Component {
+  shouldComponentUpdate(p) {
+    if (this.props.attributeData[this.props.field.name] !== p.attributeData[p.field.name]) {
+      return true
+    }
+    return false
+  }
+
   formatOptions = (options) => {
     return options.map((option) => {
       return {
@@ -32,6 +40,15 @@ class CustomField extends Component {
 
   renderRadio = (props) => <Radio {...props} />
 
+  renderFieldset = ({ fields: sets }) => (
+    <FieldSet
+      sets={sets}
+      fields={this.props.field.fieldset_attributes}
+      attributeData={this.props.attributeData}
+      name={this.props.field.name}
+    />
+  )
+
   getInput = (field) => {
     if (field.choices) {
       return this.renderSelect
@@ -42,12 +59,13 @@ class CustomField extends Component {
       case 'short_string': return this.renderString
       case 'long_string': return this.renderTextArea
       case 'date': return this.renderDate
+      case 'fieldset': return this.renderFieldset
       default: return this.renderNumber
     }
   }
 
   render() {
-    const { field, attributeData, connected = true, onChange = null, value = null, ...custom } = this.props
+    const { field, attributeData, fieldset, ...custom } = this.props
     const type = field.type
     if (type === 'file' || type === 'image') {
       return <File image={type === 'image'} field={field} src={attributeData[field.name]} />
@@ -60,14 +78,12 @@ class CustomField extends Component {
       ...custom,
       ...(field.multiple_choice ? { type: 'select-multiple' } : {})
     }
-    if (connected) {
-      return <Field {...fieldProps} />
-    } else {
-      fieldProps['meta'] = {}
-      fieldProps['input'] = { onChange, value, onBlur: () => {} }
-      delete fieldProps['component']
-      return this.getInput(field)(fieldProps)
+
+    if (fieldset) {
+      return <FieldArray {...fieldProps} />
     }
+
+    return <Field {...fieldProps} />
   }
 }
 

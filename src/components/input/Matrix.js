@@ -1,4 +1,6 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { checkingSelector } from '../../selectors/projectSelector'
 import Field from './Field'
 
 const Matrix = ({ field: { matrix: { rows, columns, fields } }, checking, attributeData }) => {
@@ -23,11 +25,11 @@ const Matrix = ({ field: { matrix: { rows, columns, fields } }, checking, attrib
               return (
                 <span style={{ display: 'contents' }} key={i}>
                   <b>{ rows[i / columns.length] }</b>
-                  <Field style={fieldStyle} field={field} />
+                  <Field attributeData={attributeData} style={fieldStyle} field={field} />
                 </span>
               )
             }
-            return <Field style={fieldStyle} key={i} field={field} />
+            return <Field attributeData={attributeData} style={fieldStyle} key={i} field={field} />
           })
         }
       </div>
@@ -35,4 +37,10 @@ const Matrix = ({ field: { matrix: { rows, columns, fields } }, checking, attrib
   )
 }
 
-export default Matrix
+const mapStateToProps = (state) => ({
+  checking: checkingSelector(state)
+})
+
+export default connect(
+  mapStateToProps
+)(Matrix)

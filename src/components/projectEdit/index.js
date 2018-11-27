@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Loader } from 'semantic-ui-react'
-import { saveProject, changeProjectPhase, validateProjectFields } from '../../actions/projectActions'
+import { saveProject, changeProjectPhase, validateProjectFields, projectSetChecking } from '../../actions/projectActions'
 import { fetchSchemas } from '../../actions/schemaActions'
 import { savingSelector, changingPhaseSelector, validatingSelector, hasErrorsSelector } from '../../selectors/projectSelector'
 import { schemaSelector } from '../../selectors/schemaSelector'
@@ -9,10 +9,6 @@ import EditForm from './EditForm'
 import QuickNav from './QuickNav'
 
 class ProjectEditPage extends Component {
-  state = {
-    checking: false
-  }
-
   componentDidMount() {
     const { project } = this.props
     this.props.fetchSchemas(project.subtype)
@@ -24,8 +20,6 @@ class ProjectEditPage extends Component {
     this.props.saveProject()
     this.setState({ checking: false })
   }
-
-  setChecking = (value) => this.setState({ checking: value })
 
   render() {
     const {
@@ -39,7 +33,6 @@ class ProjectEditPage extends Component {
       validating,
       hasErrors
     } = this.props
-
     if (!schema) {
       return <Loader inline={'centered'} active>Ladataan</Loader>
     }
@@ -55,8 +48,7 @@ class ProjectEditPage extends Component {
           saving={saving}
           changingPhase={changingPhase}
           phase={phase}
-          checking={this.state.checking}
-          setChecking={this.setChecking}
+          setChecking={this.props.projectSetChecking}
           validateProjectFields={validateProjectFields}
           validating={validating}
           hasErrors={hasErrors}
@@ -64,7 +56,7 @@ class ProjectEditPage extends Component {
         <div className='project-input-right'>
           <QuickNav
             handleSave={this.handleSave}
-            handleCheck={() => this.setState(({ checking }) => ({ checking: !checking }))}
+            handleCheck={() => this.props.projectSetChecking()}
             projectName={ name }
             sections={ currentSchema.sections }
             phaseTitle={ currentSchema.title }
@@ -90,7 +82,8 @@ const mapDispatchToProps = {
   fetchSchemas,
   saveProject,
   changeProjectPhase,
-  validateProjectFields
+  validateProjectFields,
+  projectSetChecking
 }
 
 export default connect(

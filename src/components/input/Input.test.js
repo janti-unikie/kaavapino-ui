@@ -7,7 +7,7 @@ describe('<Input />', () => {
   let change
   beforeEach(() => {
     change = ''
-    inputComponent = mount(<Input input={{ value: '123', name: 'test', onChange: (e) => change = e }} meta={{}} />).find('input')
+    inputComponent = mount(<Input input={{ value: '123', name: 'test', onChange: (e) => change = e.target.value }} meta={{}} />).find('input')
   })
 
   it('has value and name', () => {

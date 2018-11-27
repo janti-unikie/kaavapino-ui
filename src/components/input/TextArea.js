@@ -1,10 +1,9 @@
 import React from 'react'
 import { TextArea } from 'semantic-ui-react'
 
-const CustomTextArea = ({ input: { onChange, ...rest }, ...custom }) => (
+const CustomTextArea = ({ input, ...custom }) => (
   <TextArea
-    onChange={(e) => onChange(e.target.value)}
-    {...rest}
+    {...input}
     {...custom}
   />
 )

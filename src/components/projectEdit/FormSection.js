@@ -16,7 +16,7 @@ const FormSection = ({ section: { title, fields }, checking, attributeData }) =>
                 <label className={`input-title${required ? ' highlight': ''}`}>{ field.label }</label>
               </Form.Field>
             </div>
-            <FormField field={field} checking={checking} attributeData={attributeData} />
+            <FormField field={field} attributeData={attributeData} />
           </div>
         )
       }) }
