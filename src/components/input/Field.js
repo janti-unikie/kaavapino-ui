@@ -3,6 +3,7 @@ import Input from './Input'
 import SelectInput from './SelectInput'
 import Radio from './Radio'
 import TextArea from './TextArea'
+import File from './File'
 import { Field } from 'redux-form'
 
 class CustomField extends Component {
@@ -46,7 +47,12 @@ class CustomField extends Component {
   }
 
   render() {
-    const { field, ...custom } = this.props
+    const { field, attributeData, connected = true, onChange = null, value = null, ...custom } = this.props
+    const type = field.type
+    if (type === 'file' || type === 'image') {
+      return <File image={type === 'image'} field={field} src={attributeData[field.name]} />
+    }
+
     const fieldProps = {
       name: field.name,
       placeholder: field.label,
@@ -54,7 +60,14 @@ class CustomField extends Component {
       ...custom,
       ...(field.multiple_choice ? { type: 'select-multiple' } : {})
     }
-    return <Field {...fieldProps} />
+    if (connected) {
+      return <Field {...fieldProps} />
+    } else {
+      fieldProps['meta'] = {}
+      fieldProps['input'] = { onChange, value, onBlur: () => {} }
+      delete fieldProps['component']
+      return this.getInput(field)(fieldProps)
+    }
   }
 }
 
