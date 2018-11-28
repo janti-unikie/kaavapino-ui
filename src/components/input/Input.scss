@@ -53,3 +53,20 @@
   padding: 10px;
   margin-bottom: 10px;
 }
+
+.input-info {
+  background-color: black;
+  color: white;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 5px;
+  border-radius: 100%;
+  padding: 5px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  line-height: 100%;
+}
