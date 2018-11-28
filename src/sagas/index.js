@@ -7,6 +7,7 @@ import schemaSaga from './schemaSaga'
 import projectTypeSaga from './projectTypeSaga'
 import documentSaga from './documentSaga'
 import apiSaga from './apiSaga'
+import commentSaga from './commentSaga'
 
 export default function* sagas() {
   yield all([
@@ -17,6 +18,7 @@ export default function* sagas() {
     schemaSaga(),
     projectTypeSaga(),
     documentSaga(),
-    apiSaga()
+    apiSaga(),
+    commentSaga()
   ])
 }
