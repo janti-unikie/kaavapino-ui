@@ -13,7 +13,7 @@ const FieldSet = ({ sets, fields, checking, attributeData, name }) => (
             const required =
                 checking &&
                 field.required &&
-                (!attributeData[name][i] || !attributeData[name][i][field.name])
+                (!attributeData[name] || !attributeData[name][i] || !attributeData[name][i][field.name])
             return (
               <div className='input-container' key={j}>
                 <div className='input-header'>
