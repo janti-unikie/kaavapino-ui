@@ -3,12 +3,17 @@ import axios from 'axios'
 let token = null
 
 const initAxios = () => {
+  let baseURL = ''
+  if (process.env.NODE_ENV === 'production') {
+    baseURL = process.env.REACT_APP_BASE_URL
+  }
   axios.interceptors.request.use((config) => ({
+    baseURL,
     responseType: 'json',
     ...config,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `bearer ${getToken()}`,
+      'Authorization': `Bearer ${getToken()}`,
       ...config.headers
     }
   }))

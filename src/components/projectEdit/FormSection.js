@@ -1,5 +1,6 @@
 import React from 'react'
 import { Form, Divider } from 'semantic-ui-react'
+import Info from '../input/Info'
 import FormField from './FormField'
 
 const FormSection = ({ section: { title, fields }, checking, attributeData }) => {
@@ -11,11 +12,10 @@ const FormSection = ({ section: { title, fields }, checking, attributeData }) =>
         const required = checking && field.required && !attributeData[field.name]
         return (
           <div className='input-container' key={i}>
-            <div className='input-header'>
-              <Form.Field required={ required }>
-                <label className={`input-title${required ? ' highlight': ''}`}>{ field.label }</label>
-              </Form.Field>
-            </div>
+            <Form.Field required={ required } className='input-header'>
+              <label className={`input-title${required ? ' highlight': ''}`}>{ field.label }</label>
+              { field.help_text && <Info content={field.help_text} /> }
+            </Form.Field>
             <FormField field={field} attributeData={attributeData} />
           </div>
         )
