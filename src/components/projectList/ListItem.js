@@ -15,7 +15,7 @@ const ListItem = ({ item: { phaseName, phaseColor, name, id, subtype, modified_a
   return (
     <div className='project-list-item'>
       <span className='project-list-item-name'><Link className='project-name' to={`/${id}`}>{ name }</Link></span>
-      <span><Status color={phaseColor} /> { phaseName }</span>
+      <span className='project-list-item-phase'><Status color={phaseColor} /> { phaseName }</span>
       { 'TODO' }
       <span>{ subtype }</span>
       <span>{ modified_at }</span>

@@ -6,6 +6,7 @@ import { reducer as phase } from './phaseReducer'
 import { reducer as schema } from './schemaReducer'
 import { reducer as projectType } from './projectTypeReducer'
 import { reducer as document } from './documentReducer'
+import { reducer as comment } from './commentReducer'
 import { reducer as api } from './apiReducer'
 
 export default {
@@ -17,5 +18,6 @@ export default {
   schema,
   projectType,
   document,
+  comment,
   api
 }

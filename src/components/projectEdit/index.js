@@ -7,6 +7,7 @@ import { savingSelector, changingPhaseSelector, validatingSelector, hasErrorsSel
 import { schemaSelector } from '../../selectors/schemaSelector'
 import EditForm from './EditForm'
 import QuickNav from './QuickNav'
+import Comments from '../comments'
 
 class ProjectEditPage extends Component {
   componentDidMount() {
@@ -26,7 +27,7 @@ class ProjectEditPage extends Component {
       schema,
       selectedPhase,
       saveProject,
-      project: { name, attribute_data, phase },
+      project: { name, attribute_data, phase, id },
       saving,
       changingPhase,
       validateProjectFields,
@@ -62,6 +63,7 @@ class ProjectEditPage extends Component {
             phaseTitle={ currentSchema.title }
             saving={saving}
           />
+          <Comments project={id} />
         </div>
       </div>
     )
