@@ -40,7 +40,12 @@ class List extends Component {
     return { phaseName: name, phaseColor: color_code }
   }
 
-  formatSubtype = (id) => this.props.projectSubtypes.find((subtype) => subtype.id === id).name
+  formatSubtype = (id) => {
+    const foundSubtype = this.props.projectSubtypes.find((subtype) => subtype.id === id)
+    if (foundSubtype) {
+      return foundSubtype.name
+    }
+  }
 
   setSort = (type) => {
     this.setState((prevState) => {
