@@ -7,7 +7,8 @@ import { connect } from 'react-redux'
 import { logout } from '../actions/authActions'
 import { fetchPhases } from '../actions/phaseActions'
 import { fetchProjectTypes } from '../actions/projectTypeActions'
-import { authUserSelector, authUserLoadingSelector } from '../selectors/authSelector'
+import { authUserLoadingSelector } from '../selectors/authSelector'
+import { apiLoadingTokenSelector, apiTokenSelector } from '../selectors/apiSelector'
 import { phasesSelector } from '../selectors/phaseSelector'
 import LoginPage from './auth/Login'
 import LogoutPage from './auth/Logout'
@@ -22,14 +23,14 @@ import Footer from './common/Footer'
 
 class App extends Component {
   componentDidUpdate(prevProps) {
-    if (!prevProps.user && this.props.user) {
+    if (!prevProps.apiToken && this.props.apiToken) {
       this.props.fetchPhases()
       this.props.fetchProjectTypes()
     }
   }
 
   render() {
-    if (this.props.userLoading) {
+    if (this.props.loadingApiToken || this.props.userLoading) {
       return <div />
     }
     return (
@@ -39,7 +40,7 @@ class App extends Component {
           <Route path='/callback' render={() => <LoginCallbackPage />} />
           <Route exact path='/logout'  render={() => <LogoutPage handleLogout={ this.props.logout } /> } />
           <Route path='/logout/callback'  render={() => <LogoutCallbackPage /> } />
-          <ProtectedRoute path='/' pred={(this.props.user !== null)} redirect='/login'>
+          <ProtectedRoute path='/' pred={(this.props.apiToken !== null)} redirect='/login'>
             <Header />
             <Switch>
               <Route exact path='/' render={() => <ProjectListPage />} />
@@ -70,9 +71,10 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => {
   return {
-    user: authUserSelector(state),
     userLoading: authUserLoadingSelector(state),
-    phases: phasesSelector(state)
+    phases: phasesSelector(state),
+    apiToken: apiTokenSelector(state),
+    loadingApiToken: apiLoadingTokenSelector(state)
   }
 }
 
