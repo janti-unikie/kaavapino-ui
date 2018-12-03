@@ -4,6 +4,7 @@ import { Button, Modal, Form } from 'semantic-ui-react'
 import SelectInput from '../input/SelectInput'
 import Input from '../input/Input'
 import { reduxForm, Field } from 'redux-form'
+import projectUtils from '../../utils/projectUtils'
 
 class FormModal extends Component {
   constructor(props) {
@@ -22,19 +23,12 @@ class FormModal extends Component {
     }
   }
 
-  getUsersName = (user) => {
-    if (user) {
-      return (user.first_name && user.last_name) ? `${user.first_name} ${user.last_name}` : user.email
-    }
-    return ''
-  }
-
   formatUsers = () => {
     return this.props.users.map((user) => {
       return {
         key: user.id,
         value: user.id,
-        text: this.getUsersName(user)
+        text: projectUtils.formatUsersName(user)
       }
     })
   }

@@ -43,6 +43,11 @@ const put = async (apiUrl, body = {}, config = {}) => {
   return data
 }
 
+const del = async (apiUrl, body = {}, config = {}) => {
+  const { data } = await axios.delete(apiUrl, body, { ...config })
+  return data
+}
+
 export default {
   initAxios,
   setToken,
@@ -50,5 +55,6 @@ export default {
   get,
   post,
   patch,
-  put
+  put,
+  del
 }

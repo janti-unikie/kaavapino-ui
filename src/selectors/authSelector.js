@@ -14,5 +14,5 @@ export const authUserLoadingSelector = createSelector(
 
 export const userIdSelector = createSelector(
   authUserSelector,
-  (user) => user ? user.id_token : null
+  (user) => user ? user.profile ? user.profile.sub : null : null
 )

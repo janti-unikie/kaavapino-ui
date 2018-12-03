@@ -16,9 +16,9 @@ export const createComment = (id, content) => ({ type: CREATE_COMMENT, payload: 
 export const createCommentSuccessful = (comment) => ({ type: CREATE_COMMENT_SUCCESSFUL, payload: comment })
 
 // Edit
-export const editComment = (id, comment) => ({ type: EDIT_COMMENT, payload: { id, comment } })
+export const editComment = (projectId, commentId, content) => ({ type: EDIT_COMMENT, payload: { projectId, commentId, content } })
 export const editCommentSuccessful = (comment) => ({ type: EDIT_COMMENT_SUCCESSFUL, payload: comment })
 
 // Delete
-export const deleteComment = (id) => ({ type: DELETE_COMMENT, payload: id })
+export const deleteComment = (projectId, commentId) => ({ type: DELETE_COMMENT, payload: { projectId, commentId } })
 export const deleteCommentSuccessful = (id) => ({ type: DELETE_COMMENT_SUCCESSFUL, payload: id })
