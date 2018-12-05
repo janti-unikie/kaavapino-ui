@@ -1,19 +1,43 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchDocuments } from '../../actions/documentActions'
-import { selectDocuments } from '../../selectors/documentSelector'
+import { documentsSelector, documentsLoadingSelector } from '../../selectors/documentSelector'
+import { currentProjectIdSelector } from '../../selectors/projectSelector'
+import { Loader } from 'semantic-ui-react'
 import DocumentGroup from './DocumentGroup'
 
 class ProjectDocumentsPage extends Component {
   componentDidMount() {
-    this.props.fetchDocuments()
+    const { currentProjectId } = this.props
+    if (currentProjectId) {
+      this.props.fetchDocuments(currentProjectId)
+    }
+  }
+
+  groupDocuments = (documents) => {
+    const result = {}
+    documents.forEach((doc) => {
+      if (!result[doc.phase]) {
+        result[doc.phase] = { title: doc.phase_name, documents: [] }
+      }
+      result[doc.phase].documents.push(doc)
+    })
+    return result
   }
 
   render() {
-    const { documents } = this.props
+    const { documents, documentsLoading } = this.props
+    const groupedDocuments = this.groupDocuments(documents)
     return (
       <div className='documents-page-container'>
-        { documents.map(({ title, sections }, i) => <DocumentGroup title={title} documents={sections} key={i} />) }
+        { documentsLoading && <Loader inline={'centered'} active>Ladataan</Loader> }
+        { Object.keys(groupedDocuments).map((key) => (
+          <DocumentGroup
+            key={key}
+            title={groupedDocuments[key].title}
+            documents={groupedDocuments[key].documents}
+          />
+        )) }
       </div>
     )
   }
@@ -21,7 +45,9 @@ class ProjectDocumentsPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    documents: selectDocuments(state)
+    documents: documentsSelector(state),
+    documentsLoading: documentsLoadingSelector(state),
+    currentProjectId: currentProjectIdSelector(state)
   }
 }
 

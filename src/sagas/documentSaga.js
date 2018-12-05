@@ -1,18 +1,42 @@
-import { takeLatest, put, call } from 'redux-saga/effects'
+import axios from 'axios'
+import { takeLatest, put, call, all } from 'redux-saga/effects'
 import {
-  FETCH_DOCUMENTS, fetchDocumentsSuccessful
+  FETCH_DOCUMENTS, fetchDocumentsSuccessful,
+  DOWNLOAD_DOCUMENT
 } from '../actions/documentActions'
 import documentService from '../services/documentService'
 import { error } from '../actions/apiActions'
 
 export default function* documentSaga() {
-  yield takeLatest(FETCH_DOCUMENTS, fetchDocuments)
+  yield all([
+    takeLatest(FETCH_DOCUMENTS, fetchDocumentsSaga),
+    takeLatest(DOWNLOAD_DOCUMENT, downloadDocumentSaga)
+  ])
 }
 
-function* fetchDocuments() {
+function* fetchDocumentsSaga({ payload: projectId }) {
   try {
-    const documents = yield call(documentService.fetchDocuments)
+    const documents = yield call(documentService.fetchDocuments, projectId)
     yield put(fetchDocumentsSuccessful(documents))
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+function* downloadDocumentSaga({ payload: documentUrl }) {
+  try {
+    const res = yield call(axios.get, documentUrl, { responseType: 'blob' })
+    const fileData = res.data
+    const fileName = res.headers['content-disposition'].split('filename=')[1]
+    if (fileData) {
+      const url = window.URL.createObjectURL(new Blob([fileData]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', fileName)
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
   } catch (e) {
     yield put(error(e))
   }

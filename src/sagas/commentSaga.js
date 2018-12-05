@@ -47,7 +47,6 @@ function* editCommentSaga({ payload: { projectId, commentId, content } }) {
 function* deleteCommentSaga({ payload: { projectId, commentId } }) {
   try {
     yield call(commentService.deleteComment, projectId, commentId)
-    console.log('c', commentId)
     yield put(deleteCommentSuccessful(commentId))
   } catch (e) {
     yield put(error(e))

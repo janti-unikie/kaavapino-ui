@@ -120,8 +120,10 @@ class File extends Component {
         const reader = new FileReader()
         if (image) {
           reader.onloadend = () => {
-            this.imageRef.current.src = reader.result
-            this.setState({ reading: false })
+            if (this.imageRef.current) {
+              this.imageRef.current.src = reader.result
+              this.setState({ reading: false })
+            }
           }
         }
         reader.readAsDataURL(file)

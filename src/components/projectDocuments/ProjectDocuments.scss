@@ -22,11 +22,6 @@
         text-overflow: ellipsis;
       }
 
-      &.disabled {
-        color: #abb2bd;
-        cursor: default;
-      }
-
       :nth-child(n):not(:first-child) {
         margin-left: 12px;
       }

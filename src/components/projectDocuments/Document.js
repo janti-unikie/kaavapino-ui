@@ -1,13 +1,20 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { downloadDocument } from '../../actions/documentActions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const Document = ({ title, disabled }) => {
-  return (
-    <div className={`document${disabled ? ' disabled' : ''}`}>
-      <FontAwesomeIcon icon='file-alt' size='3x' />
-      <p className='document-title'>{ title }</p>
-    </div>
-  )
+const Document = ({ name, file, downloadDocument }) => (
+  <div onClick={() => downloadDocument(file)} href={file} className='document'>
+    <FontAwesomeIcon icon='file-alt' size='3x' />
+    <p className='document-title'>{ name }</p>
+  </div>
+)
+
+const mapDispatchToProps = {
+  downloadDocument
 }
 
-export default Document
+export default connect(
+  null,
+  mapDispatchToProps
+)(Document)

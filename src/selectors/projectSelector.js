@@ -22,6 +22,11 @@ export const currentProjectLoadedSelector = createSelector(
   (project) => project.currentProjectLoaded
 )
 
+export const currentProjectIdSelector = createSelector(
+  currentProjectSelector,
+  (currentProject) => currentProject ? currentProject.id : null
+)
+
 export const savingSelector = createSelector(
   selectProject,
   (project) => project.saving
