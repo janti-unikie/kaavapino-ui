@@ -11,7 +11,7 @@ const Status = ({ color }) => {
   )
 }
 
-const ListItem = ({ item: { phaseName, phaseColor, name, id, subtype, modified_at, user } }) => {
+const ListItem = ({ item: { phaseName, phaseColor, name, id, subtype, modified_at, user, projectId } }) => {
   return (
     <div className='project-list-item'>
       <span className='project-list-item-name'><Link className='project-name' to={`/${id}`}>{ name }</Link></span>
@@ -20,7 +20,7 @@ const ListItem = ({ item: { phaseName, phaseColor, name, id, subtype, modified_a
       <span>{ subtype }</span>
       <span>{ modified_at }</span>
       <span>{ user }</span>
-      { 'TODO' }
+      <span>{ projectId }</span>
       <Link className='project-list-button' to={`/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</Link>
     </div>
   )
