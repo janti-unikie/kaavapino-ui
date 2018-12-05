@@ -22,15 +22,20 @@ class CommentList extends Component {
 
   componentDidMount () {
     this.props.fetchComments(this.props.project)
+    this.poll = setInterval(() => this.props.fetchComments(this.props.project), 60000)
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate (prevProps) {
     if (prevProps.comments.length < this.props.comments.length) {
       const comments = this.commentsRef.current
       if (comments) {
         comments.scrollTop = comments.scrollHeight
       }
     }
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.poll)
   }
 
   handleChange = (e) => {
