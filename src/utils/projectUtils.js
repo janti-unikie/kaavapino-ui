@@ -22,8 +22,13 @@ const formatUsersName = (user) => {
   return ''
 }
 
+const isFieldMissing = (fieldName, isFieldRequired, attributeData) => {
+  return (isFieldRequired && (!attributeData.hasOwnProperty(fieldName) || attributeData[fieldName] === null))
+}
+
 export default {
   formatDate,
   formatTime,
-  formatUsersName
+  formatUsersName,
+  isFieldMissing
 }
