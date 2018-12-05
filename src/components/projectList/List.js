@@ -17,7 +17,7 @@ class List extends Component {
       'subtype',
       'modified_at',
       'user',
-      null
+      'projectId'
     ]
 
     this.state = {
@@ -82,7 +82,8 @@ class List extends Component {
     const phase = this.formatPhase(item.phase).phaseName
     const subtype = item.subtype
     const name = item.name
-    return { name, user, modified_at, phase, subtype }
+    const projectId = item.attribute_data['hankenumero'] || '-'
+    return { name, user, modified_at, phase, subtype, projectId }
   }
 
   filterItems = (items) => {
@@ -114,18 +115,19 @@ class List extends Component {
       )
     }
     const items = this.sortItems(this.filterItems(this.props.items))
-    const headerItems = ['Nimi', 'Vaihe', 'Seuraava määräaika', 'Koko', 'Muokattu', 'Vastuuhenkilö', 'Viimeisin kommentti']
+    const headerItems = ['Nimi', 'Vaihe', 'Seuraava määräaika', 'Koko', 'Muokattu', 'Vastuuhenkilö', 'Hankenumero']
     return (
       <div className='project-list'>
         <ListHeader items={headerItems} selected={sort} dir={dir} filter={this.setFilter} sort={this.setSort} />
-        { items.map(({ name, id, modified_at, user, subtype, phase }, i) => {
+        { items.map(({ attribute_data, name, id, modified_at, user, subtype, phase }, i) => {
           const listItem = {
             ...this.formatPhase(phase),
             name,
             id,
             modified_at: projectUtils.formatDate(modified_at),
             user: this.formatUser(user),
-            subtype: this.formatSubtype(subtype)
+            subtype: this.formatSubtype(subtype),
+            projectId: attribute_data['hankenumero'] || '-'
           }
           return (
             <ListItem

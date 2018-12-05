@@ -18,6 +18,7 @@ import {
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded, change } from 'redux-form'
 import { error } from '../actions/apiActions'
+import projectUtils from '../utils/projectUtils'
 
 export default function* projectSaga() {
   yield all([
@@ -105,7 +106,7 @@ function* validateProjectFields() {
       if (field.type === 'matrix') {
         const { matrix } = field
         matrix.fields.forEach(({ required, name }) => {
-          if (required && !attributeData[name]) {
+          if (projectUtils.isFieldMissing(name, required, attributeData)) {
             missingFields = true
           }
         })
@@ -116,12 +117,12 @@ function* validateProjectFields() {
         const fieldsets = attributeData[field.name]
         fieldsets.forEach((set) => {
           fieldset_attributes.forEach(({ required, name }) => {
-            if (required && !set[name]) {
+            if (projectUtils.isFieldMissing(name, required, set)) {
               missingFields = true
             }
           })
         })
-      } else if (field.required && !attributeData[field.name]) {
+      } else if (projectUtils.isFieldMissing(field.name, field.required, attributeData)) {
         missingFields = true
       }
     })
