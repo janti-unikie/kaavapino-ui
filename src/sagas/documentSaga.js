@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { takeLatest, put, call, all } from 'redux-saga/effects'
 import {
   FETCH_DOCUMENTS, fetchDocumentsSuccessful,
@@ -24,8 +25,18 @@ function* fetchDocumentsSaga({ payload: projectId }) {
 
 function* downloadDocumentSaga({ payload: documentUrl }) {
   try {
-    const res = yield call(documentService.downloadDocument, documentUrl)
-    console.log('res', res)
+    const res = yield call(axios.get, documentUrl, { responseType: 'blob' })
+    const fileData = res.data
+    const fileName = res.headers['content-disposition'].split('filename=')[1]
+    if (fileData) {
+      const url = window.URL.createObjectURL(new Blob([fileData]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', fileName)
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
   } catch (e) {
     yield put(error(e))
   }
