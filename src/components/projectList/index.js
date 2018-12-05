@@ -35,7 +35,7 @@ class ProjectListPage extends Component {
     const { users, projectSubtypes } = this.props
     const panes = [
       { menuItem: 'Omat hankkeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={this.props.projects} /> },
-      { menuItem: 'Kaikki hankeet', render: () => <List projectSubtypes={projectSubtypes} items={this.props.projects} /> }
+      { menuItem: 'Kaikki hankeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={this.props.projects} /> }
     ]
     return (
       <div className='project-list-page'>
