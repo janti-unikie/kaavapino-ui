@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { checkingSelector } from '../../selectors/projectSelector'
 import Field from './Field'
 import { Form, Button } from 'semantic-ui-react'
+import projectUtils from '../../utils/projectUtils'
 
 const FieldSet = ({ sets, fields, checking, attributeData, name }) => (
   <React.Fragment>
@@ -12,8 +13,11 @@ const FieldSet = ({ sets, fields, checking, attributeData, name }) => (
           { fields.map((field, j) => {
             const required =
                 checking &&
-                field.required &&
-                (!attributeData[name] || !attributeData[name][i] || !attributeData[name][i][field.name])
+                (
+                  !attributeData[name] ||
+                  !attributeData[name][i] ||
+                  projectUtils.isFieldMissing(field.name, field.required, attributeData[name][i])
+                )
             return (
               <div className='input-container' key={j}>
                 <div className='input-header'>
