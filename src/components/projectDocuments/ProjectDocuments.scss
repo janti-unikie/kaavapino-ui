@@ -6,6 +6,7 @@
   .document-group {
     border-bottom: 1px solid #aab2be;
     .document {
+      all: unset;
       display: flex;
       align-items: flex-end;
       cursor: pointer;
@@ -20,11 +21,6 @@
         overflow: hidden;
         white-space: normal;
         text-overflow: ellipsis;
-      }
-
-      &.disabled {
-        color: #abb2bd;
-        cursor: default;
       }
 
       :nth-child(n):not(:first-child) {

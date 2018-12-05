@@ -9,9 +9,9 @@ export default function* documentSaga() {
   yield takeLatest(FETCH_DOCUMENTS, fetchDocuments)
 }
 
-function* fetchDocuments() {
+function* fetchDocuments({ payload: projectId }) {
   try {
-    const documents = yield call(documentService.fetchDocuments)
+    const documents = yield call(documentService.fetchDocuments, projectId)
     yield put(fetchDocumentsSuccessful(documents))
   } catch (e) {
     yield put(error(e))
