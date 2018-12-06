@@ -5,8 +5,10 @@ import {
   EDIT_COMMENT, editCommentSuccessful,
   DELETE_COMMENT, deleteCommentSuccessful
 } from '../actions/commentActions'
-import commentService from '../services/commentService'
 import { error } from '../actions/apiActions'
+import { Api } from '../utils/apiUtils'
+
+const commentApi = new Api('/v1/projects/')
 
 export default function* commentSaga() {
   yield all([
@@ -17,18 +19,18 @@ export default function* commentSaga() {
   ])
 }
 
-function* fetchCommentsSaga({ payload }) {
+function* fetchCommentsSaga({ payload: projectId }) {
   try {
-    const comments = yield call(commentService.getComments, payload)
+    const comments = yield call(commentApi.get, `${projectId}/comments/`)
     yield put(fetchCommentsSuccessful(comments))
   } catch (e) {
     yield put(error(e))
   }
 }
 
-function* createCommentSaga({ payload: { id, content } }) {
+function* createCommentSaga({ payload: { id: projectId, content } }) {
   try {
-    const newComment = yield call(commentService.createComment, id, content)
+    const newComment = yield call(commentApi.post, { content }, `${projectId}/comments/`)
     yield put(createCommentSuccessful(newComment))
   } catch (e) {
     yield put(error(e))
@@ -37,7 +39,7 @@ function* createCommentSaga({ payload: { id, content } }) {
 
 function* editCommentSaga({ payload: { projectId, commentId, content } }) {
   try {
-    const updatedComment = yield call(commentService.editComment, projectId, commentId, content)
+    const updatedComment = yield call(commentApi.patch, { content }, `${projectId}/comments/${commentId}/`)
     yield put(editCommentSuccessful(updatedComment))
   } catch (e) {
     yield put(error(e))
@@ -46,7 +48,7 @@ function* editCommentSaga({ payload: { projectId, commentId, content } }) {
 
 function* deleteCommentSaga({ payload: { projectId, commentId } }) {
   try {
-    yield call(commentService.deleteComment, projectId, commentId)
+    yield call(commentApi.delete, `${projectId}/comments/${commentId}/`)
     yield put(deleteCommentSuccessful(commentId))
   } catch (e) {
     yield put(error(e))

@@ -48,6 +48,24 @@ const del = async (apiUrl, body = {}, config = {}) => {
   return data
 }
 
+export class Api {
+  constructor(apiUrl) {
+    this.apiUrl = apiUrl
+  }
+
+  get = async (opt = '') => await get(`${this.apiUrl}${opt}`)
+
+  getById = async (id) => await get(`${this.apiUrl}${id}/`)
+
+  post = async (body = {}, opt = '') => await post(`${this.apiUrl}${opt}`, body)
+
+  patch = async (body = {}, opt = '') => await patch(`${this.apiUrl}${opt}`, body)
+
+  delete = async (opt = '') => await del(`${this.apiUrl}${opt}`)
+
+  put = async (body = {}, opt = '', config = {}) => await put(`${this.apiUrl}${opt}`, body, config)
+}
+
 export default {
   initAxios,
   setToken,

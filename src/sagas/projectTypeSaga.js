@@ -4,8 +4,11 @@ import {
   FETCH_PROJECT_TYPES, fetchProjectTypesSuccessful,
   FETCH_PROJECT_SUBTYPES, fetchProjectSubtypesSuccessful
 } from '../actions/projectTypeActions'
-import projectTypeService from '../services/projectTypeService'
 import { error } from '../actions/apiActions'
+import { Api } from '../utils/apiUtils'
+
+const projectTypeApi = new Api('/v1/projecttypes/')
+const projectSubtypeApi = new Api('/v1/projectsubtypes/')
 
 export default function* projectTypeSaga() {
   yield all([
@@ -16,7 +19,7 @@ export default function* projectTypeSaga() {
 
 function* fetchProjectTypes() {
   try {
-    const projectTypes = yield call(projectTypeService.getProjectTypes)
+    const projectTypes = yield call(projectTypeApi.get)
     yield put(fetchProjectTypesSuccessful(projectTypes))
   } catch (e) {
     yield put(error(e))
@@ -25,7 +28,7 @@ function* fetchProjectTypes() {
 
 function* fetchProjectSubtypes() {
   try {
-    const projectSubtypes = yield call(projectTypeService.getProjectSubtypes)
+    const projectSubtypes = yield call(projectSubtypeApi.get)
     yield put(fetchProjectSubtypesSuccessful(projectSubtypes))
   } catch (e) {
     yield put(error(e))
