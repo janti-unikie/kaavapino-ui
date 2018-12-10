@@ -11,13 +11,13 @@ class List extends Component {
     super(props)
 
     this.targetAttributes = [
+      'projectId',
       'name',
       'phase',
       null,
       'subtype',
       'modified_at',
-      'user',
-      'projectId'
+      'user'
     ]
 
     this.state = {
@@ -115,7 +115,7 @@ class List extends Component {
       )
     }
     const items = this.sortItems(this.filterItems(this.props.items))
-    const headerItems = ['Nimi', 'Vaihe', 'Seuraava määräaika', 'Koko', 'Muokattu', 'Vastuuhenkilö', 'Hankenumero']
+    const headerItems = ['Hankenumero', 'Nimi', 'Vaihe', 'Seuraava määräaika', 'Koko', 'Muokattu', 'Vastuuhenkilö']
     return (
       <div className='project-list'>
         <ListHeader items={headerItems} selected={sort} dir={dir} filter={this.setFilter} sort={this.setSort} />
