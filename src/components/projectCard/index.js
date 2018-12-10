@@ -78,7 +78,7 @@ class ProjectCardPage extends Component {
           />
           <Image src={imageSrc} />
         </div>
-        <div>
+        <div className='project-card-extend'>
           <Radio onChange={this.handleExtendedChange} toggle label='Laajennettu' checked={extended} />
         </div>
       </div>

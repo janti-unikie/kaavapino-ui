@@ -102,7 +102,8 @@ class ProjectPage extends Component {
       (
         <NavActions>
           <NavAction to={`/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</NavAction>
-          <NavAction to={`/${id}/documents`}> <FontAwesomeIcon icon='file'/>Luo dokumentteja</NavAction>
+          <NavAction to={`/${id}/documents`}><FontAwesomeIcon icon='file'/>Luo dokumentteja</NavAction>
+          <NavAction onClick={() => window.print()}><FontAwesomeIcon icon='print'/>Tulosta hankekortti</NavAction>
         </NavActions>
       ) :
       (
