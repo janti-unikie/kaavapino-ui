@@ -3,8 +3,10 @@ import { takeLatest, put, all, call, select } from 'redux-saga/effects'
 import { modalSelector, editFormSelector } from '../selectors/formSelector'
 import { currentProjectSelector, currentProjectIdSelector } from '../selectors/projectSelector'
 import { schemaSelector } from '../selectors/schemaSelector'
+import { userIdSelector } from '../selectors/authSelector'
 import {
   FETCH_PROJECTS, fetchProjectsSuccessful,
+  fetchOwnProjectsSuccessful,
   fetchProjectSuccessful, updateProject,
   CREATE_PROJECT, createProjectSuccessful,
   INITIALIZE_PROJECT, initializeProjectSuccessful,
@@ -35,8 +37,11 @@ export default function* projectSaga() {
 
 function* fetchProjects() {
   try {
-    const projects = yield call(projectApi.get)
-    yield put(fetchProjectsSuccessful(projects))
+    const userId = yield select(userIdSelector)
+    const ownProjects = yield call(projectApi.get, { query: { includes_users: userId } })
+    const allProjects = yield call(projectApi.get)
+    yield put(fetchOwnProjectsSuccessful(ownProjects))
+    yield put(fetchProjectsSuccessful(allProjects))
   } catch (e) {
     yield put(error(e))
   }

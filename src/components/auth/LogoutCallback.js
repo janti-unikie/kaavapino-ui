@@ -6,7 +6,7 @@ import { logoutSuccessful } from '../../actions/authActions'
 class LoginCallbackPage extends Component {
   componentDidMount = () => this.props.logoutSuccessful()
 
-  render = () => <p>Redirecting...</p>
+  render = () => <p>Uudelleenohjataan...</p>
 }
 
 LoginCallbackPage.propTypes = {
