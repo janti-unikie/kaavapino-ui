@@ -4,6 +4,7 @@ import { Loader, Radio } from 'semantic-ui-react'
 import { projectTypesSelector } from '../../selectors/projectTypeSelector'
 import Summary from './Summary'
 import Image from './Image'
+import projectUtils from '../../utils/projectUtils'
 
 class ProjectCardPage extends Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class ProjectCardPage extends Component {
     let result = []
     currentMetadata.forEach(({ label, name, type }) => {
       const data = { label, type }
-      if (Object.keys(attributeData).includes(name) && attributeData[name] !== null) {
+      if (!projectUtils.isFieldMissing(name, true, attributeData)) {
         data['value'] = attributeData[name]
       } else {
         data['empty'] = true
