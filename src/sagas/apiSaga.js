@@ -1,15 +1,26 @@
-import { takeLatest, put, all } from 'redux-saga/effects'
+import { takeLatest, put, all, call } from 'redux-saga/effects'
 import { USER_FOUND } from 'redux-oidc'
-import { tokenLoaded } from '../actions/apiActions'
 import { push } from 'connected-react-router'
-import { ERROR } from '../actions/apiActions'
+import { ERROR, INIT_API_REQUEST, tokenLoaded, initApiRequestSuccessful, error } from '../actions/apiActions'
 import apiUtils from '../utils/apiUtils'
 
 export default function* apiSaga() {
   yield all([
+    takeLatest(ERROR, handleErrorSaga),
     takeLatest(USER_FOUND, userFoundSaga),
-    takeLatest(ERROR, handleError)
+    takeLatest(INIT_API_REQUEST, initApiRequestSaga)
   ])
+}
+
+function* handleErrorSaga({ payload }) {
+  if (payload.response) {
+    const { status } = payload.response
+    if (status === 401) {
+      yield put(push('/logout'))
+    } else {
+      yield put(push(`/error/${status}`))
+    }
+  }
 }
 
 function* userFoundSaga({ payload }) {
@@ -21,13 +32,11 @@ function* userFoundSaga({ payload }) {
   yield put(tokenLoaded(token))
 }
 
-function* handleError({ payload }) {
-  if (payload.response) {
-    const { status } = payload.response
-    if (status === 401) {
-      yield put(push('/logout'))
-    } else {
-      yield put(push(`/error/${status}`))
-    }
+function* initApiRequestSaga() {
+  try {
+    yield call(apiUtils.get, '/v1/')
+    yield put(initApiRequestSuccessful())
+  } catch (e) {
+    yield put(error(e))
   }
 }

@@ -23,27 +23,27 @@ const setToken = (newToken) => token = newToken
 
 const getToken = () => token
 
-const get = async (apiUrl) => {
+export const get = async (apiUrl) => {
   const { data } = await axios.get(apiUrl)
   return data
 }
 
-const post = async (apiUrl, body = {}, headers = {}) => {
+export const post = async (apiUrl, body = {}, headers = {}) => {
   const { data } = await axios.post(apiUrl, body, { headers })
   return data
 }
 
-const patch = async (apiUrl, body = {}, headers = {}) => {
+export const patch = async (apiUrl, body = {}, headers = {}) => {
   const { data } = await axios.patch(apiUrl, body, { headers })
   return data
 }
 
-const put = async (apiUrl, body = {}, config = {}) => {
+export const put = async (apiUrl, body = {}, config = {}) => {
   const { data } = await axios.put(apiUrl, body, { ...config })
   return data
 }
 
-const del = async (apiUrl, body = {}, config = {}) => {
+export const del = async (apiUrl, body = {}, config = {}) => {
   const { data } = await axios.delete(apiUrl, body, { ...config })
   return data
 }

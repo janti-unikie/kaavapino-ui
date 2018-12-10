@@ -17,11 +17,8 @@
     :nth-child(n) {
       padding: 5px;
 
-      .ui.form textarea {
-        background: yellow !important;
-      }
       .highlighted {
-        background: yellow !important;
+        background: yellow;
       }
     }
   }

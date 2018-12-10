@@ -1,11 +1,13 @@
 import {
-  TOKEN_LOADED
+  TOKEN_LOADED,
+  INIT_API_REQUEST_SUCCESSFUL
 } from '../actions/apiActions'
 import { USER_FOUND } from 'redux-oidc'
 
 const initialState = {
   apiToken: null,
-  loadingToken: false
+  loadingToken: false,
+  apiInitialized: true
 }
 
 export const reducer = (state = initialState, action) => {
@@ -14,14 +16,23 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         apiToken: null,
-        loadingToken: true
+        loadingToken: true,
+        apiInitialized: false
       }
     }
+
     case TOKEN_LOADED: {
       return {
         ...state,
         apiToken: action.payload,
         loadingToken: false
+      }
+    }
+
+    case INIT_API_REQUEST_SUCCESSFUL: {
+      return {
+        ...state,
+        apiInitialized: true
       }
     }
 

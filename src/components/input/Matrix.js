@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { checkingSelector } from '../../selectors/projectSelector'
 import Field from './Field'
+import projectUtils from '../../utils/projectUtils'
 
 const Matrix = ({ field: { matrix: { rows, columns, fields } }, checking, attributeData }) => {
   const matrixStyle = {
@@ -19,17 +20,30 @@ const Matrix = ({ field: { matrix: { rows, columns, fields } }, checking, attrib
         { columns.map((c, i) => <b key={i}> { c } </b>) }
         {
           fields.map((field, i) => {
-            const highlighted = checking && field.required && !attributeData[field.name]
-            const fieldStyle = highlighted ? { backgroundColor: 'yellow' } : {}
+            console.log('attributeData', attributeData)
+            const highlighted = checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
+            console.log('h', highlighted)
             if ((i % columns.length === 0)) {
               return (
                 <span style={{ display: 'contents' }} key={i}>
                   <b>{ rows[i / columns.length] }</b>
-                  <Field attributeData={attributeData} style={fieldStyle} field={field} />
+                  <span className={`${highlighted ? 'highlighted' : ''}`}>
+                    <Field
+                      attributeData={attributeData}
+                      field={field}
+                    />
+                  </span>
                 </span>
               )
             }
-            return <Field attributeData={attributeData} style={fieldStyle} key={i} field={field} />
+            return (
+              <span className={`${highlighted ? 'highlighted' : ''}`} key={i}>
+                <Field
+                  attributeData={attributeData}
+                  field={field}
+                />
+              </span>
+            )
           })
         }
       </div>

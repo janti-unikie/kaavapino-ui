@@ -11,13 +11,14 @@ const FieldSet = ({ sets, fields, checking, attributeData, name }) => (
       return (
         <div key={i} className='fieldset-container'>
           { fields.map((field, j) => {
-            const required =
-                checking &&
-                (
-                  !attributeData[name] ||
-                  !attributeData[name][i] ||
-                  projectUtils.isFieldMissing(field.name, field.required, attributeData[name][i])
-                )
+            let required = false
+            if (checking && !(!attributeData[name] || !attributeData[name][i])) {
+              if (checking && projectUtils.isFieldMissing(field.name, field.required, attributeData[name][i])) {
+                required = true
+              }
+            } else if (checking && field.required) {
+              required = true
+            }
             return (
               <div className='input-container' key={j}>
                 <div className='input-header'>

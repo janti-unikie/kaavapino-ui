@@ -4,8 +4,8 @@ import {
   FETCH_DOCUMENTS, fetchDocumentsSuccessful,
   DOWNLOAD_DOCUMENT
 } from '../actions/documentActions'
-import documentService from '../services/documentService'
 import { error } from '../actions/apiActions'
+import { documentApi } from '../utils/api'
 
 export default function* documentSaga() {
   yield all([
@@ -16,7 +16,7 @@ export default function* documentSaga() {
 
 function* fetchDocumentsSaga({ payload: projectId }) {
   try {
-    const documents = yield call(documentService.fetchDocuments, projectId)
+    const documents = yield call(documentApi.get, { path: { id: projectId } })
     yield put(fetchDocumentsSuccessful(documents))
   } catch (e) {
     yield put(error(e))

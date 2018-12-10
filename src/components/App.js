@@ -8,7 +8,8 @@ import { logout } from '../actions/authActions'
 import { fetchPhases } from '../actions/phaseActions'
 import { fetchProjectTypes } from '../actions/projectTypeActions'
 import { authUserLoadingSelector } from '../selectors/authSelector'
-import { apiLoadingTokenSelector, apiTokenSelector } from '../selectors/apiSelector'
+import { initApiRequest } from '../actions/apiActions'
+import { apiLoadingTokenSelector, apiTokenSelector, apiInitializedSelector } from '../selectors/apiSelector'
 import { phasesSelector } from '../selectors/phaseSelector'
 import LoginPage from './auth/Login'
 import LogoutPage from './auth/Logout'
@@ -23,14 +24,19 @@ import Footer from './common/Footer'
 
 class App extends Component {
   componentDidUpdate(prevProps) {
-    if (!prevProps.apiToken && this.props.apiToken) {
+    if (!prevProps.apiInitialized && this.props.apiInitialized) {
       this.props.fetchPhases()
       this.props.fetchProjectTypes()
+    } else if (!prevProps.apiToken && this.props.apiToken) {
+      // One request needs to be done before anything else because
+      // of a bug in a backend library that causes a race condition
+      // when it tries to cache multiple token values at the same time.
+      this.props.initApiRequest()
     }
   }
 
   render() {
-    if (this.props.loadingApiToken || this.props.userLoading) {
+    if (this.props.loadingApiToken || this.props.userLoading || !this.props.apiInitialized) {
       return <div />
     }
     return (
@@ -66,7 +72,8 @@ App.propTypes = {
 const mapDispatchToProps = {
   logout,
   fetchPhases,
-  fetchProjectTypes
+  fetchProjectTypes,
+  initApiRequest
 }
 
 const mapStateToProps = (state) => {
@@ -74,7 +81,8 @@ const mapStateToProps = (state) => {
     userLoading: authUserLoadingSelector(state),
     phases: phasesSelector(state),
     apiToken: apiTokenSelector(state),
-    loadingApiToken: apiLoadingTokenSelector(state)
+    loadingApiToken: apiLoadingTokenSelector(state),
+    apiInitialized: apiInitializedSelector(state)
   }
 }
 

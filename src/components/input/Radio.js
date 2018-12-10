@@ -1,7 +1,7 @@
 import React from 'react'
 import { Radio } from 'semantic-ui-react'
 
-const CustomRadio = ({ input: { value, name, ...rest }, ...custom }) => {
+const CustomRadio = ({ input: { value, name, ...rest }, meta: { error }, ...custom }) => {
   let checked = 'n'
   if (value === '' || value === null) {
     checked = '-'
@@ -13,21 +13,24 @@ const CustomRadio = ({ input: { value, name, ...rest }, ...custom }) => {
       <Radio
         label='Kyllä'
         { ...custom }
-        name={name}
+        error={ error }
+        name={ name }
         onChange={() => rest.onChange(true)}
         checked={ checked === 'y' }
       />
       <Radio
         label='Ei'
         { ...custom }
-        name={name}
+        error={ error }
+        name={ name }
         onChange={() => rest.onChange(false)}
         checked={ checked === 'n' }
       />
       <Radio
         label='Tieto puuttuu'
         { ...custom }
-        name={name}
+        error={ error }
+        name={ name }
         onChange={() => rest.onChange(null)}
         checked={ checked === '-' }
       />

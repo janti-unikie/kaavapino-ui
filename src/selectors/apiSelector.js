@@ -11,3 +11,8 @@ export const apiLoadingTokenSelector = createSelector(
   selectApi,
   ({ loadingToken }) => loadingToken
 )
+
+export const apiInitializedSelector = createSelector(
+  selectApi,
+  ({ apiInitialized }) => apiInitialized
+)
