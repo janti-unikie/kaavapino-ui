@@ -3,9 +3,7 @@ import {
   FETCH_PHASES, fetchPhasesSuccessful
 } from '../actions/phaseActions'
 import { error } from '../actions/apiActions'
-import { Api } from '../utils/apiUtils'
-
-const phaseApi = new Api('/v1/phases/')
+import { phaseApi } from '../utils/api'
 
 export default function* phaseSaga() {
   yield all([

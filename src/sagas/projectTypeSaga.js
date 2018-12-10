@@ -5,10 +5,8 @@ import {
   FETCH_PROJECT_SUBTYPES, fetchProjectSubtypesSuccessful
 } from '../actions/projectTypeActions'
 import { error } from '../actions/apiActions'
-import { Api } from '../utils/apiUtils'
-
-const projectTypeApi = new Api('/v1/projecttypes/')
-const projectSubtypeApi = new Api('/v1/projectsubtypes/')
+import { projectTypeApi } from '../utils/api'
+import { projectSubtypeApi } from '../utils/api'
 
 export default function* projectTypeSaga() {
   yield all([

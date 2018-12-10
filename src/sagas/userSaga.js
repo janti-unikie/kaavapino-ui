@@ -3,9 +3,7 @@ import {
   FETCH_USERS, fetchUsersSuccessful
 } from '../actions/userActions'
 import { error } from '../actions/apiActions'
-import { Api } from '../utils/apiUtils'
-
-const userApi = new Api('/v1/users/')
+import { userApi } from '../utils/api'
 
 export default function* userSaga() {
   yield all([

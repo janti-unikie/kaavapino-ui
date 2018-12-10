@@ -18,9 +18,7 @@ import {
 import { startSubmit, stopSubmit, setSubmitSucceeded, change } from 'redux-form'
 import { error } from '../actions/apiActions'
 import projectUtils from '../utils/projectUtils'
-import { Api } from '../utils/apiUtils'
-
-const projectApi = new Api('/v1/projects/')
+import { projectApi } from '../utils/api'
 
 export default function* projectSaga() {
   yield all([
@@ -46,7 +44,7 @@ function* fetchProjects() {
 
 function* initializeProject({ payload: projectId }) {
   try {
-    const project = yield call(projectApi.getById, projectId)
+    const project = yield call(projectApi.get, { path: { projectId } }, ':projectId/')
     yield put(fetchProjectSuccessful(project))
     yield put(initializeProjectSuccessful())
   } catch (e) {
@@ -82,7 +80,7 @@ function* saveProject() {
       attribute_data[key] = values[key]
     })
     try {
-      const updatedProject = yield call(projectApi.patch, { attribute_data }, `${currentProjectId}/`)
+      const updatedProject = yield call(projectApi.patch, { attribute_data }, { path: { id: currentProjectId } }, ':id/')
       yield put(updateProject(updatedProject))
     } catch (e) {
       yield put(error(e))
@@ -141,7 +139,7 @@ function* changeProjectPhase({ payload: phase }) {
   try {
     yield call(saveProject)
     const currentProjectId = yield select(currentProjectIdSelector)
-    const updatedProject = yield call(projectApi.patch, { phase }, `${currentProjectId}/`)
+    const updatedProject = yield call(projectApi.patch, { phase }, { path: { id: currentProjectId } }, ':id/')
     yield put(changeProjectPhaseSuccessful(updatedProject))
     window.scrollTo(0, 0)
   } catch (e) {
@@ -164,7 +162,8 @@ function* projectFileUpload({ payload: { attribute, file, callback, setCancelTok
     const newFile = yield call(
       projectApi.put,
       formData,
-      `${currentProjectId}/files/`,
+      { path: { id: currentProjectId } },
+      ':id/files/',
       {
         headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress: callback,
@@ -186,7 +185,7 @@ function* projectFileRemove({ payload }) {
     const currentProjectId = yield select(currentProjectIdSelector)
     const attribute_data = {}
     attribute_data[payload] = null
-    yield call(projectApi.patch, { attribute_data }, `${currentProjectId}/`)
+    yield call(projectApi.patch, { attribute_data }, { path: { id: currentProjectId } }, ':id/')
     yield put(projectFileRemoveSuccessful(payload))
     yield put(change('editForm', payload, null))
     yield put(saveProjectAction())

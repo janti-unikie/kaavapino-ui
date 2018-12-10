@@ -4,9 +4,7 @@ import {
   FETCH_SCHEMAS, fetchSchemasSuccessful
 } from '../actions/schemaActions'
 import { error } from '../actions/apiActions'
-import { Api } from '../utils/apiUtils'
-
-const schemaApi = new Api('/v1/schemas/')
+import { schemaApi } from '../utils/api'
 
 export default function* schemaSaga() {
   yield all([
@@ -16,7 +14,7 @@ export default function* schemaSaga() {
 
 function* fetchSchemas({ payload: subtype }) {
   try {
-    const [{ subtypes }] = yield call(schemaApi.get, `?subtypes=${subtype}`)
+    const [{ subtypes }] = yield call(schemaApi.get, { query: { subtypes: subtype } })
     yield put(fetchSchemasSuccessful(subtypes[0]))
   } catch (e) {
     yield put(error(e))

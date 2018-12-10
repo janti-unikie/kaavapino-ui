@@ -6,9 +6,7 @@ import {
   DELETE_COMMENT, deleteCommentSuccessful
 } from '../actions/commentActions'
 import { error } from '../actions/apiActions'
-import { Api } from '../utils/apiUtils'
-
-const commentApi = new Api('/v1/projects/')
+import { commentApi } from '../utils/api'
 
 export default function* commentSaga() {
   yield all([
@@ -21,7 +19,7 @@ export default function* commentSaga() {
 
 function* fetchCommentsSaga({ payload: projectId }) {
   try {
-    const comments = yield call(commentApi.get, `${projectId}/comments/`)
+    const comments = yield call(commentApi.get, { path: { id: projectId } })
     yield put(fetchCommentsSuccessful(comments))
   } catch (e) {
     yield put(error(e))
@@ -30,7 +28,7 @@ function* fetchCommentsSaga({ payload: projectId }) {
 
 function* createCommentSaga({ payload: { id: projectId, content } }) {
   try {
-    const newComment = yield call(commentApi.post, { content }, `${projectId}/comments/`)
+    const newComment = yield call(commentApi.post, { content }, { path: { id: projectId } })
     yield put(createCommentSuccessful(newComment))
   } catch (e) {
     yield put(error(e))
@@ -39,7 +37,7 @@ function* createCommentSaga({ payload: { id: projectId, content } }) {
 
 function* editCommentSaga({ payload: { projectId, commentId, content } }) {
   try {
-    const updatedComment = yield call(commentApi.patch, { content }, `${projectId}/comments/${commentId}/`)
+    const updatedComment = yield call(commentApi.patch, { content }, { path: { id: projectId, commentId } }, ':commentId/')
     yield put(editCommentSuccessful(updatedComment))
   } catch (e) {
     yield put(error(e))
@@ -48,7 +46,7 @@ function* editCommentSaga({ payload: { projectId, commentId, content } }) {
 
 function* deleteCommentSaga({ payload: { projectId, commentId } }) {
   try {
-    yield call(commentApi.delete, `${projectId}/comments/${commentId}/`)
+    yield call(commentApi.delete, { path: { id: projectId, commentId } }, ':commentId/')
     yield put(deleteCommentSuccessful(commentId))
   } catch (e) {
     yield put(error(e))

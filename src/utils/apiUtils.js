@@ -23,47 +23,29 @@ const setToken = (newToken) => token = newToken
 
 const getToken = () => token
 
-const get = async (apiUrl) => {
+export const get = async (apiUrl) => {
   const { data } = await axios.get(apiUrl)
   return data
 }
 
-const post = async (apiUrl, body = {}, headers = {}) => {
+export const post = async (apiUrl, body = {}, headers = {}) => {
   const { data } = await axios.post(apiUrl, body, { headers })
   return data
 }
 
-const patch = async (apiUrl, body = {}, headers = {}) => {
+export const patch = async (apiUrl, body = {}, headers = {}) => {
   const { data } = await axios.patch(apiUrl, body, { headers })
   return data
 }
 
-const put = async (apiUrl, body = {}, config = {}) => {
+export const put = async (apiUrl, body = {}, config = {}) => {
   const { data } = await axios.put(apiUrl, body, { ...config })
   return data
 }
 
-const del = async (apiUrl, body = {}, config = {}) => {
+export const del = async (apiUrl, body = {}, config = {}) => {
   const { data } = await axios.delete(apiUrl, body, { ...config })
   return data
-}
-
-export class Api {
-  constructor(apiUrl) {
-    this.apiUrl = apiUrl
-  }
-
-  get = async (opt = '') => await get(`${this.apiUrl}${opt}`)
-
-  getById = async (id) => await get(`${this.apiUrl}${id}/`)
-
-  post = async (body = {}, opt = '') => await post(`${this.apiUrl}${opt}`, body)
-
-  patch = async (body = {}, opt = '') => await patch(`${this.apiUrl}${opt}`, body)
-
-  delete = async (opt = '') => await del(`${this.apiUrl}${opt}`)
-
-  put = async (body = {}, opt = '', config = {}) => await put(`${this.apiUrl}${opt}`, body, config)
 }
 
 export default {
