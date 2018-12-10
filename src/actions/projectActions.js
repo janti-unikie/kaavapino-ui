@@ -1,5 +1,6 @@
 export const FETCH_PROJECTS = 'Fetch projects'
 export const FETCH_PROJECTS_SUCCESSFUL = 'Fetch projects successful'
+export const FETCH_OWN_PROJECTS_SUCCESSFUL = 'Fetch own projects successful'
 export const CREATE_PROJECT = 'Create project'
 export const CREATE_PROJECT_SUCCESSFUL = 'Create project successful'
 export const FETCH_PROJECT_SUCCESSFUL = 'Fetch project successful'
@@ -20,6 +21,7 @@ export const PROJECT_FILE_REMOVE_SUCCESSFUL = 'Project file remove successful'
 export const PROJECT_SET_CHECKING = 'Project set checking'
 
 export const fetchProjects = () => ({ type: FETCH_PROJECTS })
+export const fetchOwnProjectsSuccessful = (projects) => ({ type: FETCH_OWN_PROJECTS_SUCCESSFUL, payload: projects })
 export const fetchProjectsSuccessful = (projects) => ({ type: FETCH_PROJECTS_SUCCESSFUL, payload: projects })
 
 export const initializeProject = (id) => ({ type: INITIALIZE_PROJECT, payload: id })

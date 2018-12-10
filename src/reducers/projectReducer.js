@@ -1,5 +1,6 @@
 import {
   FETCH_PROJECTS_SUCCESSFUL,
+  FETCH_OWN_PROJECTS_SUCCESSFUL,
   FETCH_PROJECTS,
   FETCH_PROJECT_SUCCESSFUL,
   UPDATE_PROJECT,
@@ -19,7 +20,8 @@ import {
 } from '../actions/projectActions'
 
 const initialState = {
-  projects: null,
+  projects: [],
+  ownProjects: [],
   users: [],
   currentProject: null,
   currentProjectLoaded: false,
@@ -37,6 +39,13 @@ export const reducer = (state = initialState, action) => {
         ...state,
         currentProject: null,
         currentProjectLoaded: false
+      }
+    }
+
+    case FETCH_OWN_PROJECTS_SUCCESSFUL: {
+      return {
+        ...state,
+        ownProjects: action.payload
       }
     }
 

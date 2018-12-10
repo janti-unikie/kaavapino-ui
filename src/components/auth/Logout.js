@@ -7,7 +7,7 @@ class LogoutPage extends Component {
   }
 
   render() {
-    return <p>logging out...</p>
+    return <p>Kirjaudutaan ulos...</p>
   }
 }
 

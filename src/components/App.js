@@ -37,7 +37,7 @@ class App extends Component {
 
   render() {
     if (this.props.loadingApiToken || this.props.userLoading || !this.props.apiInitialized) {
-      return <div />
+      return <p>Ladataan...</p>
     }
     return (
       <ConnectedRouter history={history}>

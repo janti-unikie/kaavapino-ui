@@ -17,7 +17,7 @@ class LoginCallbackPage extends Component {
   render = () => {
     return (
       <CallbackComponent userManager={userManager} successCallback={this.success} errorCallback={this.success}>
-        <div>Redirecting...</div>
+        <div>Uudelleenohjataan...</div>
       </CallbackComponent>
     )
   }

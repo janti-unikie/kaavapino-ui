@@ -11,7 +11,7 @@ class LoginPage extends Component {
 
   componentWillUnmount = () => clearInterval(this.interval)
 
-  render = () => <p>Redirecting...</p>
+  render = () => <p>Uudelleenohjataan...</p>
 }
 
 export default LoginPage

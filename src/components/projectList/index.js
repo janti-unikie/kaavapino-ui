@@ -8,7 +8,7 @@ import { usersSelector } from '../../selectors/userSelector'
 import { Tab } from 'semantic-ui-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { createProject } from '../../actions/projectActions'
-import { projectsSelector } from '../../selectors/projectSelector'
+import { ownProjectsSelector, projectsSelector } from '../../selectors/projectSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import FormModal from './FormModal'
 import List from './List'
@@ -34,8 +34,8 @@ class ProjectListPage extends Component {
   render() {
     const { users, projectSubtypes } = this.props
     const panes = [
-      { menuItem: 'Omat hankkeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={this.props.projects} /> },
-      { menuItem: 'Kaikki hankeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={this.props.projects} /> }
+      { menuItem: 'Omat hankkeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={this.props.ownProjects} /> },
+      { menuItem: 'Kaikki hankeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={this.props.allProjects} /> }
     ]
     return (
       <div className='project-list-page'>
@@ -66,7 +66,8 @@ class ProjectListPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    projects: projectsSelector(state),
+    ownProjects: ownProjectsSelector(state),
+    allProjects: projectsSelector(state),
     users: usersSelector(state),
     projectSubtypes: projectSubtypesSelector(state)
   }

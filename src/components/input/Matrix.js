@@ -20,9 +20,7 @@ const Matrix = ({ field: { matrix: { rows, columns, fields } }, checking, attrib
         { columns.map((c, i) => <b key={i}> { c } </b>) }
         {
           fields.map((field, i) => {
-            console.log('attributeData', attributeData)
             const highlighted = checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
-            console.log('h', highlighted)
             if ((i % columns.length === 0)) {
               return (
                 <span style={{ display: 'contents' }} key={i}>
