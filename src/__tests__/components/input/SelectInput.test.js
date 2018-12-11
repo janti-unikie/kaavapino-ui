@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import SelectInput from './SelectInput'
+import SelectInput from '../../../components/input/SelectInput'
 
 describe('<SelectInput />', () => {
   let selectInputComponent

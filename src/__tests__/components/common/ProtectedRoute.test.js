@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { MemoryRouter, Route, Switch } from 'react-router-dom'
-import ProtectedRoute from './ProtectedRoute'
+import ProtectedRoute from '../../../components/common/ProtectedRoute'
 
 describe('<ProtectedRoute />', () => {
   it('renders a component when pred is true', () => {
