@@ -1,28 +1,33 @@
 import React from 'react'
-import { Form, Divider } from 'semantic-ui-react'
-import Info from '../input/Info'
+import { connect } from 'react-redux'
+import { updatesSelector, attributeDataSelector, checkingSelector } from '../../selectors/projectSelector'
+import { Divider } from 'semantic-ui-react'
 import FormField from './FormField'
-import projectUtils from '../../utils/projectUtils'
 
-const FormSection = ({ section: { title, fields }, checking, attributeData }) => {
+const FormSection = ({ section: { title, fields }, checking, attributeData, updates }) => {
   return (
     <div>
       <span id={`title-${title}`} className='form-title'>{ title }</span>
       <Divider />
-      { fields.map((field, i) => {
-        const required = checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
-        return (
-          <div className='input-container' key={i}>
-            <Form.Field required={ required } className='input-header'>
-              <label className={`input-title${required ? ' highlight': ''}`}>{ field.label }</label>
-              { field.help_text && <Info content={field.help_text} /> }
-            </Form.Field>
-            <FormField field={field} attributeData={attributeData} />
-          </div>
-        )
-      }) }
+      { fields.map((field, i) => (
+        <FormField
+          key={i}
+          checking={checking}
+          field={field}
+          attributeData={attributeData}
+          updated={updates[field.name] || null}
+        />
+      )) }
     </div>
   )
 }
 
-export default FormSection
+const mapStateToProps = (state) => ({
+  updates: updatesSelector(state),
+  attributeData: attributeDataSelector(state),
+  checking: checkingSelector(state)
+})
+
+export default connect(
+  mapStateToProps
+)(FormSection)
