@@ -12,7 +12,8 @@ import {
   faAngleDown,
   faSearch,
   faTimes,
-  faPrint
+  faPrint,
+  faClock
 } from '@fortawesome/free-solid-svg-icons'
 
 const initIcons = () => {
@@ -29,7 +30,8 @@ const initIcons = () => {
     faAngleDown,
     faSearch,
     faTimes,
-    faPrint
+    faPrint,
+    faClock
   )
 }
 

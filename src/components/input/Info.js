@@ -9,6 +9,7 @@ class Info extends PureComponent {
         trigger={<span className='input-info'>?</span>}
         content={content}
         inverted
+        hoverable={true}
         position='top center'
       />
     )

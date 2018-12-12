@@ -121,13 +121,15 @@ function* validateProjectFields() {
         } else if (field.type === 'fieldset') {
           const { fieldset_attributes } = field
           const fieldsets = attributeData[field.name]
-          fieldsets.forEach((set) => {
-            fieldset_attributes.forEach(({ required, name }) => {
-              if (projectUtils.isFieldMissing(name, required, set)) {
-                missingFields = true
-              }
+          if (fieldsets) {
+            fieldsets.forEach((set) => {
+              fieldset_attributes.forEach(({ required, name }) => {
+                if (projectUtils.isFieldMissing(name, required, set)) {
+                  missingFields = true
+                }
+              })
             })
-          })
+          }
         } else if (projectUtils.isFieldMissing(field.name, field.required, attributeData)) {
           missingFields = true
         }

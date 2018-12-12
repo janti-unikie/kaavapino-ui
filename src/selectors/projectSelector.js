@@ -56,3 +56,8 @@ export const checkingSelector = createSelector(
   selectProject,
   ({ checking }) => checking
 )
+
+export const updatesSelector = createSelector(
+  currentProjectSelector,
+  ({ _metadata }) => _metadata ? _metadata.updates : {}
+)
