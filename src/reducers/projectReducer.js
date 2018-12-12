@@ -5,6 +5,7 @@ import {
   FETCH_PROJECT_SUCCESSFUL,
   UPDATE_PROJECT,
   CREATE_PROJECT_SUCCESSFUL,
+  CREATE_OWN_PROJECT_SUCCESSFUL,
   INITIALIZE_PROJECT,
   INITIALIZE_PROJECT_SUCCESSFUL,
   SAVE_PROJECT,
@@ -60,6 +61,13 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         projects: state.projects.concat(action.payload)
+      }
+    }
+
+    case CREATE_OWN_PROJECT_SUCCESSFUL: {
+      return {
+        ...state,
+        ownProjects: state.ownProjects.concat(action.payload)
       }
     }
 
