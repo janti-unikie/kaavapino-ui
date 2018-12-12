@@ -8,7 +8,7 @@ import {
   FETCH_PROJECTS, fetchProjectsSuccessful,
   fetchOwnProjectsSuccessful,
   fetchProjectSuccessful, updateProject,
-  CREATE_PROJECT, createProjectSuccessful,
+  CREATE_PROJECT, createProjectSuccessful, createOwnProjectSuccessful,
   INITIALIZE_PROJECT, initializeProjectSuccessful,
   SAVE_PROJECT, saveProjectSuccessful,
   CHANGE_PROJECT_PHASE, changeProjectPhaseSuccessful,
@@ -60,9 +60,14 @@ function* initializeProject({ payload: projectId }) {
 function* createProject() {
   yield put(startSubmit('modal'))
   const { values } = yield select(modalSelector)
+  const userId = yield select(userIdSelector)
   try {
     const createdProject = yield call(projectApi.post, values)
-    yield put(createProjectSuccessful(createdProject))
+    if (createdProject.user === userId) {
+      yield put(createOwnProjectSuccessful(createdProject))
+    } else {
+      yield put(createProjectSuccessful(createdProject))
+    }
     yield put(setSubmitSucceeded('modal'))
   } catch (e) {
     if (e.response.status === 400) {
