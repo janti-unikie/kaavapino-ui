@@ -15,6 +15,10 @@ const formatTime = (value) => {
   return `${addZeroPrefixIfNecessary(hours)}:${addZeroPrefixIfNecessary(minutes)}`
 }
 
+const formatDateTime = (date) => {
+  return `${formatDate(date)} ${formatTime(date)}`
+}
+
 const formatUsersName = (user) => {
   if (user) {
     return (user.first_name && user.last_name) ? `${user.first_name} ${user.last_name}` : user.email
@@ -29,6 +33,7 @@ const isFieldMissing = (fieldName, isFieldRequired, attributeData) => {
 export default {
   formatDate,
   formatTime,
+  formatDateTime,
   formatUsersName,
   isFieldMissing
 }

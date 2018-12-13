@@ -8,11 +8,13 @@ import {
   changingPhaseSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
+import { latestEditFieldSelector } from '../../selectors/schemaSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import Timeline from './Timeline'
 import ProjectEditPage from '../projectEdit'
 import ProjectCardPage from '../projectCard'
 import ProjectDocumentsPage from '../projectDocuments'
+import projectUtils from '../../utils/projectUtils'
 
 class ProjectPage extends Component {
   constructor(props) {
@@ -113,6 +115,14 @@ class ProjectPage extends Component {
       )
   }
 
+  getLatestChange = () => {
+    const { edit, latestEditField } = this.props
+    if (!edit || !latestEditField) {
+      return null
+    }
+    return `(Viimeisin muokkaus: ${latestEditField.name} ${projectUtils.formatDateTime(latestEditField.timestamp)} ${latestEditField.user_name})`
+  }
+
   render() {
     const { edit, currentProject, phases, currentProjectLoaded } = this.props
     if (!currentProjectLoaded || !phases) {
@@ -124,13 +134,13 @@ class ProjectPage extends Component {
     })
     const projectPhase = currentPhases.find((p) => p.id === phase)
     const selectedPhase = currentPhases.find((phase) => phase.id === this.state.selectedPhase)
-
     return (
       <div className='project-container'>
         <NavHeader
           routeItems={this.getRouteItems()}
           title={this.getTitle(currentProject.name)}
           actions={this.getNavActions()}
+          info={this.getLatestChange()}
         />
         <Timeline
           phase={selectedPhase}
@@ -157,7 +167,8 @@ const mapStateToProps = (state) => {
     currentProject: currentProjectSelector(state),
     phases: phasesSelector(state),
     currentProjectLoaded: currentProjectLoadedSelector(state),
-    changingPhase: changingPhaseSelector(state)
+    changingPhase: changingPhaseSelector(state),
+    latestEditField: latestEditFieldSelector(state)
   }
 }
 

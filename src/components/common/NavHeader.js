@@ -18,7 +18,7 @@ NavAction.propTypes = {
 
 export const NavActions = (props) => <div className='nav-header-actions' {...props} />
 
-export const NavHeader = ({ routeItems, actions, large, title }) => {
+export const NavHeader = ({ routeItems, actions, large, title, info }) => {
   return (
     <div className='nav-header-container'>
       <div className='nav-header-inner-container'>
@@ -29,7 +29,10 @@ export const NavHeader = ({ routeItems, actions, large, title }) => {
             }) }
           </div>
         </div>
-        <span className={`nav-header-title ${ large ? 'large' : '' }`}>{ title }</span>
+        <div className='nav-header-content'>
+          <span className={`nav-header-title ${ large ? 'large' : '' }`}>{ title }</span>
+          <span className='nav-header-info'>{info}</span>
+        </div>
         { actions && actions }
       </div>
     </div>

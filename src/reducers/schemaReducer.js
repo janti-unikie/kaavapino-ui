@@ -1,12 +1,14 @@
 import {
-  FETCH_SCHEMAS_SUCCESSFUL
+  FETCH_SCHEMAS_SUCCESSFUL,
+  SET_LATEST_EDIT_FIELD_SUCCESSFUL
 } from '../actions/schemaActions'
 import {
   FETCH_PROJECTS
 } from '../actions/projectActions'
 
 const initialState = {
-  schema: null
+  schema: null,
+  latestEditField: null
 }
 
 export const reducer = (state = initialState, action) => {
@@ -22,6 +24,13 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         schema: null
+      }
+    }
+
+    case SET_LATEST_EDIT_FIELD_SUCCESSFUL: {
+      return {
+        ...state,
+        latestEditField: action.payload
       }
     }
 

@@ -6,3 +6,8 @@ export const schemaSelector = createSelector(
   selectSchema,
   ({ schema }) => schema
 )
+
+export const latestEditFieldSelector = createSelector(
+  selectSchema,
+  ({ latestEditField }) => latestEditField
+)
