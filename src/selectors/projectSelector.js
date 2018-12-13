@@ -59,5 +59,5 @@ export const checkingSelector = createSelector(
 
 export const updatesSelector = createSelector(
   currentProjectSelector,
-  ({ _metadata }) => _metadata ? _metadata.updates : {}
+  ({ _metadata }) => _metadata ? _metadata.updates ? _metadata.updates : {} : {}
 )
