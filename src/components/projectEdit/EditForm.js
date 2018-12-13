@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { checkingSelector } from '../../selectors/projectSelector'
 import { Form } from 'semantic-ui-react'
 import { reduxForm } from 'redux-form'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -60,13 +58,11 @@ class EditForm extends Component {
       saving,
       isCurrentPhase,
       changingPhase,
-      checking,
-      attributeData,
       validating
     } = this.props
     return (
       <Form className='form-container'>
-        { sections.map((section, i) => <FormSection key={i} section={section} checking={checking} attributeData={attributeData} /> ) }
+        { sections.map((section, i) => <FormSection key={i} section={section} /> ) }
         <Button
           handleClick={this.props.handleSave}
           value='Tallenna'
@@ -94,15 +90,7 @@ class EditForm extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  checking: checkingSelector(state)
-})
-
-export default connect(
-  mapStateToProps
-)(
-  reduxForm({
-    form: 'editForm',
-    enableReinitialize: true
-  })(EditForm)
-)
+export default reduxForm({
+  form: 'editForm',
+  enableReinitialize: true
+})(EditForm)

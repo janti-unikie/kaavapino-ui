@@ -8,7 +8,7 @@ import {
   FETCH_PROJECTS, fetchProjectsSuccessful,
   fetchOwnProjectsSuccessful,
   fetchProjectSuccessful, updateProject,
-  CREATE_PROJECT, createProjectSuccessful,
+  CREATE_PROJECT, createProjectSuccessful, createOwnProjectSuccessful,
   INITIALIZE_PROJECT, initializeProjectSuccessful,
   SAVE_PROJECT, saveProjectSuccessful,
   CHANGE_PROJECT_PHASE, changeProjectPhaseSuccessful,
@@ -19,6 +19,7 @@ import {
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded, change } from 'redux-form'
 import { error } from '../actions/apiActions'
+import { setLatestEditField } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
 import { projectApi } from '../utils/api'
 
@@ -60,9 +61,14 @@ function* initializeProject({ payload: projectId }) {
 function* createProject() {
   yield put(startSubmit('modal'))
   const { values } = yield select(modalSelector)
+  const userId = yield select(userIdSelector)
   try {
     const createdProject = yield call(projectApi.post, values)
-    yield put(createProjectSuccessful(createdProject))
+    if (createdProject.user === userId) {
+      yield put(createOwnProjectSuccessful(createdProject))
+    } else {
+      yield put(createProjectSuccessful(createdProject))
+    }
     yield put(setSubmitSucceeded('modal'))
   } catch (e) {
     if (e.response.status === 400) {
@@ -92,6 +98,7 @@ function* saveProject() {
     }
   }
   yield put(saveProjectSuccessful())
+  yield put(setLatestEditField())
 }
 
 function* validateProjectFields() {
@@ -121,13 +128,15 @@ function* validateProjectFields() {
         } else if (field.type === 'fieldset') {
           const { fieldset_attributes } = field
           const fieldsets = attributeData[field.name]
-          fieldsets.forEach((set) => {
-            fieldset_attributes.forEach(({ required, name }) => {
-              if (projectUtils.isFieldMissing(name, required, set)) {
-                missingFields = true
-              }
+          if (fieldsets) {
+            fieldsets.forEach((set) => {
+              fieldset_attributes.forEach(({ required, name }) => {
+                if (projectUtils.isFieldMissing(name, required, set)) {
+                  missingFields = true
+                }
+              })
             })
-          })
+          }
         } else if (projectUtils.isFieldMissing(field.name, field.required, attributeData)) {
           missingFields = true
         }

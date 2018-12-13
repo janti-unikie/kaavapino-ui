@@ -3,6 +3,7 @@ export const FETCH_PROJECTS_SUCCESSFUL = 'Fetch projects successful'
 export const FETCH_OWN_PROJECTS_SUCCESSFUL = 'Fetch own projects successful'
 export const CREATE_PROJECT = 'Create project'
 export const CREATE_PROJECT_SUCCESSFUL = 'Create project successful'
+export const CREATE_OWN_PROJECT_SUCCESSFUL = 'Create own project successful'
 export const FETCH_PROJECT_SUCCESSFUL = 'Fetch project successful'
 export const UPDATE_PROJECT = 'Update project'
 export const INITIALIZE_PROJECT = 'Initialize project'
@@ -33,6 +34,7 @@ export const updateProject = (updatedProject) => ({ type: UPDATE_PROJECT, payloa
 
 export const createProject = () => ({ type: CREATE_PROJECT })
 export const createProjectSuccessful = (project) => ({ type: CREATE_PROJECT_SUCCESSFUL, payload: project })
+export const createOwnProjectSuccessful = (project) => ({ type: CREATE_OWN_PROJECT_SUCCESSFUL, payload: project })
 
 export const saveProject = () => ({ type: SAVE_PROJECT })
 export const saveProjectSuccessful = () => ({ type: SAVE_PROJECT_SUCCESSFUL })

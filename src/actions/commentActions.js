@@ -1,4 +1,5 @@
 export const FETCH_COMMENTS = 'Fetch comments'
+export const POLL_COMMENTS = 'Poll comments'
 export const FETCH_COMMENTS_SUCCESSFUL = 'Fetch comments successful'
 export const CREATE_COMMENT = 'Create comment'
 export const CREATE_COMMENT_SUCCESSFUL = 'Create comment successful'
@@ -9,6 +10,7 @@ export const DELETE_COMMENT_SUCCESSFUL = 'Delete comment successful'
 
 // Fetch
 export const fetchComments = (id) => ({ type: FETCH_COMMENTS, payload: id })
+export const pollComments = (id) => ({ type: POLL_COMMENTS, payload: id })
 export const fetchCommentsSuccessful = (comments) => ({ type: FETCH_COMMENTS_SUCCESSFUL, payload: comments })
 
 // Create

@@ -8,6 +8,7 @@ import { reducer as projectType } from './projectTypeReducer'
 import { reducer as document } from './documentReducer'
 import { reducer as comment } from './commentReducer'
 import { reducer as api } from './apiReducer'
+import { reducer as toastr } from 'react-redux-toastr'
 
 export default {
   auth,
@@ -19,5 +20,6 @@ export default {
   projectType,
   document,
   comment,
-  api
+  api,
+  toastr
 }
