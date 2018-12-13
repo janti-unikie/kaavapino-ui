@@ -9,9 +9,9 @@ const FormSection = ({ section: { title, fields }, checking, attributeData, upda
     <div>
       <span id={`title-${title}`} className='form-title'>{ title }</span>
       <Divider />
-      { fields.map((field, i) => (
+      { fields.map((field) => (
         <FormField
-          key={i}
+          key={field.name}
           checking={checking}
           field={field}
           attributeData={attributeData}
