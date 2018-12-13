@@ -5,7 +5,6 @@ import { reduxForm } from 'redux-form'
 import configureStore from 'redux-mock-store'
 import Matrix from '../../../components/input/Matrix'
 
-// 28 38
 describe('<Matrix />', () => {
   let wrapper
 
