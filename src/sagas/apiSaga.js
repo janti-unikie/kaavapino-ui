@@ -1,6 +1,7 @@
 import { takeLatest, put, all, call } from 'redux-saga/effects'
 import { USER_FOUND } from 'redux-oidc'
 import { push } from 'connected-react-router'
+import { actions as toastrActions } from 'react-redux-toastr'
 import { ERROR, INIT_API_REQUEST, tokenLoaded, initApiRequestSuccessful, error } from '../actions/apiActions'
 import apiUtils from '../utils/apiUtils'
 
@@ -18,6 +19,8 @@ function* handleErrorSaga({ payload }) {
     const { status } = payload.response
     if (status === 401) {
       yield put(push('/logout'))
+    } else if (status === 403) {
+      yield put(toastrActions.add({ type: 'error', title: 'Virhe', message: 'Ei tarvittavia oikeuksia tähän toimintoon!' }))
     } else {
       yield put(push(`/error/${status}`))
     }

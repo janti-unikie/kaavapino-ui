@@ -117,7 +117,7 @@ class ProjectPage extends Component {
 
   getLatestChange = () => {
     const { edit, latestEditField } = this.props
-    if (!edit || !latestEditField) {
+    if (!edit || !latestEditField || !latestEditField.name) {
       return null
     }
     return `(Viimeisin muokkaus: ${latestEditField.name} ${projectUtils.formatDateTime(latestEditField.timestamp)} ${latestEditField.user_name})`

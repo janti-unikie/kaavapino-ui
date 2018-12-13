@@ -38,6 +38,9 @@ class ProjectEditPage extends Component {
       return <Loader inline={'centered'} active>Ladataan</Loader>
     }
     const currentSchema = schema.phases.find((s) => s.id === selectedPhase)
+    if (!currentSchema) {
+      return <Loader inline={'centered'} active>Ladataan</Loader>
+    }
     return (
       <div className='project-input-container'>
         <EditForm
