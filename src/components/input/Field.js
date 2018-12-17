@@ -9,6 +9,9 @@ import { Field, FieldArray } from 'redux-form'
 
 class CustomField extends Component {
   shouldComponentUpdate(p) {
+    if (!this.props.attributeData || !p.attributeData) {
+      return true
+    }
     if (this.props.attributeData[this.props.field.name] !== p.attributeData[p.field.name]) {
       return true
     }
@@ -30,6 +33,8 @@ class CustomField extends Component {
   renderString = (props) => <Input type='text' {...props} />
 
   renderTextArea = (props) => <TextArea {...props} />
+
+  renderDateTime = (props) => <Input type='datetime' {...props} />
 
   renderDate = (props) => <Input type='date' {...props} />
 
@@ -56,8 +61,11 @@ class CustomField extends Component {
 
     switch (field.type) {
       case 'boolean': return this.renderRadio
+      case 'string':
+      case 'uuid':
       case 'short_string': return this.renderString
       case 'long_string': return this.renderTextArea
+      case 'datetime': return this.renderDateTime
       case 'date': return this.renderDate
       case 'fieldset': return this.renderFieldset
       default: return this.renderNumber

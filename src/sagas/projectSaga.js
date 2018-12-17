@@ -88,7 +88,11 @@ function* saveProject() {
       if (initial.hasOwnProperty(key) && initial[key] === values[key]) {
         return
       }
-      attribute_data[key] = values[key]
+      if (values[key] === '') {
+        attribute_data[key] = null
+      } else {
+        attribute_data[key] = values[key]
+      }
     })
     try {
       const updatedProject = yield call(projectApi.patch, { attribute_data }, { path: { id: currentProjectId } }, ':id/')
