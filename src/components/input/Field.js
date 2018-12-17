@@ -34,7 +34,7 @@ class CustomField extends Component {
 
   renderTextArea = (props) => <TextArea {...props} />
 
-  renderDateTime = (props) => <Input type='datetime' {...props} />
+  renderDateTime = (props) => <Input type='datetime-local' {...props} />
 
   renderDate = (props) => <Input type='date' {...props} />
 

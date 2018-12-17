@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Dropdown } from 'semantic-ui-react'
+import { Dropdown, Header } from 'semantic-ui-react'
 import Field from '../input/Field'
+import reportUtils from '../../utils/reportUtils'
 
 class Filter extends Component {
   state = {
@@ -12,7 +13,7 @@ class Filter extends Component {
       return {
         key: option,
         value: option,
-        text: option
+        text: reportUtils.getOptionName(option)
       }
     })
   }
@@ -22,14 +23,18 @@ class Filter extends Component {
     const { selectedOption } = this.state
     return (
       <div className='filter'>
-        <p>{ id }</p>
-        <Dropdown
-          fluid
-          selection
-          clearable
-          options={this.formatOptions(options)}
-          onChange={(e, data) => this.setState({ selectedOption: data.value })}
-        />
+        <Header as='h4'>
+          <Header.Content>
+            { `${reportUtils.getFilterName(id)} ` }
+            <Dropdown
+              inline
+              clearable
+              header='Valitse suodatin'
+              options={this.formatOptions(options)}
+              onChange={(e, data) => this.setState({ selectedOption: data.value })}
+            />
+          </Header.Content>
+        </Header>
         {
           selectedOption &&
           <Field field={{ type, name: `${id}__${selectedOption}` }} />

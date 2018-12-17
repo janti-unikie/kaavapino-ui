@@ -1,3 +1,22 @@
 .reports-page {
   flex: 1;
+
+  .report-builder-container {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+
+    .report-filter-container {
+      margin-top: 30px;
+    }
+
+    .report-create-button {
+      margin-top: 30px;
+      align-self: center;
+    }
+
+    .filter {
+      margin-bottom: 20px;
+    }
+  }
 }

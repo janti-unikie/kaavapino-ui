@@ -13,7 +13,7 @@ class ReportFilters extends Component {
         fName = filter.identifier.split('__')[0]
       }
       if (!result[fName]) {
-        result[fName] = { type: filter.type, options: [] }
+        result[fName] = { type: filter.type !== 'integer' ? filter.type : 'string', options: [] }
       }
       if (!result[fName].options.includes(filter.lookup)) {
         result[fName].options.push(filter.lookup)
