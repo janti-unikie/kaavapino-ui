@@ -1,16 +1,19 @@
 
 import React from 'react'
-import { Loader } from 'semantic-ui-react'
+import { Loader, Popup } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 
-const Button = ({ handleClick, value, icon, loading }) => {
-  return (
+const Button = ({ handleClick, value, icon, loading, help }) => {
+  const btn = (
     <button disabled={loading} className='form-button' onClick={handleClick}>
       { !loading && icon }
       { loading && <Loader inverted size='tiny' color='white' inline active /> }
       { ` ${value}` }
     </button>
   )
+  return help ?
+    <Popup trigger={btn} content={help} position='bottom center' /> :
+    btn
 }
 
 Button.propTypes = {

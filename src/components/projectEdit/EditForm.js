@@ -68,6 +68,7 @@ class EditForm extends Component {
           value='Tallenna'
           icon={<FontAwesomeIcon icon='check' />}
           loading={saving}
+          help='Tallentaa hankkeen'
         />
         { isCurrentPhase && (
           <Button
@@ -75,6 +76,7 @@ class EditForm extends Component {
             value='Lopeta vaihe'
             icon={<FontAwesomeIcon icon='forward' />}
             loading={changingPhase || validating}
+            help='Yrittää lopettaa tämänhetkisen vaiheen'
           />
         )}
         <ConfirmModal callback={this.phaseCallback} open={this.state.verifying} />

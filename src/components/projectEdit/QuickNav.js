@@ -96,11 +96,13 @@ class QuickNav extends Component {
             value='Tallenna'
             icon={<FontAwesomeIcon icon='check' />}
             loading={this.props.saving}
+            help='Tallentaa hankkeen'
           />
           <Button
             handleClick={this.props.handleCheck}
             value='Tarkista'
             icon={<FontAwesomeIcon icon='search' />}
+            help='Korostaa pakolliset puuttuvat kentät'
           />
         </div>
       </div>
