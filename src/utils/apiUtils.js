@@ -23,9 +23,9 @@ const setToken = (newToken) => token = newToken
 
 const getToken = () => token
 
-export const get = async (apiUrl) => {
-  const { data } = await axios.get(apiUrl)
-  return data
+export const get = async (apiUrl, config = {}, all = false) => {
+  const res = await axios.get(apiUrl, { ...config })
+  return all ? res : res.data
 }
 
 export const post = async (apiUrl, body = {}, headers = {}) => {

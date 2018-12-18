@@ -18,6 +18,7 @@ import LogoutCallbackPage from './auth/LogoutCallback'
 import ProtectedRoute from './common/ProtectedRoute'
 import ProjectListPage from './projectList'
 import ProjectPage from './project'
+import ReportsPage from './reports'
 import ErrorPage from './error'
 import Header from './common/Header'
 import Footer from './common/Footer'
@@ -50,6 +51,7 @@ class App extends Component {
             <Header />
             <Switch>
               <Route exact path='/' render={() => <ProjectListPage />} />
+              <Route exact path='/reports' render={() => <ReportsPage />} />
               <Route exact path='/:id' render={({ match }) => <ProjectPage id={match.params.id} />} />
               <Route exact path='/:id/edit' render={({ match }) => <ProjectPage edit id={match.params.id} />} />
               <Route exact path='/:id/documents' render={({ match }) => <ProjectPage documents id={match.params.id} />} />

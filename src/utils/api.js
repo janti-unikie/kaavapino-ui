@@ -18,8 +18,8 @@ class Api {
     )
   )
 
-  get = async ({ path = {}, query = {} } = {}, opt = '', config = {}) => (
-    await get(this.formatUrl(path, query, opt), config)
+  get = async ({ path = {}, query = {} } = {}, opt = '', config = {}, all = false) => (
+    await get(this.formatUrl(path, query, opt), config, all)
   )
 
   post = async (body = {}, { path = {}, query = {} } = {}, opt = '', config = {}) => (
@@ -48,3 +48,4 @@ export const projectTypeApi = new Api('/v1/projecttypes/')
 export const projectSubtypeApi = new Api('/v1/projectsubtypes/')
 export const schemaApi = new Api('/v1/schemas/')
 export const userApi = new Api('/v1/users/')
+export const reportApi = new Api('/v1/reports/')

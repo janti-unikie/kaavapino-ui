@@ -46,6 +46,7 @@ class ProjectListPage extends Component {
           actions={(
             <NavActions>
               <NavAction onClick={() => this.toggleForm(true)}><FontAwesomeIcon icon='plus'/>Luo uusi hanke</NavAction>
+              <NavAction to={'/reports'}><FontAwesomeIcon icon='file-csv'/>Luo raportteja</NavAction>
             </NavActions>
           )}
         />
