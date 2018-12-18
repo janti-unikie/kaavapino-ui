@@ -19,6 +19,8 @@ const Summary = ({ attributeData }) => {
           )) }
         </div>
       )
+    } else if (type === 'matrix') {
+      return <p>Ei tuettu</p>
     }
 
     return <p>{value}</p>
