@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Dropdown, Header } from 'semantic-ui-react'
-import Field from '../input/Field'
+import FilterField from './FilterField'
 import reportUtils from '../../utils/reportUtils'
 
 class Filter extends Component {
@@ -37,7 +37,7 @@ class Filter extends Component {
         </Header>
         {
           selectedOption &&
-          <Field field={{ type, name: `${id}__${selectedOption}` }} />
+          <FilterField key={`${id}__${selectedOption}`} type={type} id={id} selectedOption={selectedOption} />
         }
       </div>
     )

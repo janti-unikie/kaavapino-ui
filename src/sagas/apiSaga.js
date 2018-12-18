@@ -19,7 +19,7 @@ function* handleErrorSaga({ payload }) {
     const { status } = payload.response
     if (status === 401) {
       yield put(push('/logout'))
-    } else if (status === 403) {
+    } else if (status === 403 || status === 400) {
       yield put(toastrActions.add({ type: 'error', title: 'Virhe', message: 'Ei tarvittavia oikeuksia tähän toimintoon!' }))
     } else {
       yield put(push(`/error/${status}`))
