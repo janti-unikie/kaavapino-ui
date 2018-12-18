@@ -3,12 +3,25 @@ import React from 'react'
 const Summary = ({ attributeData }) => {
   const formatAttributeValue = ({ type, value, empty }) => {
     if (empty) {
-      return '-'
+      return <p>-</p>
     }
     if (type === 'boolean') {
-      return value ? 'Kyllä' : 'Ei'
+      return <p>{value ? 'Kyllä' : 'Ei'}</p>
+    } else if (type === 'fieldset') {
+      return (
+        <div>
+          { value.map((set, i) => (
+            <React.Fragment key={i}>
+              { Object.values(set).map((field) => (
+                <p key={field}>{ field }</p>
+              )) }
+            </React.Fragment>
+          )) }
+        </div>
+      )
     }
-    return value
+
+    return <p>{value}</p>
   }
   return (
     <div className='summary'>
@@ -16,7 +29,7 @@ const Summary = ({ attributeData }) => {
         return (
           <div key={label}>
             <b>{ label }</b>
-            <p>{ formatAttributeValue(rest) }</p>
+            { formatAttributeValue(rest) }
           </div>
         )
       }) }

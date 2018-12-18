@@ -14,6 +14,7 @@ const getFilterName = (id) => {
     case 'phase': return 'Vaihe (tunniste)'
     case 'phase__index': return 'Vaihe (luku)'
     case 'phase__name': return 'Vaihe (nimi)'
+    default: return 'ei tietoa'
   }
 }
 
@@ -28,6 +29,7 @@ const getOptionName = (id) => {
     case 'date__exact': return 'täsmälleen'
     case 'date__lte': return 'vähemmän tai yhtäsuuri kuin'
     case 'date__gte': return 'suurempi tai yhtäsuuri kuin'
+    default: return 'ei tietoa'
   }
 }
 
