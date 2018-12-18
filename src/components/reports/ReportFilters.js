@@ -8,7 +8,7 @@ class ReportFilters extends Component {
       const splittedFilter = filter.identifier.split('__')
       let fName
       if (splittedFilter.length > 1) {
-        fName = splittedFilter.slice(0, -1).join('__')
+        fName = splittedFilter[splittedFilter.length - 1] === 'uuid' ? splittedFilter.join('__') : splittedFilter.slice(0, -1).join('__')
       } else {
         fName = filter.identifier.split('__')[0]
       }
