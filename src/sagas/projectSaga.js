@@ -11,13 +11,13 @@ import {
   CREATE_PROJECT, createProjectSuccessful, createOwnProjectSuccessful,
   INITIALIZE_PROJECT, initializeProjectSuccessful,
   SAVE_PROJECT, saveProjectSuccessful,
-  CHANGE_PROJECT_PHASE, changeProjectPhaseSuccessful,
+  CHANGE_PROJECT_PHASE, changeProjectPhaseSuccessful, changeProjectPhaseFailure,
   VALIDATE_PROJECT_FIELDS, validateProjectFieldsSuccessful,
   PROJECT_FILE_UPLOAD, PROJECT_FILE_REMOVE,
   projectFileUploadSuccessful, projectFileRemoveSuccessful,
   saveProject as saveProjectAction
 } from '../actions/projectActions'
-import { startSubmit, stopSubmit, setSubmitSucceeded, change } from 'redux-form'
+import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
 import { setLatestEditField } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
@@ -66,9 +66,8 @@ function* createProject() {
     const createdProject = yield call(projectApi.post, values)
     if (createdProject.user === userId) {
       yield put(createOwnProjectSuccessful(createdProject))
-    } else {
-      yield put(createProjectSuccessful(createdProject))
     }
+    yield put(createProjectSuccessful(createdProject))
     yield put(setSubmitSucceeded('modal'))
   } catch (e) {
     if (e.response.status === 400) {
@@ -162,6 +161,7 @@ function* changeProjectPhase({ payload: phase }) {
     window.scrollTo(0, 0)
   } catch (e) {
     yield put(error(e))
+    yield put(changeProjectPhaseFailure())
   }
 }
 
@@ -189,7 +189,6 @@ function* projectFileUpload({ payload: { attribute, file, callback, setCancelTok
       }
     )
     yield put(projectFileUploadSuccessful(newFile))
-    yield put(change('editForm', newFile.attribute, newFile.file))
     yield put(saveProjectAction())
   } catch (e) {
     if (!axios.isCancel(e)) {
@@ -205,7 +204,6 @@ function* projectFileRemove({ payload }) {
     attribute_data[payload] = null
     yield call(projectApi.patch, { attribute_data }, { path: { id: currentProjectId } }, ':id/')
     yield put(projectFileRemoveSuccessful(payload))
-    yield put(change('editForm', payload, null))
     yield put(saveProjectAction())
   } catch (e) {
     yield put(error(e))

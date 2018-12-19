@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Loader } from 'semantic-ui-react'
 import { saveProject, changeProjectPhase, validateProjectFields, projectSetChecking } from '../../actions/projectActions'
 import { fetchSchemas } from '../../actions/schemaActions'
-import { savingSelector, changingPhaseSelector, validatingSelector, hasErrorsSelector } from '../../selectors/projectSelector'
+import { savingSelector, changingPhaseSelector, validatingSelector, hasErrorsSelector, checkingSelector } from '../../selectors/projectSelector'
 import { schemaSelector } from '../../selectors/schemaSelector'
 import EditForm from './EditForm'
 import QuickNav from './QuickNav'
@@ -60,7 +60,7 @@ class ProjectEditPage extends Component {
         <div className='project-input-right'>
           <QuickNav
             handleSave={this.handleSave}
-            handleCheck={() => this.props.projectSetChecking()}
+            handleCheck={() => this.props.projectSetChecking(!this.props.checking)}
             projectName={ name }
             sections={ currentSchema.sections }
             phaseTitle={ currentSchema.title }
@@ -79,7 +79,8 @@ const mapStateToProps = (state) => {
     saving: savingSelector(state),
     changingPhase: changingPhaseSelector(state),
     validating: validatingSelector(state),
-    hasErrors: hasErrorsSelector(state)
+    hasErrors: hasErrorsSelector(state),
+    checking: checkingSelector(state)
   }
 }
 

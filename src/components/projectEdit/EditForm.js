@@ -61,7 +61,7 @@ class EditForm extends Component {
       validating
     } = this.props
     return (
-      <Form className='form-container'>
+      <Form className='form-container' autoComplete='off'>
         { sections.map((section, i) => <FormSection key={i} section={section} /> ) }
         <Button
           handleClick={this.props.handleSave}

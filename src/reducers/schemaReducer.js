@@ -23,7 +23,8 @@ export const reducer = (state = initialState, action) => {
     case FETCH_PROJECTS: {
       return {
         ...state,
-        schema: null
+        schema: null,
+        latestEditField: null
       }
     }
 

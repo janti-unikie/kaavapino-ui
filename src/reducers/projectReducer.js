@@ -83,7 +83,8 @@ export const reducer = (state = initialState, action) => {
     case INITIALIZE_PROJECT_SUCCESSFUL: {
       return {
         ...state,
-        currentProjectLoaded: true
+        currentProjectLoaded: true,
+        checking: false
       }
     }
 
@@ -174,7 +175,7 @@ export const reducer = (state = initialState, action) => {
     case PROJECT_SET_CHECKING: {
       return {
         ...state,
-        checking: !state.checking
+        checking: action.payload
       }
     }
 
