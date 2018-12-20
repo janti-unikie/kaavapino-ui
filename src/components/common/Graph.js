@@ -57,6 +57,7 @@ class Graph extends Component {
           width='100%'
           height={`${height}px`}
           options={options}
+          chartLanguage='fi'
         />
       </div>
     )
