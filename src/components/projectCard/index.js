@@ -4,6 +4,7 @@ import { Loader, Radio } from 'semantic-ui-react'
 import { projectTypesSelector } from '../../selectors/projectTypeSelector'
 import Summary from './Summary'
 import Image from './Image'
+import Graph from '../common/Graph'
 import projectUtils from '../../utils/projectUtils'
 
 class ProjectCardPage extends Component {
@@ -56,7 +57,7 @@ class ProjectCardPage extends Component {
       } else {
         data['empty'] = true
       }
-      result = result.concat(data)
+      result.push(data)
     })
     return result
   }
@@ -67,6 +68,8 @@ class ProjectCardPage extends Component {
 
   render() {
     const { metadata, extended, imageSrc } = this.state
+    const { deadlines, name } = this.props
+    const graphData = [projectUtils.formatDeadlines({ name, deadlines })]
     if (!metadata) {
       return <Loader inline={'centered'} active>Ladataan</Loader>
     }
@@ -82,6 +85,7 @@ class ProjectCardPage extends Component {
         <div className='project-card-extend'>
           <Radio onChange={this.handleExtendedChange} toggle label='Laajennettu' checked={extended} />
         </div>
+        <Graph data={graphData} height={140} />
       </div>
     )
   }

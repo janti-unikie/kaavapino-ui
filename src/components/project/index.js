@@ -89,11 +89,12 @@ class ProjectPage extends Component {
     } else if (documents) {
       return <ProjectDocumentsPage />
     }
-
     return (
       <ProjectCardPage
         attributeData={currentProject.attribute_data}
         type={currentProject.type}
+        deadlines={currentProject.deadlines}
+        name={currentProject.name}
       />
     )
   }

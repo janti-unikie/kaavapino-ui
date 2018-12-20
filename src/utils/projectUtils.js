@@ -26,6 +26,17 @@ const formatUsersName = (user) => {
   return ''
 }
 
+const formatDeadlines = ({ name, deadlines }) => {
+  return ({
+    title: name,
+    deadlines: deadlines.map(d => ({
+      title: d.phase_name,
+      start: new Date(d.start),
+      end: new Date(d.deadline)
+    }))
+  })
+}
+
 const isFieldMissing = (fieldName, isFieldRequired, attributeData) => {
   return (isFieldRequired && (!attributeData.hasOwnProperty(fieldName) || attributeData[fieldName] === null || attributeData[fieldName] === ''))
 }
@@ -35,5 +46,6 @@ export default {
   formatTime,
   formatDateTime,
   formatUsersName,
+  formatDeadlines,
   isFieldMissing
 }
