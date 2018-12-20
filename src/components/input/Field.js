@@ -5,6 +5,7 @@ import Radio from './Radio'
 import TextArea from './TextArea'
 import File from './File'
 import FieldSet from './FieldSet'
+import Geometry from './Geometry'
 import { Field, FieldArray } from 'redux-form'
 
 class CustomField extends Component {
@@ -77,6 +78,8 @@ class CustomField extends Component {
     const type = field.type
     if (type === 'file' || type === 'image') {
       return <File image={type === 'image'} field={field} src={attributeData[field.name]} />
+    } else if (type === 'geometry') {
+      return <Geometry />
     }
 
     const fieldProps = {
