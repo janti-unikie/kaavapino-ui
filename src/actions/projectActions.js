@@ -54,4 +54,4 @@ export const projectFileUploadSuccessful = (attributeData) => ({ type: PROJECT_F
 export const projectFileRemove = (attribute) => ({ type: PROJECT_FILE_REMOVE, payload: attribute })
 export const projectFileRemoveSuccessful = (attribute) => ({ type: PROJECT_FILE_REMOVE_SUCCESSFUL, payload: attribute })
 
-export const projectSetChecking = () => ({ type: PROJECT_SET_CHECKING })
+export const projectSetChecking = (value) => ({ type: PROJECT_SET_CHECKING, payload: value })

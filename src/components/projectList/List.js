@@ -4,6 +4,7 @@ import { phasesSelector } from '../../selectors/phaseSelector'
 import { Loader } from 'semantic-ui-react'
 import ListHeader from './ListHeader'
 import ListItem from './ListItem'
+import Graph from '../common/Graph'
 import projectUtils from '../../utils/projectUtils'
 
 class List extends Component {
@@ -14,7 +15,7 @@ class List extends Component {
       'projectId',
       'name',
       'phase',
-      null,
+      'nextDeadline',
       'subtype',
       'modified_at',
       'user'
@@ -83,8 +84,11 @@ class List extends Component {
     const subtype = item.subtype
     const name = item.name
     const projectId = item.attribute_data['hankenumero'] || '-'
-    return { name, user, modified_at, phase, subtype, projectId }
+    const nextDeadline = this.formatNextDeadline(item.deadlines, item.phase)
+    return { name, user, modified_at, phase, subtype, projectId, nextDeadline }
   }
+
+  formatNextDeadline = (deadlines, phase) => projectUtils.formatDate(deadlines.find((d) => d.phase_id === phase).deadline)
 
   filterItems = (items) => {
     const { filter } = this.state
@@ -115,16 +119,18 @@ class List extends Component {
       )
     }
     const items = this.sortItems(this.filterItems(this.props.items))
+    const graphData = items.map(i => projectUtils.formatDeadlines(i)).slice(0, 4)
     const headerItems = ['Hankenumero', 'Nimi', 'Vaihe', 'Seuraava määräaika', 'Koko', 'Muokattu', 'Vastuuhenkilö']
     return (
       <div className='project-list'>
         <ListHeader items={headerItems} selected={sort} dir={dir} filter={this.setFilter} sort={this.setSort} />
-        { items.map(({ attribute_data, name, id, modified_at, user, subtype, phase }, i) => {
+        { items.map(({ attribute_data, name, id, modified_at, user, subtype, phase, deadlines }, i) => {
           const listItem = {
             ...this.formatPhase(phase),
             name,
             id,
             modified_at: projectUtils.formatDate(modified_at),
+            nextDeadline: this.formatNextDeadline(deadlines, phase),
             user: this.formatUser(user),
             subtype: this.formatSubtype(subtype),
             projectId: attribute_data['hankenumero'] || '-'
@@ -137,6 +143,7 @@ class List extends Component {
           )
         })}
         { items.length === 0 && <span className='empty-list-info'>Ei hankkeita!</span> }
+        <Graph data={graphData} height={graphData.length * 65} />
       </div>
     )
   }

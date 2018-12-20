@@ -33,7 +33,6 @@ if (window.location.pathname === '/silent-renew') {
           <ReduxToastr
             timeOut={4000}
             newestOnTop={false}
-            preventDuplicates
             position='top-center'
             transitionIn='fadeIn'
             transitionOut='fadeOut'
