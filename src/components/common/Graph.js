@@ -55,7 +55,7 @@ class Graph extends Component {
           chartType='Timeline'
           data={[this.columns, ...rows]}
           width='100%'
-          height={`${height}px`}
+          height='100%'
           options={options}
           chartLanguage='fi'
         />
