@@ -39,6 +39,8 @@ class CustomField extends Component {
 
   renderDate = (props) => <Input type='date' {...props} />
 
+  renderGeometry = (props) => <Geometry {...props} />
+
   renderSelect = (props) => {
     const { choices, multiple_choice } = this.props.field
     return <SelectInput multiple={multiple_choice} options={this.formatOptions(choices)} {...props} />
@@ -69,6 +71,7 @@ class CustomField extends Component {
       case 'datetime': return this.renderDateTime
       case 'date': return this.renderDate
       case 'fieldset': return this.renderFieldset
+      case 'geometry': return this.renderGeometry
       default: return this.renderNumber
     }
   }
@@ -78,9 +81,9 @@ class CustomField extends Component {
     const type = field.type
     if (type === 'file' || type === 'image') {
       return <File image={type === 'image'} field={field} src={attributeData[field.name]} />
-    } else if (type === 'geometry') {
+    }/*  else if (type === 'geometry') {
       return <Geometry />
-    }
+    } */
 
     const fieldProps = {
       name: field.name,
