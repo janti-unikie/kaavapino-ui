@@ -67,3 +67,13 @@
   user-select: none;
   line-height: 100%;
 }
+
+.geometry-input-container {
+  .geometry-input {
+    height: 300px;
+  }
+  
+  .geometry-input-actions {
+    margin-top: 10px;
+  }  
+}

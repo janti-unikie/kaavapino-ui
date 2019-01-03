@@ -5,6 +5,7 @@ import Radio from './Radio'
 import TextArea from './TextArea'
 import File from './File'
 import FieldSet from './FieldSet'
+import Geometry from './Geometry'
 import { Field, FieldArray } from 'redux-form'
 
 class CustomField extends Component {
@@ -38,6 +39,8 @@ class CustomField extends Component {
 
   renderDate = (props) => <Input type='date' {...props} />
 
+  renderGeometry = (props) => <Geometry {...props} />
+
   renderSelect = (props) => {
     const { choices, multiple_choice } = this.props.field
     return <SelectInput multiple={multiple_choice} options={this.formatOptions(choices)} {...props} />
@@ -68,6 +71,7 @@ class CustomField extends Component {
       case 'datetime': return this.renderDateTime
       case 'date': return this.renderDate
       case 'fieldset': return this.renderFieldset
+      case 'geometry': return this.renderGeometry
       default: return this.renderNumber
     }
   }
