@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Map, TileLayer } from 'react-leaflet'
 import Polygon from '../common/Polygon'
 import { Button } from 'semantic-ui-react'
-import { EPSG3879 } from '../../utils/mapUtils'
+import { EPSG3879, formatGeoJSONToPositions, formatPositionsToGeoJSON } from '../../utils/mapUtils'
 
 class Geometry extends Component {
   constructor(props) {
@@ -25,44 +25,12 @@ class Geometry extends Component {
     }
   }
 
-  handleUpdate = (positions) => {
-    this.props.input.onChange(this.formatPositionsToGeoJSON(positions))
-  }
-
-  formatGeoJSONToPositions = (geoJSON) => {
-    const result = []
-    if (!geoJSON) {
-      return [[]]
-    }
-    geoJSON.forEach((polygon) => {
-      if (polygon.length === 0) {
-        result.push([])
-      } else {
-        result.push(polygon[0].slice(0, -1).map(([lat, lng]) => ({ lat, lng })))
-      }
-    })
-    return result
-  }
-
-  formatPositionsToGeoJSON = (positions) => {
-    const result = []
-    positions.forEach((polygon, i) => {
-      result.push([])
-      if (polygon.length > 0) {
-        let updatedPolygon = polygon.concat(polygon[0])
-        result[i].push(updatedPolygon.map(({ lat, lng }) => [lat, lng]))
-      }
-    })
-    return {
-      type: 'MultiPolygon',
-      coordinates: result
-    }
-  }
+  handleUpdate = (positions) => this.props.input.onChange(formatPositionsToGeoJSON(positions))
 
   handleDoubleClick = ({ latlng }) => {
     const { userActions } = this.state
     const { coordinates } = this.props.input.value
-    const positions = this.formatGeoJSONToPositions(coordinates)
+    const positions = formatGeoJSONToPositions(coordinates)
     const newUserActions = userActions.concat([positions])
     const newPositions = [ ...positions ]
     newPositions[newPositions.length - 1] = newPositions[newPositions.length - 1].concat(latlng)
@@ -74,7 +42,7 @@ class Geometry extends Component {
 
   addArea = () => {
     const { coordinates } = this.props.input.value
-    const positions = this.formatGeoJSONToPositions(coordinates)
+    const positions = formatGeoJSONToPositions(coordinates)
     const newPositions = positions.concat([[]])
     this.handleUpdate(newPositions)
   }
@@ -88,6 +56,7 @@ class Geometry extends Component {
   }
 
   render() {
+    const { userActions } = this.state
     const { coordinates } = this.props.input.value
     const crs = EPSG3879()
     return (
@@ -98,21 +67,22 @@ class Geometry extends Component {
           doubleClickZoom={false}
           scrollWheelZoom={false}
           maxZoom={16}
-          zoom={13}
+          zoom={12}
           crs={crs}
           ondblclick={this.handleDoubleClick}
           ref={this.mapRef}
+          style={{ cursor: 'pointer' }}
         >
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='https://geoserver.hel.fi/mapproxy/wmts/osm-sm-hq/etrs_tm35fin_hq/{z}/{x}/{y}.png'
           />
-          <Polygon positions={this.formatGeoJSONToPositions(coordinates)} />
+          <Polygon positions={formatGeoJSONToPositions(coordinates)} />
         </Map>
         <div className='geometry-input-actions'>
           <Button onClick={this.clear}>Tyhjennä</Button>
           <Button onClick={this.addArea}>Lisää uusi alue</Button>
-          <Button onClick={this.revert}>Peruuta muutos</Button>
+          <Button onClick={this.revert} disabled={!userActions.length}>Peruuta muutos</Button>
         </div>
       </div>
     )

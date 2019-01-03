@@ -14,3 +14,33 @@ export const EPSG3879 = () => {
   }
   return new L.Proj.CRS(crsName, projDef, crsOpts)
 }
+
+export const formatGeoJSONToPositions = (geoJSON) => {
+  const result = []
+  if (!geoJSON) {
+    return [[]]
+  }
+  geoJSON.forEach((polygon) => {
+    if (polygon.length === 0) {
+      result.push([])
+    } else {
+      result.push(polygon[0].slice(0, -1).map(([lat, lng]) => ({ lat, lng })))
+    }
+  })
+  return result
+}
+
+export const formatPositionsToGeoJSON = (positions) => {
+  const result = []
+  positions.forEach((polygon, i) => {
+    result.push([])
+    if (polygon.length > 0) {
+      let updatedPolygon = polygon.concat(polygon[0])
+      result[i].push(updatedPolygon.map(({ lat, lng }) => [lat, lng]))
+    }
+  })
+  return {
+    type: 'MultiPolygon',
+    coordinates: result
+  }
+}
