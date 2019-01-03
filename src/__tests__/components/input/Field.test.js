@@ -85,14 +85,14 @@ describe('<Field />', () => {
       field: { name: '1', type: 'short_string', required: true },
       fields: []
     }
-    const rendeSpy = jest.spyOn(Field.prototype, 'render')
+    const renderSpy = jest.spyOn(Field.prototype, 'render')
     const test = shallow(<Field { ...props } />)
 
-    expect(rendeSpy).toHaveBeenCalledTimes(1)
+    expect(renderSpy).toHaveBeenCalledTimes(1)
     test.setProps({ attributeData: { '1': 'a' } })
-    expect(rendeSpy).toHaveBeenCalledTimes(1)
+    expect(renderSpy).toHaveBeenCalledTimes(1)
     test.setProps({ attributeData: { '1': 'b' } })
-    expect(rendeSpy).toHaveBeenCalledTimes(2)
-    rendeSpy.mockRestore()
+    expect(renderSpy).toHaveBeenCalledTimes(2)
+    renderSpy.mockRestore()
   })
 })
