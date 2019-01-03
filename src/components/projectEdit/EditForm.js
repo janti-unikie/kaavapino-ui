@@ -57,6 +57,7 @@ class EditForm extends Component {
       sections,
       saving,
       isCurrentPhase,
+      isLastPhase,
       changingPhase,
       validating
     } = this.props
@@ -70,7 +71,7 @@ class EditForm extends Component {
           loading={saving}
           help='Tallentaa hankkeen'
         />
-        { isCurrentPhase && (
+        { isCurrentPhase && !isLastPhase && (
           <Button
             handleClick={this.changePhase}
             value='Lopeta vaihe'

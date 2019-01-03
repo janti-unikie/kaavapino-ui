@@ -6,7 +6,7 @@ const Status = ({ color }) => {
   return (
     <span
       className='project-status'
-      style={{ backgroundColor: color, ...(color === 'white' && { border: '1px solid' }) }}
+      style={{ backgroundColor: color, ...(color === '#ffffff' && { border: '1px solid' }) }}
     />
   )
 }
