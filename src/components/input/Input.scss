@@ -4,6 +4,21 @@
   :nth-child(n):not(:first-child) {
     margin-left: 10px;
   }
+  
+  &.inverted {
+    .radio {
+      > label {
+        color: white;
+
+        &:focus {
+          color: white;
+        }
+      }
+    }
+    .ui.checkbox input:focus~label {
+      color: white;
+    }
+  }
 }
 
 .matrix-container {
