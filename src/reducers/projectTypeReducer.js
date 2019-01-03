@@ -3,7 +3,7 @@ import {
   FETCH_PROJECT_SUBTYPES_SUCCESSFUL
 } from '../actions/projectTypeActions'
 
-const initialState = {
+export const initialState = {
   projectTypes: null,
   projectSubtypes: []
 }

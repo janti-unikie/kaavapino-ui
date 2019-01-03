@@ -2,7 +2,7 @@ import {
   FETCH_PHASES_SUCCESSFUL
 } from '../actions/phaseActions'
 
-const initialState = {
+export const initialState = {
   phases: null
 }
 
