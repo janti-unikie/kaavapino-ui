@@ -16,12 +16,22 @@ class Geometry extends Component {
     }
   }
 
+  componentDidMount() {
+    if (this.props.input.value) {
+      this.goToArea()
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (!prevProps.input.value && this.props.input.value) {
-      const newCenter = this.props.input.value.coordinates[0][0][0]
-      if (!this.mapRef.current.leafletElement.getBounds().contains(newCenter)) {
-        this.setState({ center: this.props.input.value.coordinates[0][0][0] })
-      }
+      this.goToArea()
+    }
+  }
+
+  goToArea = () => {
+    const newCenter = this.props.input.value.coordinates[0][0][0]
+    if (!this.mapRef.current.leafletElement.getBounds().contains(newCenter)) {
+      this.setState({ center: this.props.input.value.coordinates[0][0][0] })
     }
   }
 

@@ -23,7 +23,7 @@ const Matrix = ({ field: { matrix: { rows, columns, fields } }, checking, attrib
             const highlighted = checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
             if ((i % columns.length === 0)) {
               return (
-                <span style={{ display: 'contents' }} key={i}>
+                <span style={{ display: 'contents' }} key={`${field.name}-${i}`}>
                   <b>{ rows[i / columns.length] }</b>
                   <span className={`${highlighted ? 'highlighted' : ''}`}>
                     <Field
@@ -35,7 +35,7 @@ const Matrix = ({ field: { matrix: { rows, columns, fields } }, checking, attrib
               )
             }
             return (
-              <span className={`${highlighted ? 'highlighted' : ''}`} key={i}>
+              <span className={`${highlighted ? 'highlighted' : ''}`} key={`${field.name}-${i}`}>
                 <Field
                   attributeData={attributeData}
                   field={field}
