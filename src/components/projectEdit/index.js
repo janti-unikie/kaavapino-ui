@@ -47,7 +47,8 @@ class ProjectEditPage extends Component {
     return (
       <div className='project-input-container'>
         <EditForm
-          isCurrentPhase={ selectedPhase === phase }
+          isCurrentPhase={selectedPhase === phase}
+          isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
           handleSave={saveProject}
           changePhase={this.changePhase}
           sections={currentSchema.sections}
