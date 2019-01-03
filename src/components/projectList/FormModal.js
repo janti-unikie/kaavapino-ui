@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Modal, Form } from 'semantic-ui-react'
-import SelectInput from '../input/SelectInput'
-import Input from '../input/Input'
 import { reduxForm, Field } from 'redux-form'
+import SelectInput from '../input/SelectInput'
+import Radio from '../input/Radio'
+import Input from '../input/Input'
 import projectUtils from '../../utils/projectUtils'
 
 class FormModal extends Component {
@@ -47,6 +48,8 @@ class FormModal extends Component {
 
   projectSubtypeInput = (props) => <SelectInput options={this.formatSubtypes()} {...props} />
 
+  projectPublicInput = (props) => <Radio inverted double {...props} />
+
   handleSubmit = () => {
     this.setState({ loading: true })
     this.props.handleSubmit()
@@ -71,6 +74,8 @@ class FormModal extends Component {
             <Field name='user' component={this.projectPersonInput} />
             <h3>Hankkeen koko</h3>
             <Field name='subtype' component={this.projectSubtypeInput} />
+            <h3>Julkinen</h3>
+            <Field name='public' component={this.projectPublicInput} />
           </Form>
         </Modal.Content>
         <Modal.Actions>
@@ -88,5 +93,6 @@ FormModal.propTypes = {
 }
 
 export default reduxForm({
-  form: 'modal'
+  form: 'modal',
+  initialValues: { public: true }
 })(FormModal)
