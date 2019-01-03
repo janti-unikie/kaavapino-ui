@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Loader } from 'semantic-ui-react'
+import { isDirty } from 'redux-form/immutable'
 import { saveProject, changeProjectPhase, validateProjectFields, projectSetChecking } from '../../actions/projectActions'
 import { fetchSchemas } from '../../actions/schemaActions'
 import { savingSelector, changingPhaseSelector, validatingSelector, hasErrorsSelector, checkingSelector } from '../../selectors/projectSelector'
 import { schemaSelector } from '../../selectors/schemaSelector'
+import NavigationPrompt from 'react-router-navigation-prompt'
+import Prompt from '../common/Prompt'
 import EditForm from './EditForm'
 import QuickNav from './QuickNav'
 import Comments from '../comments'
@@ -67,6 +70,15 @@ class ProjectEditPage extends Component {
             saving={saving}
           />
           <Comments project={id} />
+          <NavigationPrompt when={this.props.isDirty}>
+            {({ onConfirm, onCancel }) => (
+              <Prompt
+                onCancel={onCancel}
+                onConfirm={onConfirm}
+                message='Hankkeessa on tallentamattomia muutoksia. Haluatteko silti jatkaa?'
+              />
+            )}
+          </NavigationPrompt>
         </div>
       </div>
     )
@@ -80,7 +92,8 @@ const mapStateToProps = (state) => {
     changingPhase: changingPhaseSelector(state),
     validating: validatingSelector(state),
     hasErrors: hasErrorsSelector(state),
-    checking: checkingSelector(state)
+    checking: checkingSelector(state),
+    isDirty: isDirty('editForm')(state)
   }
 }
 
