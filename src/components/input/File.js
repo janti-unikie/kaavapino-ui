@@ -22,16 +22,20 @@ class File extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.src !== this.props.src && !prevProps.uploading) {
-      const { src } = this.props
+      const { src, image } = this.props
       if (!src) {
         this.inputRef.current.value = ''
-        this.imageRef.current.src = ''
+        if (image) {
+          this.imageRef.current.src = ''
+        }
         this.setState({ current: null })
         return
       }
       const urlParts = src.split('/')
       this.setState({ current: urlParts[urlParts.length - 1] })
-      this.imageRef.current.src = src
+      if (image) {
+        this.imageRef.current.src = src
+      }
     }
   }
 
@@ -90,7 +94,7 @@ class File extends Component {
           hidden
           id={field.name}
           multiple
-          type="file"
+          type='file'
           onChange={this.onChangeFile}
         />
         { uploading && <Progress percent={percentCompleted} progress indicating /> }
