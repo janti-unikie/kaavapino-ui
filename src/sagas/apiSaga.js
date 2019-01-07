@@ -1,15 +1,21 @@
+import axios from 'axios'
 import { takeLatest, put, all, call } from 'redux-saga/effects'
 import { USER_FOUND } from 'redux-oidc'
 import { push } from 'connected-react-router'
 import { actions as toastrActions } from 'react-redux-toastr'
-import { ERROR, INIT_API_REQUEST, tokenLoaded, initApiRequestSuccessful, error } from '../actions/apiActions'
+import {
+  ERROR, error,
+  INIT_API_REQUEST, tokenLoaded, initApiRequestSuccessful,
+  DOWNLOAD_FILE
+} from '../actions/apiActions'
 import apiUtils from '../utils/apiUtils'
 
 export default function* apiSaga() {
   yield all([
     takeLatest(ERROR, handleErrorSaga),
     takeLatest(USER_FOUND, userFoundSaga),
-    takeLatest(INIT_API_REQUEST, initApiRequestSaga)
+    takeLatest(INIT_API_REQUEST, initApiRequestSaga),
+    takeLatest(DOWNLOAD_FILE, downloadFileSaga)
   ])
 }
 
@@ -40,6 +46,24 @@ function* initApiRequestSaga() {
   try {
     yield call(apiUtils.get, '/v1/')
     yield put(initApiRequestSuccessful())
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+function* downloadFileSaga({ payload: { src, name: fileName } }) {
+  try {
+    const res = yield call(axios.get, src, { responseType: 'blob' })
+    const fileData = res.data
+    if (fileData) {
+      const url = window.URL.createObjectURL(new Blob([fileData]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', fileName)
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
   } catch (e) {
     yield put(error(e))
   }
