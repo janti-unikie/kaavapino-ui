@@ -6,6 +6,7 @@ import TextArea from './TextArea'
 import File from './File'
 import FieldSet from './FieldSet'
 import Geometry from './Geometry'
+import Link from './Link'
 import { Field, FieldArray } from 'redux-form'
 
 class CustomField extends Component {
@@ -48,6 +49,8 @@ class CustomField extends Component {
 
   renderRadio = (props) => <Radio {...props} />
 
+  renderLink = (props) => <Link {...props} />
+
   renderFieldset = ({ fields: sets }) => (
     <FieldSet
       sets={sets}
@@ -72,6 +75,7 @@ class CustomField extends Component {
       case 'date': return this.renderDate
       case 'fieldset': return this.renderFieldset
       case 'geometry': return this.renderGeometry
+      case 'link': return this.renderLink
       default: return this.renderNumber
     }
   }
