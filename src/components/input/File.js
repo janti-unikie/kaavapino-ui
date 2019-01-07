@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { projectFileUpload, projectFileRemove } from '../../actions/projectActions'
+import { downloadFile } from '../../actions/apiActions'
 import { Button, Progress } from 'semantic-ui-react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class File extends Component {
   constructor(props) {
@@ -58,6 +58,12 @@ class File extends Component {
     projectFileRemove(name)
   }
 
+  download = () => {
+    const { src } = this.props
+    const { current } = this.state
+    this.props.downloadFile({ src, name: current })
+  }
+
   cancel = () => {
     if (this.cancelToken) {
       this.cancelToken.cancel()
@@ -72,21 +78,24 @@ class File extends Component {
     return (
       <div>
         <div className='file-input-container'>
-          <Button
-            disabled={uploading}
-            icon='upload'
-            as='label'
-            htmlFor={field.name}
-            label={{
-              basic: true,
-              content: `${this.state.current || (uploading && 'Ladataan...') || 'Valitse tiedosto'}`
-            }}
-            onClick={this.handleClick}
-            ref={this.inputButtonRef}
-            style={{ overflow: 'auto' }}
-          />
-          { !uploading && current && <FontAwesomeIcon size='lg' color='red' className='remove-file-icon' icon='times' onClick={this.reset} /> }
-          { uploading && <FontAwesomeIcon size='lg' color='red' className='remove-file-icon' icon='times' onClick={this.cancel} /> }
+          <Button.Group>
+            <Button
+              disabled={uploading}
+              icon='upload'
+              as='label'
+              htmlFor={field.name}
+              label={{
+                basic: true,
+                content: `${this.state.current || (uploading && 'Ladataan...') || 'Valitse tiedosto'}`
+              }}
+              onClick={this.handleClick}
+              ref={this.inputButtonRef}
+              style={{ overflow: 'auto' }}
+            />
+            { !uploading && current && <Button icon='download' onClick={this.download} content='Lataa' /> }
+            { !uploading && current && <Button icon='cancel' color='red' onClick={this.reset} /> }
+            { uploading && <Button icon='cancel' color='red' onClick={this.cancel} content='Peruuta' /> }
+          </Button.Group>
         </div>
         <br />
         <input
@@ -117,6 +126,9 @@ class File extends Component {
   onChangeFile = (e) => {
     const { field, image, projectFileUpload } = this.props
     const file = this.inputRef.current.files[0]
+    if (!file) {
+      return
+    }
     const path = e.target.value.split('\\')
     const onCompleted = () => {
       this.setState({ current: path[path.length - 1], reading: true })
@@ -147,7 +159,8 @@ class File extends Component {
 
 const mapDispatchToProps = {
   projectFileUpload,
-  projectFileRemove
+  projectFileRemove,
+  downloadFile
 }
 
 export default connect(

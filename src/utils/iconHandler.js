@@ -14,7 +14,8 @@ import {
   faTimes,
   faPrint,
   faClock,
-  faFileCsv
+  faFileCsv,
+  faDownload
 } from '@fortawesome/free-solid-svg-icons'
 
 const initIcons = () => {
@@ -33,7 +34,8 @@ const initIcons = () => {
     faTimes,
     faPrint,
     faClock,
-    faFileCsv
+    faFileCsv,
+    faDownload
   )
 }
 
