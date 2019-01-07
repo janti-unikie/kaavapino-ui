@@ -20,7 +20,7 @@ import {
   PROJECT_SET_CHECKING
 } from '../actions/projectActions'
 
-const initialState = {
+export const initialState = {
   projects: [],
   ownProjects: [],
   users: [],
@@ -75,7 +75,7 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         currentProject: null,
-        project: [],
+        projects: [],
         currentProjectLoaded: false
       }
     }

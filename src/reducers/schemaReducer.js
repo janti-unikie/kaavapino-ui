@@ -6,7 +6,7 @@ import {
   FETCH_PROJECTS
 } from '../actions/projectActions'
 
-const initialState = {
+export const initialState = {
   schema: null,
   latestEditField: null
 }

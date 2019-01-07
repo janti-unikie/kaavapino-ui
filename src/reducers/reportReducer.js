@@ -2,7 +2,7 @@ import {
   FETCH_REPORTS_SUCCESSFUL
 } from '../actions/reportActions'
 
-const initialState = {
+export const initialState = {
   reports: []
 }
 
