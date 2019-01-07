@@ -29,9 +29,11 @@ class Geometry extends Component {
   }
 
   goToArea = () => {
-    const newCenter = this.props.input.value.coordinates[0][0][0]
-    if (!this.mapRef.current.leafletElement.getBounds().contains(newCenter)) {
-      this.setState({ center: this.props.input.value.coordinates[0][0][0] })
+    if (this.props.input.value.coordinates[0][0]) {
+      const newCenter = this.props.input.value.coordinates[0][0][0]
+      if (!this.mapRef.current.leafletElement.getBounds().contains(newCenter)) {
+        this.setState({ center: this.props.input.value.coordinates[0][0][0] })
+      }
     }
   }
 
