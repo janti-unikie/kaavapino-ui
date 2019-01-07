@@ -3,7 +3,7 @@ import {
   FETCH_DOCUMENTS_SUCCESSFUL
 } from '../actions/documentActions'
 
-const initialState = {
+export const initialState = {
   documents: [],
   documentsLoading: false
 }

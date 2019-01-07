@@ -2,7 +2,7 @@ import {
   FETCH_USERS_SUCCESSFUL
 } from '../actions/userActions'
 
-const initialState = {
+export const initialState = {
   users: []
 }
 

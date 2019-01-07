@@ -6,7 +6,7 @@ import {
   DELETE_COMMENT_SUCCESSFUL
 } from '../actions/commentActions'
 
-const initialState = {
+export const initialState = {
   comments: [],
   commentsLoading: false
 }

@@ -4,7 +4,7 @@ import {
 } from '../actions/apiActions'
 import { USER_FOUND } from 'redux-oidc'
 
-const initialState = {
+export const initialState = {
   apiToken: null,
   loadingToken: false,
   apiInitialized: true
