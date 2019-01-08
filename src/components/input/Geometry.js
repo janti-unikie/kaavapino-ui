@@ -40,6 +40,8 @@ class Geometry extends Component {
   handleUpdate = (positions) => this.props.input.onChange(formatPositionsToGeoJSON(positions))
 
   handleDoubleClick = ({ latlng }) => {
+    const { disabled } = this.props
+    if (disabled) return
     const { userActions } = this.state
     const { coordinates } = this.props.input.value
     const positions = formatGeoJSONToPositions(coordinates)
@@ -70,20 +72,23 @@ class Geometry extends Component {
   render() {
     const { userActions } = this.state
     const { coordinates } = this.props.input.value
+    const { disabled } = this.props
     const crs = EPSG3879()
     return (
       <div className='geometry-input-container'>
         <Map
-          className='geometry-input'
+          className={`geometry-input${disabled ? ' disabled' : ''}`}
           center={this.state.center}
           doubleClickZoom={false}
           scrollWheelZoom={false}
           maxZoom={16}
+          zoomControl={!disabled}
+          dragging={!disabled}
           zoom={12}
           crs={crs}
           ondblclick={this.handleDoubleClick}
           ref={this.mapRef}
-          style={{ cursor: 'pointer' }}
+          style={!disabled ? { cursor: 'pointer' } : {}}
         >
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -91,11 +96,13 @@ class Geometry extends Component {
           />
           <Polygon positions={formatGeoJSONToPositions(coordinates)} />
         </Map>
-        <div className='geometry-input-actions'>
-          <Button onClick={this.clear}>Tyhjennä</Button>
-          <Button onClick={this.addArea}>Lisää uusi alue</Button>
-          <Button onClick={this.revert} disabled={!userActions.length}>Peruuta muutos</Button>
-        </div>
+        { !disabled && (
+          <div className='geometry-input-actions'>
+            <Button onClick={this.clear}>Tyhjennä</Button>
+            <Button onClick={this.addArea}>Lisää uusi alue</Button>
+            <Button onClick={this.revert} disabled={!userActions.length}>Peruuta muutos</Button>
+          </div>
+        )}
       </div>
     )
   }

@@ -1,4 +1,5 @@
 import React from 'react'
+import Geometry from '../input/Geometry'
 
 const Summary = ({ attributeData }) => {
   const formatAttributeValue = ({ type, value, empty }) => {
@@ -21,6 +22,8 @@ const Summary = ({ attributeData }) => {
       )
     } else if (type === 'matrix') {
       return <p>Ei tuettu</p>
+    } else if (type === 'geometry') {
+      return <Geometry disabled input={{ value }} />
     }
 
     return <p>{value}</p>
