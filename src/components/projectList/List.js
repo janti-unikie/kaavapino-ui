@@ -66,8 +66,8 @@ class List extends Component {
     const { sort, dir } = this.state
     if (sort < 0) { return items }
     return items.sort((a, b) => {
-      const item1 = this.formatFilterItem(a)[this.targetAttributes[sort]]
-      const item2 = this.formatFilterItem(b)[this.targetAttributes[sort]]
+      const item1 = this.formatFilterItem(a, true)[this.targetAttributes[sort]]
+      const item2 = this.formatFilterItem(b, true)[this.targetAttributes[sort]]
 
       return dir === 0 ?
         item1 > item2 ? 1 : -1 :
@@ -77,14 +77,15 @@ class List extends Component {
 
   setFilter = (value) => this.setState({ filter: value })
 
-  formatFilterItem = (item) => {
+  formatFilterItem = (item, sort = false) => {
     const user = this.formatUser(item.user)
-    const modified_at = projectUtils.formatDate(item.modified_at)
+    const modified_at = sort ? new Date(item.modified_at).getTime() : projectUtils.formatDate(item.modified_at)
     const phase = this.formatPhase(item.phase).phaseName
     const subtype = item.subtype
     const name = item.name
     const projectId = item.attribute_data['hankenumero'] || '-'
-    const nextDeadline = this.formatNextDeadline(item.deadlines, item.phase)
+    const itemDeadline = item.deadlines.find((d) => d.phase_id === item.phase).deadline
+    const nextDeadline = sort ? new Date(itemDeadline).getTime() : projectUtils.formatDate(itemDeadline)
     return { name, user, modified_at, phase, subtype, projectId, nextDeadline }
   }
 
