@@ -26,14 +26,15 @@ const formatUsersName = (user) => {
   return ''
 }
 
-const formatDeadlines = ({ name, deadlines }) => {
+const formatDeadlines = ({ name, deadlines, subtype }, phases) => {
   return ({
     title: name,
     deadlines: deadlines.map(d => ({
       title: d.phase_name,
       start: new Date(d.start),
       end: new Date(d.deadline)
-    }))
+    })),
+    colors: phases.filter((p) => subtype === p.project_subtype).sort((p1, p2) => p1.index - p2.index).map((p) => p.color_code)
   })
 }
 

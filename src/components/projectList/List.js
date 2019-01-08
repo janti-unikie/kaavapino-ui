@@ -120,7 +120,7 @@ class List extends Component {
       )
     }
     const items = this.sortItems(this.filterItems(this.props.items))
-    const graphData = items.map(i => projectUtils.formatDeadlines(i)).slice(0, 4)
+    const graphData = items.map(i => projectUtils.formatDeadlines(i, this.props.phases)).slice(0, 4)
     const headerItems = ['Hankenumero', 'Nimi', 'Vaihe', 'Seuraava määräaika', 'Koko', 'Muokattu', 'Vastuuhenkilö']
     return (
       <div className='project-list'>
