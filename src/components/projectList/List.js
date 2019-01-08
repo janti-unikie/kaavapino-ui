@@ -23,8 +23,8 @@ class List extends Component {
 
     this.state = {
       filter: '',
-      sort: 2,
-      dir: 0
+      sort: 5,
+      dir: 1
     }
   }
 
