@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { takeLatest, put, all, call, select } from 'redux-saga/effects'
+import { push } from 'connected-react-router'
 import { modalSelector, editFormSelector } from '../selectors/formSelector'
 import { currentProjectSelector, currentProjectIdSelector } from '../selectors/projectSelector'
 import { schemaSelector } from '../selectors/schemaSelector'
@@ -68,6 +69,7 @@ function* createProject() {
       yield put(createOwnProjectSuccessful(createdProject))
     }
     yield put(createProjectSuccessful(createdProject))
+    yield put(push(`/${createdProject.id}/edit`))
     yield put(setSubmitSucceeded('modal'))
   } catch (e) {
     if (e.response.status === 400) {

@@ -75,7 +75,6 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         currentProject: null,
-        projects: [],
         currentProjectLoaded: false
       }
     }
