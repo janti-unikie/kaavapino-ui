@@ -55,8 +55,19 @@
   align-items: center;
 }
 
+.fieldset-header {
+  margin-bottom: 10px;
+
+  :first-child {
+    margin-right: 5px;
+  }
+  .fieldset-remove {
+    cursor: pointer;
+  }
+}
+
 .fieldset-container {
-  border: 1px solid #edeff3;
+  border: 1px solid gainsboro;
   padding: 10px;
   margin-bottom: 10px;
 }
