@@ -105,7 +105,8 @@ describe('project reducer', () => {
       currentProjectLoaded: true
     }
     expect(project(state, { type: INITIALIZE_PROJECT })).toEqual({
-      ...initialState
+      ...initialState,
+      projects: [1, 2, 3]
     })
   })
 
