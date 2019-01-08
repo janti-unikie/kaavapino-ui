@@ -29,9 +29,14 @@ describe('project reducer', () => {
   })
 
   it('should handle FETCH_PROJECTS_SUCCESSFUL', () => {
-    expect(project(initialState, { type: FETCH_PROJECTS_SUCCESSFUL, payload: 1 })).toEqual({
+    const state = {
       ...initialState,
-      projects: 1
+      loadingProjects: true
+    }
+    expect(project(state, { type: FETCH_PROJECTS_SUCCESSFUL, payload: 1 })).toEqual({
+      ...initialState,
+      projects: 1,
+      loadingProjects: false
     })
   })
 
@@ -46,10 +51,12 @@ describe('project reducer', () => {
     const state = {
       ...initialState,
       currentProject: 1,
-      currentProjectLoaded: true
+      currentProjectLoaded: true,
+      loadingProjects: false
     }
     expect(project(state, { type: FETCH_PROJECTS })).toEqual({
-      ...initialState
+      ...initialState,
+      loadingProjects: true
     })
   })
 

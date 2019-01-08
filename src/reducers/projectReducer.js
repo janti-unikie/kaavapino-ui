@@ -23,6 +23,7 @@ import {
 export const initialState = {
   projects: [],
   ownProjects: [],
+  loadingProjects: false,
   users: [],
   currentProject: null,
   currentProjectLoaded: false,
@@ -39,7 +40,8 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         currentProject: null,
-        currentProjectLoaded: false
+        currentProjectLoaded: false,
+        loadingProjects: true
       }
     }
 
@@ -53,7 +55,8 @@ export const reducer = (state = initialState, action) => {
     case FETCH_PROJECTS_SUCCESSFUL: {
       return {
         ...state,
-        projects: action.payload
+        projects: action.payload,
+        loadingProjects: false
       }
     }
 

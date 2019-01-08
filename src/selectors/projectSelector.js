@@ -12,6 +12,11 @@ export const ownProjectsSelector = createSelector(
   ({ ownProjects }) => ownProjects
 )
 
+export const loadingProjectsSelector = createSelector(
+  selectProject,
+  ({ loadingProjects }) => loadingProjects
+)
+
 export const currentProjectSelector = createSelector(
   selectProject,
   (project) => project.currentProject || null

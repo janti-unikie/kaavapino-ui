@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { phasesSelector } from '../../selectors/phaseSelector'
+import { loadingProjectsSelector } from '../../selectors/projectSelector'
 import { Loader } from 'semantic-ui-react'
 import ListHeader from './ListHeader'
 import ListItem from './ListItem'
@@ -112,7 +113,7 @@ class List extends Component {
 
   render() {
     const { sort, dir } = this.state
-    if (!this.props.items || !this.props.phases) {
+    if (this.props.loadingProjects || !this.props.phases) {
       return (
         <div className='project-list'>
           <Loader inline={'centered'} active>Ladataan</Loader>
@@ -151,7 +152,8 @@ class List extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  phases: phasesSelector(state)
+  phases: phasesSelector(state),
+  loadingProjects: loadingProjectsSelector(state)
 })
 
 export default connect(
