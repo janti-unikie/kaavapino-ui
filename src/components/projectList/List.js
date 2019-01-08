@@ -145,7 +145,7 @@ class List extends Component {
           )
         })}
         { items.length === 0 && <span className='empty-list-info'>Ei hankkeita!</span> }
-        <Graph data={graphData} height={Math.max(graphData.length * 65, 2*65)} />
+        { items.length !== 0 && <Graph data={graphData} height={Math.max(graphData.length * 65, 2*65)} /> }
       </div>
     )
   }

@@ -11,3 +11,8 @@ export const latestEditFieldSelector = createSelector(
   selectSchema,
   ({ latestEditField }) => latestEditField
 )
+
+export const allEditFieldsSelector = createSelector(
+  selectSchema,
+  ({ allEditFields }) => allEditFields
+)
