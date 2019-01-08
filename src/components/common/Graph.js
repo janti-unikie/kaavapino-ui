@@ -14,14 +14,24 @@ class Graph extends Component {
     ]
   }
 
+  // This is required to get unique labels for different rows.
+  // If labels aren't unique, then the colors of the bars won't
+  // be shown properly in cases where there are different amount
+  // of bars in each row.
+  getSuffix = (x) => {
+    let res = ''
+    for (let i = 0; i < x; i++) res += ' '
+    return res
+  }
+
   formatRows = () => {
     const { data } = this.props
     let rows = []
-    data.forEach((obj) => {
+    data.forEach((obj, j) => {
       for (let i = 0; i < obj.deadlines.length; i++) {
         let row = []
         row.push(obj.title)
-        row.push(`${i + 1}`)
+        row.push(`${i + 1}${this.getSuffix(j)}`)
         row.push(obj.deadlines[i].title)
         row.push(obj.deadlines[i].start)
         row.push(obj.deadlines[i].end)
@@ -38,7 +48,10 @@ class Graph extends Component {
       return null
     }
 
-    let colors = ['#00963b', '#ffc61e', '#fd4f00', '#2400c7', 'black', 'white']
+    // Concat all colors
+    const colors =  [].concat.apply([], data.map((d) => d.colors))
+    colors.push('black')
+
     const options = {
       timeline: {
         colorByRowLabel: false

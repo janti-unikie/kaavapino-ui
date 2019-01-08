@@ -82,7 +82,7 @@ class ProjectPage extends Component {
   }
 
   getProjectPageContent = () => {
-    const { edit, documents, currentProject } = this.props
+    const { edit, documents, currentProject, phases } = this.props
     const { selectedPhase } = this.state
     if (edit) {
       return <ProjectEditPage selectedPhase={selectedPhase} project={currentProject} />
@@ -95,6 +95,8 @@ class ProjectPage extends Component {
         type={currentProject.type}
         deadlines={currentProject.deadlines}
         name={currentProject.name}
+        subtype={currentProject.subtype}
+        phases={phases}
       />
     )
   }

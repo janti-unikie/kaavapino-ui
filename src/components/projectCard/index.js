@@ -68,8 +68,8 @@ class ProjectCardPage extends Component {
 
   render() {
     const { metadata, extended, imageSrc } = this.state
-    const { deadlines, name } = this.props
-    const graphData = [projectUtils.formatDeadlines({ name, deadlines })]
+    const { deadlines, name, phases, subtype } = this.props
+    const graphData = [projectUtils.formatDeadlines({ name, deadlines, subtype }, phases)]
     if (!metadata) {
       return <Loader inline={'centered'} active>Ladataan</Loader>
     }
