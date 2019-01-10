@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Loader } from 'semantic-ui-react'
 import { initializeProject } from '../../actions/projectActions'
 import {
   currentProjectSelector,
@@ -46,15 +47,11 @@ class ProjectPage extends Component {
       document.title = currentProject.name
     }
 
-    if (prevProps.edit && !edit) {
-      this.setState({ selectedPhase: currentProject.phase })
-    }
+    if (prevProps.edit && !edit) this.setState({ selectedPhase: currentProject.phase })
   }
 
   switchPhase = (phase) => {
-    if (this.props.edit) {
-      this.setState({ selectedPhase: phase })
-    }
+    if (this.props.edit) this.setState({ selectedPhase: phase })
   }
 
   getRouteItems = () => {
@@ -135,10 +132,23 @@ class ProjectPage extends Component {
     })
   }
 
+  renderLoading = () => (
+    <div className='project-container'>
+      <NavHeader
+        routeItems={[{ value: 'Kaavahankkeet', path: '/' }, { value: 'Ladataan...', path: '/' }]}
+        title={'Ladataan...'}
+      />
+      <div className='project-page-content'>
+        <Loader inline={'centered'} active>Ladataan</Loader>
+      </div>
+    </div>
+  )
+
   render() {
     const { edit, currentProject, phases, currentProjectLoaded } = this.props
-    if (!currentProjectLoaded || !phases) {
-      return <div className='project-container' />
+    const loading = (!currentProjectLoaded || !phases)
+    if (loading) {
+      return this.renderLoading()
     }
     const { type, subtype, phase } = currentProject
     const currentPhases = phases.filter(({ project_type, project_subtype }) => {
