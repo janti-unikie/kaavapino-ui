@@ -26,7 +26,8 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         schema: null,
-        latestEditField: null
+        latestEditField: null,
+        allEditFields: []
       }
     }
 
