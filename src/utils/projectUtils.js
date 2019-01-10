@@ -15,9 +15,7 @@ const formatTime = (value) => {
   return `${addZeroPrefixIfNecessary(hours)}:${addZeroPrefixIfNecessary(minutes)}`
 }
 
-const formatDateTime = (date) => {
-  return `${formatDate(date)} ${formatTime(date)}`
-}
+const formatDateTime = (date) => `${formatDate(date)} ${formatTime(date)}`
 
 const formatUsersName = (user) => {
   if (user) {
@@ -42,11 +40,21 @@ const isFieldMissing = (fieldName, isFieldRequired, attributeData) => {
   return (isFieldRequired && (!attributeData.hasOwnProperty(fieldName) || attributeData[fieldName] === null || attributeData[fieldName] === ''))
 }
 
+const getUniqueUpdates = (updates) => {
+  const ids = {}
+  return [ ...updates ].filter(({ name }) => {
+    if (ids[name]) return false
+    ids[name] = true
+    return true
+  })
+}
+
 export default {
   formatDate,
   formatTime,
   formatDateTime,
   formatUsersName,
   formatDeadlines,
-  isFieldMissing
+  isFieldMissing,
+  getUniqueUpdates
 }

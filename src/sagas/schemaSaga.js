@@ -9,6 +9,7 @@ import { latestUpdateSelector, updatesSelector } from '../selectors/projectSelec
 import { schemaSelector } from '../selectors/schemaSelector'
 import { error } from '../actions/apiActions'
 import { schemaApi } from '../utils/api'
+import projectUtils from '../utils/projectUtils'
 
 export default function* schemaSaga() {
   yield all([
@@ -42,6 +43,7 @@ function* allEditedFieldsSaga() {
   const schema = yield select(schemaSelector)
   const updates = yield select(updatesSelector)
   const result = []
-  schema.phases.forEach(({ sections }) => sections.forEach(({ fields }) => fields.forEach(({ name, label }) => updates[name] ? result.push({ name: label, ...updates[name] }) : '')))
-  yield put(setAllEditFieldsSuccessful(result.sort((u1, u2) => new Date(u2.timestamp).getTime() - new Date(u1.timestamp).getTime())))
+  schema.phases.forEach(({ sections }) => sections.forEach(({ fields }) => fields.forEach(({ name, label }, i) => updates[name] ? result.push({ name: label, ...updates[name], id: i }) : '')))
+  const uniques = projectUtils.getUniqueUpdates(result.sort((u1, u2) => new Date(u2.timestamp).getTime() - new Date(u1.timestamp).getTime()))
+  yield put(setAllEditFieldsSuccessful(uniques))
 }

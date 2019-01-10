@@ -31,15 +31,16 @@ export const NavHeader = ({ routeItems, actions, large, title, info, infoOptions
           </div>
         </div>
         <div className='nav-header-content'>
-          <span className={`nav-header-title ${ large ? 'large' : '' }`}>{ title }</span>
-          { info && (
-            <Dropdown
-              className='nav-header-info'
-              text={info}
-              options={infoOptions}
-              scrolling
-            />
-          )}
+          <span className={`nav-header-title${ large ? ' large' : '' }`}>{ title }</span>
+          <div className='nav-header-info'>
+            { info && (
+              <Dropdown
+                text={info}
+                options={infoOptions}
+                scrolling
+              />
+            )}
+          </div>
         </div>
         { actions && actions }
       </div>
