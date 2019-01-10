@@ -20,7 +20,7 @@ import {
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
-import { setLatestEditField } from '../actions/schemaActions'
+import { setLatestEditField, setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
 import { projectApi } from '../utils/api'
 
@@ -103,6 +103,7 @@ function* saveProject() {
     }
   }
   yield put(saveProjectSuccessful())
+  yield put(setAllEditFields())
   yield put(setLatestEditField())
 }
 

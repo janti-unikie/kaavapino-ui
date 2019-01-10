@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { Dropdown } from 'semantic-ui-react'
 
 export const NavAction = ({ children, to, ...rest }) => {
   return to ?
@@ -18,7 +19,7 @@ NavAction.propTypes = {
 
 export const NavActions = (props) => <div className='nav-header-actions' {...props} />
 
-export const NavHeader = ({ routeItems, actions, large, title, info }) => {
+export const NavHeader = ({ routeItems, actions, large, title, info, infoOptions }) => {
   return (
     <div className='nav-header-container'>
       <div className='nav-header-inner-container'>
@@ -30,8 +31,16 @@ export const NavHeader = ({ routeItems, actions, large, title, info }) => {
           </div>
         </div>
         <div className='nav-header-content'>
-          <span className={`nav-header-title ${ large ? 'large' : '' }`}>{ title }</span>
-          <span className='nav-header-info'>{info}</span>
+          <span className={`nav-header-title${ large ? ' large' : '' }`}>{ title }</span>
+          <div className='nav-header-info'>
+            { info && (
+              <Dropdown
+                text={info}
+                options={infoOptions}
+                scrolling
+              />
+            )}
+          </div>
         </div>
         { actions && actions }
       </div>

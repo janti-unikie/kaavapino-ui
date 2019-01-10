@@ -71,18 +71,21 @@
         color: black;
         font-size: 25px;
         font-weight: bold;
+        margin-right: 10px;
+
+        &.large {
+          font-size: 45px;
+    
+          @media screen and (max-width: 500px) {
+            font-size: 35px;
+          }
+        }
       }
 
       .nav-header-info {
-        margin-left: 10px;
-      }
-    }
-
-    .large {
-      font-size: 55px;
-
-      @media screen and (max-width: 500px) {
-        font-size: 35px;
+        color: #5d5d5d;
+        margin-top: 10px;
+        height: 0;
       }
     }
 
