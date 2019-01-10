@@ -127,7 +127,7 @@ class ProjectPage extends Component {
     const { allEditFields, edit } = this.props
     if (!edit) return []
     return allEditFields.map((f, i) => {
-      const value = `${f.name} ${projectUtils.formatDateTime(f.timestamp)} ${f.user_name}`
+      const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.name} ${f.user_name}`
       return { text: value, value: `${value}-${i}`, key: `${value}-${i}`, disabled: true }
     })
   }
