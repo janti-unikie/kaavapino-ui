@@ -60,7 +60,7 @@ class FormModal extends Component {
                 <div key={ deadline.phase_id }>
                   <h3 className='deadline-title'>{ deadline.phase_name }</h3>
                   <div className='deadline-input-container'>
-                    { i === 0 &&<Field disabled={i !== 0} name={`${deadline.phase_name}-start`} field={{ type: 'datetime' }} /> }
+                    { i === 0 && <Field disabled={i !== 0} name={`${deadline.phase_name}-start`} field={{ type: 'datetime' }} /> }
                     { i !== 0 && <span className='disabled-rdt'>{ projectUtils.formatDate(deadline.start) }</span> }
                     <span className='deadline-splitter'>-</span>
                     <Field name={`${deadline.phase_name}-deadline`} field={{ type: 'datetime' }} />

@@ -19,7 +19,7 @@ const formatDateTime = (date) => `${formatDate(date)} ${formatTime(date)}`
 
 const formatUsersName = (user) => {
   if (user) {
-    return (user.first_name && user.last_name) ? `${user.first_name} ${user.last_name}` : user.email
+    return (user.first_name || user.last_name) ? `${user.first_name} ${user.last_name}` : user.email
   }
   return ''
 }
