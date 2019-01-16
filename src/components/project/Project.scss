@@ -118,3 +118,27 @@
     }
   }
 }
+
+.deadline-title {
+  text-decoration: underline;
+}
+
+.deadline-input-container {
+  display: flex;
+  margin-bottom: 10px;
+
+  .rdt {
+    flex: 0.5;
+  }
+
+  .disabled-rdt {
+    align-self: center;
+    flex: 0.5;
+  }
+
+  .deadline-splitter {
+    margin: 0 10px;
+    align-self: center;
+    font-size: 22px;
+  }
+}
