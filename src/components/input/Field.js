@@ -61,6 +61,8 @@ class CustomField extends Component {
     />
   )
 
+  renderDecimal = (props) => <Input type='number' step='0.01' {...props} />
+
   getInput = (field) => {
     if (field.choices) {
       return this.renderSelect
@@ -77,6 +79,7 @@ class CustomField extends Component {
       case 'fieldset': return this.renderFieldset
       case 'geometry': return this.renderGeometry
       case 'link': return this.renderLink
+      case 'decimal': return this.renderDecimal
       default: return this.renderNumber
     }
   }
@@ -93,7 +96,8 @@ class CustomField extends Component {
       placeholder: field.label,
       component: this.getInput(field),
       ...custom,
-      ...(field.multiple_choice ? { type: 'select-multiple' } : {})
+      ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
+      disabled: field.generated ? true : false
     }
 
     if (fieldset) {
