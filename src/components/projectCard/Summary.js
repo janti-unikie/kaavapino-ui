@@ -1,8 +1,9 @@
 import React from 'react'
 import Geometry from '../input/Geometry'
+import projectUtils from '../../utils/projectUtils'
 
-const Summary = ({ attributeData }) => {
-  const formatAttributeValue = ({ type, value, empty }) => {
+const Summary = ({ attributeData, users }) => {
+  const formatAttributeValue = ({ type, value, empty, fieldset_attributes }) => {
     if (empty) {
       return <p>-</p>
     }
@@ -10,12 +11,19 @@ const Summary = ({ attributeData }) => {
       return <p>{value ? 'Kyllä' : 'Ei'}</p>
     } else if (type === 'fieldset') {
       return (
-        <div>
+        <div className='fieldset-summary-container'>
           { value.map((set, i) => (
             <React.Fragment key={i}>
-              { Object.values(set).map((field) => (
-                <p key={field}>{ field }</p>
-              )) }
+              <b>{i + 1}.</b>
+              { Object.keys(set).map((name, j) => {
+                const attribute = fieldset_attributes.find((f) => f.name === name)
+                return (
+                  <div className='fieldset-summary-item' key={j}>
+                    <span className='fieldset-label'>{ attribute.label }</span>
+                    { formatAttributeValue({ value: set[name], ...attribute }) }
+                  </div>
+                )
+              })}
             </React.Fragment>
           )) }
         </div>
@@ -24,6 +32,8 @@ const Summary = ({ attributeData }) => {
       return <p>Ei tuettu</p>
     } else if (type === 'geometry') {
       return <Geometry disabled input={{ value }} />
+    } else if (type === 'user') {
+      return <p>{ projectUtils.formatUsersName(users.find((u) => u.id === value)) }</p>
     }
 
     return <p>{value}</p>
@@ -32,7 +42,7 @@ const Summary = ({ attributeData }) => {
     <div className='summary'>
       { attributeData.map(({ label, ...rest }) => {
         return (
-          <div key={label}>
+          <div className='summary-item-container' key={label}>
             <b>{ label }</b>
             { formatAttributeValue(rest) }
           </div>

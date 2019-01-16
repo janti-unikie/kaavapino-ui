@@ -13,8 +13,20 @@
     overflow-x: auto;
     max-height: 600px;
 
-    div {
+    .summary-item-container {
       margin-bottom: 20px;
+    }
+
+    .fieldset-summary-container {
+      margin-bottom: 0;
+
+      .fieldset-label {
+        text-decoration: underline;
+      }
+
+      .fieldset-summary-item:not(:last-child) {
+        margin-bottom: 10px;
+      }
     }
   }
 
