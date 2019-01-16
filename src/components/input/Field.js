@@ -7,6 +7,7 @@ import File from './File'
 import FieldSet from './FieldSet'
 import Geometry from './Geometry'
 import Link from './Link'
+import DateTime from './DateTime'
 import { Field, FieldArray } from 'redux-form'
 
 class CustomField extends Component {
@@ -36,8 +37,6 @@ class CustomField extends Component {
 
   renderTextArea = (props) => <TextArea {...props} />
 
-  renderDateTime = (props) => <Input type='datetime-local' {...props} />
-
   renderDate = (props) => <Input type='date' {...props} />
 
   renderGeometry = (props) => <Geometry {...props} />
@@ -50,6 +49,8 @@ class CustomField extends Component {
   renderRadio = (props) => <Radio {...props} />
 
   renderLink = (props) => <Link {...props} />
+
+  renderDateTime = (props) => <DateTime {...props} />
 
   renderFieldset = ({ fields: sets }) => (
     <FieldSet

@@ -20,6 +20,8 @@ export const PROJECT_FILE_UPLOAD_SUCCESSFUL = 'Project file upload successful'
 export const PROJECT_FILE_REMOVE = 'Project file remove'
 export const PROJECT_FILE_REMOVE_SUCCESSFUL = 'Project file remove successful'
 export const PROJECT_SET_CHECKING = 'Project set checking'
+export const PROJECT_SET_DEADLINES = 'Project set deadlines'
+export const PROJECT_SET_DEADLINES_SUCCESSFUL = 'Project set deadlines successful'
 
 export const fetchProjects = () => ({ type: FETCH_PROJECTS })
 export const fetchOwnProjectsSuccessful = (projects) => ({ type: FETCH_OWN_PROJECTS_SUCCESSFUL, payload: projects })
@@ -55,3 +57,6 @@ export const projectFileRemove = (attribute) => ({ type: PROJECT_FILE_REMOVE, pa
 export const projectFileRemoveSuccessful = (attribute) => ({ type: PROJECT_FILE_REMOVE_SUCCESSFUL, payload: attribute })
 
 export const projectSetChecking = (value) => ({ type: PROJECT_SET_CHECKING, payload: value })
+
+export const projectSetDeadlines = () => ({ type: PROJECT_SET_DEADLINES })
+export const projectSetDeadlinesSuccessful = (deadlines) => ({ type: PROJECT_SET_DEADLINES_SUCCESSFUL, payload: deadlines })

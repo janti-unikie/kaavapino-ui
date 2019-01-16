@@ -81,3 +81,8 @@ export const latestUpdateSelector = createSelector(
     return { latest, field }
   }
 )
+
+export const deadlinesSelector = createSelector(
+  currentProjectSelector,
+  (currentProject = { deadlines: [] }) => currentProject.deadlines
+)

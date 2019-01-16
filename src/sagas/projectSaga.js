@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { takeLatest, put, all, call, select } from 'redux-saga/effects'
 import { push } from 'connected-react-router'
-import { modalSelector, editFormSelector } from '../selectors/formSelector'
+import { modalSelector, editFormSelector, deadlineModalSelector } from '../selectors/formSelector'
 import { currentProjectSelector, currentProjectIdSelector } from '../selectors/projectSelector'
 import { schemaSelector } from '../selectors/schemaSelector'
 import { userIdSelector } from '../selectors/authSelector'
@@ -16,7 +16,8 @@ import {
   VALIDATE_PROJECT_FIELDS, validateProjectFieldsSuccessful,
   PROJECT_FILE_UPLOAD, PROJECT_FILE_REMOVE,
   projectFileUploadSuccessful, projectFileRemoveSuccessful,
-  saveProject as saveProjectAction
+  saveProject as saveProjectAction,
+  PROJECT_SET_DEADLINES, projectSetDeadlinesSuccessful
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
@@ -33,7 +34,8 @@ export default function* projectSaga() {
     takeLatest(CHANGE_PROJECT_PHASE, changeProjectPhase),
     takeLatest(VALIDATE_PROJECT_FIELDS, validateProjectFields),
     takeLatest(PROJECT_FILE_UPLOAD, projectFileUpload),
-    takeLatest(PROJECT_FILE_REMOVE, projectFileRemove)
+    takeLatest(PROJECT_FILE_REMOVE, projectFileRemove),
+    takeLatest(PROJECT_SET_DEADLINES, projectSetDeadlinesSaga)
   ])
 }
 
@@ -210,5 +212,28 @@ function* projectFileRemove({ payload }) {
     yield put(saveProjectAction())
   } catch (e) {
     yield put(error(e))
+  }
+}
+
+function* projectSetDeadlinesSaga() {
+  try {
+    yield put(startSubmit('deadlineModal'))
+    const currentProject = yield select(currentProjectSelector)
+    const { values } = yield select(deadlineModalSelector)
+    const deadlines =[ ...currentProject.deadlines ].map((deadline) => ({
+      ...deadline,
+      start: values[`${deadline.phase_name}-start`],
+      deadline: values[`${deadline.phase_name}-deadline`]
+    }))
+    const res = yield call(projectApi.patch, { deadlines }, { path: { id: currentProject.id } }, ':id/')
+    yield put(projectSetDeadlinesSuccessful(res.deadlines))
+    yield put(setSubmitSucceeded('deadlineModal'))
+  } catch (e) {
+    if (e.response && e.response.status === 400) {
+      yield put(stopSubmit('deadlineModal', e.response.data))
+      yield put(error({ custom: true, message: 'Tarkista päivämäärät!' }))
+    } else {
+      yield put(error(e))
+    }
   }
 }

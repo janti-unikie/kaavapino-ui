@@ -21,3 +21,8 @@ export const reportFormSelectedReportSelector = createSelector(
   reportFormSelector,
   (reportForm) => reportForm ? reportForm.values ? reportForm.values.report : null : null
 )
+
+export const deadlineModalSelector = createSelector(
+  selectForm,
+  (form) => form.deadlineModal
+)

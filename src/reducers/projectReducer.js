@@ -17,7 +17,8 @@ import {
   CHANGE_PROJECT_PHASE_FAILURE,
   PROJECT_FILE_UPLOAD_SUCCESSFUL,
   PROJECT_FILE_REMOVE_SUCCESSFUL,
-  PROJECT_SET_CHECKING
+  PROJECT_SET_CHECKING,
+  PROJECT_SET_DEADLINES_SUCCESSFUL
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -180,6 +181,16 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         checking: action.payload
+      }
+    }
+
+    case PROJECT_SET_DEADLINES_SUCCESSFUL: {
+      return {
+        ...state,
+        currentProject: {
+          ...state.currentProject,
+          deadlines: [ ...action.payload ]
+        }
       }
     }
 

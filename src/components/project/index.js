@@ -15,6 +15,7 @@ import Timeline from './Timeline'
 import ProjectEditPage from '../projectEdit'
 import ProjectCardPage from '../projectCard'
 import ProjectDocumentsPage from '../projectDocuments'
+import DeadlineModal from './DeadlineModal'
 import projectUtils from '../../utils/projectUtils'
 
 class ProjectPage extends Component {
@@ -29,7 +30,8 @@ class ProjectPage extends Component {
     }
 
     this.state = {
-      selectedPhase: selectedPhase
+      selectedPhase: selectedPhase,
+      showDeadlineModal: false
     }
   }
 
@@ -106,6 +108,7 @@ class ProjectPage extends Component {
           <NavAction to={`/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</NavAction>
           <NavAction to={`/${id}/documents`}><FontAwesomeIcon icon='file'/>Luo dokumentteja</NavAction>
           <NavAction onClick={() => window.print()}><FontAwesomeIcon icon='print'/>Tulosta hankekortti</NavAction>
+          <NavAction onClick={() => this.setState({ showDeadlineModal: true })}><FontAwesomeIcon icon='cog'/>Määräajat</NavAction>
         </NavActions>
       ) :
       (
@@ -172,6 +175,10 @@ class ProjectPage extends Component {
           type={currentProject.type}
           disabled={!edit}
           switchPhase={this.switchPhase}
+        />
+        <DeadlineModal
+          open={this.state.showDeadlineModal}
+          handleClose={() => this.setState({ showDeadlineModal: false })}
         />
         <div className='project-page-content'>
           { this.getProjectPageContent() }
