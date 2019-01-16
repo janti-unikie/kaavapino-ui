@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Loader, Radio } from 'semantic-ui-react'
 import { projectTypesSelector } from '../../selectors/projectTypeSelector'
+import { usersSelector } from '../../selectors/projectSelector'
 import Summary from './Summary'
 import Image from './Image'
 import Graph from '../common/Graph'
@@ -50,10 +51,11 @@ class ProjectCardPage extends Component {
       metadata.extended_project_card_attributes :
       metadata.normal_project_card_attributes
     let result = []
-    currentMetadata.forEach(({ label, name, type }) => {
+    currentMetadata.forEach(({ label, name, type, fieldset_attributes }) => {
       const data = { label, type }
       if (!projectUtils.isFieldMissing(name, true, attributeData)) {
         data['value'] = attributeData[name]
+        data['fieldset_attributes'] = fieldset_attributes
       } else {
         data['empty'] = true
       }
@@ -68,7 +70,7 @@ class ProjectCardPage extends Component {
 
   render() {
     const { metadata, extended, imageSrc } = this.state
-    const { deadlines, name, phases, subtype } = this.props
+    const { deadlines, name, phases, subtype, users } = this.props
     const graphData = [projectUtils.formatDeadlines({ name, deadlines, subtype }, phases)]
     if (!metadata) {
       return <Loader inline={'centered'} active>Ladataan</Loader>
@@ -79,6 +81,7 @@ class ProjectCardPage extends Component {
         <div className='project-card-container'>
           <Summary
             attributeData={attributeData}
+            users={users}
           />
           <Image src={imageSrc} />
         </div>
@@ -92,7 +95,8 @@ class ProjectCardPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  projectTypes: projectTypesSelector(state)
+  projectTypes: projectTypesSelector(state),
+  users: usersSelector(state)
 })
 
 export default connect(
