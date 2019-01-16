@@ -14,10 +14,9 @@ const CustomDateTime = ({ input, ...custom }) => {
       dateFormat='DD.MM.YYYY'
       timeFormat={false}
       { ...input }
+      { ...custom }
       value={formatDate(input.value)}
-      className={custom.disabled ? 'disabled' : ''}
       locale='fi'
-      {...custom}
       inputProps={{ readOnly: true }}
     />
   )
