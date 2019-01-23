@@ -8,7 +8,7 @@ UI for editing city planning projects in [Kaavapino API](https://github.com/City
 Before running, make sure that you have created a .env file to the project root with the following environmental variables:  
 `REACT_APP_OPENID_CONNECT_CLIENT_ID=X`  
 `REACT_APP_OPENID_AUDIENCE=X`  
-`REACT_APP_BASE_URL=X`(defaults to localhost)
+`REACT_APP_BASE_URL=X`(defaults to localhost)  
 `REACT_APP_SENTRY_URL=X`(only needed in production)  
 
 1. `yarn install`  
