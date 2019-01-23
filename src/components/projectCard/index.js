@@ -51,10 +51,11 @@ class ProjectCardPage extends Component {
       metadata.extended_project_card_attributes :
       metadata.normal_project_card_attributes
     let result = []
-    currentMetadata.forEach(({ label, name, type, fieldset_attributes }) => {
+    currentMetadata.forEach(({ label, name, type, fieldset_attributes, choices }) => {
       const data = { label, type }
       if (!projectUtils.isFieldMissing(name, true, attributeData)) {
         data['value'] = attributeData[name]
+        data['choices'] = choices || null
         data['fieldset_attributes'] = fieldset_attributes
       } else {
         data['empty'] = true
