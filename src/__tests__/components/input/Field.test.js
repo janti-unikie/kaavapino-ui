@@ -27,7 +27,8 @@ describe('<Field />', () => {
         '1': 'a',
         '2': 'b',
         '3': 'c',
-        '4': 'd'
+        '4': 'd',
+        'file': { link: '1', description: '2' }
       },
       field: { name: '1', type, required: true, ...inputProps },
       fields: [],
@@ -61,9 +62,9 @@ describe('<Field />', () => {
     expect(wrapper.find('input').props().type).toBe('number')
     createFieldOfType('fieldset', { fieldset: true })
     expect(wrapper.find('FieldSet').length).toBe(1)
-    createFieldOfType('file')
+    createFieldOfType('file', {}, { name: 'file' })
     expect(wrapper.find('File').length).toBe(1)
-    createFieldOfType('image')
+    createFieldOfType('image', {}, { name: 'file' })
     expect(wrapper.find('File').length).toBe(1)
     createFieldOfType('short_string', {}, { choices: [ { value: 'a', label: '1' }, { value: 'b', label: '2' } ], multiple_choice: true })
     expect(wrapper.find('SelectInput').length).toBe(1)

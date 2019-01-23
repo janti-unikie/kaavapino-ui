@@ -155,7 +155,8 @@ export const reducer = (state = initialState, action) => {
 
     case PROJECT_FILE_UPLOAD_SUCCESSFUL: {
       const updatedAttributeData = { ...state.currentProject.attribute_data }
-      updatedAttributeData[action.payload.attribute] = action.payload.file
+      const { file, description } = action.payload
+      updatedAttributeData[action.payload.attribute] = { link: file, description }
       return {
         ...state,
         currentProject: {
