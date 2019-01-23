@@ -4,7 +4,7 @@ import projectUtils from '../../utils/projectUtils'
 
 const Summary = ({ attributeData, users }) => {
   const formatAttributeValue = ({ type, value, empty, fieldset_attributes, choices }) => {
-    if (empty) {
+    if (empty || typeof(value) === 'object') {
       return <p>-</p>
     }
     if (type === 'boolean') {

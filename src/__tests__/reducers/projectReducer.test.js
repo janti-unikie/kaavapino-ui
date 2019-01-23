@@ -216,11 +216,11 @@ describe('project reducer', () => {
       ...initialState,
       currentProject: { test: 10, attribute_data: { 'a': 1, 'b': 2, 'c': 3 } }
     }
-    expect(project(state, { type: PROJECT_FILE_UPLOAD_SUCCESSFUL, payload: { attribute: 'b', file: 10 } })).toEqual({
+    expect(project(state, { type: PROJECT_FILE_UPLOAD_SUCCESSFUL, payload: { attribute: 'b', file: 1, description: 2 } })).toEqual({
       ...initialState,
       currentProject: {
         ...state.currentProject,
-        attribute_data: { 'a': 1, 'b': 10, 'c': 3 }
+        attribute_data: { 'a': 1, 'b': { link: 1, description: 2 }, 'c': 3 }
       }
     })
   })

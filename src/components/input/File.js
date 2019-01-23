@@ -74,7 +74,7 @@ class File extends Component {
 
   render() {
     const { current, uploading, percentCompleted } = this.state
-    const { field, image } = this.props
+    const { field, image, description } = this.props
     return (
       <div>
         <div className='file-input-container'>
@@ -107,7 +107,8 @@ class File extends Component {
           onChange={this.onChangeFile}
         />
         { uploading && <Progress percent={percentCompleted} progress indicating /> }
-        { <img style={{ display: `${(current && image) ? 'block' : 'none'}` }} className='image-preview' ref={this.imageRef} alt={current ? current : ''} /> }
+        { <img style={{ display: `${(current && image) ? 'block' : 'none'}`, marginBottom: '10px' }} className='image-preview' ref={this.imageRef} alt={current ? current : ''} /> }
+        { description && <span className='file-description'><b>Kuvaus: </b>{ description }</span> }
       </div>
     )
   }
@@ -130,6 +131,7 @@ class File extends Component {
       return
     }
     const path = e.target.value.split('\\')
+    const description = prompt('Tiedoston kuvaus')
     const onCompleted = () => {
       this.setState({ current: path[path.length - 1], reading: true })
       try {
@@ -150,6 +152,7 @@ class File extends Component {
     projectFileUpload({
       attribute: field.name,
       file,
+      description,
       callback: (e) => this.callback(e, onCompleted),
       setCancelToken: (token) => this.cancelToken = token
     })

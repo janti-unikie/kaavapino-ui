@@ -170,13 +170,14 @@ function* changeProjectPhase({ payload: phase }) {
   }
 }
 
-function* projectFileUpload({ payload: { attribute, file, callback, setCancelToken } }) {
+function* projectFileUpload({ payload: { attribute, file, description, callback, setCancelToken } }) {
   try {
     const currentProjectId = yield select(currentProjectIdSelector)
     // Create formdata
     const formData = new FormData()
     formData.append('attribute', attribute)
     formData.append('file', file)
+    formData.append('description', description)
     // Set cancel token
     const CancelToken = axios.CancelToken
     const src = CancelToken.source()

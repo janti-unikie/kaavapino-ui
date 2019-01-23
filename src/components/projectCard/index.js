@@ -16,11 +16,12 @@ class ProjectCardPage extends Component {
     if (props.attributeData.hankekortin_kuva) {
       imageSrc = props.attributeData.hankekortin_kuva
     }
+    const imageLink = imageSrc ? imageSrc.link : null
 
     this.state = {
       metadata: null,
       extended: false,
-      imageSrc
+      imageLink
     }
   }
 
@@ -70,7 +71,7 @@ class ProjectCardPage extends Component {
   }
 
   render() {
-    const { metadata, extended, imageSrc } = this.state
+    const { metadata, extended, imageLink } = this.state
     const { deadlines, name, phases, subtype, users } = this.props
     const graphData = [projectUtils.formatDeadlines({ name, deadlines, subtype }, phases)]
     if (!metadata) {
@@ -84,7 +85,7 @@ class ProjectCardPage extends Component {
             attributeData={attributeData}
             users={users}
           />
-          <Image src={imageSrc} />
+          <Image src={imageLink} />
         </div>
         <div className='project-card-extend'>
           <Radio onChange={this.handleExtendedChange} toggle label='Laajennettu' checked={extended} />

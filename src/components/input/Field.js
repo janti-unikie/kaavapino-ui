@@ -88,7 +88,10 @@ class CustomField extends Component {
     const { field, attributeData, fieldset, ...custom } = this.props
     const type = field.type
     if (type === 'file' || type === 'image') {
-      return <File image={type === 'image'} field={field} src={attributeData[field.name]} />
+      const file = attributeData[field.name]
+      const src = file ? file.link : null
+      const description = file ? file.description : null
+      return <File image={type === 'image'} field={field} src={src} description={description} />
     }
 
     const fieldProps = {
