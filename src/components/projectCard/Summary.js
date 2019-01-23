@@ -3,7 +3,7 @@ import Geometry from '../input/Geometry'
 import projectUtils from '../../utils/projectUtils'
 
 const Summary = ({ attributeData, users }) => {
-  const formatAttributeValue = ({ type, value, empty, fieldset_attributes }) => {
+  const formatAttributeValue = ({ type, value, empty, fieldset_attributes, choices }) => {
     if (empty) {
       return <p>-</p>
     }
@@ -34,6 +34,9 @@ const Summary = ({ attributeData, users }) => {
       return <Geometry disabled input={{ value }} />
     } else if (type === 'user') {
       return <p>{ projectUtils.formatUsersName(users.find((u) => u.id === value)) }</p>
+    } else if (choices) {
+      const c = choices.find((c) => c.value === value)
+      if (c) return <p>{c.label}</p>
     }
 
     return <p>{value}</p>
