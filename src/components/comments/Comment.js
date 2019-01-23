@@ -47,14 +47,16 @@ class Comment extends Component {
 
   render() {
     const { showEdit, menuOpen, editing, content } = this.state
-    const { created_at, user: userId, _metadata } = this.props
-    const user = _metadata.users.find(({ id }) => id === userId)
+    const { created_at, user: userId, _metadata, generated } = this.props
+    const user = !generated ?
+      projectUtils.formatUsersName(_metadata.users.find(({ id }) => id === userId)) :
+      'Automaattinen'
     const date = projectUtils.formatDate(created_at)
     const time = projectUtils.formatTime(created_at)
     return (
       <div className='comment-container' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
         <div className='comment-header-container'>
-          <span className='comment-creator'>{ projectUtils.formatUsersName(user) }</span>
+          <span className={`comment-creator${generated ? ' generated' : ''}`}>{ user }</span>
           <div className='comment-edit-container'>
             { (showEdit || menuOpen) && (
               <Dropdown pointing='left' icon='setting' onOpen={() => this.setState({ menuOpen: true })} onClose={() => this.setState({ menuOpen: false })} direction='left'>
