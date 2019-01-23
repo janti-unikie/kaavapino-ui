@@ -131,7 +131,8 @@ class File extends Component {
       return
     }
     const path = e.target.value.split('\\')
-    const description = prompt('Tiedoston kuvaus')
+    let description = prompt('Tiedoston kuvaus')
+    if (!description) description = ''
     const onCompleted = () => {
       this.setState({ current: path[path.length - 1], reading: true })
       try {
@@ -140,6 +141,7 @@ class File extends Component {
           reader.onloadend = () => {
             if (this.imageRef.current) {
               this.imageRef.current.src = reader.result
+              this.inputRef.current.value = ''
               this.setState({ reading: false })
             }
           }
