@@ -107,7 +107,7 @@ class File extends Component {
           onChange={this.onChangeFile}
         />
         { uploading && <Progress percent={percentCompleted} progress indicating /> }
-        { <img style={{ display: `${(current && image) ? 'block' : 'none'}`, marginBlockEnd: '10px' }} className='image-preview' ref={this.imageRef} alt={current ? current : ''} /> }
+        { <img style={{ display: `${(current && image) ? 'block' : 'none'}`, marginBottom: '10px' }} className='image-preview' ref={this.imageRef} alt={current ? current : ''} /> }
         { description && <span className='file-description'><b>Kuvaus: </b>{ description }</span> }
       </div>
     )
