@@ -90,7 +90,9 @@ class ProjectCardPage extends Component {
         <div className='project-card-extend'>
           <Radio onChange={this.handleExtendedChange} toggle label='Laajennettu' checked={extended} />
         </div>
-        <Graph data={graphData} height={140} />
+        <div className='project-card-graph-container'>
+          <Graph data={graphData} height={140} />
+        </div>
       </div>
     )
   }
