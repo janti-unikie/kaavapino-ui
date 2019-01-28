@@ -54,7 +54,11 @@ export const reducer = (state = initialState, action) => {
         ...state,
         currentProject: null,
         currentProjectLoaded: false,
-        loadingProjects: true
+        loadingProjects: true,
+        projects: [],
+        ownProjects: [],
+        amountOfProjectsToIncrease: 10,
+        amountOfProjectsToShow: 10
       }
     }
 
