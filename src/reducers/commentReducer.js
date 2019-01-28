@@ -1,14 +1,26 @@
 import {
   FETCH_COMMENTS,
   FETCH_COMMENTS_SUCCESSFUL,
+  POLL_COMMENTS_SUCCESSFUL,
   CREATE_COMMENT_SUCCESSFUL,
   EDIT_COMMENT_SUCCESSFUL,
-  DELETE_COMMENT_SUCCESSFUL
+  DELETE_COMMENT_SUCCESSFUL,
+  SET_TOTAL_COMMENTS,
+  INCREASE_AMOUNT_OF_COMMENTS_TO_SHOW,
+  SET_AMOUNT_OF_COMMENTS_TO_SHOW,
+  LOAD_COMMENTS_SUCCESSFUL
 } from '../actions/commentActions'
+
+import {
+  INITIALIZE_PROJECT
+} from '../actions/projectActions'
 
 export const initialState = {
   comments: [],
-  commentsLoading: false
+  commentsLoading: false,
+  amountOfCommentsToShow: 10,
+  totalComments: 0,
+  pollingComments: false
 }
 
 export const reducer = (state = initialState, { type, payload }) => {
@@ -24,6 +36,16 @@ export const reducer = (state = initialState, { type, payload }) => {
       commentsLoading: false
     })
 
+    case POLL_COMMENTS_SUCCESSFUL: return ({
+      ...state,
+      amountOfCommentsToShow: 10
+    })
+
+    case LOAD_COMMENTS_SUCCESSFUL: return ({
+      ...state,
+      comments: payload.concat(state.comments)
+    })
+
     case CREATE_COMMENT_SUCCESSFUL: return ({
       ...state,
       comments: state.comments.concat(payload)
@@ -37,6 +59,26 @@ export const reducer = (state = initialState, { type, payload }) => {
     case DELETE_COMMENT_SUCCESSFUL: return ({
       ...state,
       comments: state.comments.filter((c) => c.id !== payload)
+    })
+
+    case INCREASE_AMOUNT_OF_COMMENTS_TO_SHOW: return ({
+      ...state,
+      pollingComments: true
+    })
+
+    case SET_AMOUNT_OF_COMMENTS_TO_SHOW: return ({
+      ...state,
+      amountOfCommentsToShow: payload,
+      pollingComments: false
+    })
+
+    case SET_TOTAL_COMMENTS: return ({
+      ...state,
+      totalComments: payload
+    })
+
+    case INITIALIZE_PROJECT: return ({
+      ...initialState
     })
 
     default: return state

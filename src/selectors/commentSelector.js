@@ -11,3 +11,18 @@ export const commentsLoadingSelector = createSelector(
   selectComment,
   ({ commentsLoading }) => commentsLoading
 )
+
+export const amountOfCommentsToShowSelector = createSelector(
+  selectComment,
+  ({ amountOfCommentsToShow }) => amountOfCommentsToShow
+)
+
+export const totalCommentsSelector = createSelector(
+  selectComment,
+  ({ totalComments }) => totalComments
+)
+
+export const pollingCommentsSelector = createSelector(
+  selectComment,
+  ({ pollingComments }) => pollingComments
+)
