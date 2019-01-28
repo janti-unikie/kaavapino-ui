@@ -4,7 +4,7 @@ import projectUtils from '../../utils/projectUtils'
 
 const Summary = ({ attributeData, users }) => {
   const formatAttributeValue = ({ type, value, empty, fieldset_attributes, choices }) => {
-    if (empty || (typeof(value) === 'object' && type !== 'fieldset')) {
+    if (empty) {
       return <p>-</p>
     }
     if (type === 'boolean') {
@@ -37,6 +37,8 @@ const Summary = ({ attributeData, users }) => {
     } else if (choices) {
       const c = choices.find((c) => c.value === value)
       if (c) return <p>{c.label}</p>
+    } else if (typeof(value) === 'object') {
+      return <p>-</p>
     }
 
     return <p>{value}</p>
