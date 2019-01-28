@@ -12,6 +12,31 @@ export const ownProjectsSelector = createSelector(
   ({ ownProjects }) => ownProjects
 )
 
+export const amountOfProjectsToShowSelector = createSelector(
+  selectProject,
+  ({ amountOfProjectsToShow }) => amountOfProjectsToShow
+)
+
+export const amountOfProjectsToIncreaseSelector = createSelector(
+  selectProject,
+  ({ amountOfProjectsToIncrease }) => amountOfProjectsToIncrease
+)
+
+export const totalProjectsSelector = createSelector(
+  selectProject,
+  ({ totalProjects }) => totalProjects
+)
+
+export const totalOwnProjectsSelector = createSelector(
+  selectProject,
+  ({ totalOwnProjects }) => totalOwnProjects
+)
+
+export const pollingProjectsSelector = createSelector(
+  selectProject,
+  ({ pollingProjects }) => pollingProjects
+)
+
 export const loadingProjectsSelector = createSelector(
   selectProject,
   ({ loadingProjects }) => loadingProjects

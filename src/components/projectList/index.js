@@ -8,7 +8,13 @@ import { usersSelector } from '../../selectors/userSelector'
 import { Tab } from 'semantic-ui-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { createProject } from '../../actions/projectActions'
-import { ownProjectsSelector, projectsSelector } from '../../selectors/projectSelector'
+import {
+  ownProjectsSelector,
+  projectsSelector,
+  amountOfProjectsToShowSelector,
+  totalOwnProjectsSelector,
+  totalProjectsSelector
+} from '../../selectors/projectSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import FormModal from './FormModal'
 import List from './List'
@@ -32,10 +38,18 @@ class ProjectListPage extends Component {
   toggleForm = (opened) => this.setState({ formOpen: opened })
 
   render() {
-    const { users, projectSubtypes } = this.props
+    const {
+      users,
+      projectSubtypes,
+      amountOfProjectsToShow,
+      ownProjects,
+      allProjects,
+      totalOwnProjects,
+      totalProjects
+    } = this.props
     const panes = [
-      { menuItem: 'Omat hankkeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={this.props.ownProjects} /> },
-      { menuItem: 'Kaikki hankeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={this.props.allProjects} /> }
+      { menuItem: 'Omat hankkeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={ownProjects.slice(0, amountOfProjectsToShow)} total={totalOwnProjects} /> },
+      { menuItem: 'Kaikki hankeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={allProjects.slice(0, amountOfProjectsToShow)} total={totalProjects} /> }
     ]
     return (
       <div className='project-list-page'>
@@ -70,7 +84,10 @@ const mapStateToProps = (state) => {
     ownProjects: ownProjectsSelector(state),
     allProjects: projectsSelector(state),
     users: usersSelector(state),
-    projectSubtypes: projectSubtypesSelector(state)
+    projectSubtypes: projectSubtypesSelector(state),
+    amountOfProjectsToShow: amountOfProjectsToShowSelector(state),
+    totalOwnProjects: totalOwnProjectsSelector(state),
+    totalProjects: totalProjectsSelector(state)
   }
 }
 

@@ -30,6 +30,7 @@ function* createCommentSaga({ payload: { id: projectId, content } }) {
   try {
     const newComment = yield call(commentApi.post, { content }, { path: { id: projectId } })
     yield put(createCommentSuccessful(newComment))
+    yield call(fetchCommentsSaga, { payload: projectId })
   } catch (e) {
     yield put(error(e))
   }

@@ -3,6 +3,13 @@ import {
   FETCH_OWN_PROJECTS_SUCCESSFUL,
   FETCH_PROJECTS,
   FETCH_PROJECT_SUCCESSFUL,
+  SET_PROJECTS,
+  SET_OWN_PROJECTS,
+  SET_AMOUNT_OF_PROJECTS_TO_SHOW,
+  INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW,
+  SET_AMOUNT_OF_PROJECTS_TO_INCREASE,
+  SET_TOTAL_PROJECTS,
+  SET_TOTAL_OWN_PROJECTS,
   UPDATE_PROJECT,
   CREATE_PROJECT_SUCCESSFUL,
   CREATE_OWN_PROJECT_SUCCESSFUL,
@@ -23,6 +30,10 @@ import {
 
 export const initialState = {
   projects: [],
+  totalProjects: null,
+  amountOfProjectsToIncrease: 10,
+  amountOfProjectsToShow: 10,
+  totalOwnProjects: null,
   ownProjects: [],
   loadingProjects: false,
   users: [],
@@ -32,7 +43,8 @@ export const initialState = {
   changingPhase: false,
   validating: false,
   hasErrors: false,
-  checking: false
+  checking: false,
+  pollingProjects: false
 }
 
 export const reducer = (state = initialState, action) => {
@@ -49,15 +61,65 @@ export const reducer = (state = initialState, action) => {
     case FETCH_OWN_PROJECTS_SUCCESSFUL: {
       return {
         ...state,
-        ownProjects: action.payload
+        ownProjects: state.ownProjects.concat(action.payload)
       }
     }
 
     case FETCH_PROJECTS_SUCCESSFUL: {
       return {
         ...state,
-        projects: action.payload,
+        projects: state.projects.concat(action.payload),
         loadingProjects: false
+      }
+    }
+
+    case SET_PROJECTS: {
+      return {
+        ...state,
+        projects: action.payload
+      }
+    }
+
+    case SET_OWN_PROJECTS: {
+      return {
+        ...state,
+        ownProjects: action.payload
+      }
+    }
+
+    case SET_AMOUNT_OF_PROJECTS_TO_INCREASE: {
+      return {
+        ...state,
+        amountOfProjectsToIncrease: action.payload
+      }
+    }
+
+    case INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW: {
+      return {
+        ...state,
+        pollingProjects: true
+      }
+    }
+
+    case SET_AMOUNT_OF_PROJECTS_TO_SHOW: {
+      return {
+        ...state,
+        amountOfProjectsToShow: action.payload,
+        pollingProjects: false
+      }
+    }
+
+    case SET_TOTAL_PROJECTS: {
+      return {
+        ...state,
+        totalProjects: action.payload
+      }
+    }
+
+    case SET_TOTAL_OWN_PROJECTS: {
+      return {
+        ...state,
+        totalOwnProjects: action.payload
       }
     }
 
@@ -80,6 +142,8 @@ export const reducer = (state = initialState, action) => {
         ...state,
         projects: [],
         ownProjects: [],
+        amountOfProjectsToIncrease: 10,
+        amountOfProjectsToShow: 10,
         currentProject: null,
         currentProjectLoaded: false
       }

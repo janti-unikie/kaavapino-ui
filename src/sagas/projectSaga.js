@@ -2,13 +2,26 @@ import axios from 'axios'
 import { takeLatest, put, all, call, select } from 'redux-saga/effects'
 import { push } from 'connected-react-router'
 import { modalSelector, editFormSelector, deadlineModalSelector } from '../selectors/formSelector'
-import { currentProjectSelector, currentProjectIdSelector } from '../selectors/projectSelector'
+import {
+  currentProjectSelector,
+  currentProjectIdSelector,
+  amountOfProjectsToShowSelector,
+  totalOwnProjectsSelector,
+  totalProjectsSelector,
+  ownProjectsSelector,
+  projectsSelector,
+  amountOfProjectsToIncreaseSelector
+} from '../selectors/projectSelector'
 import { schemaSelector } from '../selectors/schemaSelector'
 import { userIdSelector } from '../selectors/authSelector'
+import { phasesSelector } from '../selectors/phaseSelector'
 import {
   FETCH_PROJECTS, fetchProjectsSuccessful,
   fetchOwnProjectsSuccessful,
   fetchProjectSuccessful, updateProject,
+  INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW, setAmountOfProjectsToShow,
+  setTotalProjects, setTotalOwnProjects,
+  SORT_PROJECTS, setProjects, setOwnProjects,
   CREATE_PROJECT, createProjectSuccessful, createOwnProjectSuccessful,
   INITIALIZE_PROJECT, initializeProjectSuccessful,
   SAVE_PROJECT, saveProjectSuccessful,
@@ -24,6 +37,7 @@ import { error } from '../actions/apiActions'
 import { setLatestEditField, setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
 import { projectApi } from '../utils/api'
+import { usersSelector } from '../selectors/userSelector'
 
 export default function* projectSaga() {
   yield all([
@@ -35,17 +49,65 @@ export default function* projectSaga() {
     takeLatest(VALIDATE_PROJECT_FIELDS, validateProjectFields),
     takeLatest(PROJECT_FILE_UPLOAD, projectFileUpload),
     takeLatest(PROJECT_FILE_REMOVE, projectFileRemove),
-    takeLatest(PROJECT_SET_DEADLINES, projectSetDeadlinesSaga)
+    takeLatest(PROJECT_SET_DEADLINES, projectSetDeadlinesSaga),
+    takeLatest(INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW, increaseAmountOfProjectsToShowSaga),
+    takeLatest(SORT_PROJECTS, sortProjectsSaga)
   ])
 }
 
-function* fetchProjects() {
+function* fetchProjects(_, page, own = true, all = true) {
   try {
     const userId = yield select(userIdSelector)
-    const ownProjects = yield call(projectApi.get, { query: { includes_users: userId } })
-    const allProjects = yield call(projectApi.get)
-    yield put(fetchOwnProjectsSuccessful(ownProjects))
-    yield put(fetchProjectsSuccessful(allProjects))
+    if (own) {
+      const ownProjects = yield call(projectApi.get, { query: { includes_users: userId, page: page ? page : 1, ordering: '-modified_at' } }, '', null, null, true)
+      yield put(fetchOwnProjectsSuccessful(ownProjects.results))
+      yield put(setTotalOwnProjects(ownProjects.count))
+    }
+    if (all) {
+      const allProjects = yield call(projectApi.get, { query: { page: page ? page : 1,  ordering: '-modified_at' } }, '', null, null, true)
+      yield put(fetchProjectsSuccessful(allProjects.results))
+      yield put(setTotalProjects(allProjects.count))
+    }
+  } catch (e) {
+    if (e.response && e.response.status !== 404) {
+      yield put(error(e))
+    }
+  }
+}
+
+function* increaseAmountOfProjectsToShowSaga() {
+  try {
+    const PAGE_SIZE = 100  // Defined in backend
+    const totalOwnProjects = yield select(totalOwnProjectsSelector)
+    const totalProjects = yield select(totalProjectsSelector)
+    const amountOfProjectsToShow = yield select(amountOfProjectsToShowSelector)
+    const amountOfProjectsToIncrease = yield select(amountOfProjectsToIncreaseSelector)
+    const fetchOwn = amountOfProjectsToShow < totalOwnProjects
+    const fetchAll = amountOfProjectsToShow < totalProjects
+
+    if (fetchOwn || fetchAll) {
+      if (Math.floor(amountOfProjectsToShow / (PAGE_SIZE + 1)) + 1 !== Math.floor((amountOfProjectsToShow + amountOfProjectsToIncrease) / (PAGE_SIZE + 1)) + 1) {
+        yield call(fetchProjects, null, Math.floor((amountOfProjectsToShow + amountOfProjectsToIncrease) / (PAGE_SIZE + 1)) + 1, fetchOwn, fetchAll)
+      }
+      yield put(setAmountOfProjectsToShow(amountOfProjectsToShow + amountOfProjectsToIncrease))
+    } else {
+      yield put(setAmountOfProjectsToShow(amountOfProjectsToShow))
+    }
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+function* sortProjectsSaga({ payload: { sort, dir } }) {
+  try {
+    const ownProjects = yield select(ownProjectsSelector)
+    const projects = yield select(projectsSelector)
+    const phases = yield select(phasesSelector)
+    const users = yield select(usersSelector)
+    const amountOfProjectsToShow = yield select(amountOfProjectsToShowSelector)
+    const options = { sort, dir, phases, amountOfProjectsToShow, users }
+    yield put(setOwnProjects(projectUtils.sortProjects(ownProjects, options)))
+    yield put(setProjects(projectUtils.sortProjects(projects, options)))
   } catch (e) {
     yield put(error(e))
   }

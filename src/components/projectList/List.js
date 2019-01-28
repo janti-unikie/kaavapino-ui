@@ -1,8 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import {
+  increaseAmountOfProjectsToShow,
+  sortProjects,
+  setAmountOfProjectsToIncrease
+} from '../../actions/projectActions'
 import { phasesSelector } from '../../selectors/phaseSelector'
-import { loadingProjectsSelector } from '../../selectors/projectSelector'
-import { Loader } from 'semantic-ui-react'
+import {
+  loadingProjectsSelector,
+  pollingProjectsSelector
+} from '../../selectors/projectSelector'
+import { Loader, Button, Dropdown } from 'semantic-ui-react'
 import ListHeader from './ListHeader'
 import ListItem from './ListItem'
 import Graph from '../common/Graph'
@@ -12,90 +20,50 @@ class List extends Component {
   constructor(props) {
     super(props)
 
-    this.targetAttributes = [
-      'projectId',
-      'name',
-      'phase',
-      'nextDeadline',
-      'subtype',
-      'modified_at',
-      'user'
+    this.dropdownOptions = [
+      { key: 10, value: 10, text: '10' },
+      { key: 25, value: 25, text: '25' },
+      { key: 50, value: 50, text: '50' },
+      { key: 100, value: 100, text: '100' }
     ]
 
     this.state = {
       filter: '',
       sort: 5,
-      dir: 1
-    }
-  }
-
-  formatUser = (id) => {
-    const user = this.props.users.find((user) => user.id === id)
-    if (user) {
-      return (user.first_name && user.last_name) ? `${user.first_name} ${user.last_name}` : user.email
-    }
-    return ''
-  }
-
-  formatPhase = (id) => {
-    const { name, color_code } = this.props.phases.find((phase) => phase.id === id)
-    return { phaseName: name, phaseColor: color_code }
-  }
-
-  formatSubtype = (id) => {
-    const foundSubtype = this.props.projectSubtypes.find((subtype) => subtype.id === id)
-    if (foundSubtype) {
-      return foundSubtype.name
+      dir: 1,
+      selectedAmountToShow: 10
     }
   }
 
   setSort = (type) => {
-    this.setState((prevState) => {
-      if (type === prevState.sort) {
-        if (prevState.dir === 0) {
-          return { dir: 1 }
-        } else {
-          return { dir: 0 }
-        }
-      }
-
-      return { sort: type, dir: 0 }
-    })
-  }
-
-  sortItems = (items) => {
     const { sort, dir } = this.state
-    if (sort < 0) { return items }
-    return items.sort((a, b) => {
-      const item1 = this.formatFilterItem(a, true)[this.targetAttributes[sort]]
-      const item2 = this.formatFilterItem(b, true)[this.targetAttributes[sort]]
+    let newSort = sort, newDir = dir
+    if (type === sort) {
+      if (dir === 0) {
+        newDir = 1
+      } else {
+        newDir = 0
+      }
+    } else {
+      newSort = type
+      newDir = 0
+    }
 
-      return dir === 0 ?
-        item1 > item2 ? 1 : -1 :
-        item1 < item2 ? 1 : -1
-    })
+    this.props.sortProjects({ sort: newSort, dir: newDir })
+    this.setState({ sort: newSort, dir: newDir })
   }
 
   setFilter = (value) => this.setState({ filter: value })
 
-  formatFilterItem = (item, sort = false) => {
-    const user = this.formatUser(item.user)
-    const modified_at = sort ? new Date(item.modified_at).getTime() : projectUtils.formatDate(item.modified_at)
-    const phase = this.formatPhase(item.phase).phaseName
-    const subtype = item.subtype
-    const name = item.name
-    const projectId = item.attribute_data['hankenumero'] || '-'
-    const itemDeadline = item.deadlines.find((d) => d.phase_id === item.phase).deadline
-    const nextDeadline = sort ? new Date(itemDeadline).getTime() : projectUtils.formatDate(itemDeadline)
-    return { name, user, modified_at, phase, subtype, projectId, nextDeadline }
+  selectAmount = (param, { value }) => {
+    this.props.setAmountOfProjectsToIncrease(value)
+    this.setState({ selectedAmountToShow: value })
   }
-
-  formatNextDeadline = (deadlines, phase) => projectUtils.formatDate(deadlines.find((d) => d.phase_id === phase).deadline)
 
   filterItems = (items) => {
     const { filter } = this.state
     const filtered = items.filter((item) => {
-      const filterFields = this.formatFilterItem(item)
+      const filterFields = projectUtils.formatFilterProject(item, false, this.props.phases, this.props.users)
       let includes = false
       Object.keys(filterFields).forEach((key) => {
         const fieldValue = filterFields[key]
@@ -113,28 +81,37 @@ class List extends Component {
 
   render() {
     const { sort, dir } = this.state
-    if (this.props.loadingProjects || !this.props.phases) {
+    const {
+      increaseAmountOfProjectsToShow,
+      loadingProjects,
+      phases,
+      projectSubtypes,
+      users,
+      pollingProjects,
+      total
+    } = this.props
+    if (loadingProjects || !phases) {
       return (
         <div className='project-list'>
           <Loader inline={'centered'} active>Ladataan</Loader>
         </div>
       )
     }
-    const items = this.sortItems(this.filterItems(this.props.items))
-    const graphData = items.map(i => projectUtils.formatDeadlines(i, this.props.phases)).slice(0, 4)
+    const items = this.filterItems(this.props.items)
+    const graphData = items.map(i => projectUtils.formatDeadlines(i, phases)).slice(0, 4)
     const headerItems = ['Hankenumero', 'Nimi', 'Vaihe', 'Seuraava määräaika', 'Koko', 'Muokattu', 'Vastuuhenkilö']
     return (
       <div className='project-list'>
         <ListHeader items={headerItems} selected={sort} dir={dir} filter={this.setFilter} sort={this.setSort} />
         { items.map(({ attribute_data, name, id, modified_at, user, subtype, phase, deadlines }, i) => {
           const listItem = {
-            ...this.formatPhase(phase),
+            ...projectUtils.formatPhase(phase, phases),
             name,
             id,
             modified_at: projectUtils.formatDate(modified_at),
-            nextDeadline: this.formatNextDeadline(deadlines, phase),
-            user: this.formatUser(user),
-            subtype: this.formatSubtype(subtype),
+            nextDeadline: projectUtils.formatNextDeadline(deadlines, phase),
+            user: projectUtils.formatUsersName(users.find((u) => u.id === user)),
+            subtype: projectUtils.formatSubtype(subtype, projectSubtypes),
             projectId: attribute_data['hankenumero'] || '-'
           }
           return (
@@ -145,17 +122,42 @@ class List extends Component {
           )
         })}
         { items.length === 0 && <span className='empty-list-info'>Ei hankkeita!</span> }
+        <span className='list-amount'>Näytetään {items.length}/{total}</span>
         { items.length !== 0 && <Graph data={graphData} height={Math.max(graphData.length * 65, 2*65)} /> }
+        <div className='list-actions-container'>
+          <Button
+            loading={pollingProjects}
+            disabled={pollingProjects}
+            onClick={() => increaseAmountOfProjectsToShow()}
+            content='Lataa lisää'
+          />
+          <div className='list-action-dropdown'>
+            <span>Latausmäärä: </span>
+            <Dropdown
+              options={this.dropdownOptions}
+              value={this.state.selectedAmountToShow}
+              onChange={this.selectAmount}
+            />
+          </div>
+        </div>
       </div>
     )
   }
 }
 
+const mapDispatchToProps = {
+  increaseAmountOfProjectsToShow,
+  sortProjects,
+  setAmountOfProjectsToIncrease
+}
+
 const mapStateToProps = (state) => ({
   phases: phasesSelector(state),
-  loadingProjects: loadingProjectsSelector(state)
+  loadingProjects: loadingProjectsSelector(state),
+  pollingProjects: pollingProjectsSelector(state)
 })
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(List)
