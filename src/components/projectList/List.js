@@ -8,7 +8,8 @@ import {
 import { phasesSelector } from '../../selectors/phaseSelector'
 import {
   loadingProjectsSelector,
-  pollingProjectsSelector
+  pollingProjectsSelector,
+  amountOfProjectsToIncreaseSelector
 } from '../../selectors/projectSelector'
 import { Loader, Button, Dropdown } from 'semantic-ui-react'
 import ListHeader from './ListHeader'
@@ -30,8 +31,7 @@ class List extends Component {
     this.state = {
       filter: '',
       sort: 5,
-      dir: 1,
-      selectedAmountToShow: 10
+      dir: 1
     }
   }
 
@@ -55,10 +55,7 @@ class List extends Component {
 
   setFilter = (value) => this.setState({ filter: value })
 
-  selectAmount = (param, { value }) => {
-    this.props.setAmountOfProjectsToIncrease(value)
-    this.setState({ selectedAmountToShow: value })
-  }
+  selectAmount = (_, { value }) => this.props.setAmountOfProjectsToIncrease(value)
 
   filterItems = (items) => {
     const { filter } = this.state
@@ -88,7 +85,8 @@ class List extends Component {
       projectSubtypes,
       users,
       pollingProjects,
-      total
+      total,
+      amountOfProjectsToIncrease
     } = this.props
     if (loadingProjects || !phases) {
       return (
@@ -135,7 +133,7 @@ class List extends Component {
             <span>Latausmäärä: </span>
             <Dropdown
               options={this.dropdownOptions}
-              value={this.state.selectedAmountToShow}
+              value={amountOfProjectsToIncrease}
               onChange={this.selectAmount}
             />
           </div>
@@ -154,7 +152,8 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
   phases: phasesSelector(state),
   loadingProjects: loadingProjectsSelector(state),
-  pollingProjects: pollingProjectsSelector(state)
+  pollingProjects: pollingProjectsSelector(state),
+  amountOfProjectsToIncrease: amountOfProjectsToIncreaseSelector(state)
 })
 
 export default connect(
