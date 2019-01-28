@@ -31,19 +31,24 @@ describe('project reducer', () => {
   it('should handle FETCH_PROJECTS_SUCCESSFUL', () => {
     const state = {
       ...initialState,
-      loadingProjects: true
+      loadingProjects: true,
+      projects: [1]
     }
-    expect(project(state, { type: FETCH_PROJECTS_SUCCESSFUL, payload: 1 })).toEqual({
+    expect(project(state, { type: FETCH_PROJECTS_SUCCESSFUL, payload: 2 })).toEqual({
       ...initialState,
-      projects: 1,
+      projects: [1, 2],
       loadingProjects: false
     })
   })
 
   it('should handle FETCH_OWN_PROJECTS_SUCCESSFUL', () => {
-    expect(project(initialState, { type: FETCH_OWN_PROJECTS_SUCCESSFUL, payload: 1 })).toEqual({
+    const state = {
       ...initialState,
-      ownProjects: 1
+      ownProjects: [1]
+    }
+    expect(project(state, { type: FETCH_OWN_PROJECTS_SUCCESSFUL, payload: 2 })).toEqual({
+      ...initialState,
+      ownProjects: [1, 2]
     })
   })
 

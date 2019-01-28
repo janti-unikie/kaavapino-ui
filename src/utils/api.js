@@ -18,8 +18,8 @@ class Api {
     )
   )
 
-  get = async ({ path = {}, query = {} } = {}, opt = '', config = {}, all = false) => (
-    await get(this.formatUrl(path, query, opt), config, all)
+  get = async ({ path = {}, query = {} } = {}, opt = '', config = {}, all = false, pages = false) => (
+    await get(this.formatUrl(path, query, opt), config, all, pages)
   )
 
   post = async (body = {}, { path = {}, query = {} } = {}, opt = '', config = {}) => (

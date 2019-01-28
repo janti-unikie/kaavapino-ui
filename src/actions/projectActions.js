@@ -1,6 +1,14 @@
 export const FETCH_PROJECTS = 'Fetch projects'
 export const FETCH_PROJECTS_SUCCESSFUL = 'Fetch projects successful'
 export const FETCH_OWN_PROJECTS_SUCCESSFUL = 'Fetch own projects successful'
+export const SET_PROJECTS = 'Set projects'
+export const SET_OWN_PROJECTS = 'Set own projects'
+export const SET_AMOUNT_OF_PROJECTS_TO_INCREASE = 'Set amount of projects to increase'
+export const INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW = 'Increase amount of projects to show'
+export const SET_AMOUNT_OF_PROJECTS_TO_SHOW = 'Set amount of projects to show'
+export const SET_TOTAL_PROJECTS = 'Set total projects'
+export const SET_TOTAL_OWN_PROJECTS = 'Set total own projects'
+export const SORT_PROJECTS = 'Sort projects'
 export const CREATE_PROJECT = 'Create project'
 export const CREATE_PROJECT_SUCCESSFUL = 'Create project successful'
 export const CREATE_OWN_PROJECT_SUCCESSFUL = 'Create own project successful'
@@ -26,9 +34,21 @@ export const PROJECT_SET_DEADLINES_SUCCESSFUL = 'Project set deadlines successfu
 export const fetchProjects = () => ({ type: FETCH_PROJECTS })
 export const fetchOwnProjectsSuccessful = (projects) => ({ type: FETCH_OWN_PROJECTS_SUCCESSFUL, payload: projects })
 export const fetchProjectsSuccessful = (projects) => ({ type: FETCH_PROJECTS_SUCCESSFUL, payload: projects })
+export const setProjects = (projects) => ({ type: SET_PROJECTS, payload: projects })
+export const setOwnProjects = (projects) => ({ type: SET_OWN_PROJECTS, payload: projects })
 
 export const initializeProject = (id) => ({ type: INITIALIZE_PROJECT, payload: id })
 export const initializeProjectSuccessful = () => ({ type: INITIALIZE_PROJECT_SUCCESSFUL })
+
+export const setAmountOfProjectsToIncrease = (amount) => ({ type: SET_AMOUNT_OF_PROJECTS_TO_INCREASE, payload: amount })
+
+export const increaseAmountOfProjectsToShow = () => ({ type: INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW })
+export const setAmountOfProjectsToShow = (count) => ({ type: SET_AMOUNT_OF_PROJECTS_TO_SHOW, payload: count })
+
+export const setTotalProjects = (count) => ({ type: SET_TOTAL_PROJECTS, payload: count })
+export const setTotalOwnProjects = (count) => ({ type: SET_TOTAL_OWN_PROJECTS, payload: count })
+
+export const sortProjects = (options) => ({ type: SORT_PROJECTS, payload: options })
 
 export const fetchProjectSuccessful = (project) => ({ type: FETCH_PROJECT_SUCCESSFUL, payload: project })
 

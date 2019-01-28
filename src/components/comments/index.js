@@ -5,9 +5,15 @@ import {
   pollComments,
   createComment,
   editComment,
-  deleteComment
+  deleteComment,
+  increaseAmountOfCommentsToShow
 } from '../../actions/commentActions'
-import { commentsSelector, commentsLoadingSelector } from '../../selectors/commentSelector'
+import {
+  commentsSelector,
+  commentsLoadingSelector,
+  pollingCommentsSelector,
+  amountOfCommentsToShowSelector
+} from '../../selectors/commentSelector'
 import { userIdSelector } from '../../selectors/authSelector'
 import { Form, Input, Button } from 'semantic-ui-react'
 import Comment from './Comment'
@@ -16,6 +22,7 @@ class CommentList extends Component {
   constructor(props) {
     super(props)
     this.commentsRef = React.createRef()
+    this.prevHeight = 0
     this.state = {
       value: ''
     }
@@ -27,9 +34,16 @@ class CommentList extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (prevProps.comments.length < this.props.comments.length) {
+    if ((prevProps.comments.length < this.props.comments.length) && !prevProps.pollingComments) {
       const comments = this.commentsRef.current
       if (comments) {
+        comments.scrollTop = comments.scrollHeight
+      }
+    } else if (prevProps.amountOfCommentsToShow !== this.props.amountOfCommentsToShow) {
+      const comments = this.commentsRef.current
+      if (prevProps.amountOfCommentsToShow < this.props.amountOfCommentsToShow) {
+        comments.scrollTop = comments.scrollHeight - this.prevHeight
+      } else {
         comments.scrollTop = comments.scrollHeight
       }
     }
@@ -50,16 +64,28 @@ class CommentList extends Component {
     }
   }
 
+  handleScroll = () => {
+    if (this.commentsRef.current.scrollTop < 1) {
+      const { pollingComments, increaseAmountOfCommentsToShow } = this.props
+      if (!pollingComments) {
+        increaseAmountOfCommentsToShow()
+        const comments = this.commentsRef.current
+        this.prevHeight = comments.scrollHeight
+      }
+    }
+  }
+
   render () {
-    const { comments, commentsLoading, userId } = this.props
+    const { comments, commentsLoading, userId, amountOfCommentsToShow, pollingComments } = this.props
+    const begin = comments.length < amountOfCommentsToShow ? comments.length : amountOfCommentsToShow
     return (
       <div className='comment-list-container'>
-        <div className='comments' ref={this.commentsRef}>
-          { commentsLoading && <p className='comments-message'>Ladataan...</p> }
+        <div className='comments' ref={this.commentsRef} onScroll={this.handleScroll}>
+          { (commentsLoading || pollingComments) && <p className='comments-message'>Ladataan...</p> }
           { !commentsLoading && comments.length === 0 && <p className='comments-message'>Ei kommentteja.</p> }
-          { comments.map((comment) => (
+          { comments.slice(comments.length - begin, comments.length).map((comment, i) => (
             <Comment
-              key={comment.id}
+              key={`${i}-${comment.id}`}
               { ...comment }
               editable={userId === comment.user}
               onSave={(content) => this.props.editComment(this.props.project, comment.id, content)}
@@ -87,7 +113,9 @@ class CommentList extends Component {
 const mapStateToProps = (state) => ({
   comments: commentsSelector(state),
   commentsLoading: commentsLoadingSelector(state),
-  userId: userIdSelector(state)
+  userId: userIdSelector(state),
+  pollingComments: pollingCommentsSelector(state),
+  amountOfCommentsToShow: amountOfCommentsToShowSelector(state)
 })
 
 const mapDispatchToProps = {
@@ -95,7 +123,8 @@ const mapDispatchToProps = {
   pollComments,
   createComment,
   editComment,
-  deleteComment
+  deleteComment,
+  increaseAmountOfCommentsToShow
 }
 
 export default connect(
