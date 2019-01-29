@@ -40,6 +40,7 @@ class App extends Component {
     if (this.props.loadingApiToken || this.props.userLoading || !this.props.apiInitialized) {
       return <p>Ladataan...</p>
     }
+
     return (
       <ConnectedRouter history={history}>
         <Switch>
@@ -67,7 +68,6 @@ class App extends Component {
 }
 
 App.propTypes = {
-  user: PropTypes.object,
   userLoading: PropTypes.bool
 }
 
