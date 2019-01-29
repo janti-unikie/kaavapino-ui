@@ -12,38 +12,41 @@ const Matrix = ({ field: { matrix: { rows, columns, fields } }, checking, attrib
     columnGap: '10px',
     rowGap: '10px'
   }
-
+  const matrix = []
+  const col = Array(columns.length).fill(0)
+  rows.forEach(() => matrix.push([ ...col ]))
+  fields.forEach(({ row: x, column: y, ...rest }) => {
+    matrix[x][y] = { ...rest }
+  })
   return (
     <div className='matrix-container'>
       <div className='matrix' style={ matrixStyle }>
         <b />
-        { columns.map((c, i) => <b key={i}> { c } </b>) }
-        {
-          fields.map((field, i) => {
-            const highlighted = checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
-            if ((i % columns.length === 0)) {
-              return (
-                <span style={{ display: 'contents' }} key={`${field.name}-${i}`}>
-                  <b>{ rows[i / columns.length] }</b>
-                  <span className={`${highlighted ? 'highlighted' : ''}`}>
-                    <Field
-                      attributeData={attributeData}
-                      field={field}
-                    />
+        { columns.map((c, i) => <b key={`${c}-${i}`}> { c } </b>) }
+        { matrix.map((row, y) => {
+          return (
+            <React.Fragment key={`${rows[y]}-${y}`}>
+              { row.map((field, x) => {
+                const highlighted = field !== 0 && checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
+                return (
+                  <span style={{ display: 'contents' }} key={`${field.name}-${y}-${x}`}>
+                    {x === 0 && <b>{ rows[y] }</b>}
+                    { field === 0 && <span /> }
+                    { field !== 0 && (
+                      <span className={`${highlighted ? 'highlighted' : ''}`}>
+                        <b>{ field.label }</b>
+                        <Field
+                          attributeData={attributeData}
+                          field={field}
+                          fieldset={field.type === 'fieldset'}
+                        />
+                      </span>
+                    )}
                   </span>
-                </span>
-              )
-            }
-            return (
-              <span className={`${highlighted ? 'highlighted' : ''}`} key={`${field.name}-${i}`}>
-                <Field
-                  attributeData={attributeData}
-                  field={field}
-                />
-              </span>
-            )
-          })
-        }
+                )
+              })}
+            </React.Fragment>
+          )}) }
       </div>
     </div>
   )
