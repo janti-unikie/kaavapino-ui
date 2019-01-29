@@ -11,7 +11,9 @@ const userManagerConfig = {
   authority                 : 'https://api.hel.fi/sso/openid/',
   post_logout_redirect_uri  : `${baseUrl}/logout/callback`,
   automaticSilentRenew      : true,
-  silent_redirect_uri       : `${baseUrl}/silent-renew`
+  silent_redirect_uri       : `${baseUrl}/silent-renew`,
+  stateStore: new WebStorageStateStore({ store: localStorage }),
+  userStore: new WebStorageStateStore({ store: localStorage })
 }
 
 if (process.env.NODE_ENV === 'test') {
