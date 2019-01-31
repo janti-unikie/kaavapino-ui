@@ -53,9 +53,13 @@ class File extends Component {
 
   reset = () => {
     const { projectFileRemove, field: { name } } = this.props
-    this.inputRef.current.value = ''
-    this.setState({ current: null })
-    projectFileRemove(name)
+    const { current } = this.state
+    const confirm = window.confirm(`Oletko varma, että haluat poistaa tiedoston ${current}?`)
+    if (confirm) {
+      this.inputRef.current.value = ''
+      this.setState({ current: null })
+      projectFileRemove(name)
+    }
   }
 
   download = () => {
@@ -70,47 +74,6 @@ class File extends Component {
     }
     this.inputRef.current.value = ''
     this.setState({ percentCompleted: 0, uploading: false, reading: false })
-  }
-
-  render() {
-    const { current, uploading, percentCompleted } = this.state
-    const { field, image, description } = this.props
-    return (
-      <div>
-        <div className='file-input-container'>
-          <Button.Group>
-            <Button
-              disabled={uploading}
-              icon='upload'
-              as='label'
-              htmlFor={field.name}
-              label={{
-                basic: true,
-                content: `${this.state.current || (uploading && 'Ladataan...') || 'Valitse tiedosto'}`
-              }}
-              onClick={this.handleClick}
-              ref={this.inputButtonRef}
-              style={{ overflow: 'auto' }}
-            />
-            { !uploading && current && <Button icon='download' onClick={this.download} content='Lataa' /> }
-            { !uploading && current && <Button icon='cancel' color='red' onClick={this.reset} /> }
-            { uploading && <Button icon='cancel' color='red' onClick={this.cancel} content='Peruuta' /> }
-          </Button.Group>
-        </div>
-        <br />
-        <input
-          ref={this.inputRef}
-          hidden
-          id={field.name}
-          multiple
-          type='file'
-          onChange={this.onChangeFile}
-        />
-        { uploading && <Progress percent={percentCompleted} progress indicating /> }
-        { <img style={{ display: `${(current && image) ? 'block' : 'none'}`, marginBottom: '10px' }} className='image-preview' ref={this.imageRef} alt={current ? current : ''} /> }
-        { description && <span className='file-description'><b>Kuvaus: </b>{ description }</span> }
-      </div>
-    )
   }
 
   callback = (progressEvent, onCompleted) => {
@@ -159,6 +122,47 @@ class File extends Component {
       setCancelToken: (token) => this.cancelToken = token
     })
     this.setState({ uploading: true, percentCompleted: 0 })
+  }
+
+  render() {
+    const { current, uploading, percentCompleted } = this.state
+    const { field, image, description } = this.props
+    return (
+      <div>
+        <div className='file-input-container'>
+          <Button.Group>
+            <Button
+              disabled={uploading}
+              icon='upload'
+              as='label'
+              htmlFor={field.name}
+              label={{
+                basic: true,
+                content: `${this.state.current || (uploading && 'Ladataan...') || 'Valitse tiedosto'}`
+              }}
+              onClick={this.handleClick}
+              ref={this.inputButtonRef}
+              style={{ overflow: 'auto' }}
+            />
+            { !uploading && current && <Button icon='download' onClick={this.download} content='Lataa' /> }
+            { !uploading && current && <Button icon='cancel' color='red' onClick={this.reset} /> }
+            { uploading && <Button icon='cancel' color='red' onClick={this.cancel} content='Peruuta' /> }
+          </Button.Group>
+        </div>
+        <br />
+        <input
+          ref={this.inputRef}
+          hidden
+          id={field.name}
+          multiple
+          type='file'
+          onChange={this.onChangeFile}
+        />
+        { uploading && <Progress percent={percentCompleted} progress indicating /> }
+        { <img style={{ display: `${(current && image) ? 'block' : 'none'}`, marginBottom: '10px' }} className='image-preview' ref={this.imageRef} alt={current ? current : ''} /> }
+        { current && description && <span className='file-description'><b>Kuvaus: </b>{ description }</span> }
+      </div>
+    )
   }
 }
 
