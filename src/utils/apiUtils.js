@@ -23,9 +23,21 @@ const setToken = (newToken) => token = newToken
 
 const getToken = () => token
 
-export const get = async (apiUrl, config = {}, all = false, pages = false) => {
-  const res = await axios.get(apiUrl, { ...config })
-  return all ? res : (res.data.results && !pages) ? res.data.results : res.data
+export const get = async (apiUrl, config = {}, all = false, pages = false, force = true) => {
+  let res = await axios.get(apiUrl, { ...config })
+  if (all) return res
+  if (res.data.results && !pages) {
+    let results = res.data.results
+    if (force) {
+      while (res.data.next) {
+        res = await axios.get(res.data.next, { ...config })
+        results = results.concat(res.data.results)
+      }
+      return results
+    }
+    return res.data.results
+  }
+  return res.data
 }
 
 export const post = async (apiUrl, body = {}, headers = {}) => {
