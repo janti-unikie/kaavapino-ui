@@ -49,7 +49,7 @@ class ProjectListPage extends Component {
     } = this.props
     const panes = [
       { menuItem: 'Omat hankkeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={ownProjects.slice(0, amountOfProjectsToShow)} total={totalOwnProjects} /> },
-      { menuItem: 'Kaikki hankeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={allProjects.slice(0, amountOfProjectsToShow)} total={totalProjects} /> }
+      { menuItem: 'Kaikki hankkeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={allProjects.slice(0, amountOfProjectsToShow)} total={totalProjects} /> }
     ]
     return (
       <div className='project-list-page'>
