@@ -20,6 +20,7 @@ import {
   fetchOwnProjectsSuccessful,
   fetchProjectSuccessful, updateProject,
   INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW, setAmountOfProjectsToShow,
+  SET_AMOUNT_OF_PROJECTS_TO_INCREASE,
   setTotalProjects, setTotalOwnProjects,
   SORT_PROJECTS, setProjects, setOwnProjects,
   CREATE_PROJECT, createProjectSuccessful, createOwnProjectSuccessful,
@@ -51,7 +52,8 @@ export default function* projectSaga() {
     takeLatest(PROJECT_FILE_REMOVE, projectFileRemove),
     takeLatest(PROJECT_SET_DEADLINES, projectSetDeadlinesSaga),
     takeLatest(INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW, increaseAmountOfProjectsToShowSaga),
-    takeLatest(SORT_PROJECTS, sortProjectsSaga)
+    takeLatest(SORT_PROJECTS, sortProjectsSaga),
+    takeLatest(SET_AMOUNT_OF_PROJECTS_TO_INCREASE, setAmountOfProjectsToIncreaseSaga)
   ])
 }
 
@@ -75,13 +77,13 @@ function* fetchProjects(_, page, own = true, all = true) {
   }
 }
 
-function* increaseAmountOfProjectsToShowSaga() {
+function* increaseAmountOfProjectsToShowSaga(action, howMany = null) {
   try {
     const PAGE_SIZE = 100  // Defined in backend
     const totalOwnProjects = yield select(totalOwnProjectsSelector)
     const totalProjects = yield select(totalProjectsSelector)
     const amountOfProjectsToShow = yield select(amountOfProjectsToShowSelector)
-    const amountOfProjectsToIncrease = yield select(amountOfProjectsToIncreaseSelector)
+    const amountOfProjectsToIncrease = howMany ? howMany : yield select(amountOfProjectsToIncreaseSelector)
     const fetchOwn = amountOfProjectsToShow < totalOwnProjects
     const fetchAll = amountOfProjectsToShow < totalProjects
 
@@ -92,6 +94,17 @@ function* increaseAmountOfProjectsToShowSaga() {
       yield put(setAmountOfProjectsToShow(amountOfProjectsToShow + amountOfProjectsToIncrease))
     } else {
       yield put(setAmountOfProjectsToShow(amountOfProjectsToShow))
+    }
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+function* setAmountOfProjectsToIncreaseSaga({ payload }) {
+  try {
+    const amountOfProjectsToShow = yield select(amountOfProjectsToShowSelector)
+    if (amountOfProjectsToShow < payload) {
+      yield call(increaseAmountOfProjectsToShowSaga, null, payload - amountOfProjectsToShow)
     }
   } catch (e) {
     yield put(error(e))
@@ -133,7 +146,9 @@ function* createProject() {
       yield put(createOwnProjectSuccessful(createdProject))
     }
     yield put(createProjectSuccessful(createdProject))
-    yield put(push(`/${createdProject.id}/edit`))
+    if (createdProject.public || createdProject.user === userId) {
+      yield put(push(`/${createdProject.id}/edit`))
+    }
     yield put(setSubmitSucceeded('modal'))
   } catch (e) {
     if (e.response.status === 400) {
