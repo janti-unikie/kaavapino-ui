@@ -12,7 +12,7 @@ const Button = ({ handleClick, value, icon, loading, help }) => {
     </button>
   )
   return help ?
-    <Popup trigger={btn} content={help} position='bottom center' /> :
+    <Popup trigger={btn} content={help} hideOnScroll position='bottom center' /> :
     btn
 }
 
