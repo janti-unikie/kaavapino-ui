@@ -74,7 +74,7 @@ const sortProjects = (projects, options) => {
 const formatFilterProject = (project, sort = false, phases, users) => {
   const user = formatUsersName(users.find((u) => u.id === project.user))
   const modified_at = sort ? new Date(project.modified_at).getTime() : formatDate(project.modified_at)
-  const phase = formatPhase(project.phase, phases).phaseName
+  const phase = formatPhase(project.phase, phases).index
   const subtype = project.subtype
   const name = project.name
   const projectId = project.attribute_data['hankenumero'] || '-'
@@ -84,8 +84,8 @@ const formatFilterProject = (project, sort = false, phases, users) => {
 }
 
 const formatPhase = (id, phases) => {
-  const { name, color_code } = phases.find((phase) => phase.id === id)
-  return { phaseName: name, phaseColor: color_code }
+  const { index, name, color_code } = phases.find((phase) => phase.id === id)
+  return { index, phaseName: name, phaseColor: color_code }
 }
 
 const formatNextDeadline = (deadlines, phase) => formatDate(deadlines.find((d) => d.phase_id === phase).deadline)
