@@ -30,7 +30,7 @@ class Graph extends Component {
     data.forEach((obj, j) => {
       for (let i = 0; i < obj.deadlines.length; i++) {
         let row = []
-        row.push(obj.title)
+        row.push(`${obj.title}${this.getSuffix(j)}`)
         row.push(`${i + 1}${this.getSuffix(j)}`)
         row.push(obj.deadlines[i].title)
         row.push(obj.deadlines[i].start)
