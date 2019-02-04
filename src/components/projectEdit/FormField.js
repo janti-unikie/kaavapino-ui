@@ -31,7 +31,7 @@ class FormField extends Component {
       <div className='input-container' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
         <Form.Field required={ required } className='input-header'>
           <label className={`input-title${required ? ' highlight': ''}`}>{ field.label }</label>
-          { field.help_text && <Info content={field.help_text} /> }
+          { field.help_text && <Info content={field.help_text} link={field.help_link} /> }
           { showHistory && updated && (
             <span className='input-history'>
               <FontAwesomeIcon icon='clock'/>
