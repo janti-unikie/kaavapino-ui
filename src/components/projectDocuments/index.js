@@ -31,6 +31,9 @@ class ProjectDocumentsPage extends Component {
     return (
       <div className='documents-page-container'>
         { documentsLoading && <Loader inline={'centered'} active>Ladataan</Loader> }
+        { !documentsLoading && Object.keys(groupedDocuments).length === 0 && (
+          <p className='no-documents'>Ei dokumentteja.</p>
+        )}
         { Object.keys(groupedDocuments).map((key) => (
           <DocumentGroup
             key={key}

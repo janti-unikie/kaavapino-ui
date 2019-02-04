@@ -1,4 +1,8 @@
 .documents-page-container {
+  .no-documents {
+    text-align: center;
+  }
+
   > div:not(:first-child) {
     margin-top: 40px;
   }
