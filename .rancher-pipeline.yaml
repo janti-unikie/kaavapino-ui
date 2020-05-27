@@ -1,0 +1,25 @@
+stages:
+- name: Build
+  steps:
+  - runScriptConfig:
+      image: node:12-alpine
+      shellScript: |-
+        apk update && apk upgrade && apk add git
+        yarn install
+        yarn lint
+        yarn build
+- name: Publish
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: web:${CICD_EXECUTION_SEQUENCE}-${CICD_GIT_COMMIT}
+- name: Deploy
+  steps:
+  - applyYamlConfig:
+      path: ./deploy/rancher/deployment.yaml
+  when:
+    branch:
+      include:
+      - development
+notification: {}
