@@ -11,7 +11,7 @@ stages:
 - name: Publish
   steps:
   - publishImageConfig:
-      dockerfilePath: ./Dockerfile
+      dockerfilePath: ./Dockerfile_nginx
       buildContext: .
       tag: web:${CICD_EXECUTION_SEQUENCE}-${CICD_GIT_COMMIT}
 - name: Deploy
