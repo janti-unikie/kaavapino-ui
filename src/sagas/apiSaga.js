@@ -9,6 +9,7 @@ import {
   DOWNLOAD_FILE
 } from '../actions/apiActions'
 import apiUtils from '../utils/apiUtils'
+import { loginSuccessful } from '../actions/authActions'
 
 export default function* apiSaga() {
   yield all([
@@ -36,12 +37,20 @@ function* handleErrorSaga({ payload }) {
 }
 
 function* userFoundSaga({ payload }) {
-  const audience = process.env.REACT_APP_OPENID_AUDIENCE
-  apiUtils.setToken(payload.access_token)
-  const data = yield apiUtils.get('https://api.hel.fi/sso/api-tokens/')
-  const token = data[audience]
+  let token = null
+  if (!process.env.REACT_APP_API_TOKEN) {
+    const audience = process.env.REACT_APP_OPENID_AUDIENCE
+    apiUtils.setToken(payload.access_token)
+    const data = yield apiUtils.get('https://api.hel.fi/sso/api-tokens/')
+    token = data[audience]
+  } else {
+    token = process.env.REACT_APP_API_TOKEN
+  }
   apiUtils.setToken(token)
   yield put(tokenLoaded(token))
+  if (process.env.REACT_APP_API_TOKEN) {
+    yield put(loginSuccessful())
+  }
 }
 
 function* initApiRequestSaga() {

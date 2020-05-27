@@ -13,7 +13,7 @@ const initAxios = () => {
     ...config,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${getToken()}`,
+      'Authorization': process.env.REACT_APP_API_TOKEN && getToken() === process.env.REACT_APP_API_TOKEN ? `Token ${getToken()}` : `Bearer ${getToken()}`,
       ...config.headers
     }
   }))
