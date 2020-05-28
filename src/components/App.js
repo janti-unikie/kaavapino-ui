@@ -22,6 +22,7 @@ import ReportsPage from './reports'
 import ErrorPage from './error'
 import Header from './common/Header'
 import Footer from './common/Footer'
+import FakeLoginPage from './auth/FakeLogin'
 
 class App extends Component {
   componentDidUpdate(prevProps) {
@@ -44,7 +45,10 @@ class App extends Component {
     return (
       <ConnectedRouter history={history}>
         <Switch>
-          <Route path='/login' render={() => <LoginPage />} />
+          {process.env.REACT_APP_API_TOKEN ?
+            <Route path='/login' render={() => <FakeLoginPage />} />
+            : <Route path='/login' render={() => <LoginPage />} />
+          }
           <Route path='/callback' render={() => <LoginCallbackPage />} />
           <Route exact path='/logout'  render={() => <LogoutPage handleLogout={ this.props.logout } /> } />
           <Route path='/logout/callback'  render={() => <LogoutCallbackPage /> } />
