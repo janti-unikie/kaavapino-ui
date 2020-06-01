@@ -3,6 +3,16 @@ stages:
   steps:
   - runScriptConfig:
       image: node:12-alpine
+      envFrom:
+      - sourceName: web
+        sourceKey: REACT_APP_BASE_URL
+        targetKey: REACT_APP_BASE_URL
+      - sourceName: web
+        sourceKey: REACT_APP_OPENID_CONNECT_CLIENT_ID
+        targetKey: REACT_APP_OPENID_CONNECT_CLIENT_ID
+      - sourceName: web
+        sourceKey: REACT_APP_OPENID_AUDIENCE
+        targetKey: REACT_APP_OPENID_AUDIENCE
       shellScript: |-
         apk update && apk upgrade && apk add git
         yarn install
