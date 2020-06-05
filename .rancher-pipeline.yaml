@@ -3,25 +3,25 @@ stages:
   steps:
   - runScriptConfig:
       image: node:12-alpine
-      envFrom:
-      - sourceName: web
-        sourceKey: REACT_APP_BASE_URL
-        targetKey: REACT_APP_BASE_URL
-      - sourceName: web
-        sourceKey: REACT_APP_OPENID_CONNECT_CLIENT_ID
-        targetKey: REACT_APP_OPENID_CONNECT_CLIENT_ID
-      - sourceName: web
-        sourceKey: REACT_APP_OPENID_AUDIENCE
-        targetKey: REACT_APP_OPENID_AUDIENCE
-      - sourceName: web
-        sourceKey: REACT_APP_API_TOKEN
-        targetKey: REACT_APP_API_TOKEN
       shellScript: |-
         env
         apk update && apk upgrade && apk add git
         yarn install
         yarn lint
         yarn build
+    envFrom:
+    - sourceName: web
+      sourceKey: REACT_APP_BASE_URL
+      targetKey: REACT_APP_BASE_URL
+    - sourceName: web
+      sourceKey: REACT_APP_OPENID_CONNECT_CLIENT_ID
+      targetKey: REACT_APP_OPENID_CONNECT_CLIENT_ID
+    - sourceName: web
+      sourceKey: REACT_APP_OPENID_AUDIENCE
+      targetKey: REACT_APP_OPENID_AUDIENCE
+    - sourceName: web
+      sourceKey: REACT_APP_API_TOKEN
+      targetKey: REACT_APP_API_TOKEN
 - name: Publish
   steps:
   - publishImageConfig:
