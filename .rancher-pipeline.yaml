@@ -19,9 +19,6 @@ stages:
     - sourceName: web
       sourceKey: REACT_APP_OPENID_AUDIENCE
       targetKey: REACT_APP_OPENID_AUDIENCE
-    - sourceName: web
-      sourceKey: REACT_APP_API_TOKEN
-      targetKey: REACT_APP_API_TOKEN
 - name: Publish
   steps:
   - publishImageConfig:
