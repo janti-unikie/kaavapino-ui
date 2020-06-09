@@ -1,23 +1,103 @@
-import React from 'react'
+import React, { Component } from 'react'
+import {
+  Container,
+  Divider,
+  Grid,
+  Header,
+  List,
+  Responsive,
+  Segment
+} from 'semantic-ui-react'
+import Link from 'react-router-dom/Link'
 
-const Footer = () => {
-  return (
-    <div className='footer-container'>
-      <div className='footer-image-container'>
-        <a href='https://www.hel.fi/helsinki/fi'><img alt='Helsinki' src='/helsinki.svg'/></a>
-      </div>
-      <div className='footer-info-container'>
-        <div className='footer-info-items-container'>
-          <span className='footer-info-title'>Kaavapino</span>
-          <a href='/'><span className='footer-info'>Tietoa palvelusta</span></a>
-        </div>
-      </div>
-      <div className='footer-footer-container'>
-        <a href='https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/hallinto/organisaatio/rekisteriselosteet'>Rekisteriseloste</a> |
-        <span> 2018 Helsingin Kaupunki</span>
-      </div>
-    </div>
-  )
+class Footer extends Component {
+  state = {
+    isOpen: false,
+    linkGroupData: {}
+  }
+
+  componentDidMount() {
+    this.setState({ linkGroupData: {
+      'Group 1': {
+        'Link 1':'Link 1',
+        'Link 2':'Link 2',
+        'Link 3':'Link 3',
+        'Link 4':'Link 4'
+      },
+      'Group 2': {
+        'Link 1':'Link 1',
+        'Link 2':'Link 2',
+        'Link 3':'Link 3',
+        'Link 4':'Link 4'
+      },
+      'Group 3': {
+        'Link 1':'Link 1',
+        'Link 2':'Link 2',
+        'Link 3':'Link 3',
+        'Link 4':'Link 4'
+      },
+      'Group 4': {
+        'Link 1':'Link 1',
+        'Link 2':'Link 2',
+        'Link 3':'Link 3',
+        'Link 4':'Link 4'
+      }
+    } })
+  }
+
+  render() {
+    const { linkGroupData } = this.state
+
+    let linkColumns = []
+    for (let key in linkGroupData) {
+      let values = []
+      for (let [key2, value] of Object.entries(linkGroupData[key])) {
+        values.push(
+          <List.Item as={Link} to={value}>{key2}</List.Item>
+        )
+      }
+      linkColumns.push(
+        <Grid.Column className='footer-link-group' width={ 3 }>
+          <Header as='h4' content={key}/>
+          <List link>
+            {values}
+          </List>
+        </Grid.Column>
+      )
+    }
+
+    return (
+      <Segment className='footer-container borderless' style={ { margin: '5em 0em 0em', padding: '5em 0em' } }>
+        <Container textAlign='center'>
+          <Grid divided inverted stackable>
+            <Grid.Column className='footer-logo-column' width={ 4 }>
+              <a href='https://www.hel.fi/helsinki/fi'><img className='footer-image' alt='Helsinki'
+                src='/helsinki.svg'/></a>
+              <Header as='h4' content='Lorem Ipsum'/>
+              <List>
+                <List.Item>Address Line 1</List.Item>
+                <List.Item>Address Line 2</List.Item>
+              </List>
+            </Grid.Column>
+            {linkColumns}
+          </Grid>
+
+          <Divider section/>
+          <Grid>
+            <Grid.Column className='footer-copyright' floated='left' width={ 7 }>
+              <p>© Copyright 2017 • Kaikki oikeudet pidätetään • <Link
+                to='/terms'><span>Sivuston Käyttöehdot</span></Link></p>
+            </Grid.Column>
+            <Responsive as={Grid.Column} minWidth={800} className='footer-feedback' floated='right' width={ 2 }>
+              <a href='mailto: name@domain'>
+                <span>Anna palautetta</span>
+              </a>
+            </Responsive>
+          </Grid>
+        </Container>
+      </Segment>
+    )
+  }
 }
 
 export default Footer
