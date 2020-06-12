@@ -23,6 +23,8 @@ import ErrorPage from './error'
 import Header from './common/Header'
 import Footer from './common/Footer'
 import FakeLoginPage from './auth/FakeLogin'
+import Overview from './overview'
+import Terms from './common/Terms'
 
 class App extends Component {
   componentDidUpdate(prevProps) {
@@ -55,7 +57,9 @@ class App extends Component {
           <ProtectedRoute path='/' pred={(this.props.apiToken !== null)} redirect='/login'>
             <Header />
             <Switch>
-              <Route exact path='/' render={() => <ProjectListPage />} />
+              <Route exact path='/' render={() => <Overview />} />
+              <Route exact path='/terms' render={() => <Terms />} />
+              <Route exact path='/projects' render={() => <ProjectListPage />} />
               <Route exact path='/reports' render={() => <ReportsPage />} />
               <Route exact path='/:id' render={({ match }) => <ProjectPage id={match.params.id} />} />
               <Route exact path='/:id/edit' render={({ match }) => <ProjectPage edit id={match.params.id} />} />

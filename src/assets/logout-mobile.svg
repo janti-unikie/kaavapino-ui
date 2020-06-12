@@ -1,0 +1,29 @@
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Navigaatio-/-Hankkeet-" transform="translate(-1277.000000, -22.000000)">
+            <g id="Header">
+                <g>
+                    <g>
+                        <rect id="Rectangle" fill="#FFFFFF" x="0" y="0" width="1440" height="64"></rect>
+                        <g id="organisms/navigation/desktop">
+                            <rect id="Rectangle-2-Copy-11" fill="#FFFFFF" x="0" y="0" width="1440" height="64"></rect>
+                            <g id="Group-21" transform="translate(1277.000000, 22.000000)" fill="#000000" fill-rule="nonzero">
+                                <g id="atoms/icons/logout">
+                                    <g id="Group">
+                                        <g id="Shape">
+                                            <g>
+                                                <g transform="translate(0.406058, 0.406058)">
+                                                    <path d="M0,0.000186786521 L11.2071912,0.000186786521 L11.2071912,1.86805199 L1.86786521,1.86805199 L1.86786521,16.8109736 L11.2071912,16.8109736 L11.2071912,18.6788388 L1.86786521,18.6788388 L0,18.6788388 L0,16.8109736 L0,1.86805199 L0,0.000186786521 Z M12.0743476,5.37711696 L13.3958623,4.05653625 L17.3576044,8.01921231 L18.6781851,9.33979299 L17.3576044,10.6603737 L13.3958623,14.6221158 L12.0743476,13.3015351 L15.1030911,10.2737256 L4.67012997,10.2737256 L4.67012997,8.4058604 L15.1030911,8.4058604 L12.0743476,5.37711696 Z"></path>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
