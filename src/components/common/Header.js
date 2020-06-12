@@ -36,7 +36,7 @@ class Header extends Component {
         <Menu className='navbar-menu borderless'>
           <Container>
             <Menu.Item as='a'className='navbar-logo' header>
-              <Image className='navbar-image' size='tiny' src='/Helsinki.svg' style={{ marginRight: '1.5em' }} />
+              <Image className='navbar-image' size='tiny' src='/helsinki.svg' style={{ marginRight: '1.5em' }} />
                             Kaavapino
             </Menu.Item>
           </Container>
