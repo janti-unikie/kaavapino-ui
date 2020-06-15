@@ -18,11 +18,10 @@ class Footer extends Component {
 
   componentDidMount() {
     this.setState({ linkGroupData: {
-      'Group 1': {
-        'Google':'https://google.com',
-        'Projektit':'/projects',
-        'Link 3':'Link 3',
-        'Link 4':'Link 4'
+      'Hyödylliset linkit': {
+        'Rekisteriseloste':'https://www.hel.fi/static/liitteet/kanslia/rekisteriselosteet/Kymp/Kymp-EU-Kaavoitus-poikkeamismenettely-suunnittelutarveratkaisu-rakennuskielto-prosessien-rekisteri.pdf',
+        'Asemakaavoituksen ohjeet':'http://helmi.hel.fi/kymp/maka/suunnitteluportaali/asemakaavoituksen-ohjeet/Sivut/default.aspx',
+        'Kympin toimintasääntö':'https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/hallinto/organisaatio/hallintosaanto-ja-toimintasaannot/kaupunkiymparisto-toimintasaanto/kaupunkiymparisto-toimintasaanto'
       },
       'Group 2': {
         'Link 1':'Link 1',
@@ -80,10 +79,10 @@ class Footer extends Component {
             <Grid.Column className='footer-logo-column' width={ 4 }>
               <a href='https://www.hel.fi/helsinki/fi'><img className='footer-image' alt='Helsinki'
                 src='/helsinki.svg'/></a>
-              <Header as='h4' content='Lorem Ipsum'/>
+              <Header as='h4' content='Kaupunkiympäristö'/>
               <List>
-                <List.Item>Address Line 1</List.Item>
-                <List.Item>Address Line 2</List.Item>
+                <List.Item>Asemakaavoitus</List.Item>
+                <List.Item>PL 58212 (käyntiosoite Työpajankatu 8)</List.Item>
               </List>
             </Grid.Column>
             {linkColumns}
