@@ -19,8 +19,8 @@ class Footer extends Component {
   componentDidMount() {
     this.setState({ linkGroupData: {
       'Group 1': {
-        'Link 1':'Link 1',
-        'Link 2':'Link 2',
+        'Google':'https://google.com',
+        'Projektit':'/projects',
         'Link 3':'Link 3',
         'Link 4':'Link 4'
       },
@@ -52,9 +52,16 @@ class Footer extends Component {
     for (let key in linkGroupData) {
       let values = []
       for (let [key2, value] of Object.entries(linkGroupData[key])) {
-        values.push(
-          <List.Item as={Link} to={value}>{key2}</List.Item>
-        )
+        let regex = new RegExp(/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi)
+        if (value.match(regex)) {
+          values.push(
+            <List.Item as={'a'} href={value}>{key2}</List.Item>
+          )
+        } else {
+          values.push(
+            <List.Item as={Link} to={value}>{key2}</List.Item>
+          )
+        }
       }
       linkColumns.push(
         <Grid.Column className='footer-link-group' width={ 3 }>
