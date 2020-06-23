@@ -59,8 +59,8 @@ class ProjectListPage extends Component {
           large
           actions={(
             <NavActions>
-              <NavAction onClick={() => this.toggleForm(true)}><FontAwesomeIcon icon='plus'/>Luo uusi hanke</NavAction>
-              <NavAction to={'/reports'}><FontAwesomeIcon icon='file-csv'/>Luo raportteja</NavAction>
+              <NavAction onClick={() => this.toggleForm(true)}><FontAwesomeIcon icon='plus'/>Luo uusi projekti</NavAction>
+              <NavAction to={'/reports'}><FontAwesomeIcon icon='file-csv'/>Tee raportteja</NavAction>
             </NavActions>
           )}
         />

@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Modal, Form } from 'semantic-ui-react'
+import { Button, Modal, Form, Select, Radio } from 'semantic-ui-react'
 import { reduxForm, Field } from 'redux-form'
 import SelectInput from '../input/SelectInput'
-import Radio from '../input/Radio'
-import Input from '../input/Input'
 import projectUtils from '../../utils/projectUtils'
 
 class FormModal extends Component {
@@ -12,7 +10,9 @@ class FormModal extends Component {
     super(props)
 
     this.state = {
-      loading: false
+      loading: false,
+      publicValue: 'yes',
+      projectType: '1'
     }
   }
 
@@ -42,13 +42,7 @@ class FormModal extends Component {
     }))
   }
 
-  projectNameInput = (props) => <Input placeholder='Hankkeen nimi' type='text' {...props} />
-
-  projectPersonInput = (props) => <SelectInput options={this.formatUsers()} {...props} />
-
   projectSubtypeInput = (props) => <SelectInput options={this.formatSubtypes()} {...props} />
-
-  projectPublicInput = (props) => <Radio inverted double {...props} />
 
   handleSubmit = () => {
     this.setState({ loading: true })
@@ -61,28 +55,81 @@ class FormModal extends Component {
     this.setState({ loading: false })
   }
 
+  handleChangePublic = (e, { value }) => this.setState({ publicValue: value })
+  handleChangeProjectType = (e, { value }) => this.setState({ projectType: value })
   render() {
     const { loading } = this.state
+
     return (
-      <Modal closeOnDimmerClick={false} open={this.props.open} onClose={this.props.handleClose} centered={false} size='small' basic>
+
+      <Modal size={'small'} onClose={this.props.handleClose}  open={this.props.open} closeIcon>
         <Modal.Header>Luo uusi hanke</Modal.Header>
         <Modal.Content>
           <Form>
-            <h3>Hankkeen nimi</h3>
-            <Field name='name' component={this.projectNameInput} />
-            <h3>Hankkeen vastuuhenkilö</h3>
-            <Field name='user' component={this.projectPersonInput} />
-            <h3>Hankkeen koko</h3>
+            <Form.Group widths='equal'>
+              <Form.Input
+                type='text'
+                name='name'
+                label='Projektin nimi'
+                placeholder='Projektin nimi'
+              />
+              <Form.Field
+                control={Select}
+                name='user'
+                options={this.formatUsers()}
+                label={{ children: 'Vastuuhenkilö' }}
+                placeholder='Vastuuhenkilö'
+                search
+              />
+            </Form.Group>
+            <h3>Luodaanko hanke julkiseksi?</h3>
+            <Form.Field>
+              <Radio
+                label='Kyllä'
+                name='public'
+                value='yes'
+                checked={this.state.publicValue === 'yes'}
+                onChange={this.handleChangePublic}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Radio
+                label='Ei'
+                name='public'
+                value='no'
+                checked={this.state.publicValue === 'no'}
+                onChange={this.handleChangePublic}
+              />
+            </Form.Field>
+            <h3>Valitse prosessin koko</h3>
             <Field name='subtype' component={this.projectSubtypeInput} />
-            <h3>Julkinen</h3>
-            <Field name='public' component={this.projectPublicInput} />
+            <h3>Valitse, laaditaanko</h3>
+            <Form.Field>
+              <Radio
+                label='Suunnitteliperiaatteet'
+                name='projectType'
+                value='1'
+                checked={this.state.projectType === '1'}
+                onChange={this.handleChangeProjectType}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Radio
+                label='Kaavaluonnos'
+                name='projectType'
+                value='2'
+                checked={this.state.projectType === '2'}
+                onChange={this.handleChangeProjectType}
+              />
+            </Form.Field>
           </Form>
         </Modal.Content>
         <Modal.Actions>
           <Button disabled={loading} onClick={this.handleClose}>Peruuta</Button>
-          <Button disabled={loading} onClick={this.handleSubmit} color='green'>Luo hanke</Button>
+          <Button disabled={loading} onClick={this.handleSubmit} color='blue'>Luo hanke</Button>
         </Modal.Actions>
       </Modal>
+
     )
   }
 }

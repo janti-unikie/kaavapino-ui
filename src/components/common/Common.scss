@@ -1,3 +1,5 @@
+$dark-blue-color: #0000BF;
+
 .navbar-container {
   .navbar-menu {
     background-color: #cfe4f5;
@@ -115,9 +117,9 @@
       margin-top: 50px;
 
       .action-item {
-        background-color: black;
-        color: white;
-        border: none;
+        border-radius: 0;
+        color: $dark-blue-color;
+        border: 1px solid $dark-blue-color;
         outline: none;
         cursor: pointer;
         padding: 10px 20px 10px 20px;
@@ -201,4 +203,40 @@
 
 .prompt {
   display: none;
+}
+
+
+.ui {
+  .modal {
+    .header {
+      border-bottom: 0;
+      Size: 24px;
+      Line-height: 28.8px
+    }
+    .icon {
+      position: relative;
+      margin-left: 90%;
+      margin-top: 35px;
+      color: black;
+    }
+  }
+  .ui.input {
+    height: 56px;
+    input {
+      border-radius: 0;
+    }
+  }
+  .ui.search {
+    border-radius: 0;
+    height: 56px;
+  }
+  .button {
+    border-radius: 0;
+    color: $dark-blue-color;
+    background: none;
+    border: 1px solid $dark-blue-color;
+  }
+  .ui.blue {
+    background-color: $dark-blue-color;
+  }
 }
