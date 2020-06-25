@@ -208,16 +208,33 @@ $dark-blue-color: #0000BF;
 
 .ui {
   .modal {
+    h3 {
+      font-size: 14px;
+    }
     .header {
       border-bottom: 0;
-      Size: 24px;
-      Line-height: 28.8px
+      font-size: 24px;
+      Line-height: 28.8px;
+      margin-left: 95px;
+      margin-top: 70px;
     }
     .icon {
       position: relative;
-      margin-left: 90%;
-      margin-top: 35px;
+      float: right;
+      margin-right: 45px;
+      margin-top: 45px;
       color: black;
+    }
+    .content {
+      margin-left: 95px;
+      margin-right: 95px;
+      width: auto;
+    }
+    .actions {
+      background-color: transparent;
+      border-top: 0;
+      margin-bottom: 79px;
+      margin-right: 55px;
     }
   }
   .ui.input {
