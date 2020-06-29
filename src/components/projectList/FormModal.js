@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Modal, Form, Select, Radio } from 'semantic-ui-react'
+import { Button, Modal, Form } from 'semantic-ui-react'
 import { reduxForm, Field } from 'redux-form'
+import Radio from '../input/Radio'
+import AdditionalRadio from '../input/AdditionalOptionsRadio'
 import SelectInput from '../input/SelectInput'
+import SubtypePicker  from '../input/SubtypePicker'
 import projectUtils from '../../utils/projectUtils'
 
 class FormModal extends Component {
@@ -10,9 +13,7 @@ class FormModal extends Component {
     super(props)
 
     this.state = {
-      loading: false,
-      publicValue: 'yes',
-      projectType: '1'
+      loading: false
     }
   }
 
@@ -34,15 +35,11 @@ class FormModal extends Component {
     })
   }
 
-  formatSubtypes = () => {
-    return this.props.projectSubtypes.map((subtype) => ({
-      key: subtype.id,
-      value: subtype.id,
-      text: subtype.name
-    }))
-  }
-
-  projectSubtypeInput = (props) => <SelectInput options={this.formatSubtypes()} {...props} />
+  projectNameInput = (props) => <Form.Input type='text' label='Projektin nimi' {...props} />
+  projectPersonInput = (props) => <SelectInput options={this.formatUsers()} {...props} />
+  projectPublicInput = (props) => <Radio double {...props} />
+  projectAdditionalInput = (props) => <AdditionalRadio {...props} />
+  projectSubtypeInput = (props) => <SubtypePicker {...props} />
 
   handleSubmit = () => {
     this.setState({ loading: true })
@@ -55,8 +52,6 @@ class FormModal extends Component {
     this.setState({ loading: false })
   }
 
-  handleChangePublic = (e, { value }) => this.setState({ publicValue: value })
-  handleChangeProjectType = (e, { value }) => this.setState({ projectType: value })
   render() {
     const { loading } = this.state
 
@@ -67,66 +62,25 @@ class FormModal extends Component {
         <Modal.Content>
           <Form>
             <Form.Group widths='equal'>
-              <Form.Input
-                type='text'
-                name='name'
-                label='Projektin nimi'
-                placeholder='Projektin nimi'
-              />
-              <Form.Field
-                control={Select}
-                name='user'
-                options={this.formatUsers()}
-                label={{ children: 'Vastuuhenkilö' }}
-                placeholder='Vastuuhenkilö'
-                search
-              />
+              <Form.Field>
+                <Field name='name' component={this.projectNameInput} />
+              </Form.Field>
+              <Form.Field>
+                <label>vastuuhenkilö</label>
+                <Field className="ui fluid input" name='user' component={this.projectPersonInput} />
+              </Form.Field>
             </Form.Group>
             <h3>Luodaanko hanke julkiseksi?</h3>
-            <Form.Field>
-              <Radio
-                label='Kyllä'
-                name='public'
-                value='yes'
-                checked={this.state.publicValue === 'yes'}
-                onChange={this.handleChangePublic}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Radio
-                label='Ei'
-                name='public'
-                value='no'
-                checked={this.state.publicValue === 'no'}
-                onChange={this.handleChangePublic}
-              />
-            </Form.Field>
+            <Field name='public' component={this.projectPublicInput} />
             <h3>Valitse prosessin koko</h3>
             <Field name='subtype' component={this.projectSubtypeInput} />
             <h3>Valitse, laaditaanko</h3>
-            <Form.Field>
-              <Radio
-                label='Suunnitteliperiaatteet'
-                name='projectType'
-                value='1'
-                checked={this.state.projectType === '1'}
-                onChange={this.handleChangeProjectType}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Radio
-                label='Kaavaluonnos'
-                name='projectType'
-                value='2'
-                checked={this.state.projectType === '2'}
-                onChange={this.handleChangeProjectType}
-              />
-            </Form.Field>
+            <Field name='additional' component={this.projectAdditionalInput} />
           </Form>
         </Modal.Content>
         <Modal.Actions>
           <Button disabled={loading} onClick={this.handleClose}>Peruuta</Button>
-          <Button disabled={loading} onClick={this.handleSubmit} color='blue'>Luo hanke</Button>
+          <Button disabled={loading} type="submit" onClick={this.handleSubmit} color='blue'>Luo hanke</Button>
         </Modal.Actions>
       </Modal>
 

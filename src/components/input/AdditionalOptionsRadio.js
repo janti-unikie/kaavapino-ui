@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Radio } from 'semantic-ui-react'
 
-const CustomRadio = ({ input: { value, name, ...rest }, meta: { error }, inverted, double, ...custom }) => {
+const CustomRadio = ({ input: { value, name, ...rest }, meta: { error }, inverted, ...custom }) => {
   let checked = 'n'
   if (value === '' || value === null) {
     checked = '-'
@@ -12,7 +12,7 @@ const CustomRadio = ({ input: { value, name, ...rest }, meta: { error }, inverte
     <div className={`radio-input-container${inverted ? ' inverted' : ''}`}>
       <Form.Field>
         <Radio
-          label='Kyllä'
+          label='Suunnitteluperiaatteet'
           { ...custom }
           error={ error }
           name={ name }
@@ -22,7 +22,7 @@ const CustomRadio = ({ input: { value, name, ...rest }, meta: { error }, inverte
       </Form.Field>
       <Form.Field>
         <Radio
-          label='Ei'
+          label='Kaavaluonnos'
           { ...custom }
           error={ error }
           name={ name }
@@ -30,16 +30,6 @@ const CustomRadio = ({ input: { value, name, ...rest }, meta: { error }, inverte
           checked={ checked === 'n' }
         />
       </Form.Field>
-      {!double && (
-        <Radio
-          label='Tieto puuttuu'
-          { ...custom }
-          error={ error }
-          name={ name }
-          onChange={() => rest.onChange(null)}
-          checked={ checked === '-' }
-        />
-      )}
     </div>
   )
 }

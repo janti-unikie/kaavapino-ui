@@ -1,10 +1,46 @@
-.radio-input-container {
+@import "../common/colors";
+
+.subtype-input-container {
   display: flex;
 
-  :nth-child(n):not(:first-child) {
-    margin-left: 10px;
+  span {
+    position: relative;
+    right: 45px;
+    top: 10px;
+    font-size: 16px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
-  
+
+  .ui.radio.checkbox {
+    margin-right: 42px;
+  }
+
+  .ui.radio.checkbox input:checked~label:before {
+    background: none;
+  }
+  .ui.radio.checkbox label:before {
+    background: none;
+    border-radius: 0;
+    border: 2px solid #1A1A1A;
+    width: 62px;
+    height: 36px;
+  }
+  .ui.checkbox input:checked~label:before {
+    border-color: $dark-blue-color;
+  }
+  .ui.checkbox input:checked~label:after {
+    opacity: 0;
+  }
+}
+.radio-input-container {
+  label {
+    font-size: 16px !important;
+  }
   &.inverted {
     .radio {
       > label {
@@ -18,6 +54,26 @@
     .ui.checkbox input:focus~label {
       color: white;
     }
+  }
+
+  .ui.radio.checkbox input:checked~label:after {
+    color: $dark-blue-color;
+    background-color: $dark-blue-color ;
+    width: 24px;
+    height: 24px;
+  }
+  .ui.radio.checkbox input:focus:checked~label:after {
+    color: $dark-blue-color;
+    background-color: $dark-blue-color;
+    width: 24px;
+    height: 24px;
+  }
+  .ui.checkbox input:checked~label:before {
+    border-color: $dark-blue-color;
+  }
+  .ui.radio.checkbox label:before {
+    width: 24px;
+    height: 24px;
   }
 }
 

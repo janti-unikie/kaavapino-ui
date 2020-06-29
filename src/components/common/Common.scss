@@ -1,5 +1,4 @@
-$dark-blue-color: #0000BF;
-
+@import "colors";
 .navbar-container {
   .navbar-menu {
     background-color: #cfe4f5;
@@ -204,7 +203,6 @@ $dark-blue-color: #0000BF;
 .prompt {
   display: none;
 }
-
 
 .ui {
   .modal {
