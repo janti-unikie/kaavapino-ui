@@ -12,7 +12,7 @@ const SelectInput = ({ input, meta: { error }, options, ...custom }) => (
     search
     selection
     clearable
-    placeholder='Klikkaa avataksesi'
+    placeholder=''
     noResultsMessage='Ei tuloksia'
     options={ options }
     error={inputUtils.hasError(error)}
