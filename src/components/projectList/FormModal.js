@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { Button, Modal, Form } from 'semantic-ui-react'
 import { reduxForm, Field } from 'redux-form'
 import Radio from '../input/Radio'
-import AdditionalRadio from '../input/AdditionalOptionsRadio'
+import CreatePrinciplesRadio from '../input/CreatePrinciplesRadio'
+import CreateDraftRadio from '../input/CreateDraftRadio'
 import SelectInput from '../input/SelectInput'
 import SubtypePicker  from '../input/SubtypePicker'
 import projectUtils from '../../utils/projectUtils'
@@ -13,7 +14,8 @@ class FormModal extends Component {
     super(props)
 
     this.state = {
-      loading: false
+      loading: false,
+      showAdditional: false
     }
   }
 
@@ -38,8 +40,9 @@ class FormModal extends Component {
   projectNameInput = (props) => <Form.Input type='text' label='Projektin nimi' {...props} />
   projectPersonInput = (props) => <SelectInput options={this.formatUsers()} {...props} />
   projectPublicInput = (props) => <Radio double {...props} />
-  projectAdditionalInput = (props) => <AdditionalRadio {...props} />
-  projectSubtypeInput = (props) => <SubtypePicker {...props} />
+  projectSubtypeInput = (props) => <SubtypePicker onChange={this.testFunc(props.input.value)} {...props} />
+  projectAdditionalInput = (props) => <CreatePrinciplesRadio {...props} />
+  projectCreateDraftInput = (props) => <CreateDraftRadio {...props} />
 
   handleSubmit = () => {
     this.setState({ loading: true })
@@ -51,9 +54,16 @@ class FormModal extends Component {
     this.props.handleClose()
     this.setState({ loading: false })
   }
+  testFunc = (input) => {
+    if (input === 4) {
+      this.setState({ showAdditional: true })
+    } else {
+      this.setState({ showAdditional: false })
+    }
+  }
 
   render() {
-    const { loading } = this.state
+    const { loading, showAdditional } = this.state
 
     return (
 
@@ -74,8 +84,13 @@ class FormModal extends Component {
             <Field name='public' component={this.projectPublicInput} />
             <h3>Valitse prosessin koko</h3>
             <Field name='subtype' component={this.projectSubtypeInput} />
-            <h3>Valitse, laaditaanko</h3>
-            <Field name='additional' component={this.projectAdditionalInput} />
+            { showAdditional ? (
+<>
+                <h3>Valitse, laaditaanko</h3>
+                  <Field name='create_principles' component={this.projectAdditionalInput} />
+                  <Field name='create_draft' component={this.projectCreateDraftInput} />
+                  </>
+            ): null}
           </Form>
         </Modal.Content>
         <Modal.Actions>
