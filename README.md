@@ -22,7 +22,7 @@ To generate token:
 - run in api-directory for your username and email
 
 ```
-docker-compose -f ./docker-compose.yml exec api ./manage.py createsuperuser)
+docker-compose -f ./docker-compose.yml exec api ./manage.py createsuperuser
 ```
 
 If not working try (Windows):
@@ -35,7 +35,7 @@ python ./manage.py createsuperuser
 - add token for the same username
 
 ```
-docker-compose -f ./docker-compose.yml exec api ./manage.py create_api_token <username>)
+docker-compose -f ./docker-compose.yml exec api ./manage.py create_api_token <username>
 ```
 
 If not working try (Windows):
@@ -63,5 +63,4 @@ If not working try (Windows):
 docker exec -it kaavapino-api /bin/bash
 python manage.py import_attributes päivittyvä_Kaavaprojektitiedot.xlsx
 ```
-
 
