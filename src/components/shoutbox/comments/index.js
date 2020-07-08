@@ -7,18 +7,18 @@ import {
   editComment,
   deleteComment,
   increaseAmountOfCommentsToShow
-} from '../../actions/commentActions'
+} from '../../../actions/commentActions'
 import {
   commentsSelector,
   commentsLoadingSelector,
   pollingCommentsSelector,
   amountOfCommentsToShowSelector
-} from '../../selectors/commentSelector'
-import { userIdSelector } from '../../selectors/authSelector'
+} from '../../../selectors/commentSelector'
+import { userIdSelector } from '../../../selectors/authSelector'
 import { Form, Input, Button } from 'semantic-ui-react'
 import Comment from './Comment'
 
-class CommentList extends Component {
+class Comments extends Component {
   constructor(props) {
     super(props)
     this.commentsRef = React.createRef()
@@ -78,8 +78,10 @@ class CommentList extends Component {
   render () {
     const { comments, commentsLoading, userId, amountOfCommentsToShow, pollingComments } = this.props
     const begin = comments.length < amountOfCommentsToShow ? comments.length : amountOfCommentsToShow
+
     return (
       <div className='comment-list-container'>
+        <h2 className='comment-list-header'>Viestit</h2>
         <div className='comments' ref={this.commentsRef} onScroll={this.handleScroll}>
           { (commentsLoading || pollingComments) && <p className='comments-message'>Ladataan...</p> }
           { !commentsLoading && comments.length === 0 && <p className='comments-message'>Ei kommentteja.</p> }
@@ -130,4 +132,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CommentList)
+)(Comments)

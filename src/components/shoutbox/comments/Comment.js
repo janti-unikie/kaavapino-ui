@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Input, Button, Dropdown } from 'semantic-ui-react'
-import projectUtils from '../../utils/projectUtils'
+import projectUtils from '../../../utils/projectUtils'
 
 class Comment extends Component {
   constructor(props) {
@@ -53,10 +53,15 @@ class Comment extends Component {
       'Automaattinen'
     const date = projectUtils.formatDate(created_at)
     const time = projectUtils.formatTime(created_at)
+    const dateTime = `${date} ${time}`
+
     return (
       <div className='comment-container' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
         <div className='comment-header-container'>
-          <span className={`comment-creator${generated ? ' generated' : ''}`}>{ user }</span>
+          <div className='comment-header-text-container'>
+            <span className={`comment-creator${generated ? ' generated' : ''}`}>{ user }</span>
+            <span className='comment-timestamp'>{dateTime}</span>
+          </div>
           <div className='comment-edit-container'>
             { (showEdit || menuOpen) && (
               <Dropdown pointing='left' icon='setting' onOpen={() => this.setState({ menuOpen: true })} onClose={() => this.setState({ menuOpen: false })} direction='left'>
@@ -88,10 +93,6 @@ class Comment extends Component {
                 <Button onClick={this.handleEditSave} disabled={!content} color='green'>Tallenna</Button>
               </React.Fragment>
             )}
-          </div>
-          <div className='comment-footer-time-container'>
-            <span>{ date }</span>
-            <span>{ time }</span>
           </div>
         </div>
       </div>
