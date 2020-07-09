@@ -22,7 +22,7 @@ $comment-list-height: calc(#{$shoutbox-height} - #{$comment-list-header-height} 
   position: fixed;
   right: 0;
   top: 80px;
-  transition: max-width 0.5s ease-in-out;
+  transition: max-width 0.25s ease-in-out;
   z-index: 10;
 
   &.open {
