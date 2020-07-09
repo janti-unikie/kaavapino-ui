@@ -26,11 +26,12 @@ $comment-list-height: calc(#{$shoutbox-height} - #{$comment-list-header-height} 
   z-index: 10;
 
   &.open {
-    max-width: 500px;
+    box-shadow: -3px 0 0 0 #007293;
+    max-width: 440px;
   }
 
   .comment-list-wrapper {
-    width: 480px;
+    width: 440px;
     height: $shoutbox-height;
     padding: 0 32px;
 
