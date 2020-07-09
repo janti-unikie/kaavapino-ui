@@ -10,7 +10,7 @@ import NavigationPrompt from 'react-router-navigation-prompt'
 import Prompt from '../common/Prompt'
 import EditForm from './EditForm'
 import QuickNav from './QuickNav'
-import Comments from '../comments'
+import Shoutbox from '../shoutbox'
 
 class ProjectEditPage extends Component {
   componentDidMount() {
@@ -46,6 +46,7 @@ class ProjectEditPage extends Component {
     }
     return (
       <div className='project-input-container'>
+        <Shoutbox project={id} />
         <EditForm
           isCurrentPhase={selectedPhase === phase}
           isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
@@ -70,7 +71,6 @@ class ProjectEditPage extends Component {
             phaseTitle={ currentSchema.title }
             saving={saving}
           />
-          <Comments project={id} />
           <NavigationPrompt when={this.props.isDirty}>
             {({ onConfirm, onCancel }) => (
               <Prompt

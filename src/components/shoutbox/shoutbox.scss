@@ -1,0 +1,83 @@
+/* The shoutbox should be positioned so that it takes the full height of the screen,
+ * except it leaves 80px for the page header & navbar.
+ * Then there should be comment list header & comment submit section
+ * list of comments should fill the space between these, and be scrollable.
+ * Since these calculations affect each other, all of them are in this file and use variables.
+*/
+
+$shoutbox-height: calc(100vh - 80px);
+$comment-list-header-height: 72px;
+$comment-submit-container-height: 64px;
+$bottom-margin: 16px;
+$comment-list-height: calc(#{$shoutbox-height} - #{$comment-list-header-height} - #{$comment-submit-container-height} - #{$bottom-margin});
+
+.shoutbox {
+  align-items: flex-start;
+  background: #F2F2F2;
+  display: flex;
+  flex-direction: column;
+  height: $shoutbox-height;
+  justify-content: center;
+  max-width: 0;
+  position: fixed;
+  right: 0;
+  top: 80px;
+  transition: max-width 0.25s ease-in-out;
+  z-index: 10;
+
+  &.open {
+    box-shadow: -3px 0 0 0 #007293;
+    max-width: 440px;
+  }
+
+  .comment-list-wrapper {
+    width: 440px;
+    height: $shoutbox-height;
+    padding: 0 32px;
+
+    .comment-list-header {
+      height: $comment-list-header-height;
+    }
+
+    .comments {
+      height: $comment-list-height;
+    }
+
+    .comment-submit-container {
+      height: $comment-submit-container-height;
+    }
+  }
+}
+
+/* Override semantic ui button styles */
+.shoutbox-button.ui.button {
+  align-items: center;
+  background: #007293;
+  color: white;
+  display: flex;
+  font-size: 24px;
+  font-weight: 700;
+  height: 80px;
+  justify-content: space-around;
+  left: 0;
+  line-height: 24px;
+  padding: 0 24px;
+  position: absolute;
+  top: 50%;
+  transform-origin: left bottom;
+  transform: translate( 0, 50%) rotate(-90deg);
+  width: 200px;
+
+  .comment-icon {
+    background: url('../../assets/icons/comment-icon.svg') no-repeat center;
+    height: 28px;
+    transform: rotate(90deg);
+    width: 28px;
+  }
+
+  &:hover,
+  &:focus {
+    background: darken(#0C5F81, 5%);
+    color: white;
+  }
+}
