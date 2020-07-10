@@ -55,7 +55,7 @@ describe('<Field />', () => {
     createFieldOfType('long_string')
     expect(wrapper.find('textarea').length).toBe(1)
     createFieldOfType('boolean')
-    expect(wrapper.find('CustomRadio').length).toBe(1)
+    expect(wrapper.find('RadioBooleanButton').length).toBe(1)
     createFieldOfType('date')
     expect(wrapper.find('input').props().type).toBe('date')
     createFieldOfType('number')

@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import Radio from '../../../components/input/Radio'
+import Radio from '../../../components/input/RadioBooleanButton'
 
 describe('<Radio />', () => {
   let wrapper

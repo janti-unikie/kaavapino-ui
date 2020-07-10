@@ -1,21 +1,20 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Modal, Form } from 'semantic-ui-react'
-import { reduxForm, Field } from 'redux-form'
-import Radio from '../input/Radio'
-import CreatePrinciplesRadio from '../input/CreatePrinciplesRadio'
-import CreateDraftRadio from '../input/CreateDraftRadio'
-import SelectInput from '../input/SelectInput'
-import SubtypePicker  from '../input/SubtypePicker'
+import { reduxForm } from 'redux-form'
 import projectUtils from '../../utils/projectUtils'
+import Field from '../input/Field'
+import './FormModal.scss'
+import { connect } from 'react-redux'
+import { NEW_PROJECT_FORM } from '../../constants'
+import { newProjectSubtypeSelector } from '../../selectors/formSelector'
 
 class FormModal extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      loading: false,
-      showAdditional: false
+      loading: false
     }
   }
 
@@ -30,19 +29,11 @@ class FormModal extends Component {
   formatUsers = () => {
     return this.props.users.map((user) => {
       return {
-        key: user.id,
         value: user.id,
-        text: projectUtils.formatUsersName(user)
+        label: projectUtils.formatUsersName(user)
       }
     })
   }
-
-  projectNameInput = (props) => <Form.Input type='text' label='Projektin nimi' {...props} />
-  projectPersonInput = (props) => <SelectInput options={this.formatUsers()} {...props} />
-  projectPublicInput = (props) => <Radio double {...props} />
-  projectSubtypeInput = (props) => <SubtypePicker onChange={this.testFunc(props.input.value)} {...props} />
-  projectAdditionalInput = (props) => <CreatePrinciplesRadio {...props} />
-  projectCreateDraftInput = (props) => <CreateDraftRadio {...props} />
 
   handleSubmit = () => {
     this.setState({ loading: true })
@@ -54,43 +45,38 @@ class FormModal extends Component {
     this.props.handleClose()
     this.setState({ loading: false })
   }
-  testFunc = (input) => {
-    if (input === 4) {
-      this.setState({ showAdditional: true })
-    } else {
-      this.setState({ showAdditional: false })
-    }
-  }
 
   render() {
-    const { loading, showAdditional } = this.state
+    const { loading } = this.state
+    const { selectedSubType } = this.props
+    const showXLProjectOptions = selectedSubType === 5
 
     return (
-
-      <Modal size={'small'} onClose={this.props.handleClose}  open={this.props.open} closeIcon>
+      <Modal className="form-modal" size={'small'} onClose={this.props.handleClose}  open={this.props.open} closeIcon>
         <Modal.Header>Luo uusi hanke</Modal.Header>
         <Modal.Content>
           <Form>
             <Form.Group widths='equal'>
-              <Form.Field>
-                <Field name='name' component={this.projectNameInput} />
-              </Form.Field>
-              <Form.Field>
-                <label>vastuuhenkilö</label>
-                <Field className="ui fluid input" name='user' component={this.projectPersonInput} />
-              </Form.Field>
+              <Field field={{ name: 'name', type: 'text', label: 'Hankkeen nimi' }} />
+              <Field className="ui fluid input" field={{ name: 'user', label: 'Vastuuhenkilö', type: 'select', choices: this.formatUsers() }} />
             </Form.Group>
-            <h3>Luodaanko hanke julkiseksi?</h3>
-            <Field name='public' component={this.projectPublicInput} />
-            <h3>Valitse prosessin koko</h3>
-            <Field name='subtype' component={this.projectSubtypeInput} />
-            { showAdditional ? (
-<>
+            <Field field={{ name:'public', label: 'Luodaanko hanke julkiseksi', type: 'boolean', double: true }} double />
+            <div className="subtype-input-container">
+              <Field field={{ name:'subtype', label: 'Valitse prosessin koko', type: 'radio', options: [
+                { value: 1, label: 'XS' },
+                { value: 2, label: 'S' },
+                { value: 3, label: 'M' },
+                { value: 4, label: 'L' },
+                { value: 5, label: 'XL' }
+              ] }} />
+            </div>
+            {showXLProjectOptions && (
+              <>
                 <h3>Valitse, laaditaanko</h3>
-                  <Field name='create_principles' component={this.projectAdditionalInput} />
-                  <Field name='create_draft' component={this.projectCreateDraftInput} />
-                  </>
-            ): null}
+                <Field field={{ name:'create_principles', label: 'Suunnitteluperiaatteet', type: 'toggle' }} />
+                <Field field={{ name:'create_draft', label: 'Kaavaluonnos', type: 'toggle' }} />
+              </>
+            )}
           </Form>
         </Modal.Content>
         <Modal.Actions>
@@ -108,7 +94,13 @@ FormModal.propTypes = {
   handleClose: PropTypes.func.isRequired
 }
 
-export default reduxForm({
-  form: 'modal',
+const mapStateToProps = state => ({
+  selectedSubType: newProjectSubtypeSelector(state)
+})
+
+const decoratedForm = reduxForm({
+  form: NEW_PROJECT_FORM,
   initialValues: { public: true }
 })(FormModal)
+
+export default connect(mapStateToProps, () => {})(decoratedForm)

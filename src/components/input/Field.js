@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Input from './Input'
 import SelectInput from './SelectInput'
-import Radio from './Radio'
+import BooleanRadio from './RadioBooleanButton'
 import TextArea from './TextArea'
 import File from './File'
 import FieldSet from './FieldSet'
@@ -9,6 +9,9 @@ import Geometry from './Geometry'
 import Link from './Link'
 import DateTime from './DateTime'
 import { Field, FieldArray } from 'redux-form'
+import { Form, Label } from 'semantic-ui-react'
+import RadioButton from './RadioButton'
+import ToggleButton from './ToggleButton'
 
 class CustomField extends Component {
   shouldComponentUpdate(p) {
@@ -46,7 +49,14 @@ class CustomField extends Component {
     return <SelectInput multiple={multiple_choice} options={this.formatOptions(choices)} {...props} />
   }
 
-  renderRadio = (props) => <Radio {...props} />
+  renderRadio = (props) => {
+    const { options } = this.props.field
+    return <RadioButton options={options} {...props} />
+  }
+
+  renderBooleanRadio = (props) => <BooleanRadio {...props} />
+
+  renderToggle = (props) => <ToggleButton {...props} />
 
   renderLink = (props) => <Link {...props} />
 
@@ -65,12 +75,19 @@ class CustomField extends Component {
 
   getInput = (field) => {
     if (field.choices) {
+      /* Should perhaps check (field.type === 'select' && field.choices), but there were tests against it.
+      Will get back to this. */
       return this.renderSelect
+    }
+    if (field.type === 'radio' && field.options) {
+      return this.renderRadio
     }
 
     switch (field.type) {
-      case 'boolean': return this.renderRadio
+      case 'boolean': return this.renderBooleanRadio
+      case 'toggle': return this.renderToggle
       case 'string':
+      case 'text':
       case 'uuid':
       case 'short_string': return this.renderString
       case 'long_string': return this.renderTextArea
@@ -103,11 +120,24 @@ class CustomField extends Component {
       disabled: field.generated ? true : false
     }
 
+    if (type === 'toggle') {
+      return (
+        <Form.Field className='small-margin'>
+          <Field {...fieldProps} label={field.label} />
+        </Form.Field>
+      )
+    }
+
     if (fieldset) {
       return <FieldArray {...fieldProps} />
     }
 
-    return <Field {...fieldProps} />
+    return (
+      <Form.Field>
+        {field.label && <Label>{field.label}</Label>}
+        <Field {...fieldProps} />
+      </Form.Field>
+    )
   }
 }
 
