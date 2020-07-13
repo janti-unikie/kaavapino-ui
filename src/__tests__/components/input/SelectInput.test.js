@@ -20,7 +20,7 @@ describe('<SelectInput />', () => {
   it('is initialized correctly', () => {
     const dropwDownComponent = selectInputComponent.find('Dropdown')
     expect(dropwDownComponent.props().name).toBe('test')
-    expect(dropwDownComponent.props().placeholder).toBe('Klikkaa avataksesi')
+    expect(dropwDownComponent.props().placeholder).toBe('')
     expect(dropwDownComponent.props().noResultsMessage).toBe('Ei tuloksia')
     expect(change).toBeNull()
   })

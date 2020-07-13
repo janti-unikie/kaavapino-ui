@@ -1,0 +1,45 @@
+@import "../common/colors";
+
+.form-modal {
+  .subtype-input-container .radio-input-container {
+    display: flex;
+    flex-direction: row;
+
+    .ui.checkbox {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+
+      box-sizing: border-box;
+      margin-left: 22px;
+      margin-top: 12px;
+      padding: 0;
+
+      &:first-of-type {
+        margin-left: 0;
+      }
+    }
+
+    label {
+      height: 36px;
+      width: 62px;
+      border: 2px solid #1a1a1a;
+
+      justify-content: center;
+      margin: 8px 0 0;
+      padding: 0;
+      padding-left: 0 !important;
+
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+
+    .ui.checkbox input:checked ~ label {
+      border-color: $dark-blue-color;
+      color: $dark-blue-color;
+      border-width: 3px;
+    }
+  }
+}

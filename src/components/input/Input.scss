@@ -1,10 +1,27 @@
+@import "../common/colors";
+
 .radio-input-container {
   display: flex;
+  flex-direction: column;
 
-  :nth-child(n):not(:first-child) {
-    margin-left: 10px;
+  label {
+    align-items: center;
+    display: flex !important;
+    font-size: 16px !important;
+    height: 24px;
+    margin-top: 14px;
+    padding-left: 34px !important;
+
+    &:first-of-type {
+      margin-top: 8px;
+    }
+
+    &:before,
+    &:after {
+      top: 0;
+    }
   }
-  
+
   &.inverted {
     .radio {
       > label {
@@ -17,6 +34,39 @@
     }
     .ui.checkbox input:focus~label {
       color: white;
+    }
+  }
+
+  .ui.radio.checkbox input:checked~label:after {
+    color: $dark-blue-color;
+    background-color: $dark-blue-color ;
+    width: 24px;
+    height: 24px;
+  }
+  .ui.radio.checkbox input:focus:checked~label:after {
+    color: $dark-blue-color;
+    background-color: $dark-blue-color;
+    width: 24px;
+    height: 24px;
+  }
+  .ui.checkbox input:checked~label:before {
+    border-color: $dark-blue-color;
+  }
+  .ui.radio.checkbox label:before {
+    width: 24px;
+    height: 24px;
+  }
+
+  .ui.toggle.checkbox label {
+    padding-left: 60px !important;
+    padding-top: 0;
+
+    &::before {
+      height: 24px;
+    }
+    &::after {
+      height: 24px;
+      width: 24px;
     }
   }
 }
@@ -111,4 +161,13 @@
 
 .rdtPicker {
   color: black;
+}
+
+.field,
+.ui.form .field {
+  margin-top: 38px;
+
+  &.small-margin {
+    margin-top: 14px;
+  }
 }

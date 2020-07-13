@@ -1,10 +1,16 @@
 import { createSelector } from 'reselect'
+import { NEW_PROJECT_FORM } from '../constants'
 
 const selectForm = (state) => state.form
 
-export const modalSelector = createSelector(
+export const newProjectFormSelector = createSelector(
   selectForm,
-  (form) => form.modal
+  (form) => form[NEW_PROJECT_FORM]
+)
+
+export const newProjectSubtypeSelector = createSelector(
+  newProjectFormSelector,
+  (newProjectForm) => newProjectForm && newProjectForm.values ? newProjectForm.values.subtype : null
 )
 
 export const editFormSelector = createSelector(

@@ -1,13 +1,7 @@
 import React from 'react'
 import { Radio } from 'semantic-ui-react'
 
-const CustomRadio = ({ input: { value, name, ...rest }, meta: { error }, inverted, double, ...custom }) => {
-  let checked = 'n'
-  if (value === '' || value === null) {
-    checked = '-'
-  } else if (value) {
-    checked = 'y'
-  }
+const RadioBooleanButton = ({ input: { value, name, ...rest }, meta: { error }, inverted, double, ...custom }) => {
   return (
     <div className={`radio-input-container${inverted ? ' inverted' : ''}`}>
       <Radio
@@ -16,7 +10,7 @@ const CustomRadio = ({ input: { value, name, ...rest }, meta: { error }, inverte
         error={ error }
         name={ name }
         onChange={() => rest.onChange(true)}
-        checked={ checked === 'y' }
+        checked={value === true}
       />
       <Radio
         label='Ei'
@@ -24,7 +18,7 @@ const CustomRadio = ({ input: { value, name, ...rest }, meta: { error }, inverte
         error={ error }
         name={ name }
         onChange={() => rest.onChange(false)}
-        checked={ checked === 'n' }
+        checked={value === false}
       />
       {!double && (
         <Radio
@@ -33,11 +27,11 @@ const CustomRadio = ({ input: { value, name, ...rest }, meta: { error }, inverte
           error={ error }
           name={ name }
           onChange={() => rest.onChange(null)}
-          checked={ checked === '-' }
+          checked={ value !== true && value !== false }
         />
       )}
     </div>
   )
 }
 
-export default CustomRadio
+export default RadioBooleanButton

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { takeLatest, put, all, call, select } from 'redux-saga/effects'
 import { push } from 'connected-react-router'
-import { modalSelector, editFormSelector, deadlineModalSelector } from '../selectors/formSelector'
+import { newProjectFormSelector, editFormSelector, deadlineModalSelector } from '../selectors/formSelector'
 import {
   currentProjectSelector,
   currentProjectIdSelector,
@@ -39,6 +39,7 @@ import { setLatestEditField, setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
 import { projectApi } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
+import { NEW_PROJECT_FORM } from '../constants'
 
 export default function* projectSaga() {
   yield all([
@@ -137,8 +138,8 @@ function* initializeProject({ payload: projectId }) {
 }
 
 function* createProject() {
-  yield put(startSubmit('modal'))
-  const { values } = yield select(modalSelector)
+  yield put(startSubmit(NEW_PROJECT_FORM))
+  const { values } = yield select(newProjectFormSelector)
   const userId = yield select(userIdSelector)
   try {
     const createdProject = yield call(projectApi.post, values)
@@ -149,10 +150,10 @@ function* createProject() {
     if (createdProject.public || createdProject.user === userId) {
       yield put(push(`/${createdProject.id}/edit`))
     }
-    yield put(setSubmitSucceeded('modal'))
+    yield put(setSubmitSucceeded(NEW_PROJECT_FORM))
   } catch (e) {
     if (e.response.status === 400) {
-      yield put(stopSubmit('modal', e.response.data))
+      yield put(stopSubmit(NEW_PROJECT_FORM, e.response.data))
     } else {
       yield put(error(e))
     }

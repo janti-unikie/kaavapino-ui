@@ -1,9 +1,23 @@
+@import "colors";
+
+* {
+  box-sizing: border-box;
+}
+
+h3 {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 16px;
+  margin: 44px 0 8px;
+}
+
 .navbar-container {
   .navbar-menu {
     background-color: #cfe4f5;
-  .container {
-    width: auto;
-  }
+
+    .container {
+      width: auto;
+    }
   }
   .navbar-image {
     filter: invert(1);
@@ -115,9 +129,9 @@
       margin-top: 50px;
 
       .action-item {
-        background-color: black;
-        color: white;
-        border: none;
+        border-radius: 0;
+        color: $dark-blue-color;
+        border: 1px solid $dark-blue-color;
         outline: none;
         cursor: pointer;
         padding: 10px 20px 10px 20px;
@@ -201,4 +215,98 @@
 
 .prompt {
   display: none;
+}
+
+.ui {
+  .modal {
+    &.small {
+      left: 50%;
+      top: 96px;
+      transform: translateX(-50%);
+      width: 740px;
+
+      > .header {
+        border-bottom: 0;
+        font-size: 24px !important;
+        line-height: 28.8px;
+        margin: 76px 96px 32px;
+        padding: 0;
+      }
+    }
+    .icon {
+      position: relative;
+      float: right;
+      margin-right: 45px;
+      margin-top: 45px;
+      color: black;
+    }
+    .content {
+      margin-left: 96px;
+      margin-right: 96px;
+      padding: 0;
+      width: auto;
+    }
+    .actions {
+      background-color: transparent;
+      border-top: 0;
+      margin: 66px 56px 80px ;
+      padding: 0;
+
+      .button:not(:first-child) {
+        margin-left: 20px;
+      }
+    }
+  }
+  .ui.input {
+    height: 56px;
+    margin-top: 4px;
+
+    input {
+      border-radius: 0;
+    }
+  }
+
+  .ui.search.selection.dropdown {
+    border-radius: 0;
+    height: 56px;
+    line-height: 56px !important;
+    padding: 0 32px 0 8px !important;
+
+    > .delete.icon,
+    > .dropdown.icon,
+    > .search.icon {
+      line-height: 56px;
+      padding: 0;
+      right: 20px;
+    }
+  }
+
+  /* Override values from semantic UI */
+  .label {
+    // font-family: "Helsinki Grotesk";
+    background-color: transparent;
+    color: #1A1A1A;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 20px;
+    margin: 0;
+    padding: 0;
+    transition: none;
+  }
+
+  .button {
+    background: none;
+    border-radius: 0;
+    border: 2px solid $dark-blue-color;
+    color: $dark-blue-color;
+  }
+
+  .ui.blue {
+    background-color: $dark-blue-color;
+  }
+}
+
+.modals.dimmer .ui.scrolling.modal {
+  margin-top: 0;
 }
