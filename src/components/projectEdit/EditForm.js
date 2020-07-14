@@ -59,10 +59,13 @@ class EditForm extends Component {
       isCurrentPhase,
       isLastPhase,
       changingPhase,
+      title,
       validating
     } = this.props
+
     return (
       <Form className='form-container' autoComplete='off'>
+        <h2>{title}</h2>
         { sections.map((section, i) => <FormSection key={i} section={section} /> ) }
         <Button
           handleClick={this.props.handleSave}

@@ -40,29 +40,16 @@ class ProjectEditPage extends Component {
     if (!schema) {
       return <Loader inline={'centered'} active>Ladataan</Loader>
     }
-    const currentSchema = schema.phases.find((s) => s.id === selectedPhase)
-    if (!currentSchema) {
+    const currentSchemaIndex = schema.phases.findIndex((s) => s.id === selectedPhase)
+    const currentSchema = schema.phases[currentSchemaIndex]
+
+    if (currentSchemaIndex === -1) {
       return <Loader inline={'centered'} active>Ladataan</Loader>
     }
     return (
       <div className='project-input-container'>
         <Shoutbox project={id} />
-        <EditForm
-          isCurrentPhase={selectedPhase === phase}
-          isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
-          handleSave={saveProject}
-          changePhase={this.changePhase}
-          sections={currentSchema.sections}
-          attributeData={attribute_data}
-          saving={saving}
-          changingPhase={changingPhase}
-          phase={phase}
-          setChecking={this.props.projectSetChecking}
-          validateProjectFields={validateProjectFields}
-          validating={validating}
-          hasErrors={hasErrors}
-        />
-        <div className='project-input-right'>
+        <div className='project-input-left'>
           <QuickNav
             handleSave={this.handleSave}
             handleCheck={() => this.props.projectSetChecking(!this.props.checking)}
@@ -81,6 +68,23 @@ class ProjectEditPage extends Component {
             )}
           </NavigationPrompt>
         </div>
+        <EditForm
+          isCurrentPhase={selectedPhase === phase}
+          isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
+          handleSave={saveProject}
+          changePhase={this.changePhase}
+          sections={currentSchema.sections}
+          attributeData={attribute_data}
+          saving={saving}
+          changingPhase={changingPhase}
+          phase={phase}
+          selectedPhase={selectedPhase}
+          setChecking={this.props.projectSetChecking}
+          validateProjectFields={validateProjectFields}
+          validating={validating}
+          hasErrors={hasErrors}
+          title={`${currentSchemaIndex + 1}. ${currentSchema.title}`}
+        />
       </div>
     )
   }
