@@ -20,8 +20,12 @@
       top: 0;
     }
 
+    &:before {
+      border: 2px solid $border-gray;
+    }
+
     &:hover::before {
-      border-color: $color-primary-emphasis;
+      border-color: $color-input-emphasis;
     }
   }
 
@@ -69,6 +73,7 @@
     padding-top: 0;
 
     &::before {
+      border: 0;
       height: 24px;
     }
     &::after {
@@ -185,9 +190,10 @@
 
   input {
     border-radius: 0;
+    transition: border 2s ease;
 
     &:hover {
-      border-color: $color-primary-emphasis;
+      border-color: $color-input-emphasis;
     }
   }
 }
@@ -223,6 +229,11 @@
 .ui.form .input input,
 .ui.selection.dropdown {
   border-radius: 0;
+  border: 1px solid $border-gray;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 0 16px;
+  transition: border 0.2s ease;
 
   &:focus,
   &:hover,
@@ -230,20 +241,7 @@
   &.active,
   &.active:hover {
     border-radius: 0;
-    border-color: $color-primary-emphasis;
+    border: 1px solid $color-input-emphasis;
+    box-shadow: 0px 0px 0px 1px $color-input-emphasis;
   }
-}
-
-.ui.form input[type=date]:focus,
-.ui.form input[type=datetime-local]:focus,
-.ui.form input[type=email]:focus,
-.ui.form input[type=file]:focus,
-.ui.form input[type=number]:focus,
-.ui.form input[type=password]:focus,
-.ui.form input[type=search]:focus,
-.ui.form input[type=tel]:focus,
-.ui.form input[type=text]:focus,
-.ui.form input[type=time]:focus,
-.ui.form input[type=url]:focus {
-  border-color: $color-primary-emphasis;
 }

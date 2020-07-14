@@ -20,7 +20,7 @@ h3 {
   line-height: 16px;
   padding: 0 16px;
   text-align: center;
-  transition: opacity .1s ease, border .1s ease, background-color .1s ease, color .1s ease, box-shadow .1s ease, background .1s ease, -webkit-box-shadow .1s ease;
+  transition: opacity .2s ease, border .2s ease, background-color .2s ease, color .2s ease, box-shadow .2s ease, background .2s ease, -webkit-box-shadow .2s ease;
 
   &.large {
     height: 56px;
@@ -28,23 +28,23 @@ h3 {
 
   &.secondary {
     background: none;
-    border: 2px solid $dark-blue-color;
-    color: $dark-blue-color;
+    border: 2px solid $color-primary;
+    color: $color-primary;
 
     &:hover {
       background-color: white;
-      border-color: $color-primary-emphasis;
-      color: $color-primary-emphasis;
+      border-color: $color-button-emphasis;
+      color: $color-button-emphasis;
     }
   }
 
   &.primary {
     color: white;
-    background-color: $dark-blue-color;
+    background-color: $color-primary;
 
     &:hover {
       color: white;
-      background-color: $color-primary-emphasis;
+      background-color: $color-button-emphasis;
     }
   }
 }

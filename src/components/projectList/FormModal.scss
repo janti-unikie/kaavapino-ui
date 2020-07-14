@@ -35,8 +35,8 @@
         }
 
         &:hover {
-          border-color: $color-primary-emphasis;
-          color: $color-primary-emphasis;
+          border-color: $color-button-emphasis;
+          color: $color-button-emphasis;
         }
       }
     }
@@ -45,6 +45,15 @@
       background: $color-primary;
       border-color: $color-primary;
       color: white;
+      padding-left: 24px;
+
+      &::before {
+        border: 0;
+        background: url('../../assets/icons/checkmark-icon.svg') no-repeat center;
+        display: block;
+        height: 32px;
+        width: 32px;
+      }
     }
   }
 }
