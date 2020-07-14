@@ -18,21 +18,21 @@
       &:first-of-type {
         margin-left: 0;
       }
-    }
 
-    label {
-      height: 36px;
-      width: 62px;
-      border: 2px solid #1a1a1a;
+      label {
+        height: 36px;
+        width: 62px;
+        border: 2px solid #1a1a1a;
 
-      justify-content: center;
-      margin: 8px 0 0;
-      padding: 0;
-      padding-left: 0 !important;
+        justify-content: center;
+        margin: 8px 0 0;
+        padding: 0;
+        padding-left: 0;
 
-      &::before,
-      &::after {
-        display: none;
+        &::before,
+        &::after {
+          display: none;
+        }
       }
     }
 

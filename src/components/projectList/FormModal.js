@@ -80,8 +80,8 @@ class FormModal extends Component {
           </Form>
         </Modal.Content>
         <Modal.Actions>
-          <Button disabled={loading} onClick={this.handleClose}>Peruuta</Button>
-          <Button disabled={loading} type="submit" onClick={this.handleSubmit} color='blue'>Luo hanke</Button>
+          <Button secondary disabled={loading} onClick={this.handleClose}>Peruuta</Button>
+          <Button primary disabled={loading} type="submit" onClick={this.handleSubmit}>Luo hanke</Button>
         </Modal.Actions>
       </Modal>
 

@@ -8,17 +8,18 @@ import {
   Sidebar, Grid
 } from 'semantic-ui-react'
 import '@fortawesome/fontawesome-svg-core'
+import './styles.scss'
 import { faBars, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import NavLink from './NavLink'
-import { ReactComponent as HistogramIcon } from '../../assets/histogram.svg'
-import { ReactComponent as HistogramMobileIcon } from '../../assets/histogram-mobile.svg'
-import { ReactComponent as CheckListIcon } from '../../assets/checklist.svg'
-import { ReactComponent as CheckListMobileIcon } from '../../assets/checklist-mobile.svg'
-import { ReactComponent as PagesIcon } from '../../assets/pages.svg'
-import { ReactComponent as PagesMobileIcon } from '../../assets/pages-mobile.svg'
-import { ReactComponent as LogoutIcon } from '../../assets/logout.svg'
-import { ReactComponent as LogoutMobileIcon } from '../../assets/logout-mobile.svg'
+import NavLink from '../NavLink'
+import { ReactComponent as HistogramIcon } from '../../../assets/histogram.svg'
+import { ReactComponent as HistogramMobileIcon } from '../../../assets/histogram-mobile.svg'
+import { ReactComponent as CheckListIcon } from '../../../assets/checklist.svg'
+import { ReactComponent as CheckListMobileIcon } from '../../../assets/checklist-mobile.svg'
+import { ReactComponent as PagesIcon } from '../../../assets/pages.svg'
+import { ReactComponent as PagesMobileIcon } from '../../../assets/pages-mobile.svg'
+import { ReactComponent as LogoutIcon } from '../../../assets/logout.svg'
+import { ReactComponent as LogoutMobileIcon } from '../../../assets/logout-mobile.svg'
 
 class Header extends Component {
   state = {
