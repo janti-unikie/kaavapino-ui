@@ -33,13 +33,18 @@
         &::after {
           display: none;
         }
+
+        &:hover {
+          border-color: $color-primary-emphasis;
+          color: $color-primary-emphasis;
+        }
       }
     }
 
     .ui.checkbox input:checked ~ label {
-      border-color: $dark-blue-color;
-      color: $dark-blue-color;
-      border-width: 3px;
+      background: $color-primary;
+      border-color: $color-primary;
+      color: white;
     }
   }
 }

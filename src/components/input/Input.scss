@@ -19,6 +19,10 @@
     &:after {
       top: 0;
     }
+
+    &:hover::before {
+      border-color: $color-primary-emphasis;
+    }
   }
 
   .ui.checkbox:first-of-type label {
@@ -181,6 +185,10 @@
 
   input {
     border-radius: 0;
+
+    &:hover {
+      border-color: $color-primary-emphasis;
+    }
   }
 }
 
@@ -210,4 +218,32 @@
   margin: 0;
   padding: 0;
   transition: none;
+}
+
+.ui.form .input input,
+.ui.selection.dropdown {
+  border-radius: 0;
+
+  &:focus,
+  &:hover,
+  &:active,
+  &.active,
+  &.active:hover {
+    border-radius: 0;
+    border-color: $color-primary-emphasis;
+  }
+}
+
+.ui.form input[type=date]:focus,
+.ui.form input[type=datetime-local]:focus,
+.ui.form input[type=email]:focus,
+.ui.form input[type=file]:focus,
+.ui.form input[type=number]:focus,
+.ui.form input[type=password]:focus,
+.ui.form input[type=search]:focus,
+.ui.form input[type=tel]:focus,
+.ui.form input[type=text]:focus,
+.ui.form input[type=time]:focus,
+.ui.form input[type=url]:focus {
+  border-color: $color-primary-emphasis;
 }
