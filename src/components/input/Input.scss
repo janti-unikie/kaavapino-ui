@@ -84,10 +84,14 @@
 
 .ui.search.selection.dropdown {
   border-radius: 0;
-  height: 56px;
-  line-height: 56px;
-  padding: 0 32px 0 8px;
+  min-height: 56px;
+  line-height: 32px;
+  padding: 12px 32px 12px 8px;
   margin-top: 4px;
+
+  &.multiple >.label {
+    margin-top: 8px;
+  }
 
   > .delete.icon,
   > .dropdown.icon,
@@ -101,13 +105,25 @@
     height: 56px;
     line-height: 56px;
     padding: 0 32px 0 8px;
+    margin: 0;
   }
+}
+
+.ui.selection.active.dropdown .menu,
+.ui.selection.active.dropdown:hover .menu {
+  border: 2px solid $black1;
+}
+
+.ui.selection.dropdown .menu {
+  /* The defaults were counting on 1px border */
+  margin: 0 -2px;
+  min-width: calc(100% + 4px);
 }
 
 .ui.label {
   // font-family: "Helsinki Grotesk";
   background-color: transparent;
-  color: #1A1A1A;
+  color: $black1;
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 0;

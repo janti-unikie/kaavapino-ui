@@ -149,7 +149,6 @@ class File extends Component {
             { uploading && <Button icon='cancel' color='red' onClick={this.cancel} content='Peruuta' /> }
           </Button.Group>
         </div>
-        <br />
         <input
           ref={this.inputRef}
           hidden
