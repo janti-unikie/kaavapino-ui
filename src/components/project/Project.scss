@@ -3,7 +3,9 @@
   .project-page-content {
     flex: 1;
     width: 100%;
+    margin-top: 52px;
     padding: 40px 80px 40px 80px;
+    border-top: 1px solid $light-gray;
 
     @media screen and (max-width: 695px) {
       padding: 40px 10px 40px 10px;

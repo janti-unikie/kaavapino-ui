@@ -133,7 +133,6 @@ class File extends Component {
           <Button.Group>
             <Button
               disabled={uploading}
-              icon='upload'
               as='label'
               htmlFor={field.name}
               label={{
@@ -143,6 +142,7 @@ class File extends Component {
               onClick={this.handleClick}
               ref={this.inputButtonRef}
               style={{ overflow: 'auto' }}
+              className="upload-button"
             />
             { !uploading && current && <Button icon='download' onClick={this.download} content='Lataa' /> }
             { !uploading && current && <Button icon='cancel' color='red' onClick={this.reset} /> }

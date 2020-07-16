@@ -4,6 +4,16 @@
   box-sizing: border-box;
 }
 
+h2 {
+  height: 24px;
+  color: $black1;
+  // font-family: "Helsinki Grotesk";
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 24px;
+}
+
 h3 {
   font-size: 14px;
   font-weight: bold;
@@ -62,8 +72,16 @@ h3 {
   }
 }
 
-.footer-container {
-  background: #F1F1F1;
+.ui.segment {
+  background-color: $light-gray3;
+  border: 0;
+  border-radius: 0;
+  padding: 32px 22px;
+}
+
+.ui.segment.footer-container {
+  background: $light-gray2;
+
   .footer-image {
     width: 152px;
     height: 70px;
@@ -138,7 +156,7 @@ h3 {
       > .header {
         border-bottom: 0;
         font-size: 24px;
-        line-height: 28.8px;
+        line-height: 24px;
         margin: 76px 96px 32px;
         padding: 0;
       }

@@ -9,7 +9,6 @@ import Geometry from './Geometry'
 import Link from './Link'
 import DateTime from './DateTime'
 import { Field, FieldArray } from 'redux-form'
-import { Form, Label } from 'semantic-ui-react'
 import RadioButton from './RadioButton'
 import ToggleButton from './ToggleButton'
 
@@ -122,9 +121,7 @@ class CustomField extends Component {
 
     if (type === 'toggle') {
       return (
-        <Form.Field className='small-margin'>
-          <Field {...fieldProps} label={field.label} />
-        </Form.Field>
+        <Field {...fieldProps} label={field.label} />
       )
     }
 
@@ -133,10 +130,7 @@ class CustomField extends Component {
     }
 
     return (
-      <Form.Field>
-        {field.label && <Label>{field.label}</Label>}
-        <Field {...fieldProps} />
-      </Form.Field>
+      <Field {...fieldProps} />
     )
   }
 }

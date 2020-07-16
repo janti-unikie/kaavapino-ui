@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Field from '../input/Field'
 import Matrix from '../input/Matrix'
-import { Form } from 'semantic-ui-react'
+import { Form, Label } from 'semantic-ui-react'
 import Info from '../input/Info'
 import projectUtils from '../../utils/projectUtils'
+
+const OneLineFields = ['toggle']
 
 class FormField extends Component {
   state = {
@@ -27,20 +29,24 @@ class FormField extends Component {
     const { field, attributeData, checking, updated } = this.props
     const { showHistory } = this.state
     const required = checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
+    const isOneLineField = OneLineFields.indexOf(field.type) > -1
+
     return (
-      <div className='input-container' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-        <Form.Field required={ required } className='input-header'>
-          <label className={`input-title${required ? ' highlight': ''}`}>{ field.label }</label>
-          { field.help_text && <Info content={field.help_text} link={field.help_link} /> }
-          { showHistory && updated && (
-            <span className='input-history'>
-              <FontAwesomeIcon icon='clock'/>
-              <span>{`${projectUtils.formatDate(updated.timestamp)} ${projectUtils.formatTime(updated.timestamp)} ${updated.user_name}`}</span>
-            </span>
-          )}
-        </Form.Field>
+      <Form.Field className={`input-container ${isOneLineField ? 'small-margin' : ''}`} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
+        {!isOneLineField && (
+          <div className='input-header'>
+            <Label className={`input-title${required ? ' highlight': ''}`}>{ field.label }</Label>
+            { field.help_text && <Info content={field.help_text} link={field.help_link} /> }
+            { showHistory && updated && (
+              <span className='input-history'>
+                <FontAwesomeIcon icon='clock'/>
+                <span>{`${projectUtils.formatDate(updated.timestamp)} ${projectUtils.formatTime(updated.timestamp)} ${updated.user_name}`}</span>
+              </span>
+            )}
+          </div>
+        )}
         { this.renderField() }
-      </div>
+      </Form.Field>
     )
   }
 }
