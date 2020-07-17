@@ -1,24 +1,24 @@
 
 import React from 'react'
-import { Loader, Popup } from 'semantic-ui-react'
+import { Loader, Popup, Button } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 
-const Button = ({ handleClick, value, icon, loading, help }) => {
+const FormButton = ({ handleClick, value, icon, loading, help, ...rest }) => {
   const btn = (
-    <button disabled={loading} className='form-button' onClick={handleClick}>
+    <Button disabled={loading} className='form-button' onClick={handleClick} {...rest}>
       { !loading && icon }
       { loading && <Loader inverted size='tiny' color='white' inline active /> }
       { ` ${value}` }
-    </button>
+    </Button>
   )
   return help ?
     <Popup trigger={btn} content={help} hideOnScroll position='bottom center' /> :
     btn
 }
 
-Button.propTypes = {
+FormButton.propTypes = {
   handleClick: PropTypes.func,
   value: PropTypes.string
 }
 
-export default Button
+export default FormButton

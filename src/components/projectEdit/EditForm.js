@@ -72,6 +72,7 @@ class EditForm extends Component {
           value='Tallenna'
           icon={<FontAwesomeIcon icon='check' />}
           loading={saving}
+          secondary
           help='Tallentaa hankkeen'
         />
         { isCurrentPhase && !isLastPhase && (
@@ -80,6 +81,7 @@ class EditForm extends Component {
             value='Lopeta vaihe'
             icon={<FontAwesomeIcon icon='forward' />}
             loading={changingPhase || validating}
+            secondary
             help='Yrittää lopettaa tämänhetkisen vaiheen'
           />
         )}

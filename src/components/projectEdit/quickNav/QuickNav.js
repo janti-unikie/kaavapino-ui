@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Divider } from 'semantic-ui-react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Button from '../common/Button'
+import Button from '../../common/Button'
+import { Accordion } from 'semantic-ui-react'
+import AccordionTitle from './AccordionTitle'
+import './styles.scss'
 
 class QuickNav extends Component {
   constructor(props) {
@@ -9,7 +10,8 @@ class QuickNav extends Component {
 
     this.state = {
       sectionHeights: [],
-      active: 0
+      active: 0,
+      activePhase: 0
     }
   }
 
@@ -72,37 +74,67 @@ class QuickNav extends Component {
     c.scrollIntoView()
   }
 
+  handleAccordionTitleClick = (titleIndex) => this.setState({
+    activePhase: (this.state.activePhase === titleIndex ? null : titleIndex)
+  })
+
   render() {
+    const { activePhase } = this.state
+
+    const phases = [
+      'phase one!',
+      'phase two!',
+      'phase three!'
+    ]
+
     return (
       <div className='quicknav-container'>
-        <span className='quicknav-title'>{ this.props.projectName}</span>
-        <Divider style={{ whiteSpace: 'pre-wrap' }} horizontal>{ this.props.phaseTitle }</Divider>
+        <h2 className='quicknav-title'>Kaavan vaiheet</h2>
         <div className='quicknav-content'>
-          { this.state.sectionHeights && this.state.sectionHeights.map((section, i) => {
-            return (
-              <span
-                key={i}
-                className={`quicknav-item ${i === this.state.active ? 'active' : ''}`}
-                onClick={() => this.handleClick(section.title)}
-              >
-                { section.title }
-              </span>
-            )
-          }) }
+          <Accordion>
+            {phases.map((phase, index) => (
+              <>
+                <AccordionTitle activePhase={this.state.activePhase} index={index} handleClick={this.handleAccordionTitleClick}>
+                  {phase}
+                </AccordionTitle>
+                <Accordion.Content active={activePhase === index}>
+                  { this.state.sectionHeights && this.state.sectionHeights.map((section, i) => {
+                    return (
+                      <span
+                        key={i}
+                        className={`quicknav-item ${i === this.state.active ? 'active' : ''}`}
+                        onClick={() => this.handleClick(section.title)}
+                      >
+                        { section.title }
+                      </span>
+                    )
+                  }) }
+                </Accordion.Content>
+              </>
+            ))}
+          </Accordion>
         </div>
         <div className='quicknav-buttons'>
           <Button
             handleClick={this.props.handleSave}
             value='Tallenna'
-            icon={<FontAwesomeIcon icon='check' />}
             loading={this.props.saving}
+            secondary
             help='Tallentaa hankkeen'
           />
           <Button
             handleClick={this.props.handleCheck}
             value='Tarkista'
-            icon={<FontAwesomeIcon icon='search' />}
             help='Korostaa pakolliset puuttuvat kentät'
+            secondary
+          />
+          <Button
+            handleClick={this.props.handleSave}
+            value='Lopeta vaihe'
+            loading={this.props.saving}
+            secondary
+            fluid
+            help='Yrittää lopettaa vaiheen'
           />
         </div>
       </div>

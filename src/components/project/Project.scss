@@ -1,10 +1,13 @@
 .project-container {
   flex: 1;
+  margin: 0 auto;
+  max-width: 1148px;
+
   .project-page-content {
     flex: 1;
     width: 100%;
     margin-top: 52px;
-    padding: 40px 80px 40px 80px;
+    padding: 40px 0;
     border-top: 1px solid $light-gray;
 
     @media screen and (max-width: 695px) {

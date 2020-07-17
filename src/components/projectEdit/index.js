@@ -9,7 +9,7 @@ import { schemaSelector } from '../../selectors/schemaSelector'
 import NavigationPrompt from 'react-router-navigation-prompt'
 import Prompt from '../common/Prompt'
 import EditForm from './EditForm'
-import QuickNav from './QuickNav'
+import QuickNav from './quickNav/QuickNav'
 import Shoutbox from '../shoutbox'
 
 class ProjectEditPage extends Component {

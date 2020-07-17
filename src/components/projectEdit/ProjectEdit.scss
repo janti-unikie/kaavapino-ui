@@ -1,3 +1,5 @@
+@import '../common/colors.scss';
+
 .form-container {
   flex: 1;
   width: 90%;
@@ -42,65 +44,18 @@
 .project-input-left {
   display: flex;
   flex-direction: column;
-  flex: 0.3;
+  flex: 0.5;
   top: 40px;
+  padding-right: 48px;
   position: sticky;
-  margin-left: 40px;
   min-width: 30%;
-  max-width: 360px;
+  max-width: 400px;
 
   @media screen and (max-width: 545px) {
-    margin-left: 0;
+    padding-right: 8px;
   }
 
   @media screen and (min-width: 1400px) {
     min-width: 360px;
-  }
-}
-
-.quicknav-container {
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  max-height: 45vh;
-  overflow: hidden;
-  overflow-y: auto;
-
-  .quicknav-title {
-    text-align: center;
-    margin: 10px 10px 0 10px;
-    font-size: 16px;
-    margin-top: 10px;
-    font-weight: bold;
-  }
-
-  .quicknav-content {
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    max-height: 45vh;
-    overflow: hidden;
-    overflow-y: auto;
-    
-    .quicknav-item {
-      cursor: pointer;
-      margin: 0 10px 10px 10px;
-    
-      &.active {
-        font-weight: bold;
-        color: green;
-        border-left: 3px solid;
-        padding-left: 10px;
-      }
-    }
-  }
-
-  .quicknav-buttons {
-    padding: 5px 5px 10px 5px;
-    text-align: center;
-  }
-
-  @media screen and (max-width: 545px) {
-    border: 1px solid gainsboro;
   }
 }

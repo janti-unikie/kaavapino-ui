@@ -1,0 +1,81 @@
+@import '../../common/colors.scss';
+
+.quicknav-container {
+  display: flex;
+  flex-direction: column;
+  background-color: $light-gray3;
+  max-height: 60vh;
+  overflow: hidden;
+  overflow-y: auto;
+  padding: 32px;
+
+  .quicknav-title {
+    border-bottom: 2px solid $black1;
+    margin: 0;
+    padding: 0 0 4px;
+    text-transform: uppercase;
+  }
+
+  .quicknav-content {
+    border-bottom: 1px solid $gray;
+    display: flex;
+    flex-direction: column;
+    max-height: 45vh;
+    overflow: hidden;
+    overflow-y: auto;
+
+    .ui.accordion {
+      .title {
+        height: 64px;
+        padding: 0 16px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 16px;
+        font-weight: bold;
+
+        &:not(:first-of-type) {
+          border-top: 1px solid $gray;
+        }
+
+        &~.content {
+          margin-bottom: 20px;
+          padding: 0;
+        }
+      }
+    }
+    
+    .quicknav-item {
+      cursor: pointer;
+      display: block;
+      padding-left: 8px;
+      margin: 20px 8px 0;
+    
+      &.active {
+        font-weight: bold;
+        color: $color-primary;
+        border-left: 2px solid;
+      }
+    }
+  }
+
+  .quicknav-buttons {
+    margin-top: 32px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    button {
+      min-width: calc(50% - 4px);
+
+      &:last-of-type {
+        margin-top: 20px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 545px) {
+    border: 1px solid gainsboro;
+  }
+}
