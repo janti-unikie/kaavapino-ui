@@ -4,16 +4,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 
 const AccordionTitle = props => {
-  const { activePhase, children, index, handleClick } = props
-  const isActive = activePhase === index
+  const { activePhase, children, id, index, handleClick } = props
+  const isActive = activePhase === id
 
   return (
     <SUIAccordionTitle
-      active={activePhase === 0}
+      active={isActive}
       index={index}
-      onClick={() => handleClick(index)}
+      key={index}
+      onClick={() => handleClick(id)}
     >
-      <div>{children}</div>
+      <div>{index + 1}. {children}</div>
       <FontAwesomeIcon icon={isActive ? faChevronUp : faChevronDown} />
     </SUIAccordionTitle>
   )

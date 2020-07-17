@@ -27,12 +27,14 @@ class ProjectEditPage extends Component {
 
   render() {
     const {
+      currentPhases,
       schema,
       selectedPhase,
       saveProject,
       project: { name, attribute_data, phase, id },
       saving,
       changingPhase,
+      switchDisplayedPhase,
       validateProjectFields,
       validating,
       hasErrors
@@ -56,7 +58,9 @@ class ProjectEditPage extends Component {
             projectName={ name }
             sections={ currentSchema.sections }
             phaseTitle={ currentSchema.title }
-            saving={saving}
+            currentPhases={ currentPhases }
+            saving={ saving }
+            switchDisplayedPhase={ switchDisplayedPhase }
           />
           <NavigationPrompt when={this.props.isDirty}>
             {({ onConfirm, onCancel }) => (

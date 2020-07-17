@@ -52,7 +52,7 @@ class ProjectPage extends Component {
     if (prevProps.edit && !edit) this.setState({ selectedPhase: currentProject.phase })
   }
 
-  switchPhase = (phase) => {
+  switchDisplayedPhase = (phase) => {
     if (this.props.edit) this.setState({ selectedPhase: phase })
   }
 
@@ -80,12 +80,28 @@ class ProjectPage extends Component {
     return `${name}, hankekortti`
   }
 
+  getCurrentPhases() {
+    const { currentProject, phases } = this.props
+    const { type, subtype } = currentProject
+    return phases.filter(({ project_type, project_subtype }) => {
+      return project_type === type && project_subtype === subtype
+    })
+  }
+
   getProjectPageContent = () => {
     const { edit, documents, currentProject, phases } = this.props
     const { selectedPhase } = this.state
+    const currentPhases = this.getCurrentPhases()
 
     if (edit) {
-      return <ProjectEditPage selectedPhase={selectedPhase} project={currentProject} />
+      return (
+        <ProjectEditPage
+          currentPhases={currentPhases}
+          selectedPhase={selectedPhase}
+          switchDisplayedPhase={this.switchDisplayedPhase}
+          project={currentProject}
+        />
+      )
     } else if (documents) {
       return <ProjectDocumentsPage />
     }
@@ -154,10 +170,8 @@ class ProjectPage extends Component {
     if (loading) {
       return this.renderLoading()
     }
-    const { type, subtype, phase } = currentProject
-    const currentPhases = phases.filter(({ project_type, project_subtype }) => {
-      return project_type === type && project_subtype === subtype
-    })
+    const { phase } = currentProject
+    const currentPhases = this.getCurrentPhases()
     const projectPhase = currentPhases.find((p) => p.id === phase)
     const selectedPhase = currentPhases.find((phase) => phase.id === this.state.selectedPhase)
 
@@ -176,7 +190,7 @@ class ProjectPage extends Component {
           items={currentPhases}
           type={currentProject.type}
           disabled={!edit}
-          switchPhase={this.switchPhase}
+          switchDisplayedPhase={this.switchDisplayedPhase}
         />
         <DeadlineModal
           open={this.state.showDeadlineModal}

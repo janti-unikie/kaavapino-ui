@@ -69,41 +69,46 @@ class QuickNav extends Component {
     this.setState({ active: activeTitle })
   }
 
-  handleClick = (title) => {
+  handleSectionTitleClick = (title) => {
     const c = document.getElementById(`title-${title}`)
     c.scrollIntoView()
   }
 
-  handleAccordionTitleClick = (titleIndex) => this.setState({
-    activePhase: (this.state.activePhase === titleIndex ? null : titleIndex)
-  })
+  handleAccordionTitleClick = (titleIndex) => {
+    const { switchDisplayedPhase } = this.props
+    const shouldChangePhase = this.state.activePhase !== titleIndex
+
+    if (shouldChangePhase) {
+      this.setState({
+        activePhase: (this.state.activePhase === titleIndex ? null : titleIndex)
+      })
+      switchDisplayedPhase(titleIndex)
+    } else {
+      this.setState({ activePhase: null })
+    }
+  }
 
   render() {
     const { activePhase } = this.state
-
-    const phases = [
-      'phase one!',
-      'phase two!',
-      'phase three!'
-    ]
+    const { currentPhases } = this.props
 
     return (
       <div className='quicknav-container'>
         <h2 className='quicknav-title'>Kaavan vaiheet</h2>
         <div className='quicknav-content'>
           <Accordion>
-            {phases.map((phase, index) => (
+            {currentPhases.map((phase, index) => (
               <>
-                <AccordionTitle activePhase={this.state.activePhase} index={index} handleClick={this.handleAccordionTitleClick}>
-                  {phase}
+                <AccordionTitle activePhase={this.state.activePhase} id={phase.id} handleClick={this.handleAccordionTitleClick} index={index}>
+                  {phase.name}
                 </AccordionTitle>
-                <Accordion.Content active={activePhase === index}>
+                <Accordion.Content active={activePhase === phase.id}>
                   { this.state.sectionHeights && this.state.sectionHeights.map((section, i) => {
                     return (
                       <span
                         key={i}
                         className={`quicknav-item ${i === this.state.active ? 'active' : ''}`}
-                        onClick={() => this.handleClick(section.title)}
+                        onClick={() => this.handleSectionTitleClick(section.title)}
                       >
                         { section.title }
                       </span>
