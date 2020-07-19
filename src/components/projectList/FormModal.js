@@ -7,7 +7,7 @@ import './FormModal.scss'
 import { connect } from 'react-redux'
 import { NEW_PROJECT_FORM } from '../../constants'
 import { newProjectSubtypeSelector } from '../../selectors/formSelector'
-import FormField from '../projectEdit/FormField'
+import FormField from '../input/FormField'
 
 class FormModal extends Component {
   constructor(props) {

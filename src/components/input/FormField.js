@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Field from '../input/Field'
-import Matrix from '../input/Matrix'
+import Field from './Field'
+import Matrix from './Matrix'
 import { Form, Label } from 'semantic-ui-react'
-import Info from '../input/Info'
+import Info from './Info'
 import projectUtils from '../../utils/projectUtils'
 
 const OneLineFields = ['toggle']

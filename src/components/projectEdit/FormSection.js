@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { updatesSelector, attributeDataSelector, checkingSelector } from '../../selectors/projectSelector'
 import { Segment } from 'semantic-ui-react'
-import FormField from './FormField'
+import FormField from '../input/FormField'
 
 const FormSection = ({ section: { title, fields }, checking, attributeData, updates }) => {
   return (
