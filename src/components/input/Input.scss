@@ -287,33 +287,78 @@
       border: 0;
       outline: 2px solid $black1;
     }
-  }
 
-  label.ui.button {
-    height: 56px;
-    margin-right: 2px;
-  }
-
-  button.ui.button {
-    border-radius: 0;
-    color: $black1;
-    height: 56px;
-    width: 68px;
-
-    &.upload-button {
-      background: url('./assets/icons/upload-icon.svg') no-repeat center;
+    label.ui.button {
+      height: 56px;
+      margin-right: 2px;
     }
 
-    &.red {
-      color: white;
+    button.ui.button {
+      border-radius: 0;
+      color: $black1;
+      height: 56px;
+      width: 68px;
+
+      &.upload-button {
+        background: url('./assets/icons/upload-icon.svg') no-repeat center;
+      }
+
+      &.red {
+        color: white;
+      }
+
+      i.icon.download {
+        display: none;
+        margin: 0 !important;
+
+        @media screen and (min-width: 600px) {
+          display: inline-block;
+        }
+      }
+
+      i.icon.cancel:before {
+        font-size: 18px;
+      }
     }
 
-    i.icon.download {
-      margin: 0 !important;
-    }
+    .file-action-buttons {
+      display: flex;
 
-    i.icon.cancel:before {
-      font-size: 18px;
+      /* Using max-width instead of min-width here, because desktop styles
+      * use noticeably more semantic ui defaults */
+      @media screen and (max-width: 599px) {
+        flex-direction: column;
+
+        .button.ui.button.file-action-button {
+          background: none;
+          color: $color-primary;
+          height: 28px;
+          margin-left: 8px;
+          outline: none;
+          padding: 0;
+          width: 34px;
+
+          &:hover {
+            color: $color-button-emphasis;
+          }
+
+          &.red {
+            color: red;
+
+            &:hover {
+              color: $color-input-emphasis;
+            }
+
+            &::before {
+              content: 'poista';
+            }
+
+            .icon {
+              display: none;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -321,10 +366,14 @@
     height: 56px;
     padding: 0 16px;
     text-align: center;
-    width: 232px;
+    width: 160px;
 
     &::before {
       display: none;
+    }
+
+    @media screen and (min-width: 600px) {
+      width: 232px;
     }
   }
 }

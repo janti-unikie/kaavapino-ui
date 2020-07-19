@@ -2,7 +2,7 @@
   flex: 1;
   margin: 0 auto;
   max-width: 1148px;
-  width: 100%;
+  width: calc(100% - 32px);
 
   .project-page-content {
     flex: 1;
@@ -10,10 +10,6 @@
     margin-top: 52px;
     padding: 40px 0;
     border-top: 1px solid $light-gray;
-
-    @media screen and (max-width: 695px) {
-      padding: 40px 10px 40px 10px;
-    }
   }
 }
 
