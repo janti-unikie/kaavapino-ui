@@ -13,25 +13,16 @@
 
 .input-container {
   .input-header {
+    align-items: center;
     display: flex;
     font-weight: bold;
+    justify-content: space-between;
   }
 
   .input-info {
-    background-color: black;
-    color: white;
-    width: 18px;
-    height: 18px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-left: 5px;
-    border-radius: 100%;
-    padding: 5px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    line-height: 100%;
+    background: url('./assets/icons/field-info-icon.svg') no-repeat center;
+    width: 16px;
+    height: 16px;
   }
 
   .input-title {
@@ -397,23 +388,6 @@
   border: 1px solid gainsboro;
   padding: 10px;
   margin-bottom: 10px;
-}
-
-.input-info {
-  background-color: black;
-  color: white;
-  width: 18px;
-  height: 18px;
-  font-size: 12px;
-  font-weight: bold;
-  margin-left: 5px;
-  border-radius: 100%;
-  padding: 5px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-  line-height: 100%;
 }
 
 .geometry-input-container {

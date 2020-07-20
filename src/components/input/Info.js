@@ -21,9 +21,9 @@ class Info extends PureComponent {
   render() {
     return (
       <Popup
-        trigger={<span className='input-info'>?</span>}
+        trigger={<div className='input-info' />}
         inverted
-        on='click'
+        on='hover'
         position='top center'
         hideOnScroll
         content={<InfoContent { ...this.props } />}

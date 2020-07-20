@@ -25,7 +25,13 @@ class EditForm extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { setChecking, hasErrors, saving, initialize, attributeData } = this.props
+    const {
+      setChecking,
+      hasErrors,
+      saving,
+      initialize,
+      attributeData
+    } = this.props
     if (prevProps.validating && !this.props.validating) {
       if (!hasErrors) {
         this.setState({ verifying: true, endPhaseError: false })
@@ -33,7 +39,10 @@ class EditForm extends Component {
       } else {
         this.setState({ endPhaseError: true })
         clearTimeout(this.timeout)
-        this.timeout = setTimeout(() => this.setState({ endPhaseError: false }), 5000)
+        this.timeout = setTimeout(
+          () => this.setState({ endPhaseError: false }),
+          5000
+        )
         setChecking(true)
       }
     }
@@ -43,7 +52,7 @@ class EditForm extends Component {
     }
   }
 
-  phaseCallback = (changePhase) => {
+  phaseCallback = changePhase => {
     if (changePhase) {
       this.props.changePhase()
     }
@@ -64,33 +73,38 @@ class EditForm extends Component {
     } = this.props
 
     return (
-      <Form className='form-container' autoComplete='off'>
+      <Form className="form-container" autoComplete="off">
         <h2>{title}</h2>
-        { sections.map((section, i) => <FormSection key={i} section={section} /> ) }
+        {sections.map((section, i) => (
+          <FormSection key={i} section={section} />
+        ))}
         <Button
           handleClick={this.props.handleSave}
-          value='Tallenna'
-          icon={<FontAwesomeIcon icon='check' />}
+          value="Tallenna"
+          icon={<FontAwesomeIcon icon="check" />}
           loading={saving}
           secondary
-          help='Tallentaa hankkeen'
+          help="Tallentaa hankkeen"
         />
-        { isCurrentPhase && !isLastPhase && (
+        {isCurrentPhase && !isLastPhase && (
           <Button
             handleClick={this.changePhase}
-            value='Lopeta vaihe'
-            icon={<FontAwesomeIcon icon='forward' />}
+            value="Lopeta vaihe"
+            icon={<FontAwesomeIcon icon="forward" />}
             loading={changingPhase || validating}
             secondary
-            help='Yrittää lopettaa tämänhetkisen vaiheen'
+            help="Yrittää lopettaa tämänhetkisen vaiheen"
           />
         )}
-        <ConfirmModal callback={this.phaseCallback} open={this.state.verifying} />
-        { this.state.endPhaseError && (
+        <ConfirmModal
+          callback={this.phaseCallback}
+          open={this.state.verifying}
+        />
+        {this.state.endPhaseError && (
           <Message
-            header='Vaihetta ei voida vielä lopettaa'
-            content='Täytä puuttuvat kentät'
-            color='yellow'
+            header="Vaihetta ei voida vielä lopettaa"
+            content="Täytä puuttuvat kentät"
+            color="yellow"
           />
         )}
       </Form>

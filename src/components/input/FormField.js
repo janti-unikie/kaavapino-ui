@@ -21,7 +21,7 @@ class FormField extends Component {
     const { field, attributeData } = this.props
     switch (field.type) {
       case 'matrix': return <Matrix field={field} attributeData={attributeData} />
-      default: return <Field  field={field} attributeData={attributeData} fieldset={field.type === 'fieldset'} />
+      default: return <Field field={field} attributeData={attributeData} fieldset={field.type === 'fieldset'} />
     }
   }
 
