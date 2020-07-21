@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Form } from 'semantic-ui-react'
 import { reduxForm } from 'redux-form'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Message } from 'semantic-ui-react'
 import FormSection from './FormSection'
 import Button from '../common/Button'
@@ -64,20 +64,36 @@ class EditForm extends Component {
   render() {
     const {
       sections,
-      saving,
-      isCurrentPhase,
-      isLastPhase,
-      changingPhase,
-      title,
-      validating
+      title
+      // saving,
+      // isCurrentPhase,
+      // isLastPhase,
+      // changingPhase,
+      // validating
     } = this.props
 
     return (
       <Form className="form-container" autoComplete="off">
         <h2>{title}</h2>
+        <div className='edit-form-buttons'>
+          <Button
+            value="Päivitä aikataulu"
+            secondary
+            help='feature not implemented yet'
+            fluid
+          />
+          <Button
+            value="Päivitä kerrosalatiedot"
+            secondary
+            help='feature not implemented yet'
+            fluid
+          />
+        </div>
         {sections.map((section, i) => (
           <FormSection key={i} section={section} />
         ))}
+        {/* Commenting end phase and save buttons out, since in these designs it's in quick nav.
+         * Keeping it here in case it's needed in mobile styles. if not, remove.
         <Button
           handleClick={this.props.handleSave}
           value="Tallenna"
@@ -96,6 +112,7 @@ class EditForm extends Component {
             help="Yrittää lopettaa tämänhetkisen vaiheen"
           />
         )}
+        */}
         <ConfirmModal
           callback={this.phaseCallback}
           open={this.state.verifying}

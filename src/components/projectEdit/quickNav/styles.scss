@@ -3,11 +3,13 @@
 .quicknav-container {
   display: flex;
   flex-direction: column;
-  background-color: $light-gray3;
-  max-height: 80vh;
   overflow: hidden;
   overflow-y: auto;
-  padding: 32px;
+
+  .quicknav-navigation-section {
+    background-color: $light-gray3;
+    padding: 32px;
+  }
 
   .quicknav-title {
     border-bottom: 2px solid $black1;

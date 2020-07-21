@@ -6,6 +6,19 @@
   background-color: white;
   padding: 0;
 
+  .edit-form-buttons {
+    display: flex;
+    justify-content: space-between;
+
+    > button {
+      margin: 0;
+
+      &:first-of-type {
+        margin-right: 16px;
+      }
+    }
+  }
+
   .section-title {
     margin: 0 0 0 8px;
     padding: 0;

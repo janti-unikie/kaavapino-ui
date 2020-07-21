@@ -53,6 +53,8 @@ class ProjectEditPage extends Component {
         <Shoutbox project={id} />
         <div className='project-input-left'>
           <QuickNav
+            changePhase={this.changePhase}
+            changingPhase={changingPhase}
             handleSave={this.handleSave}
             handleCheck={() => this.props.projectSetChecking(!this.props.checking)}
             projectName={ name }
@@ -61,6 +63,7 @@ class ProjectEditPage extends Component {
             currentPhases={ currentPhases }
             saving={ saving }
             switchDisplayedPhase={ switchDisplayedPhase }
+            validating={validating}
           />
           <NavigationPrompt when={this.props.isDirty}>
             {({ onConfirm, onCancel }) => (
@@ -80,7 +83,7 @@ class ProjectEditPage extends Component {
           sections={currentSchema.sections}
           attributeData={attribute_data}
           saving={saving}
-          changingPhase={changingPhase}
+          // changingPhase={changingPhase}
           phase={phase}
           selectedPhase={selectedPhase}
           setChecking={this.props.projectSetChecking}

@@ -3,6 +3,7 @@ import Button from '../../common/Button'
 import { Accordion } from 'semantic-ui-react'
 import AccordionTitle from './AccordionTitle'
 import './styles.scss'
+import RoleHighlightPicker from './roleHighlightPicker'
 
 class QuickNav extends Component {
   constructor(props) {
@@ -15,11 +16,11 @@ class QuickNav extends Component {
     }
   }
 
-  getPosition = (element) => {
+  getPosition = element => {
     let yPosition = 0
 
     while (element) {
-      yPosition += (element.offsetTop - element.scrollTop + element.clientTop)
+      yPosition += element.offsetTop - element.scrollTop + element.clientTop
       element = element.offsetParent
     }
 
@@ -35,18 +36,18 @@ class QuickNav extends Component {
     window.removeEventListener('scroll', this.handleScroll)
   }
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = prevProps => {
     if (this.props.phaseTitle !== prevProps.phaseTitle) {
       this.setState({ sectionHeights: this.initSections(this.props.sections) })
     }
   }
 
-  initSections = (sections) => {
+  initSections = sections => {
     const sectionHeights = []
     if (!sections) {
       return
     }
-    sections.forEach((section) => {
+    sections.forEach(section => {
       const c = document.getElementById(`title-${section.title}`)
       sectionHeights.push({ title: section.title, y: this.getPosition(c) })
     })
@@ -69,18 +70,18 @@ class QuickNav extends Component {
     this.setState({ active: activeTitle })
   }
 
-  handleSectionTitleClick = (title) => {
+  handleSectionTitleClick = title => {
     const c = document.getElementById(`title-${title}`)
     c.scrollIntoView()
   }
 
-  handleAccordionTitleClick = (titleIndex) => {
+  handleAccordionTitleClick = titleIndex => {
     const { switchDisplayedPhase } = this.props
     const shouldChangePhase = this.state.activePhase !== titleIndex
 
     if (shouldChangePhase) {
       this.setState({
-        activePhase: (this.state.activePhase === titleIndex ? null : titleIndex)
+        activePhase: this.state.activePhase === titleIndex ? null : titleIndex
       })
       switchDisplayedPhase(titleIndex)
     } else {
@@ -90,56 +91,77 @@ class QuickNav extends Component {
 
   render() {
     const { activePhase } = this.state
-    const { currentPhases } = this.props
+    const {
+      currentPhases,
+      changePhase,
+      changingPhase,
+      validating,
+      saving,
+      handleSave,
+      handleCheck
+    } = this.props
 
     return (
-      <div className='quicknav-container'>
-        <h2 className='quicknav-title'>Kaavan vaiheet</h2>
-        <div className='quicknav-content'>
-          <Accordion>
-            {currentPhases.map((phase, index) => (
-              <>
-                <AccordionTitle activePhase={this.state.activePhase} id={phase.id} handleClick={this.handleAccordionTitleClick} index={index}>
-                  {phase.name}
-                </AccordionTitle>
-                <Accordion.Content active={activePhase === phase.id}>
-                  { this.state.sectionHeights && this.state.sectionHeights.map((section, i) => {
-                    return (
-                      <span
-                        key={i}
-                        className={`quicknav-item ${i === this.state.active ? 'active' : ''}`}
-                        onClick={() => this.handleSectionTitleClick(section.title)}
-                      >
-                        { section.title }
-                      </span>
-                    )
-                  }) }
-                </Accordion.Content>
-              </>
-            ))}
-          </Accordion>
+      <div className="quicknav-container">
+        <div className="quicknav-navigation-section">
+          <h2 className="quicknav-title">Kaavan vaiheet</h2>
+          <div className="quicknav-content">
+            <Accordion>
+              {currentPhases.map((phase, index) => (
+                <>
+                  <AccordionTitle
+                    activePhase={this.state.activePhase}
+                    id={phase.id}
+                    handleClick={this.handleAccordionTitleClick}
+                    index={index}
+                  >
+                    {phase.name}
+                  </AccordionTitle>
+                  <Accordion.Content active={activePhase === phase.id}>
+                    {this.state.sectionHeights &&
+                      this.state.sectionHeights.map((section, i) => {
+                        return (
+                          <span
+                            key={i}
+                            className={`quicknav-item ${
+                              i === this.state.active ? 'active' : ''
+                            }`}
+                            onClick={() =>
+                              this.handleSectionTitleClick(section.title)
+                            }
+                          >
+                            {section.title}
+                          </span>
+                        )
+                      })}
+                  </Accordion.Content>
+                </>
+              ))}
+            </Accordion>
+          </div>
         </div>
-        <div className='quicknav-buttons'>
+        <RoleHighlightPicker />
+        <div className="quicknav-buttons">
           <Button
-            handleClick={this.props.handleSave}
-            value='Tallenna'
-            loading={this.props.saving}
+            handleClick={handleSave}
+            value="Tallenna"
+            loading={saving}
             secondary
-            help='Tallentaa hankkeen'
+            help="Tallentaa hankkeen"
           />
           <Button
-            handleClick={this.props.handleCheck}
-            value='Tarkista'
-            help='Korostaa pakolliset puuttuvat kentät'
+            handleClick={handleCheck}
+            value="Tarkista"
+            help="Korostaa pakolliset puuttuvat kentät"
             secondary
           />
           <Button
-            handleClick={this.props.handleSave}
-            value='Lopeta vaihe'
-            loading={this.props.saving}
+            handleClick={changePhase}
+            value="Lopeta vaihe"
+            loading={changingPhase || validating}
             secondary
             fluid
-            help='Yrittää lopettaa vaiheen'
+            help="Yrittää lopettaa vaiheen"
           />
         </div>
       </div>
