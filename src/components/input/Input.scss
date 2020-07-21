@@ -19,28 +19,42 @@
     justify-content: space-between;
   }
 
-  .input-info {
-    background: url('./assets/icons/field-info-icon.svg') no-repeat center;
-    width: 16px;
-    height: 16px;
+  .input-header-icons {
+    align-items: center;
+    display: flex;
+    margin-right: 8px;
+
+    @media screen and (min-width: 600px) {
+      margin-right: 0;
+    }
+
+    :nth-child(2) {
+      margin-left: 8px;
+    }
+
+    .input-info {
+      background: url('./assets/icons/field-info-icon.svg') no-repeat center;
+      width: 16px;
+      height: 16px;
+    }
+
+    .input-history {
+      font-weight: 100;
+      color: lightgray;
+      margin-right: 4px;
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      :nth-child(2) {
+        margin: 2px 0 0 5px;
+      }
+    }
   }
 
   .input-title {
     &.highlight {
       background-color: yellow;
-    }
-  }
-
-  .input-history {
-    font-weight: 100;
-    color: lightgray;
-    margin-left: 4px;
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    :nth-child(2) {
-      margin: 2px 0 0 5px;
     }
   }
 }
