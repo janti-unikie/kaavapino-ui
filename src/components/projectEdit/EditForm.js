@@ -124,6 +124,11 @@ class EditForm extends Component {
             color="yellow"
           />
         )}
+
+        <div className="scroll-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <div>Sivun alkuun</div>
+          <div className="arrow-up-icon" />
+        </div>
       </Form>
     )
   }
