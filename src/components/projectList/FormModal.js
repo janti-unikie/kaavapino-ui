@@ -53,14 +53,14 @@ class FormModal extends Component {
 
     return (
       <Modal className="form-modal" size={'small'} onClose={this.props.handleClose}  open={this.props.open} closeIcon>
-        <Modal.Header>Luo uusi hanke</Modal.Header>
+        <Modal.Header>Luo uusi projekti</Modal.Header>
         <Modal.Content>
           <Form>
             <Form.Group widths='equal'>
               <FormField field={{ name: 'name', type: 'text', label: 'Hankkeen nimi' }} />
               <FormField className="ui fluid input" field={{ name: 'user', label: 'Vastuuhenkilö', type: 'select', choices: this.formatUsers() }} />
             </Form.Group>
-            <FormField field={{ name:'public', label: 'Luodaanko hanke julkiseksi', type: 'boolean', double: true }} double />
+            <FormField field={{ name:'public', label: 'Luodaanko projekti julkiseksi', type: 'boolean', double: true }} double />
             <div className="subtype-input-container">
               <FormField field={{ name:'subtype', label: 'Valitse prosessin koko', type: 'radio', options: [
                 { value: 1, label: 'XS' },
@@ -81,7 +81,7 @@ class FormModal extends Component {
         </Modal.Content>
         <Modal.Actions>
           <Button secondary disabled={loading} onClick={this.handleClose}>Peruuta</Button>
-          <Button primary disabled={loading} type="submit" onClick={this.handleSubmit}>Luo hanke</Button>
+          <Button primary disabled={loading} type="submit" onClick={this.handleSubmit}>Luo projekti</Button>
         </Modal.Actions>
       </Modal>
 

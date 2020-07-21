@@ -77,7 +77,7 @@ class ProjectPage extends Component {
     } else if (documents) {
       return `${name}, dokumentit`
     }
-    return `${name}, hankekortti`
+    return `${name}, projektikortti`
   }
 
   getCurrentPhases() {
@@ -124,13 +124,13 @@ class ProjectPage extends Component {
         <NavActions>
           <NavAction to={`/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</NavAction>
           <NavAction to={`/${id}/documents`}><FontAwesomeIcon icon='file'/>Luo dokumentteja</NavAction>
-          <NavAction onClick={() => window.print()}><FontAwesomeIcon icon='print'/>Tulosta hankekortti</NavAction>
+          <NavAction onClick={() => window.print()}><FontAwesomeIcon icon='print'/>Tulosta projektikortti</NavAction>
           <NavAction onClick={() => this.setState({ showDeadlineModal: true })}><FontAwesomeIcon icon='cog'/>Määräajat</NavAction>
         </NavActions>
       ) :
       (
         <NavActions>
-          <NavAction to={`/${id}`}><FontAwesomeIcon icon='arrow-left'/>Hankekortti</NavAction>
+          <NavAction to={`/${id}`}><FontAwesomeIcon icon='arrow-left'/>Projektikortti</NavAction>
         </NavActions>
       )
   }
