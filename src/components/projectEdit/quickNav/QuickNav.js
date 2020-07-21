@@ -37,8 +37,20 @@ class QuickNav extends Component {
   }
 
   componentDidUpdate = prevProps => {
-    if (this.props.phaseTitle !== prevProps.phaseTitle) {
-      this.setState({ sectionHeights: this.initSections(this.props.sections) })
+    const { phaseTitle, currentPhases, sections } = this.props
+
+    if (phaseTitle !== prevProps.phaseTitle) {
+      this.setState({ sectionHeights: this.initSections(sections) })
+
+      /* If the phase has changed through other sources than this navigation, close the nav component */
+      const newPhaseIndex = currentPhases.findIndex(
+        phase => phase.name === phaseTitle
+      )
+      console.log(newPhaseIndex, this.state.activePhase)
+
+      if (newPhaseIndex !== this.state.activePhase - 1) {
+        this.setState({ activePhase: null })
+      }
     }
   }
 
