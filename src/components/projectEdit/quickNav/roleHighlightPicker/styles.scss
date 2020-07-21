@@ -2,10 +2,15 @@
 
 .role-highlight-picker {
   align-items: flex-start;
+  border: 2px solid $light-gray3;
   justify-content: stretch;
   display: flex;
   padding: 16px 32px;
   margin-top: 32px;
+
+  h3:first-child {
+    margin-top: 4px;
+  }
 
   .role-highlight-picker-right {
     flex-grow: 2;

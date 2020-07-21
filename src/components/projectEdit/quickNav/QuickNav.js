@@ -143,17 +143,17 @@ class QuickNav extends Component {
         <RoleHighlightPicker />
         <div className="quicknav-buttons">
           <Button
+            handleClick={handleCheck}
+            value="Tarkista"
+            help="Korostaa pakolliset puuttuvat kentät"
+            secondary
+          />
+          <Button
             handleClick={handleSave}
             value="Tallenna"
             loading={saving}
             secondary
             help="Tallentaa hankkeen"
-          />
-          <Button
-            handleClick={handleCheck}
-            value="Tarkista"
-            help="Korostaa pakolliset puuttuvat kentät"
-            secondary
           />
           <Button
             handleClick={changePhase}
