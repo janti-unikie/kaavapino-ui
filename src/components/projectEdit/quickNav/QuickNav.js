@@ -46,7 +46,6 @@ class QuickNav extends Component {
       const newPhaseIndex = currentPhases.findIndex(
         phase => phase.name === phaseTitle
       )
-      console.log(newPhaseIndex, this.state.activePhase)
 
       if (newPhaseIndex !== this.state.activePhase - 1) {
         this.setState({ activePhase: null })
