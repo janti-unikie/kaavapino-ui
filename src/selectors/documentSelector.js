@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 
-const selectDocument = (state) => state.document
+const selectDocument = state => state.document
 
 export const documentsSelector = createSelector(
   selectDocument,

@@ -11,10 +11,11 @@ export const logout = () => ({ type: LOGOUT })
 
 export const logoutSuccessful = () => ({ type: LOGOUT_SUCCESSFUL })
 
-export const fakeLogin = () => ({ type: 'redux-oidc/USER_FOUND',
+export const fakeLogin = () => ({
+  type: 'redux-oidc/USER_FOUND',
   payload: {
     profile: {
-      sub:  '11111111-2222-3333-4444-555555555555'
+      sub: '11111111-2222-3333-4444-555555555555'
     }
   }
 })

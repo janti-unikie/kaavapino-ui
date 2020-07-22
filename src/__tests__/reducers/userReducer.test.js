@@ -1,7 +1,5 @@
 import { reducer as user, initialState } from '../../reducers/userReducer'
-import {
-  FETCH_USERS_SUCCESSFUL
-} from '../../actions/userActions'
+import { FETCH_USERS_SUCCESSFUL } from '../../actions/userActions'
 
 describe('user reducer', () => {
   it('should return the initial state', () => {

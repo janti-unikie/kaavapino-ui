@@ -1,9 +1,11 @@
-
 import { takeLatest, put, all, call, select } from 'redux-saga/effects'
 import {
-  FETCH_SCHEMAS, fetchSchemasSuccessful,
-  SET_LATEST_EDIT_FIELD, setLatestEditFieldSuccessful,
-  SET_ALL_EDIT_FIELDS, setAllEditFieldsSuccessful
+  FETCH_SCHEMAS,
+  fetchSchemasSuccessful,
+  SET_LATEST_EDIT_FIELD,
+  setLatestEditFieldSuccessful,
+  SET_ALL_EDIT_FIELDS,
+  setAllEditFieldsSuccessful
 } from '../actions/schemaActions'
 import { latestUpdateSelector, updatesSelector } from '../selectors/projectSelector'
 import { schemaSelector } from '../selectors/schemaSelector'
@@ -35,7 +37,13 @@ function* latestEditedFieldSaga() {
   const latestUpdate = yield select(latestUpdateSelector)
   const latestUpdateName = latestUpdate.field
   let fieldLabel = ''
-  schema.phases.forEach(({ sections }) => sections.forEach(({ fields }) => fields.forEach(({ name, label }) => name === latestUpdateName ? fieldLabel = label : '')))
+  schema.phases.forEach(({ sections }) =>
+    sections.forEach(({ fields }) =>
+      fields.forEach(({ name, label }) =>
+        name === latestUpdateName ? (fieldLabel = label) : ''
+      )
+    )
+  )
   yield put(setLatestEditFieldSuccessful({ name: fieldLabel, ...latestUpdate.latest }))
 }
 
@@ -43,7 +51,17 @@ function* allEditedFieldsSaga() {
   const schema = yield select(schemaSelector)
   const updates = yield select(updatesSelector)
   const result = []
-  schema.phases.forEach(({ sections }) => sections.forEach(({ fields }) => fields.forEach(({ name, label }, i) => updates[name] ? result.push({ name: label, ...updates[name], id: i }) : '')))
-  const uniques = projectUtils.getUniqueUpdates(result.sort((u1, u2) => new Date(u2.timestamp).getTime() - new Date(u1.timestamp).getTime()))
+  schema.phases.forEach(({ sections }) =>
+    sections.forEach(({ fields }) =>
+      fields.forEach(({ name, label }, i) =>
+        updates[name] ? result.push({ name: label, ...updates[name], id: i }) : ''
+      )
+    )
+  )
+  const uniques = projectUtils.getUniqueUpdates(
+    result.sort(
+      (u1, u2) => new Date(u2.timestamp).getTime() - new Date(u1.timestamp).getTime()
+    )
+  )
   yield put(setAllEditFieldsSuccessful(uniques))
 }

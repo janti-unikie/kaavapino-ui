@@ -1,6 +1,4 @@
-import {
-  FETCH_USERS_SUCCESSFUL
-} from '../actions/userActions'
+import { FETCH_USERS_SUCCESSFUL } from '../actions/userActions'
 
 export const initialState = {
   users: []

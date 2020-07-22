@@ -1,11 +1,8 @@
 import { createSelector } from 'reselect'
 
-const selectProject = (state) => state.project
+const selectProject = state => state.project
 
-export const projectsSelector = createSelector(
-  selectProject,
-  (project) => project.projects
-)
+export const projectsSelector = createSelector(selectProject, project => project.projects)
 
 export const ownProjectsSelector = createSelector(
   selectProject,
@@ -44,7 +41,7 @@ export const loadingProjectsSelector = createSelector(
 
 export const currentProjectSelector = createSelector(
   selectProject,
-  (project) => project.currentProject || null
+  project => project.currentProject || null
 )
 
 export const attributeDataSelector = createSelector(
@@ -54,22 +51,19 @@ export const attributeDataSelector = createSelector(
 
 export const currentProjectLoadedSelector = createSelector(
   selectProject,
-  (project) => project.currentProjectLoaded
+  project => project.currentProjectLoaded
 )
 
 export const currentProjectIdSelector = createSelector(
   currentProjectSelector,
-  (currentProject) => currentProject ? currentProject.id : null
+  currentProject => (currentProject ? currentProject.id : null)
 )
 
-export const savingSelector = createSelector(
-  selectProject,
-  (project) => project.saving
-)
+export const savingSelector = createSelector(selectProject, project => project.saving)
 
 export const changingPhaseSelector = createSelector(
   selectProject,
-  (project) => project.changingPhase
+  project => project.changingPhase
 )
 
 export const validatingSelector = createSelector(
@@ -82,35 +76,37 @@ export const hasErrorsSelector = createSelector(
   ({ hasErrors }) => hasErrors
 )
 
-export const checkingSelector = createSelector(
-  selectProject,
-  ({ checking }) => checking
-)
+export const checkingSelector = createSelector(selectProject, ({ checking }) => checking)
 
 export const updatesSelector = createSelector(
   currentProjectSelector,
-  (currentProject = {}) => currentProject ? currentProject._metadata ? currentProject._metadata.updates ? currentProject._metadata.updates : {} : {} : {}
+  (currentProject = {}) =>
+    currentProject
+      ? currentProject._metadata
+        ? currentProject._metadata.updates
+          ? currentProject._metadata.updates
+          : {}
+        : {}
+      : {}
 )
 
 export const usersSelector = createSelector(
   currentProjectSelector,
-  (currentProject = {}) => currentProject._metadata ? currentProject._metadata.users : []
+  (currentProject = {}) =>
+    currentProject._metadata ? currentProject._metadata.users : []
 )
 
-export const latestUpdateSelector = createSelector(
-  updatesSelector,
-  (updates) => {
-    let latest = null
-    let field = null
-    Object.keys(updates).forEach((key) => {
-      if (!latest || (new Date(updates[key].timestamp) - new Date(latest.timestamp) > 0)) {
-        latest = updates[key]
-        field = key
-      }
-    })
-    return { latest, field }
-  }
-)
+export const latestUpdateSelector = createSelector(updatesSelector, updates => {
+  let latest = null
+  let field = null
+  Object.keys(updates).forEach(key => {
+    if (!latest || new Date(updates[key].timestamp) - new Date(latest.timestamp) > 0) {
+      latest = updates[key]
+      field = key
+    }
+  })
+  return { latest, field }
+})
 
 export const deadlinesSelector = createSelector(
   currentProjectSelector,

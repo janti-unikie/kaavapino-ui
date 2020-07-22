@@ -14,25 +14,54 @@ export const SET_TOTAL_COMMENTS = 'Set total comments'
 export const LOAD_COMMENTS_SUCCESSFUL = 'Load comments successful'
 
 // Fetch
-export const fetchComments = (id) => ({ type: FETCH_COMMENTS, payload: id })
-export const pollComments = (id) => ({ type: POLL_COMMENTS, payload: id })
-export const fetchCommentsSuccessful = (comments) => ({ type: FETCH_COMMENTS_SUCCESSFUL, payload: comments })
+export const fetchComments = id => ({ type: FETCH_COMMENTS, payload: id })
+export const pollComments = id => ({ type: POLL_COMMENTS, payload: id })
+export const fetchCommentsSuccessful = comments => ({
+  type: FETCH_COMMENTS_SUCCESSFUL,
+  payload: comments
+})
 export const pollCommentsSuccessful = () => ({ type: POLL_COMMENTS_SUCCESSFUL })
 
 // Create
-export const createComment = (id, content) => ({ type: CREATE_COMMENT, payload: { id, content } })
-export const createCommentSuccessful = (comment) => ({ type: CREATE_COMMENT_SUCCESSFUL, payload: comment })
+export const createComment = (id, content) => ({
+  type: CREATE_COMMENT,
+  payload: { id, content }
+})
+export const createCommentSuccessful = comment => ({
+  type: CREATE_COMMENT_SUCCESSFUL,
+  payload: comment
+})
 
 // Edit
-export const editComment = (projectId, commentId, content) => ({ type: EDIT_COMMENT, payload: { projectId, commentId, content } })
-export const editCommentSuccessful = (comment) => ({ type: EDIT_COMMENT_SUCCESSFUL, payload: comment })
+export const editComment = (projectId, commentId, content) => ({
+  type: EDIT_COMMENT,
+  payload: { projectId, commentId, content }
+})
+export const editCommentSuccessful = comment => ({
+  type: EDIT_COMMENT_SUCCESSFUL,
+  payload: comment
+})
 
 // Delete
-export const deleteComment = (projectId, commentId) => ({ type: DELETE_COMMENT, payload: { projectId, commentId } })
-export const deleteCommentSuccessful = (id) => ({ type: DELETE_COMMENT_SUCCESSFUL, payload: id })
+export const deleteComment = (projectId, commentId) => ({
+  type: DELETE_COMMENT,
+  payload: { projectId, commentId }
+})
+export const deleteCommentSuccessful = id => ({
+  type: DELETE_COMMENT_SUCCESSFUL,
+  payload: id
+})
 
 // Comment pagination
-export const increaseAmountOfCommentsToShow = () => ({ type: INCREASE_AMOUNT_OF_COMMENTS_TO_SHOW })
-export const setAmountOfCommentsToShow = (count) => ({ type: SET_AMOUNT_OF_COMMENTS_TO_SHOW, payload: count })
-export const setTotalComments = (count) => ({ type: SET_TOTAL_COMMENTS, payload: count })
-export const loadCommentsSuccessful = (comments) => ({ type: LOAD_COMMENTS_SUCCESSFUL, payload: comments })
+export const increaseAmountOfCommentsToShow = () => ({
+  type: INCREASE_AMOUNT_OF_COMMENTS_TO_SHOW
+})
+export const setAmountOfCommentsToShow = count => ({
+  type: SET_AMOUNT_OF_COMMENTS_TO_SHOW,
+  payload: count
+})
+export const setTotalComments = count => ({ type: SET_TOTAL_COMMENTS, payload: count })
+export const loadCommentsSuccessful = comments => ({
+  type: LOAD_COMMENTS_SUCCESSFUL,
+  payload: comments
+})

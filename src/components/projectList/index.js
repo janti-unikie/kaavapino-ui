@@ -20,7 +20,7 @@ import FormModal from './FormModal'
 import List from './List'
 
 class ProjectListPage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -35,7 +35,7 @@ class ProjectListPage extends Component {
     this.props.fetchProjectSubtypes()
   }
 
-  toggleForm = (opened) => this.setState({ formOpen: opened })
+  toggleForm = opened => this.setState({ formOpen: opened })
 
   render() {
     const {
@@ -48,21 +48,47 @@ class ProjectListPage extends Component {
       totalProjects
     } = this.props
     const panes = [
-      { menuItem: 'Omat hankkeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={ownProjects.slice(0, amountOfProjectsToShow)} total={totalOwnProjects} /> },
-      { menuItem: 'Kaikki hankkeet', render: () => <List projectSubtypes={projectSubtypes} users={users} items={allProjects.slice(0, amountOfProjectsToShow)} total={totalProjects} /> }
+      {
+        menuItem: 'Omat hankkeet',
+        render: () => (
+          <List
+            projectSubtypes={projectSubtypes}
+            users={users}
+            items={ownProjects.slice(0, amountOfProjectsToShow)}
+            total={totalOwnProjects}
+          />
+        )
+      },
+      {
+        menuItem: 'Kaikki hankkeet',
+        render: () => (
+          <List
+            projectSubtypes={projectSubtypes}
+            users={users}
+            items={allProjects.slice(0, amountOfProjectsToShow)}
+            total={totalProjects}
+          />
+        )
+      }
     ]
     return (
-      <div className='project-list-page'>
+      <div className="project-list-page">
         <NavHeader
-          routeItems={[ { value: 'Kaavahankkeet', path: '/' } ]}
-          title='Kaavahankkeet'
+          routeItems={[{ value: 'Kaavahankkeet', path: '/' }]}
+          title="Kaavahankkeet"
           large
-          actions={(
+          actions={
             <NavActions>
-              <NavAction onClick={() => this.toggleForm(true)}><FontAwesomeIcon icon='plus'/>Luo uusi projekti</NavAction>
-              <NavAction to={'/reports'}><FontAwesomeIcon icon='file-csv'/>Tee raportteja</NavAction>
+              <NavAction onClick={() => this.toggleForm(true)}>
+                <FontAwesomeIcon icon="plus" />
+                Luo uusi projekti
+              </NavAction>
+              <NavAction to={'/reports'}>
+                <FontAwesomeIcon icon="file-csv" />
+                Tee raportteja
+              </NavAction>
             </NavActions>
-          )}
+          }
         />
         <FormModal
           open={this.state.formOpen}
@@ -71,7 +97,7 @@ class ProjectListPage extends Component {
           users={users}
           projectSubtypes={projectSubtypes}
         />
-        <div className='project-list-container'>
+        <div className="project-list-container">
           <Tab panes={panes} />
         </div>
       </div>
@@ -79,7 +105,7 @@ class ProjectListPage extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     ownProjects: ownProjectsSelector(state),
     allProjects: projectsSelector(state),
@@ -98,7 +124,4 @@ const mapDispatchToProps = {
   fetchProjectSubtypes
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProjectListPage)
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectListPage)

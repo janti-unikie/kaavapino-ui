@@ -32,51 +32,104 @@ export const PROJECT_SET_DEADLINES = 'Project set deadlines'
 export const PROJECT_SET_DEADLINES_SUCCESSFUL = 'Project set deadlines successful'
 
 export const fetchProjects = () => ({ type: FETCH_PROJECTS })
-export const fetchOwnProjectsSuccessful = (projects) => ({ type: FETCH_OWN_PROJECTS_SUCCESSFUL, payload: projects })
-export const fetchProjectsSuccessful = (projects) => ({ type: FETCH_PROJECTS_SUCCESSFUL, payload: projects })
-export const setProjects = (projects) => ({ type: SET_PROJECTS, payload: projects })
-export const setOwnProjects = (projects) => ({ type: SET_OWN_PROJECTS, payload: projects })
+export const fetchOwnProjectsSuccessful = projects => ({
+  type: FETCH_OWN_PROJECTS_SUCCESSFUL,
+  payload: projects
+})
+export const fetchProjectsSuccessful = projects => ({
+  type: FETCH_PROJECTS_SUCCESSFUL,
+  payload: projects
+})
+export const setProjects = projects => ({ type: SET_PROJECTS, payload: projects })
+export const setOwnProjects = projects => ({ type: SET_OWN_PROJECTS, payload: projects })
 
-export const initializeProject = (id) => ({ type: INITIALIZE_PROJECT, payload: id })
+export const initializeProject = id => ({ type: INITIALIZE_PROJECT, payload: id })
 export const initializeProjectSuccessful = () => ({ type: INITIALIZE_PROJECT_SUCCESSFUL })
 
-export const setAmountOfProjectsToIncrease = (amount) => ({ type: SET_AMOUNT_OF_PROJECTS_TO_INCREASE, payload: amount })
+export const setAmountOfProjectsToIncrease = amount => ({
+  type: SET_AMOUNT_OF_PROJECTS_TO_INCREASE,
+  payload: amount
+})
 
-export const increaseAmountOfProjectsToShow = () => ({ type: INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW })
-export const setAmountOfProjectsToShow = (count) => ({ type: SET_AMOUNT_OF_PROJECTS_TO_SHOW, payload: count })
+export const increaseAmountOfProjectsToShow = () => ({
+  type: INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW
+})
+export const setAmountOfProjectsToShow = count => ({
+  type: SET_AMOUNT_OF_PROJECTS_TO_SHOW,
+  payload: count
+})
 
-export const setTotalProjects = (count) => ({ type: SET_TOTAL_PROJECTS, payload: count })
-export const setTotalOwnProjects = (count) => ({ type: SET_TOTAL_OWN_PROJECTS, payload: count })
+export const setTotalProjects = count => ({ type: SET_TOTAL_PROJECTS, payload: count })
+export const setTotalOwnProjects = count => ({
+  type: SET_TOTAL_OWN_PROJECTS,
+  payload: count
+})
 
-export const sortProjects = (options) => ({ type: SORT_PROJECTS, payload: options })
+export const sortProjects = options => ({ type: SORT_PROJECTS, payload: options })
 
-export const fetchProjectSuccessful = (project) => ({ type: FETCH_PROJECT_SUCCESSFUL, payload: project })
+export const fetchProjectSuccessful = project => ({
+  type: FETCH_PROJECT_SUCCESSFUL,
+  payload: project
+})
 
-export const updateProject = (updatedProject) => ({ type: UPDATE_PROJECT, payload: updatedProject })
+export const updateProject = updatedProject => ({
+  type: UPDATE_PROJECT,
+  payload: updatedProject
+})
 
 export const createProject = () => ({ type: CREATE_PROJECT })
-export const createProjectSuccessful = (project) => ({ type: CREATE_PROJECT_SUCCESSFUL, payload: project })
-export const createOwnProjectSuccessful = (project) => ({ type: CREATE_OWN_PROJECT_SUCCESSFUL, payload: project })
+export const createProjectSuccessful = project => ({
+  type: CREATE_PROJECT_SUCCESSFUL,
+  payload: project
+})
+export const createOwnProjectSuccessful = project => ({
+  type: CREATE_OWN_PROJECT_SUCCESSFUL,
+  payload: project
+})
 
 export const saveProject = () => ({ type: SAVE_PROJECT })
 export const saveProjectSuccessful = () => ({ type: SAVE_PROJECT_SUCCESSFUL })
 
 export const validateProjectFields = () => ({ type: VALIDATE_PROJECT_FIELDS })
-export const validateProjectFieldsSuccessful = (result) => ({ type: VALIDATE_PROJECT_FIELDS_SUCCESSFUL, payload: result })
+export const validateProjectFieldsSuccessful = result => ({
+  type: VALIDATE_PROJECT_FIELDS_SUCCESSFUL,
+  payload: result
+})
 
-export const changeProjectPhase = (nextPhase) => ({ type: CHANGE_PROJECT_PHASE, payload: nextPhase })
-export const changeProjectPhaseSuccessful = (updatedProject) => ({
+export const changeProjectPhase = nextPhase => ({
+  type: CHANGE_PROJECT_PHASE,
+  payload: nextPhase
+})
+export const changeProjectPhaseSuccessful = updatedProject => ({
   type: CHANGE_PROJECT_PHASE_SUCCESSFUL,
   payload: updatedProject
 })
 export const changeProjectPhaseFailure = () => ({ type: CHANGE_PROJECT_PHASE_FAILURE })
 
-export const projectFileUpload = (fileObject) => ({ type: PROJECT_FILE_UPLOAD, payload: fileObject })
-export const projectFileUploadSuccessful = (attributeData) => ({ type: PROJECT_FILE_UPLOAD_SUCCESSFUL, payload: attributeData })
-export const projectFileRemove = (attribute) => ({ type: PROJECT_FILE_REMOVE, payload: attribute })
-export const projectFileRemoveSuccessful = (attribute) => ({ type: PROJECT_FILE_REMOVE_SUCCESSFUL, payload: attribute })
+export const projectFileUpload = fileObject => ({
+  type: PROJECT_FILE_UPLOAD,
+  payload: fileObject
+})
+export const projectFileUploadSuccessful = attributeData => ({
+  type: PROJECT_FILE_UPLOAD_SUCCESSFUL,
+  payload: attributeData
+})
+export const projectFileRemove = attribute => ({
+  type: PROJECT_FILE_REMOVE,
+  payload: attribute
+})
+export const projectFileRemoveSuccessful = attribute => ({
+  type: PROJECT_FILE_REMOVE_SUCCESSFUL,
+  payload: attribute
+})
 
-export const projectSetChecking = (value) => ({ type: PROJECT_SET_CHECKING, payload: value })
+export const projectSetChecking = value => ({
+  type: PROJECT_SET_CHECKING,
+  payload: value
+})
 
 export const projectSetDeadlines = () => ({ type: PROJECT_SET_DEADLINES })
-export const projectSetDeadlinesSuccessful = (deadlines) => ({ type: PROJECT_SET_DEADLINES_SUCCESSFUL, payload: deadlines })
+export const projectSetDeadlinesSuccessful = deadlines => ({
+  type: PROJECT_SET_DEADLINES_SUCCESSFUL,
+  payload: deadlines
+})

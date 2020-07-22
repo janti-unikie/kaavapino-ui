@@ -1,7 +1,4 @@
-import {
-  TOKEN_LOADED,
-  INIT_API_REQUEST_SUCCESSFUL
-} from '../actions/apiActions'
+import { TOKEN_LOADED, INIT_API_REQUEST_SUCCESSFUL } from '../actions/apiActions'
 import { USER_FOUND } from 'redux-oidc'
 
 export const initialState = {

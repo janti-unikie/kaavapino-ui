@@ -15,8 +15,13 @@ describe('comment reducer', () => {
   })
 
   it('should handle CREATE_COMMENT_SUCCESSFUL', () => {
-    const updatedState = comment(initialState, { type: CREATE_COMMENT_SUCCESSFUL, payload: 'test1' })
-    expect(comment(updatedState, { type: CREATE_COMMENT_SUCCESSFUL, payload: 'test2' })).toEqual({
+    const updatedState = comment(initialState, {
+      type: CREATE_COMMENT_SUCCESSFUL,
+      payload: 'test1'
+    })
+    expect(
+      comment(updatedState, { type: CREATE_COMMENT_SUCCESSFUL, payload: 'test2' })
+    ).toEqual({
       ...updatedState,
       comments: ['test1', 'test2']
     })
@@ -39,19 +44,36 @@ describe('comment reducer', () => {
   it('should handle EDIT_COMMENT_SUCCESSFUL', () => {
     const state = {
       ...initialState,
-      comments: [{ id: 1, x: '1' }, { id: 2, x: '2' }, { id: 3, x: '3' }]
+      comments: [
+        { id: 1, x: '1' },
+        { id: 2, x: '2' },
+        { id: 3, x: '3' }
+      ]
     }
-    expect(comment(state, { type: EDIT_COMMENT_SUCCESSFUL, payload: { id: 1, x: 'y' } })).toEqual({
+    expect(
+      comment(state, { type: EDIT_COMMENT_SUCCESSFUL, payload: { id: 1, x: 'y' } })
+    ).toEqual({
       ...state,
-      comments: [{ id: 1, x: 'y' }, { id: 2, x: '2' }, { id: 3, x: '3' }]
+      comments: [
+        { id: 1, x: 'y' },
+        { id: 2, x: '2' },
+        { id: 3, x: '3' }
+      ]
     })
-    expect(comment(state, { type: EDIT_COMMENT_SUCCESSFUL, payload: { id: 4, x: 'y' } })).toEqual({
+    expect(
+      comment(state, { type: EDIT_COMMENT_SUCCESSFUL, payload: { id: 4, x: 'y' } })
+    ).toEqual({
       ...state
     })
   })
 
   it('should handle FETCH_COMMENTS_SUCCESSFUL', () => {
-    expect(comment({ ...initialState, commentsLoading: true }, { type: FETCH_COMMENTS_SUCCESSFUL, payload: [1, 2, 3] })).toEqual({
+    expect(
+      comment(
+        { ...initialState, commentsLoading: true },
+        { type: FETCH_COMMENTS_SUCCESSFUL, payload: [1, 2, 3] }
+      )
+    ).toEqual({
       ...initialState,
       comments: [1, 2, 3],
       commentsLoading: false

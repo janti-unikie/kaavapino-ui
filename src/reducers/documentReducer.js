@@ -1,7 +1,4 @@
-import {
-  FETCH_DOCUMENTS,
-  FETCH_DOCUMENTS_SUCCESSFUL
-} from '../actions/documentActions'
+import { FETCH_DOCUMENTS, FETCH_DOCUMENTS_SUCCESSFUL } from '../actions/documentActions'
 
 export const initialState = {
   documents: [],

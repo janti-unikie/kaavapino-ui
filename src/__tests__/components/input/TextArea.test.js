@@ -7,7 +7,12 @@ describe('<TextArea />', () => {
   let change
   beforeEach(() => {
     change = ''
-    textAreaComponent = mount(<TextArea input={{ value: '123', name: 'test', onChange: (e) => change = e.target.value }} meta={{}} />).find('textarea')
+    textAreaComponent = mount(
+      <TextArea
+        input={{ value: '123', name: 'test', onChange: e => (change = e.target.value) }}
+        meta={{}}
+      />
+    ).find('textarea')
   })
 
   it('has value and name', () => {
@@ -22,7 +27,9 @@ describe('<TextArea />', () => {
   })
 
   it('can have custom props', () => {
-    const customComponent = mount(<TextArea input={{}} meta={{}} placeholder='123' />).find('textarea')
+    const customComponent = mount(
+      <TextArea input={{}} meta={{}} placeholder="123" />
+    ).find('textarea')
     const { placeholder } = customComponent.instance()
     expect(placeholder).toBe('123')
   })

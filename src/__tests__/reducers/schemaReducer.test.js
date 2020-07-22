@@ -33,14 +33,18 @@ describe('schema reducer', () => {
   })
 
   it('should handle SET_LATEST_EDIT_FIELD_SUCCESSFUL', () => {
-    expect(schema(initialState, { type: SET_LATEST_EDIT_FIELD_SUCCESSFUL, payload: 1 })).toEqual({
+    expect(
+      schema(initialState, { type: SET_LATEST_EDIT_FIELD_SUCCESSFUL, payload: 1 })
+    ).toEqual({
       ...initialState,
       latestEditField: 1
     })
   })
 
   it('should handle SET_ALL_EDIT_FIELDS_SUCCESSFUL', () => {
-    expect(schema(initialState, { type: SET_ALL_EDIT_FIELDS_SUCCESSFUL, payload: [1, 2, 3] })).toEqual({
+    expect(
+      schema(initialState, { type: SET_ALL_EDIT_FIELDS_SUCCESSFUL, payload: [1, 2, 3] })
+    ).toEqual({
       ...initialState,
       allEditFields: [1, 2, 3]
     })

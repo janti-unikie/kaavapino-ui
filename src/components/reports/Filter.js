@@ -8,8 +8,8 @@ class Filter extends Component {
     selectedOption: null
   }
 
-  formatOptions = (options) => {
-    return options.map((option) => {
+  formatOptions = options => {
+    return options.map(option => {
       return {
         key: option,
         value: option,
@@ -22,23 +22,27 @@ class Filter extends Component {
     const { id, options, type } = this.props
     const { selectedOption } = this.state
     return (
-      <div className='filter'>
-        <Header as='h4'>
+      <div className="filter">
+        <Header as="h4">
           <Header.Content>
-            { `${reportUtils.getFilterName(id)} ` }
+            {`${reportUtils.getFilterName(id)} `}
             <Dropdown
               inline
               clearable
-              header='Valitse suodatin'
+              header="Valitse suodatin"
               options={this.formatOptions(options)}
               onChange={(e, data) => this.setState({ selectedOption: data.value })}
             />
           </Header.Content>
         </Header>
-        {
-          selectedOption &&
-          <FilterField key={`${id}__${selectedOption}`} type={type} id={id} selectedOption={selectedOption} />
-        }
+        {selectedOption && (
+          <FilterField
+            key={`${id}__${selectedOption}`}
+            type={type}
+            id={id}
+            selectedOption={selectedOption}
+          />
+        )}
       </div>
     )
   }

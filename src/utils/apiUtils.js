@@ -7,23 +7,32 @@ const initAxios = () => {
   if (process.env.NODE_ENV === 'production') {
     baseURL = process.env.REACT_APP_BASE_URL
   }
-  axios.interceptors.request.use((config) => ({
+  axios.interceptors.request.use(config => ({
     baseURL,
     responseType: 'json',
     ...config,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': process.env.REACT_APP_API_TOKEN && getToken() === process.env.REACT_APP_API_TOKEN ? `Token ${getToken()}` : `Bearer ${getToken()}`,
+      Authorization:
+        process.env.REACT_APP_API_TOKEN && getToken() === process.env.REACT_APP_API_TOKEN
+          ? `Token ${getToken()}`
+          : `Bearer ${getToken()}`,
       ...config.headers
     }
   }))
 }
 
-const setToken = (newToken) => token = newToken
+const setToken = newToken => (token = newToken)
 
 const getToken = () => token
 
-export const get = async (apiUrl, config = {}, all = false, pages = false, force = true) => {
+export const get = async (
+  apiUrl,
+  config = {},
+  all = false,
+  pages = false,
+  force = true
+) => {
   let res = await axios.get(apiUrl, { ...config })
   if (all) return res
   if (res.data.results && !pages) {

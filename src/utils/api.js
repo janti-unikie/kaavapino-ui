@@ -7,36 +7,40 @@ class Api {
     this.apiUrl = apiUrl
   }
 
-  formatUrl = (pathVariables = {}, queryParameters = {}, opt = '') => (
-    Object.keys(pathVariables).reduce((url, key) => (
-      url.replace(`:${key}`, pathVariables[key])
-    ), Object.keys(queryParameters).reduce((url, key, i) => (
-      `${url}${i !== 0 ?
-        `&${key}=${queryParameters[key]}` :
-        `?${key}=${queryParameters[key]}`}`
-    ), `${this.apiUrl}${opt}`)
+  formatUrl = (pathVariables = {}, queryParameters = {}, opt = '') =>
+    Object.keys(pathVariables).reduce(
+      (url, key) => url.replace(`:${key}`, pathVariables[key]),
+      Object.keys(queryParameters).reduce(
+        (url, key, i) =>
+          `${url}${
+            i !== 0
+              ? `&${key}=${queryParameters[key]}`
+              : `?${key}=${queryParameters[key]}`
+          }`,
+        `${this.apiUrl}${opt}`
+      )
     )
-  )
 
-  get = async ({ path = {}, query = {} } = {}, opt = '', config = {}, all = false, pages = false, force = true) => (
-    await get(this.formatUrl(path, query, opt), config, all, pages, force)
-  )
+  get = async (
+    { path = {}, query = {} } = {},
+    opt = '',
+    config = {},
+    all = false,
+    pages = false,
+    force = true
+  ) => await get(this.formatUrl(path, query, opt), config, all, pages, force)
 
-  post = async (body = {}, { path = {}, query = {} } = {}, opt = '', config = {}) => (
+  post = async (body = {}, { path = {}, query = {} } = {}, opt = '', config = {}) =>
     await post(this.formatUrl(path, query, opt), body, config)
-  )
 
-  patch = async (body = {}, { path = {}, query = {} } = {}, opt = '', config = {}) => (
+  patch = async (body = {}, { path = {}, query = {} } = {}, opt = '', config = {}) =>
     await patch(this.formatUrl(path, query, opt), body, config)
-  )
 
-  delete = async ({ path = {}, query = {} } = {}, opt = '', config = {}) => (
+  delete = async ({ path = {}, query = {} } = {}, opt = '', config = {}) =>
     await del(this.formatUrl(path, query, opt), config)
-  )
 
-  put = async (body = {}, { path = {}, query = {} } = {}, opt = '', config = {}) => (
+  put = async (body = {}, { path = {}, query = {} } = {}, opt = '', config = {}) =>
     await put(this.formatUrl(path, query, opt), body, config)
-  )
 }
 
 // Different API endpoints

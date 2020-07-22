@@ -12,21 +12,23 @@ class Link extends PureComponent {
     const { value } = this.props.input
     const valid = isUrl(value) || ipRegex({ exact: true }).test(value)
     return (
-      <div className='link-container'>
-        <Input type='text' { ...this.props } placeholder='http(s)://...' />
+      <div className="link-container">
+        <Input type="text" {...this.props} placeholder="http(s)://..." />
         <Button
-          className='link-button'
-          labelPosition='right'
+          className="link-button"
+          labelPosition="right"
           disabled={!valid}
-          icon='world'
+          icon="world"
           label={{
             basic: true,
             content: 'Avaa'
           }}
           onClick={this.openLink}
         />
-        { valid && <FontAwesomeIcon size='lg' icon='check' color='green' /> }
-        { !valid && value.length > 0 && <FontAwesomeIcon size='lg' icon='times' color='red' /> }
+        {valid && <FontAwesomeIcon size="lg" icon="check" color="green" />}
+        {!valid && value.length > 0 && (
+          <FontAwesomeIcon size="lg" icon="times" color="red" />
+        )}
       </div>
     )
   }

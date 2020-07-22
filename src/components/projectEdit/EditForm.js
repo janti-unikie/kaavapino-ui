@@ -25,13 +25,7 @@ class EditForm extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      setChecking,
-      hasErrors,
-      saving,
-      initialize,
-      attributeData
-    } = this.props
+    const { setChecking, hasErrors, saving, initialize, attributeData } = this.props
     if (prevProps.validating && !this.props.validating) {
       if (!hasErrors) {
         this.setState({ verifying: true, endPhaseError: false })
@@ -39,10 +33,7 @@ class EditForm extends Component {
       } else {
         this.setState({ endPhaseError: true })
         clearTimeout(this.timeout)
-        this.timeout = setTimeout(
-          () => this.setState({ endPhaseError: false }),
-          5000
-        )
+        this.timeout = setTimeout(() => this.setState({ endPhaseError: false }), 5000)
         setChecking(true)
       }
     }
@@ -75,17 +66,17 @@ class EditForm extends Component {
     return (
       <Form className="form-container" autoComplete="off">
         <h2>{title}</h2>
-        <div className='edit-form-buttons'>
+        <div className="edit-form-buttons">
           <Button
             value="Päivitä aikataulu"
             secondary
-            help='feature not implemented yet'
+            help="feature not implemented yet"
             fluid
           />
           <Button
             value="Päivitä kerrosalatiedot"
             secondary
-            help='feature not implemented yet'
+            help="feature not implemented yet"
             fluid
           />
         </div>
@@ -113,10 +104,7 @@ class EditForm extends Component {
           />
         )}
         */}
-        <ConfirmModal
-          callback={this.phaseCallback}
-          open={this.state.verifying}
-        />
+        <ConfirmModal callback={this.phaseCallback} open={this.state.verifying} />
         {this.state.endPhaseError && (
           <Message
             header="Vaihetta ei voida vielä lopettaa"
@@ -125,7 +113,10 @@ class EditForm extends Component {
           />
         )}
 
-        <div className="scroll-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+        <div
+          className="scroll-to-top"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
           <div>Sivun alkuun</div>
           <div className="arrow-up-icon" />
         </div>

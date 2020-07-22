@@ -43,9 +43,7 @@ class QuickNav extends Component {
       this.setState({ sectionHeights: this.initSections(sections) })
 
       /* If the phase has changed through other sources than this navigation, close the nav component */
-      const newPhaseIndex = currentPhases.findIndex(
-        phase => phase.name === phaseTitle
-      )
+      const newPhaseIndex = currentPhases.findIndex(phase => phase.name === phaseTitle)
 
       if (newPhaseIndex !== this.state.activePhase - 1) {
         this.setState({ activePhase: null })
@@ -137,9 +135,7 @@ class QuickNav extends Component {
                             className={`quicknav-item ${
                               i === this.state.active ? 'active' : ''
                             }`}
-                            onClick={() =>
-                              this.handleSectionTitleClick(section.title)
-                            }
+                            onClick={() => this.handleSectionTitleClick(section.title)}
                           >
                             {section.title}
                           </span>

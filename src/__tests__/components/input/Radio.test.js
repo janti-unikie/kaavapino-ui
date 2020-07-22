@@ -7,7 +7,12 @@ describe('<Radio />', () => {
   let change
 
   beforeEach(() => {
-    wrapper = mount(<Radio input={{ value: '', name: 'test', onChange: (value) => change = value }} meta={{}} />)
+    wrapper = mount(
+      <Radio
+        input={{ value: '', name: 'test', onChange: value => (change = value) }}
+        meta={{}}
+      />
+    )
   })
 
   it('is initialized correctly', () => {
@@ -19,19 +24,53 @@ describe('<Radio />', () => {
   })
 
   it('can be changed', () => {
-    wrapper.find('Radio').at(0).simulate('click')
+    wrapper
+      .find('Radio')
+      .at(0)
+      .simulate('click')
     expect(change).toBe(true)
-    wrapper.find('Radio').at(1).simulate('click')
+    wrapper
+      .find('Radio')
+      .at(1)
+      .simulate('click')
     expect(change).toBe(false)
-    const positiveRadio = mount(<Radio input={{ value: true, name: 'test', onChange: (value) => change = value }} meta={{}} />)
-    positiveRadio.find('Radio').at(2).simulate('click')
+    const positiveRadio = mount(
+      <Radio
+        input={{ value: true, name: 'test', onChange: value => (change = value) }}
+        meta={{}}
+      />
+    )
+    positiveRadio
+      .find('Radio')
+      .at(2)
+      .simulate('click')
     expect(change).toBe(null)
   })
 
   it('can have default value', () => {
-    const positiveRadio = mount(<Radio input={{ value: true, name: 'test', onChange: (value) => change = value }} meta={{}} />)
-    expect(positiveRadio.find('Radio').at(0).props().checked).toBe(true)
-    const negativeRadio = mount(<Radio input={{ value: false, name: 'test', onChange: (value) => change = value }} meta={{}} />)
-    expect(negativeRadio.find('Radio').at(1).props().checked).toBe(true)
+    const positiveRadio = mount(
+      <Radio
+        input={{ value: true, name: 'test', onChange: value => (change = value) }}
+        meta={{}}
+      />
+    )
+    expect(
+      positiveRadio
+        .find('Radio')
+        .at(0)
+        .props().checked
+    ).toBe(true)
+    const negativeRadio = mount(
+      <Radio
+        input={{ value: false, name: 'test', onChange: value => (change = value) }}
+        meta={{}}
+      />
+    )
+    expect(
+      negativeRadio
+        .find('Radio')
+        .at(1)
+        .props().checked
+    ).toBe(true)
   })
 })

@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { takeLatest, put, call, all } from 'redux-saga/effects'
 import {
-  FETCH_DOCUMENTS, fetchDocumentsSuccessful,
+  FETCH_DOCUMENTS,
+  fetchDocumentsSuccessful,
   DOWNLOAD_DOCUMENT
 } from '../actions/documentActions'
 import { error } from '../actions/apiActions'

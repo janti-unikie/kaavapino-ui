@@ -1,4 +1,4 @@
-const hasError = (error) => {
+const hasError = error => {
   if (!error) {
     return false
   } else if (error.length > 0) {

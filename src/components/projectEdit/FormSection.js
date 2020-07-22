@@ -14,7 +14,6 @@ const FormSection = ({
   attributeData,
   updates
 }) => {
-
   return (
     <Segment>
       <h2 id={`title-${title}`} className="section-title">

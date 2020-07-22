@@ -48,49 +48,67 @@ class Comment extends Component {
   render() {
     const { showEdit, menuOpen, editing, content } = this.state
     const { created_at, user: userId, _metadata, generated } = this.props
-    const user = !generated ?
-      projectUtils.formatUsersName(_metadata.users.find(({ id }) => id === userId)) :
-      'Automaattinen'
+    const user = !generated
+      ? projectUtils.formatUsersName(_metadata.users.find(({ id }) => id === userId))
+      : 'Automaattinen'
     const date = projectUtils.formatDate(created_at)
     const time = projectUtils.formatTime(created_at)
     const dateTime = `${date} ${time}`
 
     return (
-      <div className='comment-container' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-        <div className='comment-header-container'>
-          <div className='comment-header-text-container'>
-            <span className={`comment-creator${generated ? ' generated' : ''}`}>{ user }</span>
-            <span className='comment-timestamp'>{dateTime}</span>
+      <div
+        className="comment-container"
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+      >
+        <div className="comment-header-container">
+          <div className="comment-header-text-container">
+            <span className={`comment-creator${generated ? ' generated' : ''}`}>
+              {user}
+            </span>
+            <span className="comment-timestamp">{dateTime}</span>
           </div>
-          <div className='comment-edit-container'>
-            { (showEdit || menuOpen) && (
-              <Dropdown pointing='left' icon='setting' onOpen={() => this.setState({ menuOpen: true })} onClose={() => this.setState({ menuOpen: false })} direction='left'>
+          <div className="comment-edit-container">
+            {(showEdit || menuOpen) && (
+              <Dropdown
+                pointing="left"
+                icon="setting"
+                onOpen={() => this.setState({ menuOpen: true })}
+                onClose={() => this.setState({ menuOpen: false })}
+                direction="left"
+              >
                 <Dropdown.Menu>
-                  <Dropdown.Item icon='pencil' text='Muokkaa' onClick={() => this.setState({ editing: true })} />
-                  <Dropdown.Item icon='trash' text='Poista' onClick={this.handleDelete} />
+                  <Dropdown.Item
+                    icon="pencil"
+                    text="Muokkaa"
+                    onClick={() => this.setState({ editing: true })}
+                  />
+                  <Dropdown.Item icon="trash" text="Poista" onClick={this.handleDelete} />
                 </Dropdown.Menu>
               </Dropdown>
             )}
           </div>
         </div>
-        <div className='comment-content'>
-          { !editing && content }
-          { editing && (
+        <div className="comment-content">
+          {!editing && content}
+          {editing && (
             <Input
-              onChange={(e) => this.setState({ content: e.target.value })}
+              onChange={e => this.setState({ content: e.target.value })}
               focus
-              type='text'
+              type="text"
               fluid
               value={content}
             />
           )}
         </div>
-        <div className='comment-footer'>
-          <div className='comment-footer-actions'>
-            { editing && (
+        <div className="comment-footer">
+          <div className="comment-footer-actions">
+            {editing && (
               <React.Fragment>
                 <Button onClick={this.handleEditCancel}>Peruuta</Button>
-                <Button onClick={this.handleEditSave} disabled={!content} color='green'>Tallenna</Button>
+                <Button onClick={this.handleEditSave} disabled={!content} color="green">
+                  Tallenna
+                </Button>
               </React.Fragment>
             )}
           </div>

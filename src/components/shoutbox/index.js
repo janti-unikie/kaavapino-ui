@@ -4,7 +4,7 @@ import './shoutbox.scss'
 import Comments from './comments'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 
-const Shoutbox = (props) => {
+const Shoutbox = props => {
   const { project } = props
 
   const [open, setOpen] = useState(false)
@@ -20,11 +20,11 @@ const Shoutbox = (props) => {
 
   return (
     <div className={`shoutbox ${open ? 'open' : ''}`} ref={shoutboxRef}>
-      <Button className='shoutbox-button' onClick={toggleOpen}>
+      <Button className="shoutbox-button" onClick={toggleOpen}>
         <div>Viestit</div>
         <div className="comment-icon" />
       </Button>
-      <div className='comment-list-wrapper'>
+      <div className="comment-list-wrapper">
         <Comments project={project} />
       </div>
     </div>

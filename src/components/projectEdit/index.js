@@ -2,9 +2,20 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Loader } from 'semantic-ui-react'
 import { isDirty } from 'redux-form/immutable'
-import { saveProject, changeProjectPhase, validateProjectFields, projectSetChecking } from '../../actions/projectActions'
+import {
+  saveProject,
+  changeProjectPhase,
+  validateProjectFields,
+  projectSetChecking
+} from '../../actions/projectActions'
 import { fetchSchemas } from '../../actions/schemaActions'
-import { savingSelector, changingPhaseSelector, validatingSelector, hasErrorsSelector, checkingSelector } from '../../selectors/projectSelector'
+import {
+  savingSelector,
+  changingPhaseSelector,
+  validatingSelector,
+  hasErrorsSelector,
+  checkingSelector
+} from '../../selectors/projectSelector'
 import { schemaSelector } from '../../selectors/schemaSelector'
 import NavigationPrompt from 'react-router-navigation-prompt'
 import Prompt from '../common/Prompt'
@@ -40,29 +51,37 @@ class ProjectEditPage extends Component {
       hasErrors
     } = this.props
     if (!schema) {
-      return <Loader inline={'centered'} active>Ladataan</Loader>
+      return (
+        <Loader inline={'centered'} active>
+          Ladataan
+        </Loader>
+      )
     }
-    const currentSchemaIndex = schema.phases.findIndex((s) => s.id === selectedPhase)
+    const currentSchemaIndex = schema.phases.findIndex(s => s.id === selectedPhase)
     const currentSchema = schema.phases[currentSchemaIndex]
 
     if (currentSchemaIndex === -1) {
-      return <Loader inline={'centered'} active>Ladataan</Loader>
+      return (
+        <Loader inline={'centered'} active>
+          Ladataan
+        </Loader>
+      )
     }
     return (
-      <div className='project-input-container'>
+      <div className="project-input-container">
         <Shoutbox project={id} />
-        <div className='project-input-left'>
+        <div className="project-input-left">
           <QuickNav
             changePhase={this.changePhase}
             changingPhase={changingPhase}
             handleSave={this.handleSave}
             handleCheck={() => this.props.projectSetChecking(!this.props.checking)}
-            projectName={ name }
-            sections={ currentSchema.sections }
-            phaseTitle={ currentSchema.title }
-            currentPhases={ currentPhases }
-            saving={ saving }
-            switchDisplayedPhase={ switchDisplayedPhase }
+            projectName={name}
+            sections={currentSchema.sections}
+            phaseTitle={currentSchema.title}
+            currentPhases={currentPhases}
+            saving={saving}
+            switchDisplayedPhase={switchDisplayedPhase}
             validating={validating}
           />
           <NavigationPrompt when={this.props.isDirty}>
@@ -70,7 +89,7 @@ class ProjectEditPage extends Component {
               <Prompt
                 onCancel={onCancel}
                 onConfirm={onConfirm}
-                message='Hankkeessa on tallentamattomia muutoksia. Haluatteko silti jatkaa?'
+                message="Hankkeessa on tallentamattomia muutoksia. Haluatteko silti jatkaa?"
               />
             )}
           </NavigationPrompt>
@@ -97,7 +116,7 @@ class ProjectEditPage extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     schema: schemaSelector(state),
     saving: savingSelector(state),
@@ -117,7 +136,4 @@ const mapDispatchToProps = {
   projectSetChecking
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProjectEditPage)
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)

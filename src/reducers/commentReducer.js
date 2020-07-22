@@ -11,9 +11,7 @@ import {
   LOAD_COMMENTS_SUCCESSFUL
 } from '../actions/commentActions'
 
-import {
-  INITIALIZE_PROJECT
-} from '../actions/projectActions'
+import { INITIALIZE_PROJECT } from '../actions/projectActions'
 
 export const initialState = {
   comments: [],
@@ -25,62 +23,74 @@ export const initialState = {
 
 export const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case FETCH_COMMENTS: return ({
-      ...state,
-      commentsLoading: true
-    })
+    case FETCH_COMMENTS:
+      return {
+        ...state,
+        commentsLoading: true
+      }
 
-    case FETCH_COMMENTS_SUCCESSFUL: return ({
-      ...state,
-      comments: payload,
-      commentsLoading: false
-    })
+    case FETCH_COMMENTS_SUCCESSFUL:
+      return {
+        ...state,
+        comments: payload,
+        commentsLoading: false
+      }
 
-    case POLL_COMMENTS_SUCCESSFUL: return ({
-      ...state,
-      amountOfCommentsToShow: 10
-    })
+    case POLL_COMMENTS_SUCCESSFUL:
+      return {
+        ...state,
+        amountOfCommentsToShow: 10
+      }
 
-    case LOAD_COMMENTS_SUCCESSFUL: return ({
-      ...state,
-      comments: payload.concat(state.comments)
-    })
+    case LOAD_COMMENTS_SUCCESSFUL:
+      return {
+        ...state,
+        comments: payload.concat(state.comments)
+      }
 
-    case CREATE_COMMENT_SUCCESSFUL: return ({
-      ...state,
-      comments: state.comments.concat(payload)
-    })
+    case CREATE_COMMENT_SUCCESSFUL:
+      return {
+        ...state,
+        comments: state.comments.concat(payload)
+      }
 
-    case EDIT_COMMENT_SUCCESSFUL: return ({
-      ...state,
-      comments: state.comments.map((c) => c.id === payload.id ? payload : c)
-    })
+    case EDIT_COMMENT_SUCCESSFUL:
+      return {
+        ...state,
+        comments: state.comments.map(c => (c.id === payload.id ? payload : c))
+      }
 
-    case DELETE_COMMENT_SUCCESSFUL: return ({
-      ...state,
-      comments: state.comments.filter((c) => c.id !== payload)
-    })
+    case DELETE_COMMENT_SUCCESSFUL:
+      return {
+        ...state,
+        comments: state.comments.filter(c => c.id !== payload)
+      }
 
-    case INCREASE_AMOUNT_OF_COMMENTS_TO_SHOW: return ({
-      ...state,
-      pollingComments: true
-    })
+    case INCREASE_AMOUNT_OF_COMMENTS_TO_SHOW:
+      return {
+        ...state,
+        pollingComments: true
+      }
 
-    case SET_AMOUNT_OF_COMMENTS_TO_SHOW: return ({
-      ...state,
-      amountOfCommentsToShow: payload,
-      pollingComments: false
-    })
+    case SET_AMOUNT_OF_COMMENTS_TO_SHOW:
+      return {
+        ...state,
+        amountOfCommentsToShow: payload,
+        pollingComments: false
+      }
 
-    case SET_TOTAL_COMMENTS: return ({
-      ...state,
-      totalComments: payload
-    })
+    case SET_TOTAL_COMMENTS:
+      return {
+        ...state,
+        totalComments: payload
+      }
 
-    case INITIALIZE_PROJECT: return ({
-      ...initialState
-    })
+    case INITIALIZE_PROJECT:
+      return {
+        ...initialState
+      }
 
-    default: return state
+    default:
+      return state
   }
 }

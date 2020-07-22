@@ -1,7 +1,11 @@
 import axios from 'axios'
 import { takeLatest, put, all, call, select } from 'redux-saga/effects'
 import { push } from 'connected-react-router'
-import { newProjectFormSelector, editFormSelector, deadlineModalSelector } from '../selectors/formSelector'
+import {
+  newProjectFormSelector,
+  editFormSelector,
+  deadlineModalSelector
+} from '../selectors/formSelector'
 import {
   currentProjectSelector,
   currentProjectIdSelector,
@@ -16,22 +20,38 @@ import { schemaSelector } from '../selectors/schemaSelector'
 import { userIdSelector } from '../selectors/authSelector'
 import { phasesSelector } from '../selectors/phaseSelector'
 import {
-  FETCH_PROJECTS, fetchProjectsSuccessful,
+  FETCH_PROJECTS,
+  fetchProjectsSuccessful,
   fetchOwnProjectsSuccessful,
-  fetchProjectSuccessful, updateProject,
-  INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW, setAmountOfProjectsToShow,
+  fetchProjectSuccessful,
+  updateProject,
+  INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW,
+  setAmountOfProjectsToShow,
   SET_AMOUNT_OF_PROJECTS_TO_INCREASE,
-  setTotalProjects, setTotalOwnProjects,
-  SORT_PROJECTS, setProjects, setOwnProjects,
-  CREATE_PROJECT, createProjectSuccessful, createOwnProjectSuccessful,
-  INITIALIZE_PROJECT, initializeProjectSuccessful,
-  SAVE_PROJECT, saveProjectSuccessful,
-  CHANGE_PROJECT_PHASE, changeProjectPhaseSuccessful, changeProjectPhaseFailure,
-  VALIDATE_PROJECT_FIELDS, validateProjectFieldsSuccessful,
-  PROJECT_FILE_UPLOAD, PROJECT_FILE_REMOVE,
-  projectFileUploadSuccessful, projectFileRemoveSuccessful,
+  setTotalProjects,
+  setTotalOwnProjects,
+  SORT_PROJECTS,
+  setProjects,
+  setOwnProjects,
+  CREATE_PROJECT,
+  createProjectSuccessful,
+  createOwnProjectSuccessful,
+  INITIALIZE_PROJECT,
+  initializeProjectSuccessful,
+  SAVE_PROJECT,
+  saveProjectSuccessful,
+  CHANGE_PROJECT_PHASE,
+  changeProjectPhaseSuccessful,
+  changeProjectPhaseFailure,
+  VALIDATE_PROJECT_FIELDS,
+  validateProjectFieldsSuccessful,
+  PROJECT_FILE_UPLOAD,
+  PROJECT_FILE_REMOVE,
+  projectFileUploadSuccessful,
+  projectFileRemoveSuccessful,
   saveProject as saveProjectAction,
-  PROJECT_SET_DEADLINES, projectSetDeadlinesSuccessful
+  PROJECT_SET_DEADLINES,
+  projectSetDeadlinesSuccessful
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
@@ -62,12 +82,32 @@ function* fetchProjects(_, page, own = true, all = true) {
   try {
     const userId = yield select(userIdSelector)
     if (own) {
-      const ownProjects = yield call(projectApi.get, { query: { includes_users: userId, page: page ? page : 1, ordering: '-modified_at' } }, '', null, null, true)
+      const ownProjects = yield call(
+        projectApi.get,
+        {
+          query: {
+            includes_users: userId,
+            page: page ? page : 1,
+            ordering: '-modified_at'
+          }
+        },
+        '',
+        null,
+        null,
+        true
+      )
       yield put(fetchOwnProjectsSuccessful(ownProjects.results))
       yield put(setTotalOwnProjects(ownProjects.count))
     }
     if (all) {
-      const allProjects = yield call(projectApi.get, { query: { page: page ? page : 1,  ordering: '-modified_at' } }, '', null, null, true)
+      const allProjects = yield call(
+        projectApi.get,
+        { query: { page: page ? page : 1, ordering: '-modified_at' } },
+        '',
+        null,
+        null,
+        true
+      )
       yield put(fetchProjectsSuccessful(allProjects.results))
       yield put(setTotalProjects(allProjects.count))
     }
@@ -80,19 +120,37 @@ function* fetchProjects(_, page, own = true, all = true) {
 
 function* increaseAmountOfProjectsToShowSaga(action, howMany = null) {
   try {
-    const PAGE_SIZE = 100  // Defined in backend
+    const PAGE_SIZE = 100 // Defined in backend
     const totalOwnProjects = yield select(totalOwnProjectsSelector)
     const totalProjects = yield select(totalProjectsSelector)
     const amountOfProjectsToShow = yield select(amountOfProjectsToShowSelector)
-    const amountOfProjectsToIncrease = howMany ? howMany : yield select(amountOfProjectsToIncreaseSelector)
+    const amountOfProjectsToIncrease = howMany
+      ? howMany
+      : yield select(amountOfProjectsToIncreaseSelector)
     const fetchOwn = amountOfProjectsToShow < totalOwnProjects
     const fetchAll = amountOfProjectsToShow < totalProjects
 
     if (fetchOwn || fetchAll) {
-      if (Math.floor(amountOfProjectsToShow / (PAGE_SIZE + 1)) + 1 !== Math.floor((amountOfProjectsToShow + amountOfProjectsToIncrease) / (PAGE_SIZE + 1)) + 1) {
-        yield call(fetchProjects, null, Math.floor((amountOfProjectsToShow + amountOfProjectsToIncrease) / (PAGE_SIZE + 1)) + 1, fetchOwn, fetchAll)
+      if (
+        Math.floor(amountOfProjectsToShow / (PAGE_SIZE + 1)) + 1 !==
+        Math.floor(
+          (amountOfProjectsToShow + amountOfProjectsToIncrease) / (PAGE_SIZE + 1)
+        ) +
+          1
+      ) {
+        yield call(
+          fetchProjects,
+          null,
+          Math.floor(
+            (amountOfProjectsToShow + amountOfProjectsToIncrease) / (PAGE_SIZE + 1)
+          ) + 1,
+          fetchOwn,
+          fetchAll
+        )
       }
-      yield put(setAmountOfProjectsToShow(amountOfProjectsToShow + amountOfProjectsToIncrease))
+      yield put(
+        setAmountOfProjectsToShow(amountOfProjectsToShow + amountOfProjectsToIncrease)
+      )
     } else {
       yield put(setAmountOfProjectsToShow(amountOfProjectsToShow))
     }
@@ -105,7 +163,11 @@ function* setAmountOfProjectsToIncreaseSaga({ payload }) {
   try {
     const amountOfProjectsToShow = yield select(amountOfProjectsToShowSelector)
     if (amountOfProjectsToShow < payload) {
-      yield call(increaseAmountOfProjectsToShowSaga, null, payload - amountOfProjectsToShow)
+      yield call(
+        increaseAmountOfProjectsToShowSaga,
+        null,
+        payload - amountOfProjectsToShow
+      )
     }
   } catch (e) {
     yield put(error(e))
@@ -165,7 +227,7 @@ function* saveProject() {
   const { initial, values } = yield select(editFormSelector)
   if (values) {
     const attribute_data = {}
-    Object.keys(values).forEach((key) => {
+    Object.keys(values).forEach(key => {
       if (initial.hasOwnProperty(key) && initial[key] === values[key]) {
         return
       }
@@ -176,7 +238,12 @@ function* saveProject() {
       }
     })
     try {
-      const updatedProject = yield call(projectApi.patch, { attribute_data }, { path: { id: currentProjectId } }, ':id/')
+      const updatedProject = yield call(
+        projectApi.patch,
+        { attribute_data },
+        { path: { id: currentProjectId } },
+        ':id/'
+      )
       yield put(updateProject(updatedProject))
     } catch (e) {
       yield put(error(e))
@@ -193,13 +260,13 @@ function* validateProjectFields() {
     // Gather up required data
     const currentProject = yield select(currentProjectSelector)
     const schema = yield select(schemaSelector)
-    const currentSchema = schema.phases.find((s) => s.id === currentProject.phase)
+    const currentSchema = schema.phases.find(s => s.id === currentProject.phase)
     const { sections } = currentSchema
     const attributeData = currentProject.attribute_data
     let missingFields = false
     // Go through every single field
     sections.forEach(({ fields }) => {
-      fields.forEach((field) => {
+      fields.forEach(field => {
         // Matrices can contain any kinds of fields, so
         // we must go through them seperately
         if (field.type === 'matrix') {
@@ -215,7 +282,7 @@ function* validateProjectFields() {
           const { fieldset_attributes } = field
           const fieldsets = attributeData[field.name]
           if (fieldsets) {
-            fieldsets.forEach((set) => {
+            fieldsets.forEach(set => {
               fieldset_attributes.forEach(({ required, name }) => {
                 if (projectUtils.isFieldMissing(name, required, set)) {
                   missingFields = true
@@ -223,7 +290,9 @@ function* validateProjectFields() {
               })
             })
           }
-        } else if (projectUtils.isFieldMissing(field.name, field.required, attributeData)) {
+        } else if (
+          projectUtils.isFieldMissing(field.name, field.required, attributeData)
+        ) {
           missingFields = true
         }
       })
@@ -239,7 +308,12 @@ function* changeProjectPhase({ payload: phase }) {
   try {
     yield call(saveProject)
     const currentProjectId = yield select(currentProjectIdSelector)
-    const updatedProject = yield call(projectApi.patch, { phase }, { path: { id: currentProjectId } }, ':id/')
+    const updatedProject = yield call(
+      projectApi.patch,
+      { phase },
+      { path: { id: currentProjectId } },
+      ':id/'
+    )
     yield put(changeProjectPhaseSuccessful(updatedProject))
     window.scrollTo(0, 0)
   } catch (e) {
@@ -248,7 +322,9 @@ function* changeProjectPhase({ payload: phase }) {
   }
 }
 
-function* projectFileUpload({ payload: { attribute, file, description, callback, setCancelToken } }) {
+function* projectFileUpload({
+  payload: { attribute, file, description, callback, setCancelToken }
+}) {
   try {
     const currentProjectId = yield select(currentProjectIdSelector)
     // Create formdata
@@ -286,7 +362,12 @@ function* projectFileRemove({ payload }) {
     const currentProjectId = yield select(currentProjectIdSelector)
     const attribute_data = {}
     attribute_data[payload] = null
-    yield call(projectApi.patch, { attribute_data }, { path: { id: currentProjectId } }, ':id/')
+    yield call(
+      projectApi.patch,
+      { attribute_data },
+      { path: { id: currentProjectId } },
+      ':id/'
+    )
     yield put(projectFileRemoveSuccessful(payload))
     yield put(saveProjectAction())
   } catch (e) {
@@ -299,12 +380,17 @@ function* projectSetDeadlinesSaga() {
     yield put(startSubmit('deadlineModal'))
     const currentProject = yield select(currentProjectSelector)
     const { values } = yield select(deadlineModalSelector)
-    const deadlines =[ ...currentProject.deadlines ].map((deadline) => ({
+    const deadlines = [...currentProject.deadlines].map(deadline => ({
       ...deadline,
       start: values[`${deadline.phase_name}-start`],
       deadline: values[`${deadline.phase_name}-deadline`]
     }))
-    const res = yield call(projectApi.patch, { deadlines }, { path: { id: currentProject.id } }, ':id/')
+    const res = yield call(
+      projectApi.patch,
+      { deadlines },
+      { path: { id: currentProject.id } },
+      ':id/'
+    )
     yield put(projectSetDeadlinesSuccessful(res.deadlines))
     yield put(setSubmitSucceeded('deadlineModal'))
   } catch (e) {

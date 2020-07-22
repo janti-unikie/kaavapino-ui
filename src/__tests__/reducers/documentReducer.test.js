@@ -29,7 +29,9 @@ describe('document reducer', () => {
       ...initialState,
       documentsLoading: true
     }
-    expect(documentReducer(state, { type: FETCH_DOCUMENTS_SUCCESSFUL, payload: [1, 2, 3] })).toEqual({
+    expect(
+      documentReducer(state, { type: FETCH_DOCUMENTS_SUCCESSFUL, payload: [1, 2, 3] })
+    ).toEqual({
       ...state,
       documents: [1, 2, 3],
       documentsLoading: false

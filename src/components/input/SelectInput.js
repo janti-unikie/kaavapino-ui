@@ -5,16 +5,16 @@ import inputUtils from '../../utils/inputUtils'
 
 const SelectInput = ({ input, meta: { error }, options, ...custom }) => (
   <Dropdown
-    { ...input }
-    { ...custom }
+    {...input}
+    {...custom}
     onChange={(param, data) => input.onChange(data.value)}
     fluid
     search
     selection
     clearable
-    placeholder=''
-    noResultsMessage='Ei tuloksia'
-    options={ options }
+    placeholder=""
+    noResultsMessage="Ei tuloksia"
+    options={options}
     error={inputUtils.hasError(error)}
     onBlur={() => input.onBlur(input.value.value)}
   />

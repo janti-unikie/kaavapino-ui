@@ -258,7 +258,7 @@ export const reducer = (state = initialState, action) => {
         ...state,
         currentProject: {
           ...state.currentProject,
-          deadlines: [ ...action.payload ]
+          deadlines: [...action.payload]
         }
       }
     }

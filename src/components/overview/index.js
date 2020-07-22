@@ -2,23 +2,17 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 class Overview extends Component {
-  constructor( props ) {
-    super( props )
+  constructor(props) {
+    super(props)
 
-    this.state = {
-
-    }
+    this.state = {}
   }
 
   componentDidMount() {
     document.title = 'Kaavapino'
   }
   render() {
-    return (
-      <h1>Yleisnäkymä</h1>
-    )
+    return <h1>Yleisnäkymä</h1>
   }
 }
-export default connect(
-  null
-)(Overview)
+export default connect(null)(Overview)

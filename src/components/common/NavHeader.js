@@ -4,45 +4,45 @@ import { Link } from 'react-router-dom'
 import { Dropdown } from 'semantic-ui-react'
 
 export const NavAction = ({ children, to, ...rest }) => {
-  return to ?
-    <Link className='action-item' to={to}>{ children }</Link> :
-    (
-      <span {...rest} className='action-item'>
-        { children }
-      </span>
-    )
+  return to ? (
+    <Link className="action-item" to={to}>
+      {children}
+    </Link>
+  ) : (
+    <span {...rest} className="action-item">
+      {children}
+    </span>
+  )
 }
 
 NavAction.propTypes = {
   to: PropTypes.string
 }
 
-export const NavActions = (props) => <div className='nav-header-actions' {...props} />
+export const NavActions = props => <div className="nav-header-actions" {...props} />
 
 export const NavHeader = ({ routeItems, actions, large, title, info, infoOptions }) => {
   return (
-    <div className='nav-header-container'>
-      <div className='nav-header-inner-container'>
-        <div className='nav-header-route'>
-          <div className='nav-header-route-items'>
-            { routeItems.map((item, i) => {
-              return <span key={i}><Link to={item.path}>{item.value}</Link></span>
-            }) }
+    <div className="nav-header-container">
+      <div className="nav-header-inner-container">
+        <div className="nav-header-route">
+          <div className="nav-header-route-items">
+            {routeItems.map((item, i) => {
+              return (
+                <span key={i}>
+                  <Link to={item.path}>{item.value}</Link>
+                </span>
+              )
+            })}
           </div>
         </div>
-        <div className='nav-header-content'>
-          <span className={`nav-header-title${ large ? ' large' : '' }`}>{ title }</span>
-          <div className='nav-header-info'>
-            { info && (
-              <Dropdown
-                text={info}
-                options={infoOptions}
-                scrolling
-              />
-            )}
+        <div className="nav-header-content">
+          <span className={`nav-header-title${large ? ' large' : ''}`}>{title}</span>
+          <div className="nav-header-info">
+            {info && <Dropdown text={info} options={infoOptions} scrolling />}
           </div>
         </div>
-        { actions && actions }
+        {actions && actions}
       </div>
     </div>
   )

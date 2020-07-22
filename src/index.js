@@ -33,9 +33,9 @@ if (window.location.pathname === '/silent-renew') {
           <ReduxToastr
             timeOut={4000}
             newestOnTop={false}
-            position='top-center'
-            transitionIn='fadeIn'
-            transitionOut='fadeOut'
+            position="top-center"
+            transitionIn="fadeIn"
+            transitionOut="fadeOut"
             closeOnToastrClick
           />
           <App />

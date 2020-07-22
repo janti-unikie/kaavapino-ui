@@ -1,9 +1,6 @@
 import { reducer as api, initialState } from '../../reducers/apiReducer'
 import { USER_FOUND } from 'redux-oidc'
-import {
-  INIT_API_REQUEST_SUCCESSFUL,
-  TOKEN_LOADED
-} from '../../actions/apiActions'
+import { INIT_API_REQUEST_SUCCESSFUL, TOKEN_LOADED } from '../../actions/apiActions'
 
 describe('api reducer', () => {
   it('should return the initial state', () => {
@@ -22,7 +19,9 @@ describe('api reducer', () => {
   })
 
   it('should handle INIT_API_REQUEST_SUCCESSFUL', () => {
-    expect(api(initialState, { type: INIT_API_REQUEST_SUCCESSFUL, payload: '123' })).toEqual({
+    expect(
+      api(initialState, { type: INIT_API_REQUEST_SUCCESSFUL, payload: '123' })
+    ).toEqual({
       ...initialState,
       apiInitialized: true
     })

@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 import { Map, TileLayer } from 'react-leaflet'
 import Polygon from '../common/Polygon'
 import { Button } from 'semantic-ui-react'
-import { EPSG3879, formatGeoJSONToPositions, formatPositionsToGeoJSON } from '../../utils/mapUtils'
+import {
+  EPSG3879,
+  formatGeoJSONToPositions,
+  formatPositionsToGeoJSON
+} from '../../utils/mapUtils'
 
 class Geometry extends Component {
   constructor(props) {
@@ -37,7 +41,8 @@ class Geometry extends Component {
     }
   }
 
-  handleUpdate = (positions) => this.props.input.onChange(formatPositionsToGeoJSON(positions))
+  handleUpdate = positions =>
+    this.props.input.onChange(formatPositionsToGeoJSON(positions))
 
   handleDoubleClick = ({ latlng }) => {
     const { disabled } = this.props
@@ -46,8 +51,10 @@ class Geometry extends Component {
     const { coordinates } = this.props.input.value
     const positions = formatGeoJSONToPositions(coordinates)
     const newUserActions = userActions.concat([positions])
-    const newPositions = [ ...positions ]
-    newPositions[newPositions.length - 1] = newPositions[newPositions.length - 1].concat(latlng)
+    const newPositions = [...positions]
+    newPositions[newPositions.length - 1] = newPositions[newPositions.length - 1].concat(
+      latlng
+    )
     this.setState({ userActions: newUserActions })
     this.handleUpdate(newPositions)
   }
@@ -75,7 +82,7 @@ class Geometry extends Component {
     const { disabled } = this.props
     const crs = EPSG3879()
     return (
-      <div className='geometry-input-container'>
+      <div className="geometry-input-container">
         <Map
           className={`geometry-input${disabled ? ' disabled' : ''}`}
           center={this.state.center}
@@ -92,15 +99,17 @@ class Geometry extends Component {
         >
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url='https://geoserver.hel.fi/mapproxy/wmts/osm-sm-hq/etrs_tm35fin_hq/{z}/{x}/{y}.png'
+            url="https://geoserver.hel.fi/mapproxy/wmts/osm-sm-hq/etrs_tm35fin_hq/{z}/{x}/{y}.png"
           />
           <Polygon positions={formatGeoJSONToPositions(coordinates)} />
         </Map>
-        { !disabled && (
-          <div className='geometry-input-actions'>
+        {!disabled && (
+          <div className="geometry-input-actions">
             <Button onClick={this.clear}>Tyhjennä</Button>
             <Button onClick={this.addArea}>Lisää uusi alue</Button>
-            <Button onClick={this.revert} disabled={!userActions.length}>Peruuta muutos</Button>
+            <Button onClick={this.revert} disabled={!userActions.length}>
+              Peruuta muutos
+            </Button>
           </div>
         )}
       </div>

@@ -1,8 +1,9 @@
-
 import { takeLatest, put, all, call } from 'redux-saga/effects'
 import {
-  FETCH_PROJECT_TYPES, fetchProjectTypesSuccessful,
-  FETCH_PROJECT_SUBTYPES, fetchProjectSubtypesSuccessful
+  FETCH_PROJECT_TYPES,
+  fetchProjectTypesSuccessful,
+  FETCH_PROJECT_SUBTYPES,
+  fetchProjectSubtypesSuccessful
 } from '../actions/projectTypeActions'
 import { error } from '../actions/apiActions'
 import { projectTypeApi } from '../utils/api'
