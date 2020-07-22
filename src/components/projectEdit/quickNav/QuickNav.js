@@ -119,7 +119,7 @@ class QuickNav extends Component {
           <div className="quicknav-content">
             <Accordion>
               {currentPhases.map((phase, index) => (
-                <>
+                <React.Fragment key={index}>
                   <AccordionTitle
                     activePhase={this.state.activePhase}
                     id={phase.id}
@@ -146,7 +146,7 @@ class QuickNav extends Component {
                         )
                       })}
                   </Accordion.Content>
-                </>
+                </React.Fragment>
               ))}
             </Accordion>
           </div>
