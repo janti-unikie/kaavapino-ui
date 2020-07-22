@@ -1,4 +1,4 @@
-@import "colors";
+@import 'colors';
 
 * {
   box-sizing: border-box;
@@ -29,7 +29,9 @@ h3 {
   line-height: 16px;
   padding: 0 16px;
   text-align: center;
-  transition: opacity .2s ease, border .2s ease, background-color .2s ease, color .2s ease, box-shadow .2s ease, background .2s ease, -webkit-box-shadow .2s ease;
+  transition: opacity 0.2s ease, border 0.2s ease, background-color 0.2s ease,
+    color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease,
+    -webkit-box-shadow 0.2s ease;
 
   &.large {
     height: 56px;
@@ -116,16 +118,15 @@ h3 {
   }
   .footer-feedback {
     a {
-    font-family: Helvetica;
-    font-size: 14px;
-    color: #000000;
-    letter-spacing: 0;
-    text-decoration: underline black;
-    line-height: 24px;
-    text-align: right;
+      font-family: Helvetica;
+      font-size: 14px;
+      color: #000000;
+      letter-spacing: 0;
+      text-decoration: underline black;
+      line-height: 24px;
+      text-align: right;
     }
   }
-
 }
 
 .prompt {

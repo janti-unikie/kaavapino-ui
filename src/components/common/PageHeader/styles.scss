@@ -1,4 +1,3 @@
-
 @import '../colors';
 
 .navbar-container {
@@ -15,7 +14,7 @@
   .navbar-logo {
     font-family: Helvetica;
     font-size: 20px;
-    color: #1A1A1A;
+    color: #1a1a1a;
   }
   .navbar-menu-item {
     font-family: Helvetica;
@@ -53,7 +52,6 @@
   }
 }
 
-
 .nav-header-container {
   display: flex;
   align-items: center;
@@ -81,7 +79,7 @@
 
         span::after {
           color: #0072c6;
-          content: ">>";
+          content: '>>';
           margin-left: 15px;
           margin-right: 15px;
         }

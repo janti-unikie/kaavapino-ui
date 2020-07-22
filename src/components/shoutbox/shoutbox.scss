@@ -10,7 +10,8 @@ $comment-list-header-height: 72px;
 $comment-submit-container-height: 80px;
 $bottom-margin: 16px;
 $comment-list-height: calc(
-  #{$shoutbox-height} - #{$comment-list-header-height} - #{$comment-submit-container-height} - #{$bottom-margin}
+  #{$shoutbox-height} - #{$comment-list-header-height} - #{$comment-submit-container-height} -
+    #{$bottom-margin}
 );
 
 .shoutbox {
