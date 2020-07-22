@@ -1,25 +1,198 @@
 @import "../common/colors";
 
+/* This file includes input styles that override those from semantic UI where needed */
+.field,
+.ui.form .field {
+  margin-top: 32px;
+  margin-bottom: 0;
+
+  &.small-margin {
+    margin-top: 12px;
+  }
+}
+
+.input-container {
+  .input-header {
+    align-items: center;
+    display: flex;
+    font-weight: bold;
+    justify-content: space-between;
+  }
+
+  .input-header-icons {
+    align-items: center;
+    display: flex;
+    margin-right: 8px;
+
+    @media screen and (min-width: 600px) {
+      margin-right: 0;
+    }
+
+    :nth-child(2) {
+      margin-left: 8px;
+    }
+
+    .input-info {
+      background: url('./assets/icons/field-info-icon.svg') no-repeat center;
+      width: 16px;
+      height: 16px;
+    }
+
+    .input-history {
+      font-weight: 100;
+      color: lightgray;
+      margin-right: 4px;
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      :nth-child(2) {
+        margin: 2px 0 0 5px;
+      }
+    }
+  }
+
+  .input-title {
+    &.highlight {
+      background-color: yellow;
+    }
+  }
+}
+
+.ui.form .fields {
+  >.input-container {
+    flex: 0 1 auto;
+    padding-left: .5em;
+    padding-right: .5em;
+  }
+}
+
+.equal.width.fields {
+  .input-container {
+    width: 100%;
+  }
+}
+
+.ui.input {
+  height: 56px;
+  margin-top: 4px;
+
+  input {
+    border-radius: 0;
+    transition: border 2s ease;
+
+    &:hover {
+      border-color: $color-input-emphasis;
+    }
+  }
+}
+
+.ui.search.selection.dropdown {
+  border-radius: 0;
+  min-height: 56px;
+  line-height: 32px;
+  padding: 12px 32px 12px 8px;
+  margin-top: 4px;
+
+  &.multiple >.label {
+    margin-top: 8px;
+  }
+
+  > .delete.icon,
+  > .dropdown.icon,
+  > .search.icon {
+    line-height: 56px;
+    padding: 0;
+    right: 20px;
+  }
+
+  > input.search {
+    height: 56px;
+    line-height: 56px;
+    padding: 0 32px 0 8px;
+    margin: 0;
+  }
+}
+
+.ui.selection.active.dropdown .menu,
+.ui.selection.active.dropdown:hover .menu {
+  border: 2px solid $black1;
+}
+
+.ui.selection.dropdown .menu {
+  /* The defaults were counting on 1px border */
+  margin: 0 -2px;
+  min-width: calc(100% + 4px);
+}
+
+.ui.label {
+  // font-family: "Helsinki Grotesk";
+  background-color: transparent;
+  color: $black1;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 20px;
+  margin: 0;
+  padding: 0;
+  transition: none;
+}
+
+.ui.form .input input,
+.ui.selection.dropdown,
+.ui.form textarea {
+  border-radius: 0;
+  border: 1px solid $border-gray;
+  font-size: 18px;
+  color: $black1;
+  line-height: 24px;
+  transition: border 0.2s ease;
+  padding: 8px 16px;
+
+  &:not(textarea) {
+    padding: 0 16px;
+  }
+
+  &:focus,
+  &:hover,
+  &:active,
+  &.active,
+  &.active:hover {
+    border-radius: 0;
+    border: 1px solid $color-input-emphasis;
+    box-shadow: 0px 0px 0px 1px $color-input-emphasis;
+  }
+}
+
 .radio-input-container {
   display: flex;
   flex-direction: column;
 
-  label {
+  label,
+  .ui.checkbox label {
     align-items: center;
-    display: flex !important;
-    font-size: 16px !important;
+    display: flex;
+    font-size: 16px;
     height: 24px;
     margin-top: 14px;
-    padding-left: 34px !important;
-
-    &:first-of-type {
-      margin-top: 8px;
-    }
+    padding-left: 34px;
 
     &:before,
     &:after {
       top: 0;
     }
+
+    &:before {
+      border: 2px solid $border-gray;
+    }
+
+    &:hover::before {
+      border-color: $color-input-emphasis;
+    }
+  }
+
+  .ui.checkbox:first-of-type label {
+    margin-top: 8px;
   }
 
   &.inverted {
@@ -62,6 +235,7 @@
     padding-top: 0;
 
     &::before {
+      border: 0;
       height: 24px;
     }
     &::after {
@@ -103,10 +277,114 @@
 .file-input-container {
   display: flex;
   align-items: center;
+
+  .ui.buttons {
+    margin-top: 4px;
+    height: 56px;
+
+    .ui.button,
+    .ui.label {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+      border-radius: 0;
+      border: 0;
+      outline: 2px solid $black1;
+    }
+
+    label.ui.button {
+      height: 56px;
+      margin-right: 2px;
+    }
+
+    button.ui.button {
+      border-radius: 0;
+      color: $black1;
+      height: 56px;
+      width: 68px;
+
+      &.upload-button {
+        background: url('./assets/icons/upload-icon.svg') no-repeat center;
+      }
+
+      &.red {
+        color: white;
+      }
+
+      i.icon.download {
+        display: none;
+        margin: 0 !important;
+
+        @media screen and (min-width: 600px) {
+          display: inline-block;
+        }
+      }
+
+      i.icon.cancel:before {
+        font-size: 18px;
+      }
+    }
+
+    .file-action-buttons {
+      display: flex;
+
+      /* Using max-width instead of min-width here, because desktop styles
+      * use noticeably more semantic ui defaults */
+      @media screen and (max-width: 599px) {
+        flex-direction: column;
+
+        .button.ui.button.file-action-button {
+          background: none;
+          color: $color-primary;
+          height: 28px;
+          margin-left: 8px;
+          outline: none;
+          padding: 0;
+          width: 34px;
+
+          &:hover {
+            color: $color-button-emphasis;
+          }
+
+          &.red {
+            color: red;
+
+            &:hover {
+              color: $color-input-emphasis;
+            }
+
+            &::before {
+              content: 'poista';
+            }
+
+            .icon {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .ui.label {
+    height: 56px;
+    padding: 0 16px;
+    text-align: center;
+    width: 160px;
+
+    &::before {
+      display: none;
+    }
+
+    @media screen and (min-width: 600px) {
+      width: 232px;
+    }
+  }
 }
 
 .file-description {
-  color: #545454;
+  color: $black1;
 }
 
 .fieldset-header {
@@ -124,23 +402,6 @@
   border: 1px solid gainsboro;
   padding: 10px;
   margin-bottom: 10px;
-}
-
-.input-info {
-  background-color: black;
-  color: white;
-  width: 18px;
-  height: 18px;
-  font-size: 12px;
-  font-weight: bold;
-  margin-left: 5px;
-  border-radius: 100%;
-  padding: 5px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-  line-height: 100%;
 }
 
 .geometry-input-container {
@@ -161,13 +422,4 @@
 
 .rdtPicker {
   color: black;
-}
-
-.field,
-.ui.form .field {
-  margin-top: 38px;
-
-  &.small-margin {
-    margin-top: 14px;
-  }
 }

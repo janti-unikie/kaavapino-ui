@@ -1,16 +1,35 @@
+@import '../common/colors.scss';
+
 .form-container {
   flex: 1;
-  width: 90%;
+  width: 100%;
   background-color: white;
-  padding: 20px 25px 20px 25px;
+  padding: 0;
 
-  .form-title {
-    font-size: 30px;
-    font-weight: bold;
+  .edit-form-buttons {
+    display: flex;
+    justify-content: space-between;
+
+    > button {
+      margin: 0;
+
+      &:first-of-type {
+        margin-right: 16px;
+      }
+    }
+  }
+
+  .section-title {
+    margin: 0 0 0 8px;
+    padding: 0;
+
+    @media screen and (min-width: 600px) {
+      margin: 0;
+    }
   }
 
   &>div:not(:first-child) {
-    margin-bottom: 25px;
+    margin-top: 32px;
   }
 
   .form-button-container {
@@ -19,8 +38,13 @@
     }
   }
 
-  @media screen and (max-width: 545px) {
-    margin-top: 20px;
+  @media screen and (min-width: 600px) {
+    width: 90%;
+    padding: 0 0 48px 48px;
+
+    h2 {
+      margin-left: 0;
+    }
   }
 }
 
@@ -37,116 +61,38 @@
     flex-direction: column-reverse;
     align-items: center;
   }
-}
 
-.input-container {
-  margin-bottom: 30px;
-
-  .input-header {
+  .scroll-to-top {
+    cursor: pointer;
     display: flex;
-    margin-bottom: 20px;
-    font-weight: bold;
-  }
-  
-  .input-info {
-    background-color: black;
-    color: white;
-    width: 18px;
-    height: 18px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-left: 5px;
-    border-radius: 100%;
-    padding: 5px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    line-height: 100%;
-  }
-  
-  .input-title {
-    &.highlight {
-      background-color: yellow;
-    }
-  }
+    float: right;
+    margin-top: 48px;
 
-  .input-history {
-    font-weight: 100;
-    color: lightgray;
-    margin-left: 4px;
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    :nth-child(2) {
-      margin: 2px 0 0 5px;
+    .arrow-up-icon {
+      background: url('./assets/icons/arrow-up-icon.svg') no-repeat center;
+      height: 20px;
+      width: 20px;
+      margin-left: 24px;
     }
   }
 }
 
-.project-input-right {
-  display: flex;
+.project-input-left {
+  display: none;
   flex-direction: column;
-  flex: 0.3;
+  flex: 0.5;
   top: 40px;
+  padding-right: 8px;
   position: sticky;
-  margin-left: 40px;
   min-width: 30%;
-  max-width: 360px;
+  max-width: 400px;
 
-  @media screen and (max-width: 545px) {
-    margin-left: 0;
-  }
-
-  @media screen and (min-width: 1400px) {
-    min-width: 360px;
-  }
-}
-
-.quicknav-container {
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  max-height: 45vh;
-  overflow: hidden;
-  overflow-y: auto;
-
-  .quicknav-title {
-    text-align: center;
-    margin: 10px 10px 0 10px;
-    font-size: 16px;
-    margin-top: 10px;
-    font-weight: bold;
-  }
-
-  .quicknav-content {
+  @media screen and (min-width: 600px) {
     display: flex;
-    flex-direction: column;
-    background-color: white;
-    max-height: 45vh;
-    overflow: hidden;
-    overflow-y: auto;
-    
-    .quicknav-item {
-      cursor: pointer;
-      margin: 0 10px 10px 10px;
-    
-      &.active {
-        font-weight: bold;
-        color: green;
-        border-left: 3px solid;
-        padding-left: 10px;
-      }
-    }
   }
 
-  .quicknav-buttons {
-    padding: 5px 5px 10px 5px;
-    text-align: center;
-  }
-
-  @media screen and (max-width: 545px) {
-    border: 1px solid gainsboro;
+  @media screen and (min-width: 960px) {
+    display: flex;
+    padding-right: 48px;
   }
 }

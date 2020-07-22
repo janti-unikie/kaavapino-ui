@@ -92,9 +92,9 @@
     flex-direction: column;
     flex: 0.5;
     margin-top: 16px;
-  }
 
-  .comment-send-button {
-    width: 100%;
+    .ui.button {
+      height: 56px;
+    }
   }
 }

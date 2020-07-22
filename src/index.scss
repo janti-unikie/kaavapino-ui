@@ -16,7 +16,6 @@ body {
   padding: 0;
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #ebedf1;
 }
 
 #root {
@@ -44,10 +43,6 @@ body {
 
   .summary {
     overflow: visible !important;
-  }
-
-  .project-page-content {
-    width: 100%;
   }
 
   @page { 

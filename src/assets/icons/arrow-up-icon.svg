@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="22px" viewBox="0 0 20 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 59.1 (101010) - https://sketch.com -->
+    <title>0D6C5C91-6C26-4968-B7B2-6820B0B8E18C@2x</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <polygon id="path-1" points="11.3706831 0 9.52371917 1.84696395 16.0000474 8.32428843 0 8.32428843 0 10.937334 15.9990512 10.937334 9.52371917 17.412666 11.3706831 19.2586338 21 9.62931689"></polygon>
+    </defs>
+    <g id="Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="19---Kaavapino-/-Hanke-/-Tietojen-muokkaus-/-Käynnistys-/-Highlight" transform="translate(-1275.000000, -3454.000000)">
+            <g id="Takaisin-alkuun" transform="translate(1169.000000, 3454.000000)">
+                <g id="atoms/icons/up" transform="translate(115.500000, 11.000000) rotate(90.000000) translate(-115.500000, -11.000000) translate(105.000000, 1.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" fill="#0000BF" transform="translate(10.500000, 9.629317) rotate(-180.000000) translate(-10.500000, -9.629317) " xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

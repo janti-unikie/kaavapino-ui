@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class Timeline extends Component {
   render = () => {
-    const { items, type, disabled, phase, projectPhase, switchPhase } = this.props
+    const { items, type, disabled, phase, projectPhase, switchDisplayedPhase } = this.props
     const timelineItems = items.filter((item) => item.project_type === type)
       .map((timelineItem) => {
         return (timelineItem.index <= projectPhase.index || timelineItem.index === phase.index) ?
@@ -22,7 +22,7 @@ class Timeline extends Component {
             return (
               <div key={i} className={`timeline-item-container${classes}`}>
                 <span
-                  onClick={() => switchPhase(id)}
+                  onClick={() => switchDisplayedPhase(id)}
                   className={`timeline-item-number${classes}`}
                   style={{ ...(active && { backgroundColor: (isCompleted && !selected) ? 'white' : color_code }) }}
                 >

@@ -52,18 +52,19 @@ class Footer extends Component {
       let values = []
       for (let [key2, value] of Object.entries(linkGroupData[key])) {
         let regex = new RegExp(/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi)
+
         if (value.match(regex)) {
           values.push(
-            <List.Item as={'a'} href={value}>{key2}</List.Item>
+            <List.Item as={'a'} href={value} key={`${key}-${key2}`}>{key2}</List.Item>
           )
         } else {
           values.push(
-            <List.Item as={Link} to={value}>{key2}</List.Item>
+            <List.Item as={Link} to={value} key={`${key}-${key2}`}>{key2}</List.Item>
           )
         }
       }
       linkColumns.push(
-        <Grid.Column className='footer-link-group' width={ 3 }>
+        <Grid.Column className='footer-link-group' width={ 3 } key={key}>
           <Header as='h4' content={key}/>
           <List link>
             {values}

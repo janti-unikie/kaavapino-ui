@@ -52,7 +52,7 @@ class ProjectPage extends Component {
     if (prevProps.edit && !edit) this.setState({ selectedPhase: currentProject.phase })
   }
 
-  switchPhase = (phase) => {
+  switchDisplayedPhase = (phase) => {
     if (this.props.edit) this.setState({ selectedPhase: phase })
   }
 
@@ -77,14 +77,31 @@ class ProjectPage extends Component {
     } else if (documents) {
       return `${name}, dokumentit`
     }
-    return `${name}, hankekortti`
+    return `${name}, projektikortti`
+  }
+
+  getCurrentPhases() {
+    const { currentProject, phases } = this.props
+    const { type, subtype } = currentProject
+    return phases.filter(({ project_type, project_subtype }) => {
+      return project_type === type && project_subtype === subtype
+    })
   }
 
   getProjectPageContent = () => {
     const { edit, documents, currentProject, phases } = this.props
     const { selectedPhase } = this.state
+    const currentPhases = this.getCurrentPhases()
+
     if (edit) {
-      return <ProjectEditPage selectedPhase={selectedPhase} project={currentProject} />
+      return (
+        <ProjectEditPage
+          currentPhases={currentPhases}
+          selectedPhase={selectedPhase}
+          switchDisplayedPhase={this.switchDisplayedPhase}
+          project={currentProject}
+        />
+      )
     } else if (documents) {
       return <ProjectDocumentsPage />
     }
@@ -107,13 +124,13 @@ class ProjectPage extends Component {
         <NavActions>
           <NavAction to={`/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</NavAction>
           <NavAction to={`/${id}/documents`}><FontAwesomeIcon icon='file'/>Luo dokumentteja</NavAction>
-          <NavAction onClick={() => window.print()}><FontAwesomeIcon icon='print'/>Tulosta hankekortti</NavAction>
+          <NavAction onClick={() => window.print()}><FontAwesomeIcon icon='print'/>Tulosta projektikortti</NavAction>
           <NavAction onClick={() => this.setState({ showDeadlineModal: true })}><FontAwesomeIcon icon='cog'/>Määräajat</NavAction>
         </NavActions>
       ) :
       (
         <NavActions>
-          <NavAction to={`/${id}`}><FontAwesomeIcon icon='arrow-left'/>Hankekortti</NavAction>
+          <NavAction to={`/${id}`}><FontAwesomeIcon icon='arrow-left'/>Projektikortti</NavAction>
         </NavActions>
       )
   }
@@ -153,12 +170,11 @@ class ProjectPage extends Component {
     if (loading) {
       return this.renderLoading()
     }
-    const { type, subtype, phase } = currentProject
-    const currentPhases = phases.filter(({ project_type, project_subtype }) => {
-      return project_type === type && project_subtype === subtype
-    })
+    const { phase } = currentProject
+    const currentPhases = this.getCurrentPhases()
     const projectPhase = currentPhases.find((p) => p.id === phase)
     const selectedPhase = currentPhases.find((phase) => phase.id === this.state.selectedPhase)
+
     return (
       <div className='project-container'>
         <NavHeader
@@ -174,7 +190,7 @@ class ProjectPage extends Component {
           items={currentPhases}
           type={currentProject.type}
           disabled={!edit}
-          switchPhase={this.switchPhase}
+          switchDisplayedPhase={this.switchDisplayedPhase}
         />
         <DeadlineModal
           open={this.state.showDeadlineModal}

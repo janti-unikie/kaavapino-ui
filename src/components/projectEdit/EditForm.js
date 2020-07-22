@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Form } from 'semantic-ui-react'
 import { reduxForm } from 'redux-form'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Message } from 'semantic-ui-react'
 import FormSection from './FormSection'
 import Button from '../common/Button'
@@ -25,7 +25,13 @@ class EditForm extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { setChecking, hasErrors, saving, initialize, attributeData } = this.props
+    const {
+      setChecking,
+      hasErrors,
+      saving,
+      initialize,
+      attributeData
+    } = this.props
     if (prevProps.validating && !this.props.validating) {
       if (!hasErrors) {
         this.setState({ verifying: true, endPhaseError: false })
@@ -33,7 +39,10 @@ class EditForm extends Component {
       } else {
         this.setState({ endPhaseError: true })
         clearTimeout(this.timeout)
-        this.timeout = setTimeout(() => this.setState({ endPhaseError: false }), 5000)
+        this.timeout = setTimeout(
+          () => this.setState({ endPhaseError: false }),
+          5000
+        )
         setChecking(true)
       }
     }
@@ -43,7 +52,7 @@ class EditForm extends Component {
     }
   }
 
-  phaseCallback = (changePhase) => {
+  phaseCallback = changePhase => {
     if (changePhase) {
       this.props.changePhase()
     }
@@ -55,39 +64,71 @@ class EditForm extends Component {
   render() {
     const {
       sections,
-      saving,
-      isCurrentPhase,
-      isLastPhase,
-      changingPhase,
-      validating
+      title
+      // saving,
+      // isCurrentPhase,
+      // isLastPhase,
+      // changingPhase,
+      // validating
     } = this.props
+
     return (
-      <Form className='form-container' autoComplete='off'>
-        { sections.map((section, i) => <FormSection key={i} section={section} /> ) }
+      <Form className="form-container" autoComplete="off">
+        <h2>{title}</h2>
+        <div className='edit-form-buttons'>
+          <Button
+            value="Päivitä aikataulu"
+            secondary
+            help='feature not implemented yet'
+            fluid
+          />
+          <Button
+            value="Päivitä kerrosalatiedot"
+            secondary
+            help='feature not implemented yet'
+            fluid
+          />
+        </div>
+        {sections.map((section, i) => (
+          <FormSection key={i} section={section} />
+        ))}
+        {/* Commenting end phase and save buttons out, since in these designs it's in quick nav.
+         * Keeping it here in case it's needed in mobile styles. if not, remove.
         <Button
           handleClick={this.props.handleSave}
-          value='Tallenna'
-          icon={<FontAwesomeIcon icon='check' />}
+          value="Tallenna"
+          icon={<FontAwesomeIcon icon="check" />}
           loading={saving}
-          help='Tallentaa hankkeen'
+          secondary
+          help="Tallentaa hankkeen"
         />
-        { isCurrentPhase && !isLastPhase && (
+        {isCurrentPhase && !isLastPhase && (
           <Button
             handleClick={this.changePhase}
-            value='Lopeta vaihe'
-            icon={<FontAwesomeIcon icon='forward' />}
+            value="Lopeta vaihe"
+            icon={<FontAwesomeIcon icon="forward" />}
             loading={changingPhase || validating}
-            help='Yrittää lopettaa tämänhetkisen vaiheen'
+            secondary
+            help="Yrittää lopettaa tämänhetkisen vaiheen"
           />
         )}
-        <ConfirmModal callback={this.phaseCallback} open={this.state.verifying} />
-        { this.state.endPhaseError && (
+        */}
+        <ConfirmModal
+          callback={this.phaseCallback}
+          open={this.state.verifying}
+        />
+        {this.state.endPhaseError && (
           <Message
-            header='Vaihetta ei voida vielä lopettaa'
-            content='Täytä puuttuvat kentät'
-            color='yellow'
+            header="Vaihetta ei voida vielä lopettaa"
+            content="Täytä puuttuvat kentät"
+            color="yellow"
           />
         )}
+
+        <div className="scroll-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <div>Sivun alkuun</div>
+          <div className="arrow-up-icon" />
+        </div>
       </Form>
     )
   }

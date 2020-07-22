@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import { Button, Modal, Form } from 'semantic-ui-react'
 import { reduxForm } from 'redux-form'
 import projectUtils from '../../utils/projectUtils'
-import Field from '../input/Field'
 import './FormModal.scss'
 import { connect } from 'react-redux'
 import { NEW_PROJECT_FORM } from '../../constants'
 import { newProjectSubtypeSelector } from '../../selectors/formSelector'
+import FormField from '../input/FormField'
 
 class FormModal extends Component {
   constructor(props) {
@@ -53,16 +53,16 @@ class FormModal extends Component {
 
     return (
       <Modal className="form-modal" size={'small'} onClose={this.props.handleClose}  open={this.props.open} closeIcon>
-        <Modal.Header>Luo uusi hanke</Modal.Header>
+        <Modal.Header>Luo uusi projekti</Modal.Header>
         <Modal.Content>
           <Form>
             <Form.Group widths='equal'>
-              <Field field={{ name: 'name', type: 'text', label: 'Hankkeen nimi' }} />
-              <Field className="ui fluid input" field={{ name: 'user', label: 'Vastuuhenkilö', type: 'select', choices: this.formatUsers() }} />
+              <FormField field={{ name: 'name', type: 'text', label: 'Hankkeen nimi' }} />
+              <FormField className="ui fluid input" field={{ name: 'user', label: 'Vastuuhenkilö', type: 'select', choices: this.formatUsers() }} />
             </Form.Group>
-            <Field field={{ name:'public', label: 'Luodaanko hanke julkiseksi', type: 'boolean', double: true }} double />
+            <FormField field={{ name:'public', label: 'Luodaanko projekti julkiseksi', type: 'boolean', double: true }} double />
             <div className="subtype-input-container">
-              <Field field={{ name:'subtype', label: 'Valitse prosessin koko', type: 'radio', options: [
+              <FormField field={{ name:'subtype', label: 'Valitse prosessin koko', type: 'radio', options: [
                 { value: 1, label: 'XS' },
                 { value: 2, label: 'S' },
                 { value: 3, label: 'M' },
@@ -73,15 +73,15 @@ class FormModal extends Component {
             {showXLProjectOptions && (
               <>
                 <h3>Valitse, laaditaanko</h3>
-                <Field field={{ name:'create_principles', label: 'Suunnitteluperiaatteet', type: 'toggle' }} />
-                <Field field={{ name:'create_draft', label: 'Kaavaluonnos', type: 'toggle' }} />
+                <FormField field={{ name:'create_principles', label: 'Suunnitteluperiaatteet', type: 'toggle' }} />
+                <FormField field={{ name:'create_draft', label: 'Kaavaluonnos', type: 'toggle' }} />
               </>
             )}
           </Form>
         </Modal.Content>
         <Modal.Actions>
-          <Button disabled={loading} onClick={this.handleClose}>Peruuta</Button>
-          <Button disabled={loading} type="submit" onClick={this.handleSubmit} color='blue'>Luo hanke</Button>
+          <Button secondary disabled={loading} onClick={this.handleClose}>Peruuta</Button>
+          <Button primary disabled={loading} type="submit" onClick={this.handleSubmit}>Luo projekti</Button>
         </Modal.Actions>
       </Modal>
 

@@ -20,7 +20,7 @@ import ProjectListPage from './projectList'
 import ProjectPage from './project'
 import ReportsPage from './reports'
 import ErrorPage from './error'
-import Header from './common/Header'
+import PageHeader from './common/PageHeader'
 import Footer from './common/Footer'
 import FakeLoginPage from './auth/FakeLogin'
 import Overview from './overview'
@@ -55,7 +55,7 @@ class App extends Component {
           <Route exact path='/logout'  render={() => <LogoutPage handleLogout={ this.props.logout } /> } />
           <Route path='/logout/callback'  render={() => <LogoutCallbackPage /> } />
           <ProtectedRoute path='/' pred={(this.props.apiToken !== null)} redirect='/login'>
-            <Header />
+            <PageHeader />
             <Switch>
               <Route exact path='/' render={() => <Overview />} />
               <Route exact path='/terms' render={() => <Terms />} />

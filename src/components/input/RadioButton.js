@@ -11,8 +11,6 @@ const RadioButton = ({ input: { value, name, ...rest }, meta: { error }, options
         error={ error }
         name={ name }
         onChange={() => {
-          console.log('onchange!')
-          console.log(option.value)
           rest.onChange(option.value)
         }}
         checked={ value === option.value }
