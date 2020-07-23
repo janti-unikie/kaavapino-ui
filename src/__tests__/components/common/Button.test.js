@@ -8,7 +8,14 @@ describe('<Button />', () => {
 
   beforeEach(() => {
     mockFn = jest.fn(() => null)
-    btn = mount(<Button handleClick={mockFn} icon={<div className='icon' />} help='help' value='button-test' />)
+    btn = mount(
+      <Button
+        handleClick={mockFn}
+        icon={<div className="icon" />}
+        help="help"
+        value="button-test"
+      />
+    )
   })
 
   it('renders', () => {

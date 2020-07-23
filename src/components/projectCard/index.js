@@ -41,16 +41,16 @@ class ProjectCardPage extends Component {
 
   updateMetadata = () => {
     const { projectTypes, type } = this.props
-    const metadata = projectTypes.find((projectType) => projectType.id === type).metadata
+    const metadata = projectTypes.find(projectType => projectType.id === type).metadata
     this.setState({ metadata })
   }
 
   filterAttributeData = () => {
     const { metadata, extended } = this.state
     const { attributeData } = this.props
-    const currentMetadata = extended ?
-      metadata.extended_project_card_attributes :
-      metadata.normal_project_card_attributes
+    const currentMetadata = extended
+      ? metadata.extended_project_card_attributes
+      : metadata.normal_project_card_attributes
     let result = []
     currentMetadata.forEach(({ label, name, type, fieldset_attributes, choices }) => {
       const data = { label, type }
@@ -67,7 +67,7 @@ class ProjectCardPage extends Component {
   }
 
   handleExtendedChange = () => {
-    this.setState((prevState) => ({ extended: !prevState.extended }))
+    this.setState(prevState => ({ extended: !prevState.extended }))
   }
 
   render() {
@@ -76,22 +76,28 @@ class ProjectCardPage extends Component {
     const graphData = [projectUtils.formatDeadlines({ name, deadlines, subtype }, phases)]
 
     if (!metadata) {
-      return <Loader inline={'centered'} active>Ladataan</Loader>
+      return (
+        <Loader inline={'centered'} active>
+          Ladataan
+        </Loader>
+      )
     }
     const attributeData = this.filterAttributeData()
     return (
       <div>
-        <div className='project-card-container'>
-          <Summary
-            attributeData={attributeData}
-            users={users}
-          />
+        <div className="project-card-container">
+          <Summary attributeData={attributeData} users={users} />
           <Image src={imageLink} />
         </div>
-        <div className='project-card-extend'>
-          <Radio onChange={this.handleExtendedChange} toggle label='Laajennettu' checked={extended} />
+        <div className="project-card-extend">
+          <Radio
+            onChange={this.handleExtendedChange}
+            toggle
+            label="Laajennettu"
+            checked={extended}
+          />
         </div>
-        <div className='project-card-graph-container'>
+        <div className="project-card-graph-container">
           <Graph data={graphData} height={140} />
         </div>
       </div>
@@ -99,11 +105,9 @@ class ProjectCardPage extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   projectTypes: projectTypesSelector(state),
   users: usersSelector(state)
 })
 
-export default connect(
-  mapStateToProps
-)(ProjectCardPage)
+export default connect(mapStateToProps)(ProjectCardPage)

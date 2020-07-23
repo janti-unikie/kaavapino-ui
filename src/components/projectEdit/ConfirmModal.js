@@ -10,7 +10,9 @@ const ConfirmModal = ({ open, callback }) => {
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={() => callback(false)}>Peruuta</Button>
-        <Button onClick={() => callback(true)} color='green'>OK</Button>
+        <Button onClick={() => callback(true)} color="green">
+          OK
+        </Button>
       </Modal.Actions>
     </Modal>
   )

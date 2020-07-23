@@ -21,13 +21,18 @@ class FormModal extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.submitting && this.props.submitSucceeded) {
       this.handleClose()
-    } else if (prevProps.submitting && this.props.submitFailed && !this.props.submitSucceeded && this.state.loading) {
+    } else if (
+      prevProps.submitting &&
+      this.props.submitFailed &&
+      !this.props.submitSucceeded &&
+      this.state.loading
+    ) {
       this.setState({ loading: false })
     }
   }
 
   formatUsers = () => {
-    return this.props.users.map((user) => {
+    return this.props.users.map(user => {
       return {
         value: user.id,
         label: projectUtils.formatUsersName(user)
@@ -52,39 +57,79 @@ class FormModal extends Component {
     const showXLProjectOptions = selectedSubType === 5
 
     return (
-      <Modal className="form-modal" size={'small'} onClose={this.props.handleClose}  open={this.props.open} closeIcon>
+      <Modal
+        className="form-modal"
+        size={'small'}
+        onClose={this.props.handleClose}
+        open={this.props.open}
+        closeIcon
+      >
         <Modal.Header>Luo uusi projekti</Modal.Header>
         <Modal.Content>
           <Form>
-            <Form.Group widths='equal'>
+            <Form.Group widths="equal">
               <FormField field={{ name: 'name', type: 'text', label: 'Hankkeen nimi' }} />
-              <FormField className="ui fluid input" field={{ name: 'user', label: 'Vastuuhenkilö', type: 'select', choices: this.formatUsers() }} />
+              <FormField
+                className="ui fluid input"
+                field={{
+                  name: 'user',
+                  label: 'Vastuuhenkilö',
+                  type: 'select',
+                  choices: this.formatUsers()
+                }}
+              />
             </Form.Group>
-            <FormField field={{ name:'public', label: 'Luodaanko projekti julkiseksi', type: 'boolean', double: true }} double />
+            <FormField
+              field={{
+                name: 'public',
+                label: 'Luodaanko projekti julkiseksi',
+                type: 'boolean',
+                double: true
+              }}
+              double
+            />
             <div className="subtype-input-container">
-              <FormField field={{ name:'subtype', label: 'Valitse prosessin koko', type: 'radio', options: [
-                { value: 1, label: 'XS' },
-                { value: 2, label: 'S' },
-                { value: 3, label: 'M' },
-                { value: 4, label: 'L' },
-                { value: 5, label: 'XL' }
-              ] }} />
+              <FormField
+                field={{
+                  name: 'subtype',
+                  label: 'Valitse prosessin koko',
+                  type: 'radio',
+                  options: [
+                    { value: 1, label: 'XS' },
+                    { value: 2, label: 'S' },
+                    { value: 3, label: 'M' },
+                    { value: 4, label: 'L' },
+                    { value: 5, label: 'XL' }
+                  ]
+                }}
+              />
             </div>
             {showXLProjectOptions && (
               <>
                 <h3>Valitse, laaditaanko</h3>
-                <FormField field={{ name:'create_principles', label: 'Suunnitteluperiaatteet', type: 'toggle' }} />
-                <FormField field={{ name:'create_draft', label: 'Kaavaluonnos', type: 'toggle' }} />
+                <FormField
+                  field={{
+                    name: 'create_principles',
+                    label: 'Suunnitteluperiaatteet',
+                    type: 'toggle'
+                  }}
+                />
+                <FormField
+                  field={{ name: 'create_draft', label: 'Kaavaluonnos', type: 'toggle' }}
+                />
               </>
             )}
           </Form>
         </Modal.Content>
         <Modal.Actions>
-          <Button secondary disabled={loading} onClick={this.handleClose}>Peruuta</Button>
-          <Button primary disabled={loading} type="submit" onClick={this.handleSubmit}>Luo projekti</Button>
+          <Button secondary disabled={loading} onClick={this.handleClose}>
+            Peruuta
+          </Button>
+          <Button primary disabled={loading} type="submit" onClick={this.handleSubmit}>
+            Luo projekti
+          </Button>
         </Modal.Actions>
       </Modal>
-
     )
   }
 }

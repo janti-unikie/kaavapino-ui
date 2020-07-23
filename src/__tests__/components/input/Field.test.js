@@ -28,13 +28,17 @@ describe('<Field />', () => {
         '2': 'b',
         '3': 'c',
         '4': 'd',
-        'file': { link: '1', description: '2' }
+        file: { link: '1', description: '2' }
       },
       field: { name: '1', type, required: true, ...inputProps },
       fields: [],
       ...fieldProps
     }
-    const formWrapper = () => <div><Field {...props} /></div>
+    const formWrapper = () => (
+      <div>
+        <Field {...props} />
+      </div>
+    )
     const Decorated = reduxForm({ form: 'testForm' })(formWrapper)
     wrapper = mount(
       <Provider store={store}>
@@ -66,7 +70,17 @@ describe('<Field />', () => {
     expect(wrapper.find('File').length).toBe(1)
     createFieldOfType('image', {}, { name: 'file' })
     expect(wrapper.find('File').length).toBe(1)
-    createFieldOfType('short_string', {}, { choices: [ { value: 'a', label: '1' }, { value: 'b', label: '2' } ], multiple_choice: true })
+    createFieldOfType(
+      'short_string',
+      {},
+      {
+        choices: [
+          { value: 'a', label: '1' },
+          { value: 'b', label: '2' }
+        ],
+        multiple_choice: true
+      }
+    )
     expect(wrapper.find('SelectInput').length).toBe(1)
     expect(wrapper.find('SelectInput').props().type).toBe('select-multiple')
     const options = wrapper.find('DropdownItem')
@@ -87,7 +101,7 @@ describe('<Field />', () => {
       fields: []
     }
     const renderSpy = jest.spyOn(Field.prototype, 'render')
-    const test = shallow(<Field { ...props } />)
+    const test = shallow(<Field {...props} />)
 
     expect(renderSpy).toHaveBeenCalledTimes(1)
     test.setProps({ attributeData: { '1': 'a' } })

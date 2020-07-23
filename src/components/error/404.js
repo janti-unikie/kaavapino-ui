@@ -5,7 +5,7 @@ const NotFound = () => {
   return (
     <div>
       <p>Sivua ei löytynyt.</p>
-      <Link to='/'>Palaa tästä etusivulle.</Link>
+      <Link to="/">Palaa tästä etusivulle.</Link>
     </div>
   )
 }

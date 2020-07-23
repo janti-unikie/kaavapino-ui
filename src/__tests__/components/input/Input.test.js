@@ -7,7 +7,12 @@ describe('<Input />', () => {
   let change
   beforeEach(() => {
     change = ''
-    inputComponent = mount(<Input input={{ value: '123', name: 'test', onChange: (e) => change = e.target.value }} meta={{}} />).find('input')
+    inputComponent = mount(
+      <Input
+        input={{ value: '123', name: 'test', onChange: e => (change = e.target.value) }}
+        meta={{}}
+      />
+    ).find('input')
   })
 
   it('has value and name', () => {
@@ -22,7 +27,9 @@ describe('<Input />', () => {
   })
 
   it('can have custom props', () => {
-    const customComponent = mount(<Input input={{}} meta={{}} placeholder='123' />).find('input')
+    const customComponent = mount(<Input input={{}} meta={{}} placeholder="123" />).find(
+      'input'
+    )
     const { placeholder } = customComponent.instance()
     expect(placeholder).toBe('123')
   })

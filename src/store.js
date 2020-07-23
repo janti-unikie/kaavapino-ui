@@ -16,10 +16,7 @@ const combinedReducers = combineReducers({
   ...reducers
 })
 
-const middlewareArray = [
-  routerMiddleware(history),
-  sagaMiddleware
-]
+const middlewareArray = [routerMiddleware(history), sagaMiddleware]
 
 if (process.env.NODE_ENV === 'development') {
   const logger = createLogger({
@@ -32,11 +29,7 @@ const composeEnhancers = composeWithDevTools({})
 
 const store = createStore(
   connectRouter(history)(combinedReducers),
-  composeEnhancers(
-    applyMiddleware(
-      ...middlewareArray
-    ),
-  )
+  composeEnhancers(applyMiddleware(...middlewareArray))
 )
 
 sagaMiddleware.run(sagas)

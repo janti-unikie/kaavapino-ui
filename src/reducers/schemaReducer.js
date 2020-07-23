@@ -3,9 +3,7 @@ import {
   SET_LATEST_EDIT_FIELD_SUCCESSFUL,
   SET_ALL_EDIT_FIELDS_SUCCESSFUL
 } from '../actions/schemaActions'
-import {
-  FETCH_PROJECTS
-} from '../actions/projectActions'
+import { FETCH_PROJECTS } from '../actions/projectActions'
 
 export const initialState = {
   schema: null,

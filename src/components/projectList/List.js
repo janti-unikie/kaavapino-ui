@@ -35,9 +35,10 @@ class List extends Component {
     }
   }
 
-  setSort = (type) => {
+  setSort = type => {
     const { sort, dir } = this.state
-    let newSort = sort, newDir = dir
+    let newSort = sort,
+      newDir = dir
     if (type === sort) {
       if (dir === 0) {
         newDir = 1
@@ -53,21 +54,31 @@ class List extends Component {
     this.setState({ sort: newSort, dir: newDir })
   }
 
-  setFilter = (value) => this.setState({ filter: value })
+  setFilter = value => this.setState({ filter: value })
 
   selectAmount = (_, { value }) => this.props.setAmountOfProjectsToIncrease(value)
 
-  filterItems = (items) => {
+  filterItems = items => {
     const { filter } = this.state
-    const filtered = items.filter((item) => {
-      const filterFields = projectUtils.formatFilterProject(item, false, this.props.phases, this.props.users)
+    const filtered = items.filter(item => {
+      const filterFields = projectUtils.formatFilterProject(
+        item,
+        false,
+        this.props.phases,
+        this.props.users
+      )
       let includes = false
-      Object.keys(filterFields).forEach((key) => {
+      Object.keys(filterFields).forEach(key => {
         const fieldValue = filterFields[key]
         if (!fieldValue) {
           return
         }
-        if (String(fieldValue).trim().toLowerCase().indexOf(filter.trim().toLowerCase()) > -1) {
+        if (
+          String(fieldValue)
+            .trim()
+            .toLowerCase()
+            .indexOf(filter.trim().toLowerCase()) > -1
+        ) {
           includes = true
         }
       })
@@ -90,46 +101,66 @@ class List extends Component {
     } = this.props
     if (loadingProjects || !phases) {
       return (
-        <div className='project-list'>
-          <Loader inline={'centered'} active>Ladataan</Loader>
+        <div className="project-list">
+          <Loader inline={'centered'} active>
+            Ladataan
+          </Loader>
         </div>
       )
     }
     const items = this.filterItems(this.props.items)
     const graphData = items.map(i => projectUtils.formatDeadlines(i, phases)).slice(0, 4)
-    const headerItems = ['Hankenumero', 'Nimi', 'Vaihe', 'Seuraava määräaika', 'Koko', 'Muokattu', 'Vastuuhenkilö']
+    const headerItems = [
+      'Hankenumero',
+      'Nimi',
+      'Vaihe',
+      'Seuraava määräaika',
+      'Koko',
+      'Muokattu',
+      'Vastuuhenkilö'
+    ]
     return (
-      <div className='project-list'>
-        <ListHeader items={headerItems} selected={sort} dir={dir} filter={this.setFilter} sort={this.setSort} />
-        { items.map(({ attribute_data, name, id, modified_at, user, subtype, phase, deadlines }, i) => {
-          const listItem = {
-            ...projectUtils.formatPhase(phase, phases),
-            name,
-            id,
-            modified_at: projectUtils.formatDate(modified_at),
-            nextDeadline: projectUtils.formatNextDeadline(deadlines, phase),
-            user: projectUtils.formatUsersName(users.find((u) => u.id === user)),
-            subtype: projectUtils.formatSubtype(subtype, projectSubtypes),
-            projectId: attribute_data['hankenumero'] || '-'
+      <div className="project-list">
+        <ListHeader
+          items={headerItems}
+          selected={sort}
+          dir={dir}
+          filter={this.setFilter}
+          sort={this.setSort}
+        />
+        {items.map(
+          (
+            { attribute_data, name, id, modified_at, user, subtype, phase, deadlines },
+            i
+          ) => {
+            const listItem = {
+              ...projectUtils.formatPhase(phase, phases),
+              name,
+              id,
+              modified_at: projectUtils.formatDate(modified_at),
+              nextDeadline: projectUtils.formatNextDeadline(deadlines, phase),
+              user: projectUtils.formatUsersName(users.find(u => u.id === user)),
+              subtype: projectUtils.formatSubtype(subtype, projectSubtypes),
+              projectId: attribute_data['hankenumero'] || '-'
+            }
+            return <ListItem key={i} item={listItem} />
           }
-          return (
-            <ListItem
-              key={i}
-              item={listItem}
-            />
-          )
-        })}
-        { items.length === 0 && <span className='empty-list-info'>Ei hankkeita!</span> }
-        <span className='list-amount'>Näytetään {items.length}/{total}</span>
-        { items.length !== 0 && <Graph data={graphData} height={Math.max(graphData.length * 65, 2*65)} /> }
-        <div className='list-actions-container'>
+        )}
+        {items.length === 0 && <span className="empty-list-info">Ei hankkeita!</span>}
+        <span className="list-amount">
+          Näytetään {items.length}/{total}
+        </span>
+        {items.length !== 0 && (
+          <Graph data={graphData} height={Math.max(graphData.length * 65, 2 * 65)} />
+        )}
+        <div className="list-actions-container">
           <Button
             loading={pollingProjects}
             disabled={pollingProjects}
             onClick={() => increaseAmountOfProjectsToShow()}
-            content='Lataa lisää'
+            content="Lataa lisää"
           />
-          <div className='list-action-dropdown'>
+          <div className="list-action-dropdown">
             <span>Latausmäärä: </span>
             <Dropdown
               options={this.dropdownOptions}
@@ -149,14 +180,11 @@ const mapDispatchToProps = {
   setAmountOfProjectsToIncrease
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   phases: phasesSelector(state),
   loadingProjects: loadingProjectsSelector(state),
   pollingProjects: pollingProjectsSelector(state),
   amountOfProjectsToIncrease: amountOfProjectsToIncreaseSelector(state)
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(List)
+export default connect(mapStateToProps, mapDispatchToProps)(List)

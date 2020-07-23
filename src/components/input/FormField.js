@@ -28,8 +28,7 @@ class FormField extends Component {
   render() {
     const { field, attributeData, checking, updated } = this.props
     const required =
-      checking &&
-      projectUtils.isFieldMissing(field.name, field.required, attributeData)
+      checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
     const isOneLineField = OneLineFields.indexOf(field.type) > -1
 
     return (

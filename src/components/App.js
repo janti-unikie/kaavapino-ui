@@ -9,7 +9,11 @@ import { fetchPhases } from '../actions/phaseActions'
 import { fetchProjectTypes } from '../actions/projectTypeActions'
 import { authUserLoadingSelector } from '../selectors/authSelector'
 import { initApiRequest } from '../actions/apiActions'
-import { apiLoadingTokenSelector, apiTokenSelector, apiInitializedSelector } from '../selectors/apiSelector'
+import {
+  apiLoadingTokenSelector,
+  apiTokenSelector,
+  apiInitializedSelector
+} from '../selectors/apiSelector'
 import { phasesSelector } from '../selectors/phaseSelector'
 import LoginPage from './auth/Login'
 import LogoutPage from './auth/Logout'
@@ -40,32 +44,53 @@ class App extends Component {
   }
 
   render() {
-    if (this.props.loadingApiToken || this.props.userLoading || !this.props.apiInitialized) {
+    if (
+      this.props.loadingApiToken ||
+      this.props.userLoading ||
+      !this.props.apiInitialized
+    ) {
       return <p>Ladataan...</p>
     }
 
     return (
       <ConnectedRouter history={history}>
         <Switch>
-          {process.env.REACT_APP_API_TOKEN ?
-            <Route path='/login' render={() => <FakeLoginPage />} />
-            : <Route path='/login' render={() => <LoginPage />} />
-          }
-          <Route path='/callback' render={() => <LoginCallbackPage />} />
-          <Route exact path='/logout'  render={() => <LogoutPage handleLogout={ this.props.logout } /> } />
-          <Route path='/logout/callback'  render={() => <LogoutCallbackPage /> } />
-          <ProtectedRoute path='/' pred={(this.props.apiToken !== null)} redirect='/login'>
+          {process.env.REACT_APP_API_TOKEN ? (
+            <Route path="/login" render={() => <FakeLoginPage />} />
+          ) : (
+            <Route path="/login" render={() => <LoginPage />} />
+          )}
+          <Route path="/callback" render={() => <LoginCallbackPage />} />
+          <Route
+            exact
+            path="/logout"
+            render={() => <LogoutPage handleLogout={this.props.logout} />}
+          />
+          <Route path="/logout/callback" render={() => <LogoutCallbackPage />} />
+          <ProtectedRoute path="/" pred={this.props.apiToken !== null} redirect="/login">
             <PageHeader />
             <Switch>
-              <Route exact path='/' render={() => <Overview />} />
-              <Route exact path='/terms' render={() => <Terms />} />
-              <Route exact path='/projects' render={() => <ProjectListPage />} />
-              <Route exact path='/reports' render={() => <ReportsPage />} />
-              <Route exact path='/:id' render={({ match }) => <ProjectPage id={match.params.id} />} />
-              <Route exact path='/:id/edit' render={({ match }) => <ProjectPage edit id={match.params.id} />} />
-              <Route exact path='/:id/documents' render={({ match }) => <ProjectPage documents id={match.params.id} />} />
-              <Route exact path='/error/:code' component={ErrorPage} />
-              <Redirect to='/error/404' />
+              <Route exact path="/" render={() => <Overview />} />
+              <Route exact path="/terms" render={() => <Terms />} />
+              <Route exact path="/projects" render={() => <ProjectListPage />} />
+              <Route exact path="/reports" render={() => <ReportsPage />} />
+              <Route
+                exact
+                path="/:id"
+                render={({ match }) => <ProjectPage id={match.params.id} />}
+              />
+              <Route
+                exact
+                path="/:id/edit"
+                render={({ match }) => <ProjectPage edit id={match.params.id} />}
+              />
+              <Route
+                exact
+                path="/:id/documents"
+                render={({ match }) => <ProjectPage documents id={match.params.id} />}
+              />
+              <Route exact path="/error/:code" component={ErrorPage} />
+              <Redirect to="/error/404" />
             </Switch>
             <Footer />
           </ProtectedRoute>
@@ -86,7 +111,7 @@ const mapDispatchToProps = {
   initApiRequest
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     userLoading: authUserLoadingSelector(state),
     phases: phasesSelector(state),
@@ -96,7 +121,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

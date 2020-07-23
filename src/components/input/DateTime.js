@@ -2,21 +2,21 @@ import React from 'react'
 import DateTime from 'react-datetime'
 
 const CustomDateTime = ({ input, ...custom }) => {
-  const formatDate = (value) => {
+  const formatDate = value => {
     if (!isNaN(new Date(value))) {
       return new Date(value)
     }
     return value
   }
 
-  return(
+  return (
     <DateTime
-      dateFormat='DD.MM.YYYY'
+      dateFormat="DD.MM.YYYY"
       timeFormat={false}
-      { ...input }
-      { ...custom }
+      {...input}
+      {...custom}
       value={formatDate(input.value)}
-      locale='fi'
+      locale="fi"
       inputProps={{ readOnly: true }}
     />
   )

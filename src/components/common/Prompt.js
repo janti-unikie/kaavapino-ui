@@ -7,7 +7,7 @@ class Prompt extends Component {
   }
 
   render() {
-    return <div className='prompt' />
+    return <div className="prompt" />
   }
 }
 

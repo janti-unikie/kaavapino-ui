@@ -1,11 +1,8 @@
 import { createSelector } from 'reselect'
 
-const selectSchema = (state) => state.schema
+const selectSchema = state => state.schema
 
-export const schemaSelector = createSelector(
-  selectSchema,
-  ({ schema }) => schema
-)
+export const schemaSelector = createSelector(selectSchema, ({ schema }) => schema)
 
 export const latestEditFieldSelector = createSelector(
   selectSchema,

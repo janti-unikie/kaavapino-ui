@@ -90,7 +90,7 @@
     }
 
     div:not(:first-child)::before {
-      content: "";
+      content: '';
       border-top: 2px solid #aab2be;
       display: block;
       position: absolute;
@@ -105,7 +105,7 @@
     }
 
     div:not(:last-child)::after {
-      content: "";
+      content: '';
       border-top: 2px solid #aab2be;
       display: block;
       position: absolute;

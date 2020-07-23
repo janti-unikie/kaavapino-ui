@@ -19,7 +19,4 @@ const mapDispatchToProps = {
   change
 }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(FilterField)
+export default connect(null, mapDispatchToProps)(FilterField)

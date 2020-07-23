@@ -17,7 +17,7 @@
         column-gap: 10px;
         margin-top: 20px;
 
-        >* {
+        > * {
           overflow: auto;
         }
 
@@ -72,7 +72,7 @@
         border-bottom: 2px solid black;
         padding-bottom: 10px;
         align-items: center;
-        
+
         .header-item {
           font-size: 16px;
           font-weight: bold;

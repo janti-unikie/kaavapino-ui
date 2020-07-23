@@ -18,7 +18,7 @@ class Graph extends Component {
   // If labels aren't unique, then the colors of the bars won't
   // be shown properly in cases where there are different amount
   // of bars in each row.
-  getSuffix = (x) => {
+  getSuffix = x => {
     let res = ''
     for (let i = 0; i < x; i++) res += ' '
     return res
@@ -38,7 +38,7 @@ class Graph extends Component {
         rows.push(row)
       }
     })
-    rows.push([ '\0', 'Nyt', 'Nyt', new Date(), new Date()])
+    rows.push(['\0', 'Nyt', 'Nyt', new Date(), new Date()])
     return rows
   }
 
@@ -49,7 +49,10 @@ class Graph extends Component {
     }
 
     // Concat all colors
-    const colors =  [].concat.apply([], data.map((d) => d.colors))
+    const colors = [].concat.apply(
+      [],
+      data.map(d => d.colors)
+    )
     colors.push('black')
 
     const options = {
@@ -63,14 +66,14 @@ class Graph extends Component {
     const rows = this.formatRows()
     const { height } = this.props
     return (
-      <div className='chart' style={{ height: `${height + 50}px` }}>
+      <div className="chart" style={{ height: `${height + 50}px` }}>
         <Chart
-          chartType='Timeline'
+          chartType="Timeline"
           data={[this.columns, ...rows]}
-          width='100%'
-          height='100%'
+          width="100%"
+          height="100%"
           options={options}
-          chartLanguage='fi'
+          chartLanguage="fi"
         />
       </div>
     )

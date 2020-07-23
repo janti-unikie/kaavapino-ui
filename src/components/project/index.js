@@ -9,7 +9,10 @@ import {
   changingPhaseSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
-import { latestEditFieldSelector, allEditFieldsSelector } from '../../selectors/schemaSelector'
+import {
+  latestEditFieldSelector,
+  allEditFieldsSelector
+} from '../../selectors/schemaSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import Timeline from './Timeline'
 import ProjectEditPage from '../projectEdit'
@@ -44,7 +47,10 @@ class ProjectPage extends Component {
 
   componentDidUpdate(prevProps) {
     const { currentProject, changingPhase, edit } = this.props
-    if ((!prevProps.currentProject && currentProject) || (prevProps.changingPhase && !changingPhase)) {
+    if (
+      (!prevProps.currentProject && currentProject) ||
+      (prevProps.changingPhase && !changingPhase)
+    ) {
       this.setState({ selectedPhase: currentProject.phase })
       document.title = currentProject.name
     }
@@ -52,7 +58,7 @@ class ProjectPage extends Component {
     if (prevProps.edit && !edit) this.setState({ selectedPhase: currentProject.phase })
   }
 
-  switchDisplayedPhase = (phase) => {
+  switchDisplayedPhase = phase => {
     if (this.props.edit) this.setState({ selectedPhase: phase })
   }
 
@@ -70,7 +76,7 @@ class ProjectPage extends Component {
     return path
   }
 
-  getTitle = (name) => {
+  getTitle = name => {
     const { edit, documents } = this.props
     if (edit) {
       return `${name}, muokkaa`
@@ -118,21 +124,38 @@ class ProjectPage extends Component {
   }
 
   getNavActions = () => {
-    const { edit, documents, currentProject: { id } } = this.props
-    return !(edit || documents) ?
-      (
-        <NavActions>
-          <NavAction to={`/${id}/edit`}><FontAwesomeIcon icon='pen'/>Muokkaa</NavAction>
-          <NavAction to={`/${id}/documents`}><FontAwesomeIcon icon='file'/>Luo dokumentteja</NavAction>
-          <NavAction onClick={() => window.print()}><FontAwesomeIcon icon='print'/>Tulosta projektikortti</NavAction>
-          <NavAction onClick={() => this.setState({ showDeadlineModal: true })}><FontAwesomeIcon icon='cog'/>Määräajat</NavAction>
-        </NavActions>
-      ) :
-      (
-        <NavActions>
-          <NavAction to={`/${id}`}><FontAwesomeIcon icon='arrow-left'/>Projektikortti</NavAction>
-        </NavActions>
-      )
+    const {
+      edit,
+      documents,
+      currentProject: { id }
+    } = this.props
+    return !(edit || documents) ? (
+      <NavActions>
+        <NavAction to={`/${id}/edit`}>
+          <FontAwesomeIcon icon="pen" />
+          Muokkaa
+        </NavAction>
+        <NavAction to={`/${id}/documents`}>
+          <FontAwesomeIcon icon="file" />
+          Luo dokumentteja
+        </NavAction>
+        <NavAction onClick={() => window.print()}>
+          <FontAwesomeIcon icon="print" />
+          Tulosta projektikortti
+        </NavAction>
+        <NavAction onClick={() => this.setState({ showDeadlineModal: true })}>
+          <FontAwesomeIcon icon="cog" />
+          Määräajat
+        </NavAction>
+      </NavActions>
+    ) : (
+      <NavActions>
+        <NavAction to={`/${id}`}>
+          <FontAwesomeIcon icon="arrow-left" />
+          Projektikortti
+        </NavAction>
+      </NavActions>
+    )
   }
 
   getLatestChange = () => {
@@ -140,7 +163,9 @@ class ProjectPage extends Component {
     if (!edit || !latestEditField || !latestEditField.name) {
       return null
     }
-    return `(Viimeisin muokkaus: ${latestEditField.name} ${projectUtils.formatDateTime(latestEditField.timestamp)} ${latestEditField.user_name})`
+    return `(Viimeisin muokkaus: ${latestEditField.name} ${projectUtils.formatDateTime(
+      latestEditField.timestamp
+    )} ${latestEditField.user_name})`
   }
 
   getAllChanges = () => {
@@ -153,30 +178,37 @@ class ProjectPage extends Component {
   }
 
   renderLoading = () => (
-    <div className='project-container'>
+    <div className="project-container">
       <NavHeader
-        routeItems={[{ value: 'Kaavahankkeet', path: '/' }, { value: 'Ladataan...', path: '/' }]}
+        routeItems={[
+          { value: 'Kaavahankkeet', path: '/' },
+          { value: 'Ladataan...', path: '/' }
+        ]}
         title={'Ladataan...'}
       />
-      <div className='project-page-content'>
-        <Loader inline={'centered'} active>Ladataan</Loader>
+      <div className="project-page-content">
+        <Loader inline={'centered'} active>
+          Ladataan
+        </Loader>
       </div>
     </div>
   )
 
   render() {
     const { edit, currentProject, phases, currentProjectLoaded } = this.props
-    const loading = (!currentProjectLoaded || !phases)
+    const loading = !currentProjectLoaded || !phases
     if (loading) {
       return this.renderLoading()
     }
     const { phase } = currentProject
     const currentPhases = this.getCurrentPhases()
-    const projectPhase = currentPhases.find((p) => p.id === phase)
-    const selectedPhase = currentPhases.find((phase) => phase.id === this.state.selectedPhase)
+    const projectPhase = currentPhases.find(p => p.id === phase)
+    const selectedPhase = currentPhases.find(
+      phase => phase.id === this.state.selectedPhase
+    )
 
     return (
-      <div className='project-container'>
+      <div className="project-container">
         <NavHeader
           routeItems={this.getRouteItems()}
           title={this.getTitle(currentProject.name)}
@@ -196,9 +228,7 @@ class ProjectPage extends Component {
           open={this.state.showDeadlineModal}
           handleClose={() => this.setState({ showDeadlineModal: false })}
         />
-        <div className='project-page-content'>
-          { this.getProjectPageContent() }
-        </div>
+        <div className="project-page-content">{this.getProjectPageContent()}</div>
       </div>
     )
   }
@@ -208,7 +238,7 @@ const mapDispatchToProps = {
   initializeProject
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     currentProject: currentProjectSelector(state),
     phases: phasesSelector(state),
@@ -219,7 +249,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProjectPage)
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectPage)

@@ -14,7 +14,9 @@ const AccordionTitle = props => {
       key={index}
       onClick={() => handleClick(id)}
     >
-      <div>{index + 1}. {children}</div>
+      <div>
+        {index + 1}. {children}
+      </div>
       <FontAwesomeIcon icon={isActive ? faChevronUp : faChevronDown} />
     </SUIAccordionTitle>
   )

@@ -1,6 +1,7 @@
 import { takeLatest, all, call, put, select } from 'redux-saga/effects'
 import {
-  FETCH_REPORTS, fetchReportsSuccessful,
+  FETCH_REPORTS,
+  fetchReportsSuccessful,
   DOWNLOAD_REPORT
 } from '../actions/reportActions'
 import { reportFormSelector } from '../selectors/formSelector'
@@ -25,8 +26,16 @@ function* fetchReportsSaga() {
 
 function* downloadReportSaga() {
   try {
-    const { values: { report, ...rest } } = yield select(reportFormSelector)
-    const res = yield call(reportApi.get, { path: { id: report }, query: { ...rest } }, ':id/', { responseType: 'blob' }, true)
+    const {
+      values: { report, ...rest }
+    } = yield select(reportFormSelector)
+    const res = yield call(
+      reportApi.get,
+      { path: { id: report }, query: { ...rest } },
+      ':id/',
+      { responseType: 'blob' },
+      true
+    )
     const fileData = res.data
     const fileName = res.headers['content-disposition'].split('filename=')[1]
     if (fileData) {

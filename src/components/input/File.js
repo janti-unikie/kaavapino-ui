@@ -46,15 +46,20 @@ class File extends Component {
     }
   }
 
-  handleClick = (e) => {
+  handleClick = e => {
     e.preventDefault()
     this.inputRef.current.click()
   }
 
   reset = () => {
-    const { projectFileRemove, field: { name } } = this.props
+    const {
+      projectFileRemove,
+      field: { name }
+    } = this.props
     const { current } = this.state
-    const confirm = window.confirm(`Oletko varma, että haluat poistaa tiedoston ${current}?`)
+    const confirm = window.confirm(
+      `Oletko varma, että haluat poistaa tiedoston ${current}?`
+    )
     if (confirm) {
       this.inputRef.current.value = ''
       this.setState({ current: null })
@@ -87,7 +92,7 @@ class File extends Component {
     }
   }
 
-  onChangeFile = (e) => {
+  onChangeFile = e => {
     const { field, image, projectFileUpload } = this.props
     const file = this.inputRef.current.files[0]
     if (!file) {
@@ -118,8 +123,8 @@ class File extends Component {
       attribute: field.name,
       file,
       description,
-      callback: (e) => this.callback(e, onCompleted),
-      setCancelToken: (token) => this.cancelToken = token
+      callback: e => this.callback(e, onCompleted),
+      setCancelToken: token => (this.cancelToken = token)
     })
     this.setState({ uploading: true, percentCompleted: 0 })
   }
@@ -129,15 +134,17 @@ class File extends Component {
     const { field, image, description } = this.props
     return (
       <div>
-        <div className='file-input-container'>
+        <div className="file-input-container">
           <Button.Group>
             <Button
               disabled={uploading}
-              as='label'
+              as="label"
               htmlFor={field.name}
               label={{
                 basic: true,
-                content: `${this.state.current || (uploading && 'Ladataan...') || 'Valitse tiedosto'}`
+                content: `${this.state.current ||
+                  (uploading && 'Ladataan...') ||
+                  'Valitse tiedosto'}`
               }}
               onClick={this.handleClick}
               ref={this.inputButtonRef}
@@ -145,10 +152,26 @@ class File extends Component {
               className="upload-button"
             />
             <div className="file-action-buttons">
-              { !uploading && current && <Button icon='download' className="file-action-button" onClick={this.download} content='Lataa' /> }
-              { !uploading && current && <Button icon='cancel' className="file-action-button" color='red' onClick={this.reset} /> }
+              {!uploading && current && (
+                <Button
+                  icon="download"
+                  className="file-action-button"
+                  onClick={this.download}
+                  content="Lataa"
+                />
+              )}
+              {!uploading && current && (
+                <Button
+                  icon="cancel"
+                  className="file-action-button"
+                  color="red"
+                  onClick={this.reset}
+                />
+              )}
             </div>
-            { uploading && <Button icon='cancel' color='red' onClick={this.cancel} content='Peruuta' /> }
+            {uploading && (
+              <Button icon="cancel" color="red" onClick={this.cancel} content="Peruuta" />
+            )}
           </Button.Group>
         </div>
         <input
@@ -156,12 +179,27 @@ class File extends Component {
           hidden
           id={field.name}
           multiple
-          type='file'
+          type="file"
           onChange={this.onChangeFile}
         />
-        { uploading && <Progress percent={percentCompleted} progress indicating /> }
-        { <img style={{ display: `${(current && image) ? 'block' : 'none'}`, marginBottom: '10px' }} className='image-preview' ref={this.imageRef} alt={current ? current : ''} /> }
-        { current && description && <span className='file-description'><b>Kuvaus: </b>{ description }</span> }
+        {uploading && <Progress percent={percentCompleted} progress indicating />}
+        {
+          <img
+            style={{
+              display: `${current && image ? 'block' : 'none'}`,
+              marginBottom: '10px'
+            }}
+            className="image-preview"
+            ref={this.imageRef}
+            alt={current ? current : ''}
+          />
+        }
+        {current && description && (
+          <span className="file-description">
+            <b>Kuvaus: </b>
+            {description}
+          </span>
+        )}
       </div>
     )
   }
@@ -173,7 +211,4 @@ const mapDispatchToProps = {
   downloadFile
 }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(File)
+export default connect(null, mapDispatchToProps)(File)

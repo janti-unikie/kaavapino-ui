@@ -174,7 +174,9 @@ describe('project reducer', () => {
       validating: true,
       hasErrors: false
     }
-    expect(project(state, { type: VALIDATE_PROJECT_FIELDS_SUCCESSFUL, payload: true })).toEqual({
+    expect(
+      project(state, { type: VALIDATE_PROJECT_FIELDS_SUCCESSFUL, payload: true })
+    ).toEqual({
       ...initialState,
       validating: false,
       hasErrors: true
@@ -198,11 +200,13 @@ describe('project reducer', () => {
       changingPhase: true,
       currentProject: 2
     }
-    expect(project(state, { type: CHANGE_PROJECT_PHASE_SUCCESSFUL, payload: 1 })).toEqual({
-      ...initialState,
-      changingPhase: false,
-      currentProject: 1
-    })
+    expect(project(state, { type: CHANGE_PROJECT_PHASE_SUCCESSFUL, payload: 1 })).toEqual(
+      {
+        ...initialState,
+        changingPhase: false,
+        currentProject: 1
+      }
+    )
   })
 
   it('should handle CHANGE_PROJECT_PHASE_FAILURE', () => {
@@ -219,13 +223,18 @@ describe('project reducer', () => {
   it('should handle PROJECT_FILE_UPLOAD_SUCCESSFUL', () => {
     const state = {
       ...initialState,
-      currentProject: { test: 10, attribute_data: { 'a': 1, 'b': 2, 'c': 3 } }
+      currentProject: { test: 10, attribute_data: { a: 1, b: 2, c: 3 } }
     }
-    expect(project(state, { type: PROJECT_FILE_UPLOAD_SUCCESSFUL, payload: { attribute: 'b', file: 1, description: 2 } })).toEqual({
+    expect(
+      project(state, {
+        type: PROJECT_FILE_UPLOAD_SUCCESSFUL,
+        payload: { attribute: 'b', file: 1, description: 2 }
+      })
+    ).toEqual({
       ...initialState,
       currentProject: {
         ...state.currentProject,
-        attribute_data: { 'a': 1, 'b': { link: 1, description: 2 }, 'c': 3 }
+        attribute_data: { a: 1, b: { link: 1, description: 2 }, c: 3 }
       }
     })
   })
@@ -233,13 +242,15 @@ describe('project reducer', () => {
   it('should handle PROJECT_FILE_REMOVE_SUCCESSFUL', () => {
     const state = {
       ...initialState,
-      currentProject: { test: 10, attribute_data: { 'a': 1, 'b': 2, 'c': 3 } }
+      currentProject: { test: 10, attribute_data: { a: 1, b: 2, c: 3 } }
     }
-    expect(project(state, { type: PROJECT_FILE_REMOVE_SUCCESSFUL, payload: 'b' })).toEqual({
+    expect(
+      project(state, { type: PROJECT_FILE_REMOVE_SUCCESSFUL, payload: 'b' })
+    ).toEqual({
       ...initialState,
       currentProject: {
         ...state.currentProject,
-        attribute_data: { 'a': 1, 'c': 3 }
+        attribute_data: { a: 1, c: 3 }
       }
     })
   })

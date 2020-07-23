@@ -11,10 +11,13 @@ class Reports extends Component {
 
   render() {
     return (
-      <div className='reports-page'>
+      <div className="reports-page">
         <NavHeader
-          routeItems={[ { value: 'Kaavahankkeet', path: '/' }, { value: 'Raportit', path: '/reports' } ]}
-          title='Raportit'
+          routeItems={[
+            { value: 'Kaavahankkeet', path: '/' },
+            { value: 'Raportit', path: '/reports' }
+          ]}
+          title="Raportit"
         />
         <ReportBuilder />
       </div>
@@ -26,7 +29,4 @@ const mapDispatchToProps = {
   fetchReports
 }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Reports)
+export default connect(null, mapDispatchToProps)(Reports)

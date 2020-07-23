@@ -5,7 +5,8 @@ import {
   Menu,
   Button,
   Responsive,
-  Sidebar, Grid
+  Sidebar,
+  Grid
 } from 'semantic-ui-react'
 import '@fortawesome/fontawesome-svg-core'
 import './styles.scss'
@@ -34,81 +35,96 @@ class Header extends Component {
     let { visible } = this.state
     return (
       <div className="navbar-container">
-        <Menu className='navbar-menu borderless'>
+        <Menu className="navbar-menu borderless">
           <Container>
-            <Menu.Item as='a'className='navbar-logo' header>
-              <Image className='navbar-image' size='tiny' src='/helsinki.svg' style={{ marginRight: '1.5em' }} />
-                            Kaavapino
+            <Menu.Item as="a" className="navbar-logo" header>
+              <Image
+                className="navbar-image"
+                size="tiny"
+                src="/helsinki.svg"
+                style={{ marginRight: '1.5em' }}
+              />
+              Kaavapino
             </Menu.Item>
           </Container>
-          <Responsive as={Menu.Menu} minWidth={800} position='right'>
-            <NavLink to='/'>
+          <Responsive as={Menu.Menu} minWidth={800} position="right">
+            <NavLink to="/">
               <HistogramIcon />
               <span>Yleisnäkymä</span>
             </NavLink>
-            <NavLink to='/projects'>
-              <div className='navbar-item'>
+            <NavLink to="/projects">
+              <div className="navbar-item">
                 <CheckListIcon />
                 <span>Projektit</span>
               </div>
             </NavLink>
-            <NavLink to='/reports'>
-              <div className='navbar-item'>
+            <NavLink to="/reports">
+              <div className="navbar-item">
                 <PagesIcon />
                 <span>Raportit</span>
               </div>
             </NavLink>
-            <NavLink to='/Logout'>
-              <div className='navbar-item'>
+            <NavLink to="/Logout">
+              <div className="navbar-item">
                 <LogoutIcon />
                 <span>Kirjaudu ulos</span>
               </div>
             </NavLink>
           </Responsive>
-          <Responsive as={Menu.Menu} maxWidth={800} position='right'>
-            <Button className='navbar-responsive-button' basic icon onClick={() => this.setVisible(true)}>
+          <Responsive as={Menu.Menu} maxWidth={800} position="right">
+            <Button
+              className="navbar-responsive-button"
+              basic
+              icon
+              onClick={() => this.setVisible(true)}
+            >
               <FontAwesomeIcon icon={faBars} />
             </Button>
           </Responsive>
         </Menu>
         <Sidebar
           as={Menu}
-          animation='overlay'
-          icon='labeled'
-          direction='right'
+          animation="overlay"
+          icon="labeled"
+          direction="right"
           onHide={() => this.setVisible(false)}
           vertical
           visible={visible}
-          width='wide'
-          className='borderless'
+          width="wide"
+          className="borderless"
         >
           <Menu.Item>
             <Grid>
-              <Grid.Column floated='left' width={ 1 }>
-                <Button className='navbar-responsive-close-icon' basic icon onClick={() => this.setVisible(false)}>
+              <Grid.Column floated="left" width={1}>
+                <Button
+                  className="navbar-responsive-close-icon"
+                  basic
+                  icon
+                  onClick={() => this.setVisible(false)}
+                >
                   <FontAwesomeIcon icon={faTimesCircle} />
                 </Button>
               </Grid.Column>
             </Grid>
           </Menu.Item>
-          <NavLink to='/'>
+          <NavLink to="/">
             <HistogramMobileIcon />
             <span>Yleisnäkymä</span>
           </NavLink>
-          <NavLink to='/projects'>
-            <div className='navbar-item'>
+          <NavLink to="/projects">
+            <div className="navbar-item">
               <CheckListMobileIcon />
               <span>Hankkeet</span>
             </div>
           </NavLink>
-          <NavLink to='/reports'>
-            <div className='navbar-item'>
+          <NavLink to="/reports">
+            <div className="navbar-item">
               <PagesMobileIcon />
               <span>Raportit</span>
             </div>
           </NavLink>
-          <NavLink to='/Logout'>
-            <div className='navbar-item'>
+          <NavLink to="/Logout">
+            <div className="navbar-item">
               <LogoutMobileIcon />
               <span>Kirjaudu ulos</span>
             </div>

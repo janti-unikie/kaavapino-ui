@@ -1,4 +1,4 @@
-@import "../common/colors";
+@import '../common/colors';
 
 /* This file includes input styles that override those from semantic UI where needed */
 .field,
@@ -60,10 +60,10 @@
 }
 
 .ui.form .fields {
-  >.input-container {
+  > .input-container {
     flex: 0 1 auto;
-    padding-left: .5em;
-    padding-right: .5em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
   }
 }
 
@@ -94,7 +94,7 @@
   padding: 12px 32px 12px 8px;
   margin-top: 4px;
 
-  &.multiple >.label {
+  &.multiple > .label {
     margin-top: 8px;
   }
 
@@ -205,24 +205,24 @@
         }
       }
     }
-    .ui.checkbox input:focus~label {
+    .ui.checkbox input:focus ~ label {
       color: white;
     }
   }
 
-  .ui.radio.checkbox input:checked~label:after {
-    color: $dark-blue-color;
-    background-color: $dark-blue-color ;
-    width: 24px;
-    height: 24px;
-  }
-  .ui.radio.checkbox input:focus:checked~label:after {
+  .ui.radio.checkbox input:checked ~ label:after {
     color: $dark-blue-color;
     background-color: $dark-blue-color;
     width: 24px;
     height: 24px;
   }
-  .ui.checkbox input:checked~label:before {
+  .ui.radio.checkbox input:focus:checked ~ label:after {
+    color: $dark-blue-color;
+    background-color: $dark-blue-color;
+    width: 24px;
+    height: 24px;
+  }
+  .ui.checkbox input:checked ~ label:before {
     border-color: $dark-blue-color;
   }
   .ui.radio.checkbox label:before {
@@ -408,10 +408,10 @@
   .geometry-input {
     height: 300px;
   }
-  
+
   .geometry-input-actions {
     margin-top: 10px;
-  }  
+  }
 }
 
 .link-container {

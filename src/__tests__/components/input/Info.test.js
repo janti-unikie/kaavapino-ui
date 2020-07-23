@@ -6,7 +6,7 @@ describe('<Info />', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(<Info content='test' />)
+    wrapper = mount(<Info content="test" />)
   })
 
   it('renders', () => {

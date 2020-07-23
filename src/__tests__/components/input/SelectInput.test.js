@@ -10,9 +10,9 @@ describe('<SelectInput />', () => {
     change = null
     selectInputComponent = mount(
       <SelectInput
-        input={{ name: 'test', onChange: (value) => change = value }}
+        input={{ name: 'test', onChange: value => (change = value) }}
         meta={{}}
-        options={options.map((option) => ({ key: option, value: option, text: option }))}
+        options={options.map(option => ({ key: option, value: option, text: option }))}
       />
     )
   })
@@ -33,7 +33,10 @@ describe('<SelectInput />', () => {
   })
 
   it('can be changed', () => {
-    selectInputComponent.find('DropdownItem').at(1).simulate('click')
+    selectInputComponent
+      .find('DropdownItem')
+      .at(1)
+      .simulate('click')
     expect(change).toBe('b')
   })
 })

@@ -1,6 +1,4 @@
-import {
-  FETCH_REPORTS_SUCCESSFUL
-} from '../actions/reportActions'
+import { FETCH_REPORTS_SUCCESSFUL } from '../actions/reportActions'
 
 export const initialState = {
   reports: []
@@ -8,11 +6,13 @@ export const initialState = {
 
 export const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case FETCH_REPORTS_SUCCESSFUL: return ({
-      ...state,
-      reports: payload
-    })
+    case FETCH_REPORTS_SUCCESSFUL:
+      return {
+        ...state,
+        reports: payload
+      }
 
-    default: return ({ ...state })
+    default:
+      return { ...state }
   }
 }

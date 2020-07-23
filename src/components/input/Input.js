@@ -4,12 +4,7 @@ import { Input } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
 
 const CustomInput = ({ input, meta: { error }, ...custom }) => (
-  <Input
-    error={inputUtils.hasError(error)}
-    {...input}
-    {...custom}
-    fluid
-  />
+  <Input error={inputUtils.hasError(error)} {...input} {...custom} fluid />
 )
 
 CustomInput.propTypes = {

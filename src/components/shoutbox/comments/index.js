@@ -28,13 +28,16 @@ class Comments extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.fetchComments(this.props.project)
     this.poll = setInterval(() => this.props.pollComments(this.props.project), 60000)
   }
 
-  componentDidUpdate (prevProps) {
-    if ((prevProps.comments.length < this.props.comments.length) && !prevProps.pollingComments) {
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.comments.length < this.props.comments.length &&
+      !prevProps.pollingComments
+    ) {
       const comments = this.commentsRef.current
       if (comments) {
         comments.scrollTop = comments.scrollHeight
@@ -49,11 +52,11 @@ class Comments extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     clearInterval(this.poll)
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({ value: e.target.value })
   }
 
@@ -75,34 +78,51 @@ class Comments extends Component {
     }
   }
 
-  render () {
-    const { comments, commentsLoading, userId, amountOfCommentsToShow, pollingComments } = this.props
-    const begin = comments.length < amountOfCommentsToShow ? comments.length : amountOfCommentsToShow
+  render() {
+    const {
+      comments,
+      commentsLoading,
+      userId,
+      amountOfCommentsToShow,
+      pollingComments
+    } = this.props
+    const begin =
+      comments.length < amountOfCommentsToShow ? comments.length : amountOfCommentsToShow
 
     return (
-      <div className='comment-list-container'>
-        <h2 className='comment-list-header'>Viestit</h2>
-        <div className='comments' ref={this.commentsRef} onScroll={this.handleScroll}>
-          { (commentsLoading || pollingComments) && <p className='comments-message'>Ladataan...</p> }
-          { !commentsLoading && comments.length === 0 && <p className='comments-message'>Ei kommentteja.</p> }
-          { comments.slice(comments.length - begin, comments.length).map((comment, i) => (
+      <div className="comment-list-container">
+        <h2 className="comment-list-header">Viestit</h2>
+        <div className="comments" ref={this.commentsRef} onScroll={this.handleScroll}>
+          {(commentsLoading || pollingComments) && (
+            <p className="comments-message">Ladataan...</p>
+          )}
+          {!commentsLoading && comments.length === 0 && (
+            <p className="comments-message">Ei kommentteja.</p>
+          )}
+          {comments.slice(comments.length - begin, comments.length).map((comment, i) => (
             <Comment
               key={`${i}-${comment.id}`}
-              { ...comment }
+              {...comment}
               editable={userId === comment.user}
-              onSave={(content) => this.props.editComment(this.props.project, comment.id, content)}
+              onSave={content =>
+                this.props.editComment(this.props.project, comment.id, content)
+              }
               onDelete={() => this.props.deleteComment(this.props.project, comment.id)}
             />
-          )) }
+          ))}
         </div>
-        <div className='comment-submit-container'>
+        <div className="comment-submit-container">
           <Form>
             <Input
               onChange={this.handleChange}
-              type='text'
+              type="text"
               fluid
-              placeholder='Lisää kommentti'
-              action={ <Button primary onClick={this.handleSubmit}>Lähetä</Button> }
+              placeholder="Lisää kommentti"
+              action={
+                <Button primary onClick={this.handleSubmit}>
+                  Lähetä
+                </Button>
+              }
               value={this.state.value}
             />
           </Form>
@@ -112,7 +132,7 @@ class Comments extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   comments: commentsSelector(state),
   commentsLoading: commentsLoadingSelector(state),
   userId: userIdSelector(state),
@@ -129,7 +149,4 @@ const mapDispatchToProps = {
   increaseAmountOfCommentsToShow
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Comments)
+export default connect(mapStateToProps, mapDispatchToProps)(Comments)

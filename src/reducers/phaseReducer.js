@@ -1,6 +1,4 @@
-import {
-  FETCH_PHASES_SUCCESSFUL
-} from '../actions/phaseActions'
+import { FETCH_PHASES_SUCCESSFUL } from '../actions/phaseActions'
 
 export const initialState = {
   phases: null
