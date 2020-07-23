@@ -132,12 +132,14 @@ class File extends Component {
   render() {
     const { current, uploading, percentCompleted } = this.state
     const { field, image, description } = this.props
+    const disabled = field.disabled
+
     return (
       <div>
         <div className="file-input-container">
           <Button.Group>
             <Button
-              disabled={uploading}
+              disabled={uploading || disabled}
               as="label"
               htmlFor={field.name}
               label={{
@@ -158,6 +160,7 @@ class File extends Component {
                   className="file-action-button"
                   onClick={this.download}
                   content="Lataa"
+                  disabled={disabled}
                 />
               )}
               {!uploading && current && (
@@ -165,6 +168,7 @@ class File extends Component {
                   icon="cancel"
                   className="file-action-button"
                   color="red"
+                  disabled={disabled}
                   onClick={this.reset}
                 />
               )}
@@ -181,6 +185,7 @@ class File extends Component {
           multiple
           type="file"
           onChange={this.onChangeFile}
+          disabled={disabled}
         />
         {uploading && <Progress percent={percentCompleted} progress indicating />}
         {

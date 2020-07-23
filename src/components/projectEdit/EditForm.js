@@ -54,6 +54,7 @@ class EditForm extends Component {
 
   render() {
     const {
+      disabled,
       sections,
       title
       // saving,
@@ -81,7 +82,7 @@ class EditForm extends Component {
           />
         </div>
         {sections.map((section, i) => (
-          <FormSection key={i} section={section} />
+          <FormSection key={i} section={section} disabled={disabled} />
         ))}
         {/* Commenting end phase and save buttons out, since in these designs it's in quick nav.
          * Keeping it here in case it's needed in mobile styles. if not, remove.
