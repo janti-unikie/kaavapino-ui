@@ -60,7 +60,16 @@
   h3 {
     margin-bottom: 0;
   }
+
+  .subtype-input-container .input-container.error .ui.checkbox label {
+    border-color: $color-error-border;
+
+    &:hover {
+      box-shadow: 0px 0px 0px 1px $color-error-border;
+    }
+  }
 }
+
 
 @media screen and (min-width: 600px) {
   .form-modal {

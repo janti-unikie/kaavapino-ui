@@ -26,13 +26,20 @@ class FormField extends Component {
   }
 
   render() {
-    const { field, attributeData, checking, updated } = this.props
+    const { field, attributeData, checking, updated, error } = this.props
     const required =
       checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
     const isOneLineField = OneLineFields.indexOf(field.type) > -1
 
+    /* Two ways to bring errors to FormField component:
+     * 1) the missing attribute data of required fields is checked automatically.
+     * 2) error text can be given directly to the component as props.
+     * Redux form gives error information to the Field component, but that's further down the line, and we need that information
+     * here to modify the input header accordingly. */
+    const showError = required ? 'pakollinen kenttä' : error
+
     return (
-      <Form.Field className={`input-container ${isOneLineField ? 'small-margin' : ''}`}>
+      <Form.Field className={`input-container ${isOneLineField ? 'small-margin' : ''} ${showError ? 'error' : ''}`}>
         {!isOneLineField && (
           <div className="input-header">
             <Label className={`input-title${required ? ' highlight' : ''}`}>
@@ -64,6 +71,7 @@ class FormField extends Component {
           </div>
         )}
         {this.renderField()}
+        {showError && <div className="error-text">{showError}</div>}
       </Form.Field>
     )
   }

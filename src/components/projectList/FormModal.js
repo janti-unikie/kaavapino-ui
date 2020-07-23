@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Modal, Form } from 'semantic-ui-react'
-import { reduxForm } from 'redux-form'
+import { reduxForm, getFormSubmitErrors } from 'redux-form'
 import projectUtils from '../../utils/projectUtils'
 import './FormModal.scss'
 import { connect } from 'react-redux'
@@ -42,13 +42,24 @@ class FormModal extends Component {
 
   handleSubmit = () => {
     this.setState({ loading: true })
-    this.props.handleSubmit()
+    const errors = this.props.handleSubmit()
+    console.log(errors)
   }
 
   handleClose = () => {
     this.props.reset()
     this.props.handleClose()
     this.setState({ loading: false })
+  }
+
+  getFormField = fieldProps => {
+    const { formSubmitErrors } = this.props
+    const error =
+      formSubmitErrors &&
+      fieldProps &&
+      fieldProps.field &&
+      formSubmitErrors[fieldProps.field.name]
+    return <FormField {...fieldProps} error={error} />
   }
 
   render() {
@@ -68,29 +79,34 @@ class FormModal extends Component {
         <Modal.Content>
           <Form>
             <Form.Group widths="equal">
-              <FormField field={{ name: 'name', type: 'text', label: 'Hankkeen nimi' }} />
-              <FormField
-                className="ui fluid input"
-                field={{
+              {this.getFormField({
+                field: {
+                  name: 'name',
+                  label: 'Projektin nimi',
+                  type: 'text'
+                }
+              })}
+              {this.getFormField({
+                className: 'ui fluid input',
+                field: {
                   name: 'user',
                   label: 'Vastuuhenkilö',
                   type: 'select',
                   choices: this.formatUsers()
-                }}
-              />
+                }
+              })}
             </Form.Group>
-            <FormField
-              field={{
+            {this.getFormField({
+              field: {
                 name: 'public',
                 label: 'Luodaanko projekti julkiseksi',
                 type: 'boolean',
                 double: true
-              }}
-              double
-            />
+              }
+            })}
             <div className="subtype-input-container">
-              <FormField
-                field={{
+              {this.getFormField({
+                field: {
                   name: 'subtype',
                   label: 'Valitse prosessin koko',
                   type: 'radio',
@@ -101,22 +117,22 @@ class FormModal extends Component {
                     { value: 4, label: 'L' },
                     { value: 5, label: 'XL' }
                   ]
-                }}
-              />
+                }
+              })}
             </div>
             {showXLProjectOptions && (
               <>
                 <h3>Valitse, laaditaanko</h3>
-                <FormField
-                  field={{
+                {this.getFormField({
+                  field: {
                     name: 'create_principles',
                     label: 'Suunnitteluperiaatteet',
                     type: 'toggle'
-                  }}
-                />
-                <FormField
-                  field={{ name: 'create_draft', label: 'Kaavaluonnos', type: 'toggle' }}
-                />
+                  }
+                })}
+                {this.getFormField({
+                  field: { name: 'create_draft', label: 'Kaavaluonnos', type: 'toggle' }
+                })}
               </>
             )}
           </Form>
@@ -140,7 +156,8 @@ FormModal.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  selectedSubType: newProjectSubtypeSelector(state)
+  selectedSubType: newProjectSubtypeSelector(state),
+  formSubmitErrors: getFormSubmitErrors(NEW_PROJECT_FORM)(state)
 })
 
 const decoratedForm = reduxForm({

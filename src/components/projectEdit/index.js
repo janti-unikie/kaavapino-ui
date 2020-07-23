@@ -33,7 +33,6 @@ class ProjectEditPage extends Component {
 
   handleSave = () => {
     this.props.saveProject()
-    this.setState({ checking: false })
   }
 
   render() {

@@ -54,7 +54,7 @@
 
   .input-title {
     &.highlight {
-      background-color: yellow;
+      // background-color: yellow;
     }
   }
 }
@@ -78,7 +78,7 @@
   margin-top: 4px;
 
   input {
-    border-radius: 0;
+    border-radius: 2px;
     transition: border 2s ease;
 
     &:hover {
@@ -88,7 +88,7 @@
 }
 
 .ui.search.selection.dropdown {
-  border-radius: 0;
+  border-radius: 2px;
   min-height: 56px;
   line-height: 32px;
   padding: 12px 32px 12px 8px;
@@ -141,7 +141,7 @@
 .ui.form .input input,
 .ui.selection.dropdown,
 .ui.form textarea {
-  border-radius: 0;
+  border-radius: 2px;
   border: 1px solid $border-gray;
   font-size: 18px;
   color: $black1;
@@ -158,7 +158,7 @@
   &:active,
   &.active,
   &.active:hover {
-    border-radius: 0;
+    border-radius: 2px;
     border: 1px solid $color-input-emphasis;
     box-shadow: 0px 0px 0px 1px $color-input-emphasis;
   }
@@ -422,4 +422,77 @@
 
 .rdtPicker {
   color: black;
+}
+
+.textarea-wrapper {
+  position: relative;
+}
+
+/* Error styles. Semantic UI uses a lot of !important, thus these overrides became scetchier than I hoped.
+ * Using #root selector to help with more specific selectors */
+.modal,
+#root {
+  .input-container.field.error {
+    .ui.input input,
+    .ui.dropdown,
+    .ui.selection.dropdown,
+    .ui.dropdown .text,
+    .textarea-wrapper textarea {
+      background: white !important;
+      border-color: $color-error-border !important;
+
+      &:focus,
+      &:hover,
+      &:active,
+      &.active,
+      &.active:hover {
+        border-color: $color-error-border !important;
+        box-shadow: 0px 0px 0px 1px $color-error-border !important;
+      }
+    }
+
+    /* ::before can't be in the same list, sass does not undestand hovers then */
+    label::before {
+      background: white !important;
+      border-color: $color-error-border !important;
+
+      &:focus,
+      &:hover,
+      &:active,
+      &.active,
+      &.active:hover {
+        border-color: $color-error-border !important;
+        box-shadow: 0px 0px 0px 1px $color-error-border !important;
+      }
+    }
+
+    /* can't put ::before to an input element, thus selecting their wrappers */
+    .input,
+    .ui.selection.dropdown,
+    .textarea-wrapper {
+      input {
+        padding-right: 48px;
+      }
+
+      &::before {
+        content: '';
+        background: url('./assets/icons/alert-icon.svg') no-repeat center;
+        display: block;
+        top: 14px;
+        right: 20px;
+        position: absolute;
+        height: 24px;
+        width: 24px;
+      }
+    }
+
+    .input-title,
+    label {
+      color: $color-error-text !important;
+    }
+  }
+
+  .error-text {
+    color: $color-error-text;
+  }
 }
