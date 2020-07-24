@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import { Button, Modal, Form } from 'semantic-ui-react'
 import { reduxForm, getFormSubmitErrors } from 'redux-form'
 import projectUtils from '../../utils/projectUtils'
-import './FormModal.scss'
+import './NewProjectFormModal.scss'
 import { connect } from 'react-redux'
 import { NEW_PROJECT_FORM } from '../../constants'
 import { newProjectSubtypeSelector } from '../../selectors/formSelector'
 import FormField from '../input/FormField'
 
-class FormModal extends Component {
+class NewProjectFormModal extends Component {
   constructor(props) {
     super(props)
 
@@ -150,7 +150,7 @@ class FormModal extends Component {
   }
 }
 
-FormModal.propTypes = {
+NewProjectFormModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired
 }
@@ -163,6 +163,6 @@ const mapStateToProps = state => ({
 const decoratedForm = reduxForm({
   form: NEW_PROJECT_FORM,
   initialValues: { public: true }
-})(FormModal)
+})(NewProjectFormModal)
 
 export default connect(mapStateToProps, () => {})(decoratedForm)

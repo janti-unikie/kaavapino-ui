@@ -3,13 +3,15 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { Dropdown } from 'semantic-ui-react'
 
-export const NavAction = ({ children, to, ...rest }) => {
+export const NavAction = ({ children, to, primary, ...rest }) => {
+  const buttonClassname = primary ? 'primary' : 'secondary'
+
   return to ? (
-    <Link className="action-item" to={to}>
+    <Link className={`action-item ui button large ${buttonClassname}`} to={to}>
       {children}
     </Link>
   ) : (
-    <span {...rest} className="action-item">
+    <span {...rest} className={`action-item ui button large ${buttonClassname}`}>
       {children}
     </span>
   )
