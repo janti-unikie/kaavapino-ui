@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Loader } from 'semantic-ui-react'
-import { initializeProject } from '../../actions/projectActions'
+import { initializeProject, saveProjectBase } from '../../actions/projectActions'
 import {
   currentProjectSelector,
   currentProjectLoadedSelector,
@@ -38,7 +38,7 @@ class ProjectPage extends Component {
     this.state = {
       selectedPhase: selectedPhase,
       showDeadlineModal: false,
-      showBasicInformationForm: false
+      showBaseInformationForm: false
     }
   }
 
@@ -154,7 +154,7 @@ class ProjectPage extends Component {
       </NavActions>
     ) : (
       <NavActions>
-        <NavAction onClick={() => this.toggleBasicInformationForm(true)}>
+        <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
           Muokkaa perustietoja
         </NavAction>
         <NavAction to={`/${id}`} primary>
@@ -183,7 +183,7 @@ class ProjectPage extends Component {
     })
   }
 
-  toggleBasicInformationForm = opened => this.setState({ showBasicInformationForm: opened })
+  toggleBaseInformationForm = opened => this.setState({ showBaseInformationForm: opened })
 
   renderLoading = () => (
     <div className="project-container">
@@ -237,9 +237,16 @@ class ProjectPage extends Component {
           handleClose={() => this.setState({ showDeadlineModal: false })}
         />
         <NewProjectFormModal
-          open={this.state.showBasicInformationForm}
-          handleSubmit={this.props.createProject}
-          handleClose={() => this.toggleBasicInformationForm(false)}
+          currentProject={currentProject}
+          open={this.state.showBaseInformationForm}
+          initialValues={{
+            name: currentProject.name,
+            public: currentProject.public,
+            subtype: currentProject.subtype,
+            user: currentProject.user
+          }}
+          handleSubmit={this.props.saveProjectBase}
+          handleClose={() => this.toggleBaseInformationForm(false)}
           users={users}
           projectSubtypes={projectSubtypes}
         />
@@ -250,7 +257,8 @@ class ProjectPage extends Component {
 }
 
 const mapDispatchToProps = {
-  initializeProject
+  initializeProject,
+  saveProjectBase
 }
 
 const mapStateToProps = state => {

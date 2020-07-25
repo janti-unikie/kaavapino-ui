@@ -24,7 +24,7 @@ class ProjectListPage extends Component {
     super(props)
 
     this.state = {
-      showBasicInformationForm: false
+      showBaseInformationForm: false
     }
   }
 
@@ -35,7 +35,7 @@ class ProjectListPage extends Component {
     this.props.fetchProjectSubtypes()
   }
 
-  toggleForm = opened => this.setState({ showBasicInformationForm: opened })
+  toggleForm = opened => this.setState({ showBaseInformationForm: opened })
 
   render() {
     const {
@@ -91,7 +91,7 @@ class ProjectListPage extends Component {
           }
         />
         <NewProjectFormModal
-          open={this.state.showBasicInformationForm}
+          open={this.state.showBaseInformationForm}
           handleSubmit={this.props.createProject}
           handleClose={() => this.toggleForm(false)}
           users={users}

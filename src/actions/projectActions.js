@@ -16,6 +16,8 @@ export const FETCH_PROJECT_SUCCESSFUL = 'Fetch project successful'
 export const UPDATE_PROJECT = 'Update project'
 export const INITIALIZE_PROJECT = 'Initialize project'
 export const INITIALIZE_PROJECT_SUCCESSFUL = 'Initialize project successful'
+export const SAVE_PROJECT_BASE = 'Save project base'
+export const SAVE_PROJECT_BASE_SUCCESSFUL = 'Save project base successful'
 export const SAVE_PROJECT = 'Save project'
 export const SAVE_PROJECT_SUCCESSFUL = 'Save project successful'
 export const VALIDATE_PROJECT_FIELDS = 'Validate project fields'
@@ -86,6 +88,9 @@ export const createOwnProjectSuccessful = project => ({
   type: CREATE_OWN_PROJECT_SUCCESSFUL,
   payload: project
 })
+
+export const saveProjectBase = () => ({ type: SAVE_PROJECT_BASE })
+export const saveProjectBaseSuccessful = () => ({ type: SAVE_PROJECT_BASE_SUCCESSFUL })
 
 export const saveProject = () => ({ type: SAVE_PROJECT })
 export const saveProjectSuccessful = () => ({ type: SAVE_PROJECT_SUCCESSFUL })

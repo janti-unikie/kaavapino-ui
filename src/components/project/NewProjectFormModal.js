@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Modal, Form } from 'semantic-ui-react'
-import { reduxForm, getFormSubmitErrors } from 'redux-form'
+import { reduxForm, getFormSubmitErrors, getFormValues } from 'redux-form'
 import projectUtils from '../../utils/projectUtils'
 import './NewProjectFormModal.scss'
 import { connect } from 'react-redux'
@@ -64,8 +64,9 @@ class NewProjectFormModal extends Component {
 
   render() {
     const { loading } = this.state
-    const { selectedSubType } = this.props
+    const { currentProject, selectedSubType, initialValues, formValues } = this.props
     const showXLProjectOptions = selectedSubType === 5
+    const isEdit = !!currentProject
 
     return (
       <Modal
@@ -100,10 +101,13 @@ class NewProjectFormModal extends Component {
               field: {
                 name: 'public',
                 label: 'Luodaanko projekti julkiseksi',
-                type: 'boolean',
-                double: true
-              }
+                type: 'boolean'
+              },
+              double: true
             })}
+            {formValues && formValues.public && !initialValues.public &&
+              <div className="warning-box">Huom. Aiemmin ei-näkyväksi merkityn projektin tiedot muuttuvat näkyviksi kaikille Kaavapinon käyttäjille.</div>
+            }
             <div className="subtype-input-container">
               {this.getFormField({
                 field: {
@@ -120,6 +124,9 @@ class NewProjectFormModal extends Component {
                 }
               })}
             </div>
+            {formValues && initialValues.subtype && formValues.subtype !== initialValues.subtype &&
+              <div className="warning-box">Huom. Kun prosessi vaihtuu, vain ne Kaavapinoon syötetyt tiedot jäävät näkyviin, jotka kuuluvat valittuun prosessiin.</div>
+            }
             {showXLProjectOptions && (
               <>
                 <h3>Valitse, laaditaanko</h3>
@@ -142,7 +149,7 @@ class NewProjectFormModal extends Component {
             Peruuta
           </Button>
           <Button primary disabled={loading} type="submit" onClick={this.handleSubmit}>
-            Luo projekti
+            {isEdit ? 'Tallenna' : 'Luo projekti'}
           </Button>
         </Modal.Actions>
       </Modal>
@@ -157,7 +164,8 @@ NewProjectFormModal.propTypes = {
 
 const mapStateToProps = state => ({
   selectedSubType: newProjectSubtypeSelector(state),
-  formSubmitErrors: getFormSubmitErrors(NEW_PROJECT_FORM)(state)
+  formSubmitErrors: getFormSubmitErrors(NEW_PROJECT_FORM)(state),
+  formValues: getFormValues(NEW_PROJECT_FORM)(state)
 })
 
 const decoratedForm = reduxForm({
@@ -165,4 +173,4 @@ const decoratedForm = reduxForm({
   initialValues: { public: true }
 })(NewProjectFormModal)
 
-export default connect(mapStateToProps, () => {})(decoratedForm)
+export default connect(mapStateToProps, () => ({}))(decoratedForm)
