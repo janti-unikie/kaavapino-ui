@@ -100,7 +100,7 @@ class NewProjectFormModal extends Component {
             {this.getFormField({
               field: {
                 name: 'public',
-                label: 'Luodaanko projekti julkiseksi',
+                label: 'Luodaanko projekti näkyväksi',
                 type: 'boolean'
               },
               double: true
