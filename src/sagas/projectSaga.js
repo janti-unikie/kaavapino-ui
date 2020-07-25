@@ -242,8 +242,9 @@ function* saveProjectBase() {
     } catch (e) {
       if (e.response.status === 400) {
         yield put(stopSubmit(NEW_PROJECT_FORM, e.response.data))
+      } else {
+        yield put(error(e))
       }
-      yield put(error(e))
     }
   }
 }
