@@ -251,7 +251,8 @@ function* saveProjectBase() {
 
 function* saveProject() {
   const currentProjectId = yield select(currentProjectIdSelector)
-  const { initial, values } = yield select(editFormSelector)
+  const editForm = yield select(editFormSelector) || {}
+  const { initial, values } = editForm
 
   if (values) {
     const attribute_data = {}

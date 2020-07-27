@@ -98,11 +98,12 @@ class QuickNav extends Component {
     }
   }
 
+  tryToEndPhase = () => this.props.validateProjectFields()
+
   render() {
     const { activePhase } = this.state
     const {
       currentPhases,
-      changePhase,
       changingPhase,
       validating,
       saving,
@@ -163,7 +164,7 @@ class QuickNav extends Component {
             help="Tallentaa hankkeen"
           />
           <Button
-            handleClick={changePhase}
+            handleClick={this.tryToEndPhase}
             value="Lopeta vaihe"
             loading={changingPhase || validating}
             secondary
