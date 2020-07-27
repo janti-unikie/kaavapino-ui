@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Loader } from 'semantic-ui-react'
-import { initializeProject } from '../../actions/projectActions'
+import { initializeProject, saveProjectBase } from '../../actions/projectActions'
 import {
   currentProjectSelector,
   currentProjectLoadedSelector,
-  changingPhaseSelector
+  changingPhaseSelector,
+  usersSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
 import {
@@ -20,6 +21,8 @@ import ProjectCardPage from '../projectCard'
 import ProjectDocumentsPage from '../projectDocuments'
 import DeadlineModal from './DeadlineModal'
 import projectUtils from '../../utils/projectUtils'
+import NewProjectFormModal from './NewProjectFormModal'
+import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
 
 class ProjectPage extends Component {
   constructor(props) {
@@ -34,7 +37,8 @@ class ProjectPage extends Component {
 
     this.state = {
       selectedPhase: selectedPhase,
-      showDeadlineModal: false
+      showDeadlineModal: false,
+      showBaseInformationForm: false
     }
   }
 
@@ -150,9 +154,11 @@ class ProjectPage extends Component {
       </NavActions>
     ) : (
       <NavActions>
-        <NavAction to={`/${id}`}>
-          <FontAwesomeIcon icon="arrow-left" />
-          Projektikortti
+        <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
+          Muokkaa perustietoja
+        </NavAction>
+        <NavAction to={`/${id}`} primary>
+          Katso hankekortti
         </NavAction>
       </NavActions>
     )
@@ -177,6 +183,8 @@ class ProjectPage extends Component {
     })
   }
 
+  toggleBaseInformationForm = opened => this.setState({ showBaseInformationForm: opened })
+
   renderLoading = () => (
     <div className="project-container">
       <NavHeader
@@ -195,7 +203,7 @@ class ProjectPage extends Component {
   )
 
   render() {
-    const { edit, currentProject, phases, currentProjectLoaded } = this.props
+    const { edit, currentProject, phases, currentProjectLoaded, users, projectSubtypes } = this.props
     const loading = !currentProjectLoaded || !phases
     if (loading) {
       return this.renderLoading()
@@ -228,6 +236,20 @@ class ProjectPage extends Component {
           open={this.state.showDeadlineModal}
           handleClose={() => this.setState({ showDeadlineModal: false })}
         />
+        <NewProjectFormModal
+          currentProject={currentProject}
+          open={this.state.showBaseInformationForm}
+          initialValues={{
+            name: currentProject.name,
+            public: currentProject.public,
+            subtype: currentProject.subtype,
+            user: currentProject.user
+          }}
+          handleSubmit={this.props.saveProjectBase}
+          handleClose={() => this.toggleBaseInformationForm(false)}
+          users={users}
+          projectSubtypes={projectSubtypes}
+        />
         <div className="project-page-content">{this.getProjectPageContent()}</div>
       </div>
     )
@@ -235,13 +257,16 @@ class ProjectPage extends Component {
 }
 
 const mapDispatchToProps = {
-  initializeProject
+  initializeProject,
+  saveProjectBase
 }
 
 const mapStateToProps = state => {
   return {
     currentProject: currentProjectSelector(state),
     phases: phasesSelector(state),
+    users: usersSelector(state),
+    projectSubtypes: projectSubtypesSelector(state),
     currentProjectLoaded: currentProjectLoadedSelector(state),
     changingPhase: changingPhaseSelector(state),
     latestEditField: latestEditFieldSelector(state),

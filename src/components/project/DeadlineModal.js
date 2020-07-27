@@ -8,7 +8,7 @@ import { Button, Modal, Form } from 'semantic-ui-react'
 import Input from '../input/Input'
 import projectUtils from '../../utils/projectUtils'
 
-class FormModal extends Component {
+class NewProjectFormModal extends Component {
   state = {
     loading: false
   }
@@ -122,5 +122,5 @@ export default connect(
 )(
   reduxForm({
     form: 'deadlineModal'
-  })(FormModal)
+  })(NewProjectFormModal)
 )

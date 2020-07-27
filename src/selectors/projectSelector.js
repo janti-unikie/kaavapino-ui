@@ -93,7 +93,7 @@ export const updatesSelector = createSelector(
 export const usersSelector = createSelector(
   currentProjectSelector,
   (currentProject = {}) =>
-    currentProject._metadata ? currentProject._metadata.users : []
+    currentProject && currentProject._metadata ? currentProject._metadata.users : []
 )
 
 export const latestUpdateSelector = createSelector(updatesSelector, updates => {

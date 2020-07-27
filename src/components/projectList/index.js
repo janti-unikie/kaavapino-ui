@@ -16,7 +16,7 @@ import {
   totalProjectsSelector
 } from '../../selectors/projectSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
-import FormModal from './FormModal'
+import NewProjectFormModal from '../project/NewProjectFormModal'
 import List from './List'
 
 class ProjectListPage extends Component {
@@ -24,7 +24,7 @@ class ProjectListPage extends Component {
     super(props)
 
     this.state = {
-      formOpen: false
+      showBaseInformationForm: false
     }
   }
 
@@ -35,7 +35,7 @@ class ProjectListPage extends Component {
     this.props.fetchProjectSubtypes()
   }
 
-  toggleForm = opened => this.setState({ formOpen: opened })
+  toggleForm = opened => this.setState({ showBaseInformationForm: opened })
 
   render() {
     const {
@@ -90,8 +90,8 @@ class ProjectListPage extends Component {
             </NavActions>
           }
         />
-        <FormModal
-          open={this.state.formOpen}
+        <NewProjectFormModal
+          open={this.state.showBaseInformationForm}
           handleSubmit={this.props.createProject}
           handleClose={() => this.toggleForm(false)}
           users={users}
