@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import EditFloorAreaFormModal from '../project/EditFloorAreaFormModal'
 
 class Overview extends Component {
   constructor(props) {

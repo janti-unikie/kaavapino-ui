@@ -247,15 +247,26 @@
 
 .matrix-container {
   overflow: auto;
+  margin: -16px 0 48px;
+
+  .ui.input {
+    padding: 2px; /* needed for box-shadow to show on hover */
+  }
 
   input {
-    align-self: flex-start;
+    align-self: stretch;
   }
 
   .matrix {
-    :nth-child(n) {
-      padding: 5px;
+    .row-header {
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 0;
+      line-height: 22px;
+      margin-top: 16px;
+    }
 
+    :nth-child(n) {
       .highlighted {
         background: yellow;
       }

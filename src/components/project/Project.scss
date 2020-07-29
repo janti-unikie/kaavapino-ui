@@ -144,3 +144,11 @@
     font-size: 22px;
   }
 }
+
+.edit-floor-area-form-modal {
+  padding-bottom: 32px;
+
+  .collapse-content > .field.input-container {
+    margin-top: 0;
+  }
+}
