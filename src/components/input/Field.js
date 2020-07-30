@@ -122,6 +122,7 @@ class CustomField extends Component {
   render() {
     const { field, attributeData, fieldset, ...custom } = this.props
     const type = field.type
+
     if (type === 'file' || type === 'image') {
       const file = attributeData[field.name]
       const src = file ? file.link : null

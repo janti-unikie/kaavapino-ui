@@ -22,8 +22,13 @@ import Prompt from '../common/Prompt'
 import EditForm from './EditForm'
 import QuickNav from './quickNav/QuickNav'
 import Shoutbox from '../shoutbox'
+import EditFloorAreaFormModal from '../project/EditFloorAreaFormModal'
 
 class ProjectEditPage extends Component {
+  state = {
+    showEditFloorAreaForm: false
+  }
+
   componentDidMount() {
     const { project } = this.props
     this.props.fetchSchemas(project.subtype)
@@ -109,6 +114,12 @@ class ProjectEditPage extends Component {
           validating={validating}
           hasErrors={hasErrors}
           title={`${currentSchemaIndex + 1}. ${currentSchema.title}`}
+          showEditFloorAreaForm={() => this.setState({ showEditFloorAreaForm: true })}
+        />
+        <EditFloorAreaFormModal
+          open={this.state.showEditFloorAreaForm}
+          handleSubmit={() => {}}
+          handleClose={() => this.setState({ showEditFloorAreaForm: false })}
         />
       </div>
     )

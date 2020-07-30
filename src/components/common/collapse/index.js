@@ -29,6 +29,7 @@ const Collapse = props => {
       </h2>
       <div ref={contentRef} className="collapse-content">
         {children}
+        <div className="bottom-padding-included-in-animation" />
       </div>
     </div>
   )

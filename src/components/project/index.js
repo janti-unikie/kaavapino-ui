@@ -203,7 +203,14 @@ class ProjectPage extends Component {
   )
 
   render() {
-    const { edit, currentProject, phases, currentProjectLoaded, users, projectSubtypes } = this.props
+    const {
+      edit,
+      currentProject,
+      phases,
+      currentProjectLoaded,
+      users,
+      projectSubtypes
+    } = this.props
     const loading = !currentProjectLoaded || !phases
     if (loading) {
       return this.renderLoading()

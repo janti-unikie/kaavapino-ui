@@ -84,6 +84,17 @@
     &:hover {
       border-color: $color-input-emphasis;
     }
+
+    /* Chrome, Safari, Edge, Opera */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    /* Firefox */
+    &[type='number'] {
+      -moz-appearance: textfield;
+    }
   }
 }
 
@@ -241,35 +252,6 @@
     &::after {
       height: 24px;
       width: 24px;
-    }
-  }
-}
-
-.matrix-container {
-  overflow: auto;
-  margin: -16px 0 48px;
-
-  .ui.input {
-    padding: 2px; /* needed for box-shadow to show on hover */
-  }
-
-  input {
-    align-self: stretch;
-  }
-
-  .matrix {
-    .row-header {
-      font-size: 18px;
-      font-weight: bold;
-      letter-spacing: 0;
-      line-height: 22px;
-      margin-top: 16px;
-    }
-
-    :nth-child(n) {
-      .highlighted {
-        background: yellow;
-      }
     }
   }
 }

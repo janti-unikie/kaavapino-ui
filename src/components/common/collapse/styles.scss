@@ -4,11 +4,12 @@
   width: 100%;
   background-color: white;
   border-bottom: 1px solid $light-gray;
-  transition: background-color 0.2s ease-out;
+  transition: all 0.2s ease-out;
 
   &.open {
     background-color: $light-gray2;
     border-bottom: none;
+    margin-top: 24px;
   }
 
   .collapse-header {
@@ -26,5 +27,9 @@
     overflow: hidden;
     padding: 0 24px;
     transition: max-height 0.2s ease-out;
+
+    .bottom-padding-included-in-animation {
+      height: 24px;
+    }
   }
 }

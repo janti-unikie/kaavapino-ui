@@ -40,7 +40,11 @@ class FormField extends Component {
     const showError = required ? 'pakollinen kenttä' : error
 
     return (
-      <Form.Field className={`input-container ${isOneLineField ? 'small-margin' : ''} ${showError ? 'error' : ''}`}>
+      <Form.Field
+        className={`input-container ${isOneLineField ? 'small-margin' : ''} ${
+          showError ? 'error' : ''
+        }`}
+      >
         {!isOneLineField && (
           <div className="input-header">
             <Label className={`input-title${required ? ' highlight' : ''}`}>

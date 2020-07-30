@@ -49,6 +49,30 @@
 // asuminen_pientalo_uusi_k_m2valtio
 // asuminen_pientalo_uusi_k_m2muut
 
+export const mockAttributeData = {
+  asuminen_kerrostalo_uusi_k_m2kunta: 72,
+  asuminen_kerrostalo_uusi_k_m2valtio: 13
+}
+
+export const mockFloorAreaTotals = [
+  {
+    title: 'Kunta',
+    value: 10000
+  },
+  {
+    title: 'Valtio',
+    value: 10000
+  },
+  {
+    title: 'Muut',
+    value: 10000
+  },
+  {
+    title: 'Yhteensä',
+    value: 10000
+  }
+]
+
 const getFieldsInsideMatrixField = (fieldNames, columnCount) => {
   const fields = fieldNames.map((name, index) => ({
     name,
@@ -57,7 +81,6 @@ const getFieldsInsideMatrixField = (fieldNames, columnCount) => {
     row: Math.floor(index / columnCount),
     column: index % columnCount
   }))
-  console.log('fields here', fields)
   return fields
 }
 
@@ -94,7 +117,14 @@ const otherMatrixFields = [
   'muut_uusi_k_m2muut'
 ]
 
-// const additionalInformationFields = ['lisatietoa_kerrosaloista']
+const additionalInformationFields = {
+  field: {
+    type: 'long_string',
+    label: 'Lisätietoja kerrosalatiedoista',
+    placeholder: 'Kirjoita lisätiedot tähän',
+    name: 'lisatietoa_kerrosaloista'
+  }
+}
 
 const livingMatrix = {
   field: {
@@ -102,12 +132,14 @@ const livingMatrix = {
     matrix: {
       rows: ['Kerrostalo', 'Pientalo'],
       columns: ['Kunta', 'Valtio', 'Muut'],
+      showTotals: true,
+      valueEnding: 'k-m^2',
       fields: getFieldsInsideMatrixField(livingMatrixFields, 3)
     }
   },
   attributeData: {
     asuminen_kerrostalo_uusi_k_m2kunta: '72',
-    '3': 'c',
+    asuminen_kerrostalo_uusi_k_m2valtio: 13,
     '4': 'd'
   }
 }
@@ -118,6 +150,8 @@ const publicMatrix = {
     matrix: {
       rows: [''],
       columns: ['Kunta', 'Valtio', 'Muut'],
+      showTotals: true,
+      valueEnding: 'k-m^2',
       fields: getFieldsInsideMatrixField(publicMatrixFields, 3)
     }
   },
@@ -134,6 +168,8 @@ const businessPremisesMatrix = {
     matrix: {
       rows: ['Toimisto', 'Liiketila', 'Teollisuus'],
       columns: ['Kunta', 'Valtio', 'Muut'],
+      showTotals: true,
+      valueEnding: 'k-m^2',
       fields: getFieldsInsideMatrixField(businessPremisesMatrixFields, 3)
     }
   },
@@ -150,6 +186,8 @@ const otherMatrix = {
     matrix: {
       rows: [''],
       columns: ['Kunta', 'Valtio', 'Muut'],
+      showTotals: true,
+      valueEnding: 'k-m^2',
       fields: getFieldsInsideMatrixField(otherMatrixFields, 3)
     }
   },
@@ -163,19 +201,23 @@ const otherMatrix = {
 const floorAreaFormSections = [
   {
     title: 'Asuminen',
-    matrix: livingMatrix
+    formField: livingMatrix
   },
   {
     title: 'Toimitilat',
-    matrix: businessPremisesMatrix
+    formField: businessPremisesMatrix
   },
   {
     title: 'Julkiset',
-    matrix: publicMatrix
+    formField: publicMatrix
   },
   {
     title: 'Muut',
-    matrix: otherMatrix
+    formField: otherMatrix
+  },
+  {
+    title: 'Lisätietoja',
+    formField: additionalInformationFields
   }
 ]
 
