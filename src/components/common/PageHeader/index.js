@@ -87,6 +87,7 @@ class Header extends Component {
           icon="labeled"
           direction="right"
           onHide={() => this.setVisible(false)}
+          onClick={() => this.setVisible(false)}
           vertical
           visible={visible}
           width="wide"

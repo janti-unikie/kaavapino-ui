@@ -128,11 +128,12 @@
     .nav-header-actions {
       display: flex;
       flex-wrap: wrap;
-      margin-top: 24px;
+      margin-top: 12px;
       justify-content: flex-end;
 
       .action-item {
         margin-left: 24px;
+        margin-top: 12px;
 
         > svg {
           margin-right: 16px;
