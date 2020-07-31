@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="23px" viewBox="0 0 22 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 59.1 (101010) - https://sketch.com -->
+    <title>62AE6AFD-E777-48A3-99CA-D93858B5F046@2x</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <path d="M10.9995527,1.56319402e-13 C17.0745334,1.56319402e-13 22,4.92457203 22,10.9995527 C22,17.0745334 17.0745334,22 10.9995527,22 C4.92457203,22 -1.11910481e-13,17.0745334 -1.11910481e-13,10.9995527 C-1.11910481e-13,4.92457203 4.92457203,1.56319402e-13 10.9995527,1.56319402e-13 Z M10.9995527,2.35717481 C6.23510755,2.35717481 2.35806937,6.23421299 2.35806937,10.9995527 C2.35806937,15.765787 6.23510755,19.6428252 10.9995527,19.6428252 C15.7648924,19.6428252 19.6419306,15.765787 19.6419306,10.9995527 C19.6419306,6.23421299 15.7648924,2.35717481 10.9995527,2.35717481 Z M12.1780385,14.011145 L12.1780385,16.2886309 L9.82115005,16.2886309 L9.82178261,14.0117775 L12.1780385,14.011145 Z M12.1780385,4.5265085 L12.1780385,11.9712487 L9.82115005,11.9712487 L9.82178261,4.52714105 L12.1780385,4.5265085 Z" id="path-1"></path>
+    </defs>
+    <g id="Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="19---Kaavapino-/-Hanke-/-Tietojen-muokkaus-/-Käynnistys-/-Error" transform="translate(-1236.000000, -2363.000000)">
+            <g id="Sisältö-/-Hankkeen-profiili-Copy" transform="translate(610.000000, 2232.300000)">
+                <g id="text-field/enabled/input-email-copy-6-molecules/text-field/enabled/input-error" transform="translate(23.000000, 90.650000)">
+                    <g id="atoms/icons/alert" transform="translate(602.000000, 40.000000)">
+                        <g id="Icon-color-2" transform="translate(1.000000, 1.000000)">
+                            <g id="Icon-color">
+                                <mask id="mask-2" fill="white">
+                                    <use xlink:href="#path-1"></use>
+                                </mask>
+                                <use id="Mask" fill="#010202" xlink:href="#path-1"></use>
+                                <rect fill="#C4123E" mask="url(#mask-2)" x="-1" y="-1" width="24" height="24"></rect>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
