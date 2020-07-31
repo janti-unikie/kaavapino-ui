@@ -23,7 +23,14 @@ NavAction.propTypes = {
 
 export const NavActions = props => <div className="nav-header-actions" {...props} />
 
-export const NavHeader = ({ routeItems, actions, large, title, info, infoOptions }) => {
+export const NavHeader = ({
+  routeItems,
+  actions,
+  title,
+  info,
+  infoOptions,
+  subTitle
+}) => {
   return (
     <div className="nav-header-container">
       <div className="nav-header-inner-container">
@@ -39,9 +46,14 @@ export const NavHeader = ({ routeItems, actions, large, title, info, infoOptions
           </div>
         </div>
         <div className="nav-header-content">
-          <span className={`nav-header-title${large ? ' large' : ''}`}>{title}</span>
+          <div className="nav-header-titles">
+            <h1 className="nav-header-title">{title}</h1>
+            {subTitle && <h3 className="nav-header-subtitle">{subTitle}</h3>}
+          </div>
           <div className="nav-header-info">
-            {info && <Dropdown text={info} options={infoOptions} scrolling />}
+            {info && (
+              <Dropdown text={info} options={infoOptions} scrolling icon="angle down" />
+            )}
           </div>
         </div>
         {actions && actions}

@@ -76,7 +76,6 @@ class ProjectListPage extends Component {
         <NavHeader
           routeItems={[{ value: 'Kaavahankkeet', path: '/' }]}
           title="Kaavahankkeet"
-          large
           actions={
             <NavActions>
               <NavAction onClick={() => this.toggleForm(true)}>

@@ -105,9 +105,12 @@ class NewProjectFormModal extends Component {
               },
               double: true
             })}
-            {formValues && formValues.public && !initialValues.public &&
-              <div className="warning-box">Huom. Aiemmin ei-näkyväksi merkityn projektin tiedot muuttuvat näkyviksi kaikille Kaavapinon käyttäjille.</div>
-            }
+            {formValues && formValues.public && !initialValues.public && (
+              <div className="warning-box">
+                Huom. Aiemmin ei-näkyväksi merkityn projektin tiedot muuttuvat näkyviksi
+                kaikille Kaavapinon käyttäjille.
+              </div>
+            )}
             <div className="subtype-input-container">
               {this.getFormField({
                 field: {
@@ -124,12 +127,17 @@ class NewProjectFormModal extends Component {
                 }
               })}
             </div>
-            {formValues && initialValues.subtype && formValues.subtype !== initialValues.subtype &&
-              <div className="warning-box">Huom. Kun prosessi vaihtuu, vain ne Kaavapinoon syötetyt tiedot jäävät näkyviin, jotka kuuluvat valittuun prosessiin.</div>
-            }
+            {formValues &&
+              initialValues.subtype &&
+              formValues.subtype !== initialValues.subtype && (
+                <div className="warning-box">
+                  Huom. Kun prosessi vaihtuu, vain ne Kaavapinoon syötetyt tiedot jäävät
+                  näkyviin, jotka kuuluvat valittuun prosessiin.
+                </div>
+              )}
             {showXLProjectOptions && (
               <>
-                <h3>Valitse, laaditaanko</h3>
+                <h4>Valitse, laaditaanko</h4>
                 {this.getFormField({
                   field: {
                     name: 'create_principles',
