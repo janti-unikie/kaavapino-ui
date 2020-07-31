@@ -35,8 +35,12 @@
     border-bottom: 1px solid #000000;
   }
   .navbar-responsive-button {
+    align-self: center;
     border: none;
     box-shadow: none !important;
+    margin-right: 16px;
+    padding: 0 !important;
+
     svg {
       width: 32px;
       height: 32px;

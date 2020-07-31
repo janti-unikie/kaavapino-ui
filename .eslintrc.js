@@ -2,16 +2,16 @@ module.exports = {
   env: {
     browser: true,
     es6: true,
-    "jest/globals": true
+    "jest/globals": true,
   },
   extends: ["eslint:recommended", "plugin:react/recommended"],
   parser: "babel-eslint",
   parserOptions: {
     ecmaFeatures: {
       experimentalObjectRestSpread: true,
-      jsx: true
+      jsx: true,
     },
-    sourceType: "module"
+    sourceType: "module",
   },
   plugins: ["react", "jest"],
   settings: {
@@ -19,12 +19,11 @@ module.exports = {
       createClass: "createReactClass",
       pragma: "React",
       version: "15.0",
-      flowVersion: "0.53"
+      flowVersion: "0.53",
     },
-    propWrapperFunctions: ["forbidExtraProps"]
+    propWrapperFunctions: ["forbidExtraProps"],
   },
   rules: {
-    indent: ["error", 2, { SwitchCase: 1 }],
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "single"],
     semi: ["error", "never"],
@@ -44,13 +43,13 @@ module.exports = {
         arrow: "parens-new-line",
         condition: "parens-new-line",
         logical: "parens-new-line",
-        prop: "ignore"
-      }
+        prop: "ignore",
+      },
     ],
     "no-multiple-empty-lines": ["error", { max: 1 }],
-    "comma-dangle": ["error", "never"]
+    "comma-dangle": ["error", "never"],
   },
   globals: {
-    process: true
-  }
+    process: true,
+  },
 };
