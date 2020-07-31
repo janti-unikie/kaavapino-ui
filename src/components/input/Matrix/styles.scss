@@ -10,6 +10,9 @@
   }
 
   .matrix {
+    column-gap: 20px;
+    row-gap: 10px;
+
     .row-header {
       font-size: 18px;
       font-weight: bold;
@@ -31,6 +34,12 @@
     justify-content: space-between;
     overflow: hidden;
 
+    .matrix-total-field-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     .matrix-total-field-value {
       border: 1px solid $gray2;
       color: black;
@@ -42,6 +51,25 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .matrix-container {
+    .matrix {
+      column-gap: 20px;
+      row-gap: 10px;
+
+      .input input {
+        padding: 8px !important;
+      }
+    }
+
+    .matrix-total-field {
+      .matrix-total-field-value {
+        padding: 0 8px;
+      }
     }
   }
 }

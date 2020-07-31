@@ -22,7 +22,7 @@ const FloorAreaTotals = () => (
         <div className="single-total-container" key={i}>
           <div className="single-total-title">{totalObject.title}</div>
           <div className="single-total-value">
-            {totalObject.value}k-m<sup>2</sup>
+            {totalObject.value} k-m<sup>2</sup>
           </div>
         </div>
       ))}
