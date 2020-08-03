@@ -17,6 +17,12 @@ class CustomField extends Component {
     if (!this.props.attributeData || !p.attributeData) {
       return true
     }
+    if (this.props.field.disabled !== p.field.disabled) {
+      return true
+    }
+    if (this.props.field.generated !== p.field.generated) {
+      return true
+    }
     if (
       this.props.attributeData[this.props.field.name] !== p.attributeData[p.field.name]
     ) {
@@ -73,6 +79,7 @@ class CustomField extends Component {
     <FieldSet
       sets={sets}
       fields={this.props.field.fieldset_attributes}
+      disabled={this.props.field.disabled}
       attributeData={this.props.attributeData}
       name={this.props.field.name}
     />
@@ -142,7 +149,7 @@ class CustomField extends Component {
       component: this.getInput(field),
       ...custom,
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
-      disabled: field.generated ? true : false
+      disabled: field.generated || field.disabled ? true : false
     }
 
     if (type === 'toggle') {

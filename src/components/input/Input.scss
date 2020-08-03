@@ -185,10 +185,10 @@
     &:before {
       border: 2px solid $border-gray;
     }
+  }
 
-    &:hover::before {
-      border-color: $color-input-emphasis;
-    }
+  .ui.checkbox:not(.disabled) label:hover::before {
+    border-color: $color-input-emphasis;
   }
 
   .ui.checkbox:first-of-type label {
@@ -305,7 +305,7 @@
       width: 68px;
 
       &.upload-button {
-        background: url('./assets/icons/upload-icon.svg') no-repeat center;
+        background: url('./assets/icons/upload-icon.svg') no-repeat center !important;
       }
 
       &.red {

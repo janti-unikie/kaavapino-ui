@@ -108,6 +108,12 @@ describe('<Field />', () => {
     expect(renderSpy).toHaveBeenCalledTimes(1)
     test.setProps({ attributeData: { '1': 'b' } })
     expect(renderSpy).toHaveBeenCalledTimes(2)
+    test.setProps({ field: { name: '1', type: 'short_string', required: true } })
+    expect(renderSpy).toHaveBeenCalledTimes(2)
+    test.setProps({
+      field: { name: '1', type: 'short_string', required: true, disabled: true }
+    })
+    expect(renderSpy).toHaveBeenCalledTimes(3)
     renderSpy.mockRestore()
   })
 })
