@@ -84,6 +84,17 @@
     &:hover {
       border-color: $color-input-emphasis;
     }
+
+    /* Chrome, Safari, Edge, Opera */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    /* Firefox */
+    &[type='number'] {
+      -moz-appearance: textfield;
+    }
   }
 }
 
@@ -241,24 +252,6 @@
     &::after {
       height: 24px;
       width: 24px;
-    }
-  }
-}
-
-.matrix-container {
-  overflow: auto;
-
-  input {
-    align-self: flex-start;
-  }
-
-  .matrix {
-    :nth-child(n) {
-      padding: 5px;
-
-      .highlighted {
-        background: yellow;
-      }
     }
   }
 }

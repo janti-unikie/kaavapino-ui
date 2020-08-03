@@ -58,12 +58,12 @@ class EditForm extends Component {
     const {
       disabled,
       sections,
-      title
+      title,
       // saving,
       // isCurrentPhase,
       // isLastPhase,
       // changingPhase,
-      // validating
+      showEditFloorAreaForm
     } = this.props
 
     return (
@@ -81,6 +81,7 @@ class EditForm extends Component {
             secondary
             help="feature not implemented yet"
             fluid
+            onClick={showEditFloorAreaForm}
           />
         </div>
         {sections.map((section, i) => (

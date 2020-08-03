@@ -12,7 +12,11 @@ class Overview extends Component {
     document.title = 'Kaavapino'
   }
   render() {
-    return <h1>Yleisnäkymä</h1>
+    return (
+      <div>
+        <h1>Yleisnäkymä</h1>
+      </div>
+    )
   }
 }
 export default connect(null)(Overview)
