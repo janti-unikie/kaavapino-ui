@@ -8,7 +8,7 @@ import { Button, Modal, Form } from 'semantic-ui-react'
 import Input from '../input/Input'
 import projectUtils from '../../utils/projectUtils'
 
-class FormModal extends Component {
+class NewProjectFormModal extends Component {
   state = {
     loading: false
   }
@@ -70,7 +70,7 @@ class FormModal extends Component {
             {deadlines.map((deadline, i) => {
               return (
                 <div key={deadline.phase_id}>
-                  <h3 className="deadline-title">{deadline.phase_name}</h3>
+                  <h4 className="deadline-title">{deadline.phase_name}</h4>
                   <div className="deadline-input-container">
                     {i === 0 && (
                       <Field
@@ -122,5 +122,5 @@ export default connect(
 )(
   reduxForm({
     form: 'deadlineModal'
-  })(FormModal)
+  })(NewProjectFormModal)
 )

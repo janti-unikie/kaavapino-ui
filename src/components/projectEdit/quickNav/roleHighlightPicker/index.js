@@ -10,7 +10,7 @@ const RoleHighlightPicker = () => {
     <div className="role-highlight-picker">
       <div className="magnifier-icon" />
       <div className="role-highlight-picker-right">
-        <h3>Korosta täytettävät kentät</h3>
+        <h4>Korosta täytettävät kentät</h4>
         <div className="role-buttons">
           {roles.map((role, i) => (
             <div

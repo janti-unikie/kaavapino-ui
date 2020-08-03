@@ -2,9 +2,9 @@ import axios from 'axios'
 import { takeLatest, put, all, call, select } from 'redux-saga/effects'
 import { push } from 'connected-react-router'
 import {
-  newProjectFormSelector,
   editFormSelector,
-  deadlineModalSelector
+  deadlineModalSelector,
+  newProjectFormSelector
 } from '../selectors/formSelector'
 import {
   currentProjectSelector,
@@ -38,6 +38,7 @@ import {
   createOwnProjectSuccessful,
   INITIALIZE_PROJECT,
   initializeProjectSuccessful,
+  SAVE_PROJECT_BASE,
   SAVE_PROJECT,
   saveProjectSuccessful,
   CHANGE_PROJECT_PHASE,
@@ -66,6 +67,7 @@ export default function* projectSaga() {
     takeLatest(FETCH_PROJECTS, fetchProjects),
     takeLatest(INITIALIZE_PROJECT, initializeProject),
     takeLatest(CREATE_PROJECT, createProject),
+    takeLatest(SAVE_PROJECT_BASE, saveProjectBase),
     takeLatest(SAVE_PROJECT, saveProject),
     takeLatest(CHANGE_PROJECT_PHASE, changeProjectPhase),
     takeLatest(VALIDATE_PROJECT_FIELDS, validateProjectFields),
@@ -222,9 +224,36 @@ function* createProject() {
   }
 }
 
+function* saveProjectBase() {
+  yield put(startSubmit(NEW_PROJECT_FORM))
+  const { values } = yield select(newProjectFormSelector)
+  const currentProjectId = yield select(currentProjectIdSelector)
+
+  if (values) {
+    try {
+      const updatedProject = yield call(
+        projectApi.patch,
+        values,
+        { path: { id: currentProjectId } },
+        ':id/'
+      )
+      yield put(updateProject(updatedProject))
+      yield put(setSubmitSucceeded(NEW_PROJECT_FORM))
+    } catch (e) {
+      if (e.response.status === 400) {
+        yield put(stopSubmit(NEW_PROJECT_FORM, e.response.data))
+      } else {
+        yield put(error(e))
+      }
+    }
+  }
+}
+
 function* saveProject() {
   const currentProjectId = yield select(currentProjectIdSelector)
-  const { initial, values } = yield select(editFormSelector)
+  const editForm = yield select(editFormSelector) || {}
+  const { initial, values } = editForm
+
   if (values) {
     const attribute_data = {}
     Object.keys(values).forEach(key => {

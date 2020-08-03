@@ -9,7 +9,6 @@ import {
   Grid
 } from 'semantic-ui-react'
 import '@fortawesome/fontawesome-svg-core'
-import './styles.scss'
 import { faBars, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NavLink from '../NavLink'
@@ -71,7 +70,7 @@ class Header extends Component {
               </div>
             </NavLink>
           </Responsive>
-          <Responsive as={Menu.Menu} maxWidth={800} position="right">
+          <Responsive as={Menu.Menu} maxWidth={799} position="right">
             <Button
               className="navbar-responsive-button"
               basic
@@ -88,6 +87,7 @@ class Header extends Component {
           icon="labeled"
           direction="right"
           onHide={() => this.setVisible(false)}
+          onClick={() => this.setVisible(false)}
           vertical
           visible={visible}
           width="wide"

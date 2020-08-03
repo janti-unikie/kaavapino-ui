@@ -26,7 +26,9 @@ class EditForm extends Component {
 
   componentDidUpdate(prevProps) {
     const { setChecking, hasErrors, saving, initialize, attributeData } = this.props
+
     if (prevProps.validating && !this.props.validating) {
+      /* Beginning validation is started in quicknav. */
       if (!hasErrors) {
         this.setState({ verifying: true, endPhaseError: false })
         setChecking(false)
