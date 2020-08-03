@@ -21,7 +21,8 @@ class Link extends PureComponent {
           icon="world"
           label={{
             basic: true,
-            content: 'Avaa'
+            content: 'Avaa',
+            style: { padding: '0 16px' }
           }}
           onClick={this.openLink}
         />

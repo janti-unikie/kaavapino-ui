@@ -380,21 +380,32 @@
   color: $black1;
 }
 
-.fieldset-header {
-  margin-bottom: 10px;
-
-  :first-child {
-    margin-right: 5px;
-  }
-  .fieldset-remove {
-    cursor: pointer;
-  }
-}
-
 .fieldset-container {
   border: 1px solid gainsboro;
   padding: 10px;
-  margin-bottom: 10px;
+  margin: 32px 0 16px;
+  padding: 16px;
+  position: relative;
+}
+.input-header + .fieldset-container {
+  margin-top: 16px;
+}
+
+.fieldset-header {
+  .fieldset-header-number {
+    position: absolute;
+    margin-top: -31px;
+    font-size: 16px;
+    background: $light-gray3;
+    padding: 4px 16px;
+  }
+
+  .fieldset-remove {
+    cursor: pointer;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+  }
 }
 
 .geometry-input-container {
@@ -419,6 +430,25 @@
 
 .textarea-wrapper {
   position: relative;
+}
+
+.ui.button.fieldset-button-add {
+  background-color: transparent;
+  color: $black1;
+  border: 2px solid $black1;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+.fieldset-button-remove.ui.button {
+  background-color: transparent;
+  color: $black1;
+
+  &:hover {
+    opacity: 0.6;
+  }
 }
 
 /* Error styles. Semantic UI uses a lot of !important, thus these overrides became scetchier than I hoped.
