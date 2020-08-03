@@ -17,8 +17,50 @@ Before running, make sure that you have created a .env file to the project root 
 
 ## Developing with fake login (tmporary solution)
 To generate token:
+
 - fire up backend
-- create superuser (docker-compose -f ./docker-compose.yml exec api ./manage.py createsuperuser) for your username and email
-- add token for the same username (docker-compose -f ./docker-compose.yml exec api ./manage.py create_api_token <username>)
+- run in api-directory for your username and email
+
+```
+docker-compose -f ./docker-compose.yml exec api ./manage.py createsuperuser
+```
+
+If not working try (Windows):
+
+```
+docker exec -it kaavapino-api /bin/bash
+python ./manage.py createsuperuser
+```
+
+- add token for the same username
+
+```
+docker-compose -f ./docker-compose.yml exec api ./manage.py create_api_token <username>
+```
+
+If not working try (Windows):
+
+```
+docker exec -it kaavapino-api /bin/bash
+python ./manage.py create_api_token <user>
+```
+
 - Add generated token to frontend .env as REACT_APP_API_TOKEN
+
+## Generating api data
+
+- fire up backend
+- copy päivittyvä_Kaavaprojektitiedot.xls to api directory (see Teams)
+- run in api directory
+
+```
+docker-compose -f ./docker-compose.yml exec api ./manage.py import_attributes päivittyvä_Kaavaprojektitiedot.xlsx
+```
+
+If not working try (Windows):
+
+```
+docker exec -it kaavapino-api /bin/bash
+python manage.py import_attributes päivittyvä_Kaavaprojektitiedot.xlsx
+```
 

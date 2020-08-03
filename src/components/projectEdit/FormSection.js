@@ -11,6 +11,7 @@ import FormField from '../input/FormField'
 const FormSection = ({
   section: { title, fields },
   checking,
+  disabled,
   attributeData,
   updates
 }) => {
@@ -23,7 +24,8 @@ const FormSection = ({
         <FormField
           key={`${field.name}-${i}`}
           checking={checking}
-          field={field}
+          disabled={disabled}
+          field={{ ...field, disabled: disabled || field.disabled } }
           attributeData={attributeData}
           updated={updates[field.name] || null}
         />

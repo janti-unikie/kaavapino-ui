@@ -58,6 +58,9 @@ class ProjectEditPage extends Component {
     }
     const currentSchemaIndex = schema.phases.findIndex(s => s.id === selectedPhase)
     const currentSchema = schema.phases[currentSchemaIndex]
+    const projectPhaseIndex = schema.phases.findIndex(s => s.id === phase)
+    const formDisabled =
+      currentSchemaIndex !== 0 && currentSchemaIndex < projectPhaseIndex
 
     if (currentSchemaIndex === -1) {
       return (
@@ -66,6 +69,7 @@ class ProjectEditPage extends Component {
         </Loader>
       )
     }
+
     return (
       <div className="project-input-container">
         <Shoutbox project={id} />
@@ -108,6 +112,7 @@ class ProjectEditPage extends Component {
           validateProjectFields={validateProjectFields}
           validating={validating}
           hasErrors={hasErrors}
+          disabled={formDisabled}
           title={`${currentSchemaIndex + 1}. ${currentSchema.title}`}
         />
       </div>
