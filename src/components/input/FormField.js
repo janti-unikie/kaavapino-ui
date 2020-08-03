@@ -17,6 +17,7 @@ class FormField extends Component {
       default:
         return (
           <Field
+            disabled={field.disabled}
             field={field}
             attributeData={attributeData}
             fieldset={field.type === 'fieldset'}

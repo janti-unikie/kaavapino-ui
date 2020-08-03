@@ -80,14 +80,12 @@ class ProjectPage extends Component {
     return path
   }
 
-  getTitle = name => {
-    const { edit, documents } = this.props
+  getSubTitle = () => {
+    const { edit } = this.props
     if (edit) {
-      return `${name}, muokkaa`
-    } else if (documents) {
-      return `${name}, dokumentit`
+      return 'Tietojen muokkaus'
     }
-    return `${name}, projektikortti`
+    return null
   }
 
   getCurrentPhases() {
@@ -169,9 +167,9 @@ class ProjectPage extends Component {
     if (!edit || !latestEditField || !latestEditField.name) {
       return null
     }
-    return `(Viimeisin muokkaus: ${latestEditField.name} ${projectUtils.formatDateTime(
+    return `Viimeisin muokkaus: ${latestEditField.name} ${projectUtils.formatDateTime(
       latestEditField.timestamp
-    )} ${latestEditField.user_name})`
+    )} ${latestEditField.user_name}`
   }
 
   getAllChanges = () => {
@@ -226,7 +224,8 @@ class ProjectPage extends Component {
       <div className="project-container">
         <NavHeader
           routeItems={this.getRouteItems()}
-          title={this.getTitle(currentProject.name)}
+          title={currentProject.name}
+          subTitle={this.getSubTitle()}
           actions={this.getNavActions()}
           info={this.getLatestChange()}
           infoOptions={this.getAllChanges()}
