@@ -13,7 +13,9 @@ import {
   setAmountOfCommentsToShow,
   setTotalComments,
   loadCommentsSuccessful,
-  pollCommentsSuccessful
+  pollCommentsSuccessful,
+  FETCH_UNREAD_COMMENTS_COUNT,
+  fetchUnreadCommentsCountSuccessful
 } from '../actions/commentActions'
 import { error } from '../actions/apiActions'
 import {
@@ -27,6 +29,7 @@ import { commentApi } from '../utils/api'
 export default function* commentSaga() {
   yield all([
     takeLatest([FETCH_COMMENTS, POLL_COMMENTS], fetchCommentsSaga),
+    takeLatest(FETCH_UNREAD_COMMENTS_COUNT, fetchUnreadCommentsCountSaga),
     takeLatest(CREATE_COMMENT, createCommentSaga),
     takeLatest(EDIT_COMMENT, editCommentSaga),
     takeLatest(DELETE_COMMENT, deleteCommentSaga),
@@ -66,6 +69,24 @@ function* fetchCommentsSaga({ payload: projectId }, page, load = false) {
     }
 
     yield put(setTotalComments(comments.count))
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+function* fetchUnreadCommentsCountSaga({ payload: projectId }) {
+  try {
+    const unreadComments = yield call(
+      commentApi.get,
+      {
+        path: { id: projectId }
+      },
+      'unread/',
+      null,
+      null,
+      true
+    )
+    yield put(fetchUnreadCommentsCountSuccessful(unreadComments.count))
   } catch (e) {
     yield put(error(e))
   }

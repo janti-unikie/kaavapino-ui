@@ -8,7 +8,8 @@ import {
   SET_TOTAL_COMMENTS,
   INCREASE_AMOUNT_OF_COMMENTS_TO_SHOW,
   SET_AMOUNT_OF_COMMENTS_TO_SHOW,
-  LOAD_COMMENTS_SUCCESSFUL
+  LOAD_COMMENTS_SUCCESSFUL,
+  FETCH_UNREAD_COMMENTS_COUNT_SUCCESSFUL
 } from '../actions/commentActions'
 
 import { INITIALIZE_PROJECT } from '../actions/projectActions'
@@ -18,6 +19,7 @@ export const initialState = {
   commentsLoading: false,
   amountOfCommentsToShow: 10,
   totalComments: 0,
+  unreadCommentsCount: 0,
   pollingComments: false
 }
 
@@ -64,6 +66,12 @@ export const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         comments: state.comments.filter(c => c.id !== payload)
+      }
+
+    case FETCH_UNREAD_COMMENTS_COUNT_SUCCESSFUL:
+      return {
+        ...state,
+        unreadCommentsCount: payload
       }
 
     case INCREASE_AMOUNT_OF_COMMENTS_TO_SHOW:

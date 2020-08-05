@@ -5,16 +5,23 @@ import Comments from './comments'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { connect } from 'react-redux'
+import { unreadCommentsCountSelector } from '../../selectors/commentSelector'
 
 const ShoutBoxButton = props => (
   <Button className="shoutbox-button" {...props}>
     <div>Viestit</div>
-    <div className="comment-icon" />
+    <div className="comment-icon-container">
+      <div className="comment-icon" />
+      {!!props.unreadCommentsCount && (
+        <div className="unread-comments-count">{props.unreadCommentsCount}</div>
+      )}
+    </div>
   </Button>
 )
 
 const Shoutbox = props => {
-  const { project } = props
+  const { project, unreadCommentsCount } = props
 
   const [open, setOpen] = useState(false)
   const shoutboxRef = useRef(null)
@@ -27,11 +34,23 @@ const Shoutbox = props => {
 
   useOutsideClick(shoutboxRef, handleOutsideClick)
 
+  const countToShow = unreadCommentsCount > 9 ? '!' : unreadCommentsCount
+
   return (
     <>
-      <Responsive as={ShoutBoxButton} maxWidth={599} onClick={toggleOpen} />
+      <Responsive
+        as={ShoutBoxButton}
+        maxWidth={599}
+        onClick={toggleOpen}
+        unreadCommentsCount={countToShow}
+      />
       <div className={`shoutbox ${open ? 'open' : ''}`} ref={shoutboxRef}>
-        <Responsive as={ShoutBoxButton} minWidth={600} onClick={toggleOpen} />
+        <Responsive
+          as={ShoutBoxButton}
+          minWidth={600}
+          onClick={toggleOpen}
+          unreadCommentsCount={countToShow}
+        />
         <div className="comment-list-wrapper">
           <Responsive
             as={'div'}
@@ -47,5 +66,8 @@ const Shoutbox = props => {
     </>
   )
 }
+const mapStateToProps = state => ({
+  unreadCommentsCount: unreadCommentsCountSelector(state)
+})
 
-export default Shoutbox
+export default connect(mapStateToProps, () => {})(Shoutbox)

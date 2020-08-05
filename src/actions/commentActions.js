@@ -12,15 +12,26 @@ export const INCREASE_AMOUNT_OF_COMMENTS_TO_SHOW = 'Increase amount of comments 
 export const SET_AMOUNT_OF_COMMENTS_TO_SHOW = 'Set amount of comments to show'
 export const SET_TOTAL_COMMENTS = 'Set total comments'
 export const LOAD_COMMENTS_SUCCESSFUL = 'Load comments successful'
+export const FETCH_UNREAD_COMMENTS_COUNT = 'Fetch unread comments count'
+export const FETCH_UNREAD_COMMENTS_COUNT_SUCCESSFUL =
+  'Fetch unread comments count successful'
 
 // Fetch
 export const fetchComments = id => ({ type: FETCH_COMMENTS, payload: id })
+export const fetchUnreadCommentsCount = id => ({
+  type: FETCH_UNREAD_COMMENTS_COUNT,
+  payload: id
+})
 export const pollComments = id => ({ type: POLL_COMMENTS, payload: id })
 export const fetchCommentsSuccessful = comments => ({
   type: FETCH_COMMENTS_SUCCESSFUL,
   payload: comments
 })
 export const pollCommentsSuccessful = () => ({ type: POLL_COMMENTS_SUCCESSFUL })
+export const fetchUnreadCommentsCountSuccessful = count => ({
+  type: FETCH_UNREAD_COMMENTS_COUNT_SUCCESSFUL,
+  payload: count
+})
 
 // Create
 export const createComment = (id, content) => ({
