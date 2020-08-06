@@ -11,17 +11,17 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled }) => 
     {sets.map((set, i) => {
       return (
         <React.Fragment key={`${name}-${i}`}>
-          <div className="fieldset-header">
-            <span>{i + 1}.</span>
-            <FontAwesomeIcon
-              className="fieldset-remove"
-              icon="times"
-              color="red"
-              size="lg"
-              onClick={() => sets.remove(i)}
-            />
-          </div>
           <div key={i} className="fieldset-container">
+            <div className="fieldset-header">
+              <h3 className="fieldset-header-number">{i + 1}.</h3>
+              <FontAwesomeIcon
+                className="fieldset-remove"
+                icon="times"
+                color="red"
+                size="lg"
+                onClick={() => sets.remove(i)}
+              />
+            </div>
             {fields.map((field, j) => {
               let required = false
               if (checking && !(!attributeData[name] || !attributeData[name][i])) {
@@ -59,9 +59,15 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled }) => 
         </React.Fragment>
       )
     })}
-    <Button onClick={() => sets.push({})}>+</Button>
-    <Button disabled={sets.length < 1} onClick={() => sets.remove(sets.length - 1)}>
-      -
+    <Button className="fieldset-button-add" onClick={() => sets.push({})}>
+      Lisää
+    </Button>
+    <Button
+      className="fieldset-button-remove"
+      disabled={sets.length < 1}
+      onClick={() => sets.remove(sets.length - 1)}
+    >
+      Poista
     </Button>
   </React.Fragment>
 )
