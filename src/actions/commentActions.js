@@ -13,8 +13,8 @@ export const SET_AMOUNT_OF_COMMENTS_TO_SHOW = 'Set amount of comments to show'
 export const SET_TOTAL_COMMENTS = 'Set total comments'
 export const LOAD_COMMENTS_SUCCESSFUL = 'Load comments successful'
 export const FETCH_UNREAD_COMMENTS_COUNT = 'Fetch unread comments count'
-export const FETCH_UNREAD_COMMENTS_COUNT_SUCCESSFUL =
-  'Fetch unread comments count successful'
+export const SET_UNREAD_COMMENTS_COUNT = 'Fetch unread comments count successful'
+export const MARK_COMMENTS_AS_READ = 'Mark comments as read'
 
 // Fetch
 export const fetchComments = id => ({ type: FETCH_COMMENTS, payload: id })
@@ -28,9 +28,14 @@ export const fetchCommentsSuccessful = comments => ({
   payload: comments
 })
 export const pollCommentsSuccessful = () => ({ type: POLL_COMMENTS_SUCCESSFUL })
-export const fetchUnreadCommentsCountSuccessful = count => ({
-  type: FETCH_UNREAD_COMMENTS_COUNT_SUCCESSFUL,
+export const setUnreadCommentsCount = count => ({
+  type: SET_UNREAD_COMMENTS_COUNT,
   payload: count
+})
+
+export const markCommentsAsRead = projectId => ({
+  type: MARK_COMMENTS_AS_READ,
+  payload: projectId
 })
 
 // Create

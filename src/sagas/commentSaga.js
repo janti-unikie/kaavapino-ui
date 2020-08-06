@@ -15,8 +15,10 @@ import {
   loadCommentsSuccessful,
   pollCommentsSuccessful,
   FETCH_UNREAD_COMMENTS_COUNT,
-  fetchUnreadCommentsCountSuccessful
+  setUnreadCommentsCount,
+  MARK_COMMENTS_AS_READ
 } from '../actions/commentActions'
+import moment from 'moment'
 import { error } from '../actions/apiActions'
 import {
   totalCommentsSelector,
@@ -30,6 +32,7 @@ export default function* commentSaga() {
   yield all([
     takeLatest([FETCH_COMMENTS, POLL_COMMENTS], fetchCommentsSaga),
     takeLatest(FETCH_UNREAD_COMMENTS_COUNT, fetchUnreadCommentsCountSaga),
+    takeLatest(MARK_COMMENTS_AS_READ, markCommentsAsReadSaga),
     takeLatest(CREATE_COMMENT, createCommentSaga),
     takeLatest(EDIT_COMMENT, editCommentSaga),
     takeLatest(DELETE_COMMENT, deleteCommentSaga),
@@ -86,7 +89,28 @@ function* fetchUnreadCommentsCountSaga({ payload: projectId }) {
       null,
       true
     )
-    yield put(fetchUnreadCommentsCountSuccessful(unreadComments.count))
+    yield put(setUnreadCommentsCount(unreadComments.count))
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+function* markCommentsAsReadSaga({ payload: projectId }) {
+  const timestamp = moment().format('YYYY-MM-DDThh:mm:ss')
+
+  try {
+    yield call(
+      commentApi.post,
+      { timestamp },
+      {
+        path: { id: projectId }
+      },
+      'mark_as_read/',
+      null,
+      null,
+      true
+    )
+    yield put(setUnreadCommentsCount(0))
   } catch (e) {
     yield put(error(e))
   }

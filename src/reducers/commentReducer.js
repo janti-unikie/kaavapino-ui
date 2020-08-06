@@ -9,7 +9,7 @@ import {
   INCREASE_AMOUNT_OF_COMMENTS_TO_SHOW,
   SET_AMOUNT_OF_COMMENTS_TO_SHOW,
   LOAD_COMMENTS_SUCCESSFUL,
-  FETCH_UNREAD_COMMENTS_COUNT_SUCCESSFUL
+  SET_UNREAD_COMMENTS_COUNT
 } from '../actions/commentActions'
 
 import { INITIALIZE_PROJECT } from '../actions/projectActions'
@@ -68,7 +68,7 @@ export const reducer = (state = initialState, { type, payload }) => {
         comments: state.comments.filter(c => c.id !== payload)
       }
 
-    case FETCH_UNREAD_COMMENTS_COUNT_SUCCESSFUL:
+    case SET_UNREAD_COMMENTS_COUNT:
       return {
         ...state,
         unreadCommentsCount: payload

@@ -7,25 +7,29 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
 import { unreadCommentsCountSelector } from '../../selectors/commentSelector'
+import { markCommentsAsRead } from '../../actions/commentActions'
 
-const ShoutBoxButton = props => (
-  <Button className="shoutbox-button" {...props}>
+const ShoutBoxButton = ({ unreadCommentsCount, ...rest }) => (
+  <Button className="shoutbox-button" {...rest}>
     <div>Viestit</div>
     <div className="comment-icon-container">
       <div className="comment-icon" />
-      {!!props.unreadCommentsCount && (
-        <div className="unread-comments-count">{props.unreadCommentsCount}</div>
+      {!!unreadCommentsCount && (
+        <div className="unread-comments-count">{unreadCommentsCount}</div>
       )}
     </div>
   </Button>
 )
 
 const Shoutbox = props => {
-  const { project, unreadCommentsCount } = props
+  const { markCommentsAsRead, project, unreadCommentsCount } = props
 
   const [open, setOpen] = useState(false)
   const shoutboxRef = useRef(null)
-  const toggleOpen = () => setOpen(!open)
+  const toggleOpen = () => {
+    markCommentsAsRead(project)
+    setOpen(!open)
+  }
   const handleOutsideClick = () => {
     if (open) {
       toggleOpen()
@@ -70,4 +74,8 @@ const mapStateToProps = state => ({
   unreadCommentsCount: unreadCommentsCountSelector(state)
 })
 
-export default connect(mapStateToProps, () => {})(Shoutbox)
+const mapDispatchToProps = {
+  markCommentsAsRead
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Shoutbox)
