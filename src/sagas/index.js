@@ -9,6 +9,7 @@ import documentSaga from './documentSaga'
 import apiSaga from './apiSaga'
 import commentSaga from './commentSaga'
 import reportSaga from './reportSaga'
+import footerSaga from './footerSaga'
 
 export default function* sagas() {
   yield all([
@@ -21,6 +22,7 @@ export default function* sagas() {
     documentSaga(),
     apiSaga(),
     commentSaga(),
-    reportSaga()
+    reportSaga(),
+    footerSaga()
   ])
 }
