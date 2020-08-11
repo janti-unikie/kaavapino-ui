@@ -15,8 +15,7 @@ import { footerSelector } from '../../selectors/footerSelector'
 
 class Footer extends Component {
   state = {
-    isOpen: false,
-    linkGroupData: {}
+    isOpen: false
   }
 
   componentDidMount() {
@@ -24,33 +23,32 @@ class Footer extends Component {
   }
 
   render() {
-    const { linkGroupData } = this.state
     const { footer } = this.props
-    const data = footer ? footer : linkGroupData
+    const footerData = footer || {}
     let linkColumns = []
-    for (let key in data) {
+    for (let key in footerData) {
       let values = []
-      for (let key2 in data[key].links) {
+      for (let key2 in footerData[key].links) {
         let regex = new RegExp(
           /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi
         )
-        if (data[key].links[key2].url.match(regex)) {
+        if (footerData[key].links[key2].url.match(regex)) {
           values.push(
-            <List.Item as={'a'} href={data[key].links[key2].url} key={`${key}-${key2}`}>
-              {data[key].links[key2].link_text}
+            <List.Item as={'a'} href={footerData[key].links[key2].url} key={`${key}-${key2}`}>
+              {footerData[key].links[key2].link_text}
             </List.Item>
           )
         } else {
           values.push(
-            <List.Item as={Link} to={data[key].links[key2].url} key={`${key}-${key2}`}>
-              {data[key].links[key2].link_text}
+            <List.Item as={Link} to={footerData[key].links[key2].url} key={`${key}-${key2}`}>
+              {footerData[key].links[key2].link_text}
             </List.Item>
           )
         }
       }
       linkColumns.push(
         <Grid.Column className="footer-link-group" width={3} key={key}>
-          <Header as="h4" content={data[key].title} />
+          <Header as="h4" content={footerData[key].title} />
           <List link>{values}</List>
         </Grid.Column>
       )
@@ -59,7 +57,7 @@ class Footer extends Component {
     return (
       <Segment
         className="footer-container borderless"
-        style={{ margin: '5em 0em 0em', padding: '5em 0em' }}
+        style={{ margin: '60px 0px 0px', padding: '60px 0px' }}
       >
         <Container textAlign="center">
           <Grid divided inverted stackable>
