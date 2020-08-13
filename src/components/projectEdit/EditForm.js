@@ -79,7 +79,6 @@ class EditForm extends Component {
           <Button
             value="Päivitä kerrosalatiedot"
             secondary
-            help="feature not implemented yet"
             fluid
             onClick={showEditFloorAreaForm}
           />

@@ -122,6 +122,7 @@ class ProjectEditPage extends Component {
           showEditFloorAreaForm={() => this.setState({ showEditFloorAreaForm: true })}
         />
         <EditFloorAreaFormModal
+          // attributeData={attribute_data}
           open={this.state.showEditFloorAreaForm}
           handleSubmit={() => {}}
           handleClose={() => this.setState({ showEditFloorAreaForm: false })}

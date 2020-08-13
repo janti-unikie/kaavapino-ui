@@ -7,49 +7,62 @@ import './styles.scss'
 
 const TOTAL_FIELD_TYPE = 'totalField'
 
-const addTotalRowAndColumn = ({
-  rows: dataRows,
-  columns: dataColumns,
-  fields: dataFields,
-  valueEnding,
-  ...rest
-}) => {
+/* Adds a total column at the right end of a matrix field and a total row at the bottom of it */
+const addTotalFields = (
+  { rows: dataRows, columns: dataColumns, fields: dataFields, ...rest },
+  attributeData
+) => {
   const rows = [...dataRows, 'Yhteensä']
   const columns = [...dataColumns, 'Yhteensä']
-  const fields = [...dataFields]
 
-  /* Handle dispalying e.g. k-m^2 properly by using sup for the number 2 */
-  const valueEndingSplit = valueEnding.split('^')
-  const valueHtmlElement = (
-    <span>
-      3000
-      {valueEndingSplit[0]}
-      <sup>{valueEndingSplit.length > 0 && valueEndingSplit[1]}</sup>
-    </span>
-  )
+  /* The unit information is in the fields, but all should be of the same unit */
+  const unit = dataFields && dataFields.length > 0 && dataFields[0].unit
 
-  for (let i = 0; i < dataRows.length; i += 1) {
-    fields.push({
+  /* Make a total field for each row */
+  const rowTotalFields = rows.map((row, i) => {
+    const rowFields = dataFields.filter(field => field.row === i)
+    const rowTotal = rowFields.reduce((total, current) => {
+      const val = attributeData[current.name]
+      return val ? total + val : total
+    }, 0)
+    const rowTotalField = {
       type: TOTAL_FIELD_TYPE,
-      value: valueHtmlElement,
+      value: rowTotal ? `${rowTotal} ${unit}` : 0,
       row: i,
       column: dataColumns.length
-    })
-  }
-  for (let i = 0; i < dataColumns.length; i += 1) {
-    fields.push({
+    }
+    return rowTotalField
+  })
+
+  /* Make a total field for each column */
+  const columnTotalFields = columns.map((col, i) => {
+    const colFields = dataFields.filter(field => field.column === i)
+    const colTotal = colFields.reduce((total, current) => {
+      const val = attributeData[current.name]
+      return val ? total + val : total
+    }, 0)
+    const columnTotalField = {
       type: TOTAL_FIELD_TYPE,
-      value: valueHtmlElement,
+      value: colTotal ? `${colTotal} ${unit}` : 0,
       row: dataRows.length,
       column: i
-    })
-  }
-  fields.push({
+    }
+    return columnTotalField
+  })
+
+  /* Make a total of all fields to the right bottom spot */
+  const allTotalValue = dataFields.reduce((total, current) => {
+    const val = attributeData[current.name]
+    return val ? total + val : total
+  }, 0)
+  const allTotalField = {
     type: TOTAL_FIELD_TYPE,
-    value: valueHtmlElement,
+    value: allTotalValue ? `${allTotalValue} ${unit}` : 0,
     row: dataRows.length,
     column: dataColumns.length
-  })
+  }
+
+  const fields = [...dataFields, ...columnTotalFields, ...rowTotalFields, allTotalField]
 
   return {
     rows,
@@ -60,10 +73,10 @@ const addTotalRowAndColumn = ({
 }
 
 const Matrix = ({ field: { matrix }, checking, attributeData }) => {
-  console.log('yarrr', matrix)
-  const { rows, columns, fields } =
-    matrix && matrix.showTotals ? addTotalRowAndColumn(matrix) : matrix
-  console.log(rows, columns, fields)
+  const { rows, columns, fields } = matrix
+    ? addTotalFields(matrix, attributeData)
+    : matrix
+
   const matrixStyle = {
     display: 'grid',
     gridTemplateColumns: `repeat(${columns.length}, minmax(auto, auto))`,
@@ -91,7 +104,10 @@ const Matrix = ({ field: { matrix }, checking, attributeData }) => {
                   projectUtils.isFieldMissing(field.name, field.required, attributeData)
                 return (
                   <>
-                    <span style={{ display: 'contents' }} key={`${field.name}-${y}-${x}`}>
+                    <span
+                      style={{ display: 'contents' }}
+                      key={`${field.name}-${y}-${x}-total`}
+                    >
                       {/* {x === 0 && <b>{rows[y]}</b>} */}
                       {field === 0 && <span />}
                       {field && field.type === TOTAL_FIELD_TYPE && (
@@ -101,7 +117,10 @@ const Matrix = ({ field: { matrix }, checking, attributeData }) => {
                         </span>
                       )}
                       {field !== 0 && field.type !== TOTAL_FIELD_TYPE && (
-                        <span className={`${highlighted ? 'highlighted' : ''}`}>
+                        <span
+                          className={`${highlighted ? 'highlighted' : ''}`}
+                          key={`${field.name}-${y}-${x}`}
+                        >
                           <b>{columns[x]}</b>
                           <Field
                             attributeData={attributeData}

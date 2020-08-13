@@ -8,11 +8,9 @@ import { connect } from 'react-redux'
 import { EDIT_FLOOR_AREA_FORM } from '../../../constants'
 import FormField from '../../input/FormField'
 import Collapse from '../../common/collapse'
-import floorAreaFormSections, {
-  mockAttributeData,
-  mockFloorAreaTotals
-} from '../floorAreaMockData'
+import { mockAttributeData, mockFloorAreaTotals } from '../floorAreaMockData'
 import './styles.scss'
+import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
 
 const FloorAreaTotals = () => (
   <div className="floor-area-totals">
@@ -86,18 +84,15 @@ class EditFloorAreaFormModal extends Component {
   }
 
   getFormField = fieldProps => {
-    const { formSubmitErrors } = this.props
+    const { attributeData, formSubmitErrors } = this.props
     const error =
-      formSubmitErrors &&
-      fieldProps &&
-      fieldProps.field &&
-      formSubmitErrors[fieldProps.field.name]
-    return <FormField {...fieldProps} error={error} />
+      formSubmitErrors && fieldProps.field && formSubmitErrors[fieldProps.field.name]
+    return <FormField {...fieldProps} attributeData={attributeData} error={error} />
   }
 
   render() {
     // const { loading } = this.state
-    // const { currentProject /* initialValues */ } = this.props
+    const { floorAreaSections /* currentProject, initialValues */ } = this.props
 
     return (
       <Modal
@@ -111,11 +106,12 @@ class EditFloorAreaFormModal extends Component {
         <Modal.Content>
           <FloorAreaTotals />
           <Form>
-            {floorAreaFormSections.map((section, i) => (
-              <Collapse title={section.title} key={i}>
-                {this.getFormField(section.formField)}
-              </Collapse>
-            ))}
+            {floorAreaSections &&
+              floorAreaSections.map((section, i) => (
+                <Collapse title={section.title} key={i}>
+                  {section.fields.map(field => this.getFormField({ field }))}
+                </Collapse>
+              ))}
           </Form>
         </Modal.Content>
       </Modal>
@@ -130,6 +126,7 @@ EditFloorAreaFormModal.propTypes = {
 
 const mapStateToProps = state => ({
   formSubmitErrors: getFormSubmitErrors(EDIT_FLOOR_AREA_FORM)(state),
+  floorAreaSections: floorAreaSectionsSelector(state),
   attributeData: mockAttributeData
 })
 

@@ -13,3 +13,8 @@ export const allEditFieldsSelector = createSelector(
   selectSchema,
   ({ allEditFields }) => allEditFields
 )
+
+export const floorAreaSectionsSelector = createSelector(
+  selectSchema,
+  ({ schema }) => (schema && schema.floor_area_sections) || []
+)
