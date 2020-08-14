@@ -10,6 +10,7 @@ import { reducer as comment } from './commentReducer'
 import { reducer as api } from './apiReducer'
 import { reducer as report } from './reportReducer'
 import { reducer as toastr } from 'react-redux-toastr'
+import { reducer as footer } from './footerReducer'
 
 export default {
   auth,
@@ -23,5 +24,6 @@ export default {
   comment,
   api,
   report,
-  toastr
+  toastr,
+  footer
 }

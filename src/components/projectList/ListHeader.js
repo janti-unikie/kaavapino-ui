@@ -1,33 +1,39 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Input } from 'semantic-ui-react'
+import { Radio } from 'semantic-ui-react'
 
-const getArrowIcon = dir =>
-  dir === 0 ? <FontAwesomeIcon icon="angle-up" /> : <FontAwesomeIcon icon="angle-down" />
+const getArrowIcon = (dir) => (dir === 0 ? 'dir-up' : 'dir-down')
 
-const ListHeader = ({ items, filter, sort, selected, dir }) => {
+const ListHeader = ({ items, sort, selected, dir, toggleGraph }) => {
   return (
     <div className="project-list-header">
       {items.map((item, i) => (
         <span className="header-item" key={i} onClick={() => sort(i)}>
-          {item} {selected === i && getArrowIcon(dir)}
+          {item}
+          <FontAwesomeIcon
+            className={`angle-icon angle-up-icon ${selected === i && getArrowIcon(dir)}`}
+            icon="angle-up"
+          />
+          <FontAwesomeIcon
+            className={`angle-icon angle-down-icon ${
+              selected === i && getArrowIcon(dir)
+            }`}
+            icon="angle-down"
+          />
         </span>
       ))}
-      <Input
-        onChange={e => filter(e.target.value)}
-        icon="search"
-        type="text"
-        fluid
-        placeholder="Haku"
-      />
+      <span className="header-item project-timeline-toggle">
+        Aikajana
+        <Radio onChange={() => toggleGraph()} toggle />
+      </span>
     </div>
   )
 }
 
 ListHeader.propTypes = {
+  toggleGraph: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired,
-  filter: PropTypes.func.isRequired,
   sort: PropTypes.func.isRequired,
   dir: PropTypes.number.isRequired
 }

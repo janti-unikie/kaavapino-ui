@@ -11,31 +11,24 @@ import {
   pollingProjectsSelector,
   amountOfProjectsToIncreaseSelector
 } from '../../selectors/projectSelector'
-import { Loader, Button, Dropdown } from 'semantic-ui-react'
+import { Loader, Button } from 'semantic-ui-react'
 import ListHeader from './ListHeader'
 import ListItem from './ListItem'
-import Graph from '../common/Graph'
 import projectUtils from '../../utils/projectUtils'
+import SubList from './ListSubList'
 
 class List extends Component {
   constructor(props) {
     super(props)
 
-    this.dropdownOptions = [
-      { key: 10, value: 10, text: '10' },
-      { key: 25, value: 25, text: '25' },
-      { key: 50, value: 50, text: '50' },
-      { key: 100, value: 100, text: '100' }
-    ]
-
     this.state = {
-      filter: '',
+      showGraph: false,
       sort: 5,
       dir: 1
     }
   }
 
-  setSort = type => {
+  setSort = (type) => {
     const { sort, dir } = this.state
     let newSort = sort,
       newDir = dir
@@ -54,13 +47,15 @@ class List extends Component {
     this.setState({ sort: newSort, dir: newDir })
   }
 
-  setFilter = value => this.setState({ filter: value })
+  toggleGraph = () => {
+    this.setState((prevState) => ({
+      showGraph: !prevState.showGraph
+    }))
+  }
 
-  selectAmount = (_, { value }) => this.props.setAmountOfProjectsToIncrease(value)
-
-  filterItems = items => {
-    const { filter } = this.state
-    const filtered = items.filter(item => {
+  filterItems = (items) => {
+    const { filter } = this.props
+    const filtered = items.filter((item) => {
       const filterFields = projectUtils.formatFilterProject(
         item,
         false,
@@ -68,16 +63,14 @@ class List extends Component {
         this.props.users
       )
       let includes = false
-      Object.keys(filterFields).forEach(key => {
+      Object.keys(filterFields).forEach((key) => {
         const fieldValue = filterFields[key]
         if (!fieldValue) {
           return
         }
         if (
-          String(fieldValue)
-            .trim()
-            .toLowerCase()
-            .indexOf(filter.trim().toLowerCase()) > -1
+          String(fieldValue).trim().toLowerCase().indexOf(filter.trim().toLowerCase()) >
+          -1
         ) {
           includes = true
         }
@@ -88,16 +81,14 @@ class List extends Component {
   }
 
   render() {
-    const { sort, dir } = this.state
+    const { sort, dir, showGraph } = this.state
     const {
       increaseAmountOfProjectsToShow,
       loadingProjects,
       phases,
       projectSubtypes,
       users,
-      pollingProjects,
-      total,
-      amountOfProjectsToIncrease
+      pollingProjects
     } = this.props
     if (loadingProjects || !phases) {
       return (
@@ -108,67 +99,102 @@ class List extends Component {
         </div>
       )
     }
+
     const items = this.filterItems(this.props.items)
-    const graphData = items.map(i => projectUtils.formatDeadlines(i, phases)).slice(0, 4)
     const headerItems = [
-      'Hankenumero',
+      'Projektinumero',
       'Nimi',
       'Vaihe',
-      'Seuraava määräaika',
       'Koko',
       'Muokattu',
       'Vastuuhenkilö'
     ]
+    let abortedProjects = []
+    let archivedProjects = []
+    let projects = []
+
+    items.map(
+      (
+        { attribute_data, name, id, modified_at, user, subtype, phase, onhold, archived },
+        i
+      ) => {
+        const listItem = {
+          ...projectUtils.formatPhase(phase, phases),
+          name,
+          id,
+          modified_at: projectUtils.formatDate(modified_at),
+          user: projectUtils.formatUsersName(users.find((u) => u.id === user)),
+          subtype: projectUtils.formatSubtype(subtype, projectSubtypes),
+          projectId: attribute_data['hankenumero'] || '-'
+        }
+        const graphData = projectUtils.formatDeadlines(items[i], phases)
+        if (onhold) {
+          abortedProjects.push(
+            <ListItem
+              key={i}
+              item={listItem}
+              graphData={graphData}
+              showGraph={showGraph}
+            />
+          )
+          return false
+        } else if (archived) {
+          archivedProjects.push(
+            <ListItem
+              key={i}
+              item={listItem}
+              graphData={graphData}
+              showGraph={showGraph}
+            />
+          )
+          return false
+        } else {
+          projects.push(
+            <ListItem
+              key={i}
+              item={listItem}
+              graphData={graphData}
+              showGraph={showGraph}
+            />
+          )
+          return false
+        }
+      }
+    )
+
     return (
       <div className="project-list">
-        <ListHeader
-          items={headerItems}
-          selected={sort}
-          dir={dir}
-          filter={this.setFilter}
-          sort={this.setSort}
-        />
-        {items.map(
-          (
-            { attribute_data, name, id, modified_at, user, subtype, phase, deadlines },
-            i
-          ) => {
-            const listItem = {
-              ...projectUtils.formatPhase(phase, phases),
-              name,
-              id,
-              modified_at: projectUtils.formatDate(modified_at),
-              nextDeadline: projectUtils.formatNextDeadline(deadlines, phase),
-              user: projectUtils.formatUsersName(users.find(u => u.id === user)),
-              subtype: projectUtils.formatSubtype(subtype, projectSubtypes),
-              projectId: attribute_data['hankenumero'] || '-'
-            }
-            return <ListItem key={i} item={listItem} />
-          }
-        )}
-        {items.length === 0 && <span className="empty-list-info">Ei hankkeita!</span>}
-        <span className="list-amount">
-          Näytetään {items.length}/{total}
-        </span>
-        {items.length !== 0 && (
-          <Graph data={graphData} height={Math.max(graphData.length * 65, 2 * 65)} />
-        )}
-        <div className="list-actions-container">
-          <Button
-            loading={pollingProjects}
-            disabled={pollingProjects}
-            onClick={() => increaseAmountOfProjectsToShow()}
-            content="Lataa lisää"
+        {items.length > 0 && (
+          <ListHeader
+            items={headerItems}
+            selected={sort}
+            dir={dir}
+            sort={this.setSort}
+            toggleGraph={this.toggleGraph}
           />
-          <div className="list-action-dropdown">
-            <span>Latausmäärä: </span>
-            <Dropdown
-              options={this.dropdownOptions}
-              value={amountOfProjectsToIncrease}
-              onChange={this.selectAmount}
+        )}
+
+        {projects.length !== 0 && projects}
+        {abortedProjects.length !== 0 && (
+          <SubList title={'Keskeytyneet projektit'} items={abortedProjects} />
+        )}
+        {archivedProjects.length !== 0 && (
+          <SubList title={'Arkistoidut projektit'} items={archivedProjects} />
+        )}
+
+        {items.length === 0 && <span className="empty-list-info">Ei projekteja!</span>}
+
+        {items.length > 0 && (
+          <div className="list-actions-container">
+            <Button
+              loading={pollingProjects}
+              disabled={pollingProjects}
+              secondary
+              onClick={() => increaseAmountOfProjectsToShow()}
+              content="Näytä lisää"
             />
           </div>
-        </div>
+        )}
       </div>
     )
   }
@@ -180,7 +206,7 @@ const mapDispatchToProps = {
   setAmountOfProjectsToIncrease
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   phases: phasesSelector(state),
   loadingProjects: loadingProjectsSelector(state),
   pollingProjects: pollingProjectsSelector(state),
