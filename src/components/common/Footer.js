@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   Container,
   Divider,
@@ -9,74 +10,45 @@ import {
   Segment
 } from 'semantic-ui-react'
 import Link from 'react-router-dom/Link'
+import { fetchFooter } from '../../actions/footerActions'
+import { footerSelector } from '../../selectors/footerSelector'
 
 class Footer extends Component {
   state = {
-    isOpen: false,
-    linkGroupData: {}
+    isOpen: false
   }
 
   componentDidMount() {
-    this.setState({
-      linkGroupData: {
-        'Hyödylliset linkit': {
-          Rekisteriseloste:
-            'https://www.hel.fi/static/liitteet/kanslia/rekisteriselosteet/Kymp/Kymp-EU-Kaavoitus-poikkeamismenettely-suunnittelutarveratkaisu-rakennuskielto-prosessien-rekisteri.pdf',
-          'Asemakaavoituksen ohjeet':
-            'http://helmi.hel.fi/kymp/maka/suunnitteluportaali/asemakaavoituksen-ohjeet/Sivut/default.aspx',
-          'Kympin toimintasääntö':
-            'https://www.hel.fi/helsinki/fi/kaupunki-ja-hallinto/hallinto/organisaatio/hallintosaanto-ja-toimintasaannot/kaupunkiymparisto-toimintasaanto/kaupunkiymparisto-toimintasaanto'
-        },
-        'Group 2': {
-          'Link 1': 'Link 1',
-          'Link 2': 'Link 2',
-          'Link 3': 'Link 3',
-          'Link 4': 'Link 4'
-        },
-        'Group 3': {
-          'Link 1': 'Link 1',
-          'Link 2': 'Link 2',
-          'Link 3': 'Link 3',
-          'Link 4': 'Link 4'
-        },
-        'Group 4': {
-          'Link 1': 'Link 1',
-          'Link 2': 'Link 2',
-          'Link 3': 'Link 3',
-          'Link 4': 'Link 4'
-        }
-      }
-    })
+    this.props.fetchFooter()
   }
 
   render() {
-    const { linkGroupData } = this.state
-
+    const { footer } = this.props
+    const footerData = footer || {}
     let linkColumns = []
-    for (let key in linkGroupData) {
+    for (let key in footerData) {
       let values = []
-      for (let [key2, value] of Object.entries(linkGroupData[key])) {
+      for (let key2 in footerData[key].links) {
         let regex = new RegExp(
           /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi
         )
-
-        if (value.match(regex)) {
+        if (footerData[key].links[key2].url.match(regex)) {
           values.push(
-            <List.Item as={'a'} href={value} key={`${key}-${key2}`}>
-              {key2}
+            <List.Item as={'a'} href={footerData[key].links[key2].url} key={`${key}-${key2}`}>
+              {footerData[key].links[key2].link_text}
             </List.Item>
           )
         } else {
           values.push(
-            <List.Item as={Link} to={value} key={`${key}-${key2}`}>
-              {key2}
+            <List.Item as={Link} to={footerData[key].links[key2].url} key={`${key}-${key2}`}>
+              {footerData[key].links[key2].link_text}
             </List.Item>
           )
         }
       }
       linkColumns.push(
         <Grid.Column className="footer-link-group" width={3} key={key}>
-          <Header as="h4" content={key} />
+          <Header as="h4" content={footerData[key].title} />
           <List link>{values}</List>
         </Grid.Column>
       )
@@ -85,7 +57,7 @@ class Footer extends Component {
     return (
       <Segment
         className="footer-container borderless"
-        style={{ margin: '5em 0em 0em', padding: '5em 0em' }}
+        style={{ margin: '60px 0px 0px', padding: '60px 0px' }}
       >
         <Container textAlign="center">
           <Grid divided inverted stackable>
@@ -130,4 +102,14 @@ class Footer extends Component {
   }
 }
 
-export default Footer
+const mapDispatchToProps = {
+  fetchFooter
+}
+
+const mapStateToProps = state => {
+  return {
+    footer: footerSelector(state)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Footer)

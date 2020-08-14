@@ -114,7 +114,7 @@ class Header extends Component {
           <NavLink to="/projects">
             <div className="navbar-item">
               <CheckListMobileIcon />
-              <span>Hankkeet</span>
+              <span>Projektit</span>
             </div>
           </NavLink>
           <NavLink to="/reports">

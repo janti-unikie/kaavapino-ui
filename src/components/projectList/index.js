@@ -18,13 +18,16 @@ import {
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import NewProjectFormModal from '../project/NewProjectFormModal'
 import List from './List'
+import SearchBar from '../SearchBar'
 
 class ProjectListPage extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      showBaseInformationForm: false
+      showBaseInformationForm: false,
+      filter: '',
+      searchOpen: false
     }
   }
 
@@ -35,7 +38,11 @@ class ProjectListPage extends Component {
     this.props.fetchProjectSubtypes()
   }
 
-  toggleForm = opened => this.setState({ showBaseInformationForm: opened })
+  toggleForm = (opened) => this.setState({ showBaseInformationForm: opened })
+
+  toggleSearch = (opened) => this.setState({ searchOpen: opened })
+
+  setFilter = (value) => this.setState({ filter: value })
 
   render() {
     const {
@@ -47,47 +54,59 @@ class ProjectListPage extends Component {
       totalOwnProjects,
       totalProjects
     } = this.props
+    const { filter, searchOpen } = this.state
     const panes = [
       {
-        menuItem: 'Omat hankkeet',
+        menuItem: `Omat projektit (${totalOwnProjects})`,
         render: () => (
           <List
             projectSubtypes={projectSubtypes}
             users={users}
             items={ownProjects.slice(0, amountOfProjectsToShow)}
             total={totalOwnProjects}
+            filter={filter}
           />
         )
       },
       {
-        menuItem: 'Kaikki hankkeet',
+        menuItem: `Kaikki projektit (${totalProjects})`,
         render: () => (
           <List
             projectSubtypes={projectSubtypes}
             users={users}
             items={allProjects.slice(0, amountOfProjectsToShow)}
             total={totalProjects}
+            filter={filter}
           />
         )
       }
     ]
+
+    let headerActions = (
+      <NavActions>
+        {!searchOpen && (
+          <>
+            <NavAction onClick={() => this.toggleForm(true)}>
+              <FontAwesomeIcon icon="plus" />
+              Luo uusi projekti
+            </NavAction>
+            <NavAction to={'/reports'}>Tee raportteja</NavAction>
+          </>
+        )}
+        <SearchBar
+          toggleSearch={this.toggleSearch}
+          searchOpen={searchOpen}
+          onChangeValue={this.setFilter}
+        />
+      </NavActions>
+    )
+
     return (
       <div className="project-list-page">
         <NavHeader
-          routeItems={[{ value: 'Kaavahankkeet', path: '/' }]}
-          title="Kaavahankkeet"
-          actions={
-            <NavActions>
-              <NavAction onClick={() => this.toggleForm(true)}>
-                <FontAwesomeIcon icon="plus" />
-                Luo uusi projekti
-              </NavAction>
-              <NavAction to={'/reports'}>
-                <FontAwesomeIcon icon="file-csv" />
-                Tee raportteja
-              </NavAction>
-            </NavActions>
-          }
+          routeItems={[{ value: 'Kaavaprojektit', path: '/' }]}
+          title="Kaavaprojektit"
+          actions={headerActions}
         />
         <NewProjectFormModal
           open={this.state.showBaseInformationForm}
@@ -104,7 +123,7 @@ class ProjectListPage extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     ownProjects: ownProjectsSelector(state),
     allProjects: projectsSelector(state),
