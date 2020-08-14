@@ -2,13 +2,13 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Form } from 'semantic-ui-react'
-import { reduxForm, getFormSubmitErrors } from 'redux-form'
+import { Modal, Form, Button } from 'semantic-ui-react'
+import { reduxForm, getFormSubmitErrors, getFormValues } from 'redux-form'
 import { connect } from 'react-redux'
 import { EDIT_FLOOR_AREA_FORM } from '../../../constants'
 import FormField from '../../input/FormField'
 import Collapse from '../../common/collapse'
-import { mockAttributeData, mockFloorAreaTotals } from '../floorAreaMockData'
+import { mockFloorAreaTotals } from '../floorAreaMockData'
 import './styles.scss'
 import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
 
@@ -84,15 +84,15 @@ class EditFloorAreaFormModal extends Component {
   }
 
   getFormField = fieldProps => {
-    const { attributeData, formSubmitErrors } = this.props
+    const { formValues, formSubmitErrors } = this.props
     const error =
       formSubmitErrors && fieldProps.field && formSubmitErrors[fieldProps.field.name]
-    return <FormField {...fieldProps} attributeData={attributeData} error={error} />
+    return <FormField {...fieldProps} attributeData={formValues} error={error} />
   }
 
   render() {
-    // const { loading } = this.state
-    const { floorAreaSections /* currentProject, initialValues */ } = this.props
+    const { loading } = this.state
+    const { floorAreaSections } = this.props
 
     return (
       <Modal
@@ -114,6 +114,20 @@ class EditFloorAreaFormModal extends Component {
               ))}
           </Form>
         </Modal.Content>
+        <Modal.Actions>
+          <Button secondary disabled={loading} onClick={this.handleClose}>
+            Peruuta
+          </Button>
+          <Button
+            primary
+            disabled={loading}
+            loading={loading}
+            type="submit"
+            onClick={this.handleSubmit}
+          >
+            Tallenna
+          </Button>
+        </Modal.Actions>
       </Modal>
     )
   }
@@ -127,7 +141,7 @@ EditFloorAreaFormModal.propTypes = {
 const mapStateToProps = state => ({
   formSubmitErrors: getFormSubmitErrors(EDIT_FLOOR_AREA_FORM)(state),
   floorAreaSections: floorAreaSectionsSelector(state),
-  attributeData: mockAttributeData
+  formValues: getFormValues(EDIT_FLOOR_AREA_FORM)(state)
 })
 
 const decoratedForm = reduxForm({

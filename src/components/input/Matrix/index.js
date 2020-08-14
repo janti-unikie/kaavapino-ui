@@ -79,7 +79,7 @@ const Matrix = ({ field: { matrix }, checking, attributeData }) => {
 
   const matrixStyle = {
     display: 'grid',
-    gridTemplateColumns: `repeat(${columns.length}, minmax(auto, auto))`,
+    gridTemplateColumns: `repeat(${columns.length}, 1fr`,
     gridTemplateRows: `repeat(${rows.length}, minmax(auto, auto)`
   }
   const fieldMatrix = []

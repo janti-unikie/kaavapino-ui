@@ -1,10 +1,12 @@
 import axios from 'axios'
 import { takeLatest, put, all, call, select } from 'redux-saga/effects'
 import { push } from 'connected-react-router'
+import { actions as toastrActions } from 'react-redux-toastr'
 import {
   editFormSelector,
   deadlineModalSelector,
-  newProjectFormSelector
+  newProjectFormSelector,
+  editFloorAreaFormSelector
 } from '../selectors/formSelector'
 import {
   currentProjectSelector,
@@ -39,6 +41,7 @@ import {
   INITIALIZE_PROJECT,
   initializeProjectSuccessful,
   SAVE_PROJECT_BASE,
+  SAVE_PROJECT_FLOOR_AREA,
   SAVE_PROJECT,
   saveProjectSuccessful,
   CHANGE_PROJECT_PHASE,
@@ -60,7 +63,7 @@ import { setLatestEditField, setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
 import { projectApi } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
-import { NEW_PROJECT_FORM } from '../constants'
+import { NEW_PROJECT_FORM, EDIT_FLOOR_AREA_FORM } from '../constants'
 
 export default function* projectSaga() {
   yield all([
@@ -68,6 +71,7 @@ export default function* projectSaga() {
     takeLatest(INITIALIZE_PROJECT, initializeProject),
     takeLatest(CREATE_PROJECT, createProject),
     takeLatest(SAVE_PROJECT_BASE, saveProjectBase),
+    takeLatest(SAVE_PROJECT_FLOOR_AREA, saveProjectFloorArea),
     takeLatest(SAVE_PROJECT, saveProject),
     takeLatest(CHANGE_PROJECT_PHASE, changeProjectPhase),
     takeLatest(VALIDATE_PROJECT_FIELDS, validateProjectFields),
@@ -224,6 +228,22 @@ function* createProject() {
   }
 }
 
+const getChangedAttributeData = (values, initial) => {
+  const attribute_data = {}
+  Object.keys(values).forEach(key => {
+    if (initial.hasOwnProperty(key) && initial[key] === values[key]) {
+      return
+    }
+    if (values[key] === '') {
+      attribute_data[key] = null
+    } else {
+      attribute_data[key] = values[key]
+    }
+  })
+
+  return attribute_data
+}
+
 function* saveProjectBase() {
   yield put(startSubmit(NEW_PROJECT_FORM))
   const { values } = yield select(newProjectFormSelector)
@@ -249,23 +269,45 @@ function* saveProjectBase() {
   }
 }
 
+function* saveProjectFloorArea() {
+  yield put(startSubmit(EDIT_FLOOR_AREA_FORM))
+  const { initial, values } = yield select(editFloorAreaFormSelector)
+  const currentProjectId = yield select(currentProjectIdSelector)
+
+  if (values) {
+    const attribute_data = getChangedAttributeData(values, initial)
+    try {
+      const updatedProject = yield call(
+        projectApi.patch,
+        { attribute_data },
+        { path: { id: currentProjectId } },
+        ':id/'
+      )
+      yield put(updateProject(updatedProject))
+      yield put(setSubmitSucceeded(EDIT_FLOOR_AREA_FORM))
+      yield put(
+        toastrActions.add({
+          type: 'success',
+          title: 'Kerrosalatiedot tallennettu onnistuneesti'
+        })
+      )
+    } catch (e) {
+      if (e.response.status === 400) {
+        yield put(stopSubmit(EDIT_FLOOR_AREA_FORM, e.response.data))
+      } else {
+        yield put(error(e))
+      }
+    }
+  }
+}
+
 function* saveProject() {
   const currentProjectId = yield select(currentProjectIdSelector)
   const editForm = yield select(editFormSelector) || {}
   const { initial, values } = editForm
 
   if (values) {
-    const attribute_data = {}
-    Object.keys(values).forEach(key => {
-      if (initial.hasOwnProperty(key) && initial[key] === values[key]) {
-        return
-      }
-      if (values[key] === '') {
-        attribute_data[key] = null
-      } else {
-        attribute_data[key] = values[key]
-      }
-    })
+    const attribute_data = getChangedAttributeData(values, initial)
     try {
       const updatedProject = yield call(
         projectApi.patch,
