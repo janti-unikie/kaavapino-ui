@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
   fetchComments,
+  fetchUnreadCommentsCount,
   pollComments,
   createComment,
   editComment,
@@ -30,6 +31,7 @@ class Comments extends Component {
 
   componentDidMount() {
     this.props.fetchComments(this.props.project)
+    this.props.fetchUnreadCommentsCount(this.props.project)
     this.poll = setInterval(() => this.props.pollComments(this.props.project), 60000)
   }
 
@@ -142,6 +144,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchComments,
+  fetchUnreadCommentsCount,
   pollComments,
   createComment,
   editComment,

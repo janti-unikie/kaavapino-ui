@@ -72,16 +72,20 @@
 
       .comment-content {
         font-size: 16px;
-        margin: 16px 16px 16px 0;
+        margin: 16px 0;
       }
 
       .comment-footer {
         align-items: center;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
 
         .comment-footer-actions {
           white-space: nowrap;
+
+          > button:not(:first-of-type) {
+            margin-left: 8px;
+          }
         }
       }
     }
