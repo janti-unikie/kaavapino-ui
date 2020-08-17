@@ -125,7 +125,7 @@ function* createCommentSaga({ payload: { id: projectId, content } }) {
       { path: { id: projectId } }
     )
     yield put(createCommentSuccessful(newComment))
-    yield put(markCommentsAsRead())
+    yield put(markCommentsAsRead(projectId))
     yield call(fetchCommentsSaga, { payload: projectId })
   } catch (e) {
     yield put(error(e))
