@@ -49,7 +49,11 @@ describe('<Field />', () => {
 
   it('renders', () => {
     createFieldOfType('short_string')
-    expect(wrapper.find('Field').length).toBe(1)
+    /* React-redux version 8 makes a wrapping Field component and another Field component inside it,
+     * which is given _reduxForm context.
+     * Older ones seem to render only one.
+     * Both render only one input though. */
+    expect(wrapper.find('Field').length).not.toBe(0)
     expect(wrapper.find('input').length).toBe(1)
   })
 
