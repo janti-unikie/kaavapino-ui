@@ -57,8 +57,17 @@
       // background-color: yellow;
     }
   }
-}
 
+  .ui.checkbox label:before{
+    border-color: $gray;
+  }
+  
+  .ui.checkbox label:after{
+    background-color: $dark-blue-color;
+    color: $white;
+  }
+
+}
 .ui.form .fields {
   > .input-container {
     flex: 0 1 auto;

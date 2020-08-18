@@ -32,9 +32,10 @@ const SelectInput = ({ input, meta: { error }, options, ...custom }) => {
                 if (input.value.indexOf(data.label) !== -1) {
                   let nonSelectedValues = input.value.filter( opt => opt !== data.label )
                   input.onChange(nonSelectedValues)
-                }
-                input.onChange([...input.value, data.label])}}/>
-            </Dropdown.Item>
+                } else {
+                  input.onChange([...input.value, data.label])}
+              }} />
+              </Dropdown.Item>
           ))}
         </Dropdown.Menu>
       </Dropdown>
