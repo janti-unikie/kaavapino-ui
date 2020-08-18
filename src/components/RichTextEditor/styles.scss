@@ -1,0 +1,61 @@
+@import '../common/colors.scss';
+
+.rich-text-editor {
+  background-color: white;
+
+  .quill {
+    .ql-toolbar {
+      border: 1px solid $gray2;
+      display: none;
+    }
+
+    .ql-toolbar + .ql-container {
+      border: 1px solid $gray2;
+    }
+
+    .ql-container {
+      border-radius: 2px;
+      border-top-width: 1px;
+
+      .ql-editor {
+        font-size: 16px;
+        padding: 16px;
+        min-height: 56px;
+      }
+    }
+  }
+
+  &.toolbar-visible {
+    .quill {
+      .ql-toolbar {
+        display: block;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+      }
+      .ql-toolbar + .ql-container {
+        border-top: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+    }
+  }
+
+  &:hover {
+    box-shadow: inset 0px 0px 0px 2px $black1;
+    border-radius: 2px;
+
+    .quill {
+      .ql-toolbar {
+        border: 1px solid $black1;
+      }
+
+      .ql-container {
+        border: 1px solid $black1;
+      }
+    }
+  }
+
+  &.large .quill .ql-container {
+    min-height: 128px;
+  }
+}

@@ -60,10 +60,8 @@ const addTotalRowAndColumn = ({
 }
 
 const Matrix = ({ field: { matrix }, checking, attributeData }) => {
-  console.log('yarrr', matrix)
   const { rows, columns, fields } =
     matrix && matrix.showTotals ? addTotalRowAndColumn(matrix) : matrix
-  console.log(rows, columns, fields)
   const matrixStyle = {
     display: 'grid',
     gridTemplateColumns: `repeat(${columns.length}, minmax(auto, auto))`,

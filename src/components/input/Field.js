@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Input from './Input'
 import SelectInput from './SelectInput'
 import BooleanRadio from './RadioBooleanButton'
-import TextArea from './TextArea'
 import File from './File'
 import FieldSet from './FieldSet'
 import Geometry from './Geometry'
@@ -11,6 +10,7 @@ import DateTime from './DateTime'
 import { Field, FieldArray } from 'redux-form'
 import RadioButton from './RadioButton'
 import ToggleButton from './ToggleButton'
+import RichTextEditor from '../RichTextEditor'
 
 class CustomField extends Component {
   shouldComponentUpdate(p) {
@@ -45,7 +45,7 @@ class CustomField extends Component {
 
   renderString = props => <Input type="text" {...props} />
 
-  renderTextArea = props => <TextArea {...props} />
+  renderRichText = props => <RichTextEditor {...props} />
 
   renderDate = props => <Input type="date" {...props} />
 
@@ -103,12 +103,12 @@ class CustomField extends Component {
       case 'toggle':
         return this.renderToggle
       case 'string':
-      case 'text':
       case 'uuid':
-      case 'short_string':
+      case 'text':
         return this.renderString
+      case 'short_string':
       case 'long_string':
-        return this.renderTextArea
+        return this.renderRichText
       case 'datetime':
         return this.renderDateTime
       case 'date':
@@ -155,6 +155,16 @@ class CustomField extends Component {
 
     if (type === 'toggle') {
       return <Field {...fieldProps} label={field.label} />
+    }
+
+    if (type === 'long_string' || type === 'short_string') {
+      return (
+        <Field
+          {...fieldProps}
+          defaultValue={attributeData[field.name]}
+          largeField={type === 'long_string'}
+        />
+      )
     }
 
     if (fieldset) {
