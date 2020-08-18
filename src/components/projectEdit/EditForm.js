@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { Form } from 'semantic-ui-react'
 import { reduxForm } from 'redux-form'
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Message } from 'semantic-ui-react'
 import FormSection from './FormSection'
 import Button from '../common/Button'
 import ConfirmModal from './ConfirmModal'
 import { EDIT_PROJECT_FORM } from '../../constants'
+import Shoutbox from '../shoutbox'
 
 class EditForm extends Component {
   state = {
@@ -62,6 +62,7 @@ class EditForm extends Component {
       // isCurrentPhase,
       // isLastPhase,
       // changingPhase,
+      projectId,
       showEditFloorAreaForm
     } = this.props
 
@@ -73,15 +74,14 @@ class EditForm extends Component {
             value="Päivitä aikataulu"
             secondary
             help="feature not implemented yet"
-            fluid
           />
           <Button
             value="Päivitä kerrosalatiedot"
             secondary
             help="feature not implemented yet"
-            fluid
             onClick={showEditFloorAreaForm}
           />
+          <Shoutbox project={projectId} />
         </div>
         {sections.map((section, i) => (
           <FormSection key={i} section={section} disabled={disabled} />

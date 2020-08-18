@@ -30,18 +30,21 @@ class Comment extends Component {
     this.setState({ showEdit: false })
   }
 
-  handleEditCancel = () => {
+  handleEditCancel = evt => {
+    evt.stopPropagation()
     this.setState({ editing: false, content: this.props.content })
   }
 
-  handleEditSave = () => {
+  handleEditSave = evt => {
+    evt.stopPropagation()
     if (this.state.content.trim()) {
       this.props.onSave(this.state.content)
       this.setState({ editing: false })
     }
   }
 
-  handleDelete = () => {
+  handleDelete = evt => {
+    evt.stopPropagation()
     this.props.onDelete()
   }
 
@@ -105,8 +108,10 @@ class Comment extends Component {
           <div className="comment-footer-actions">
             {editing && (
               <React.Fragment>
-                <Button onClick={this.handleEditCancel}>Peruuta</Button>
-                <Button onClick={this.handleEditSave} disabled={!content} color="green">
+                <Button secondary onClick={this.handleEditCancel}>
+                  Peruuta
+                </Button>
+                <Button primary onClick={this.handleEditSave} disabled={!content}>
                   Tallenna
                 </Button>
               </React.Fragment>

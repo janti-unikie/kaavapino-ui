@@ -21,7 +21,6 @@ import NavigationPrompt from 'react-router-navigation-prompt'
 import Prompt from '../common/Prompt'
 import EditForm from './EditForm'
 import QuickNav from './quickNav/QuickNav'
-import Shoutbox from '../shoutbox'
 import EditFloorAreaFormModal from '../project/EditFloorAreaFormModal'
 import { EDIT_PROJECT_FORM } from '../../constants'
 
@@ -78,7 +77,6 @@ class ProjectEditPage extends Component {
 
     return (
       <div className="project-input-container">
-        <Shoutbox project={id} />
         <div className="project-input-left">
           <QuickNav
             changingPhase={changingPhase}
@@ -120,6 +118,7 @@ class ProjectEditPage extends Component {
           validating={validating}
           hasErrors={hasErrors}
           disabled={formDisabled}
+          projectId={id}
           title={`${currentSchemaIndex + 1}. ${currentSchema.title}`}
           showEditFloorAreaForm={() => this.setState({ showEditFloorAreaForm: true })}
         />

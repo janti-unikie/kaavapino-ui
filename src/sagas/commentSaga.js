@@ -13,8 +13,13 @@ import {
   setAmountOfCommentsToShow,
   setTotalComments,
   loadCommentsSuccessful,
-  pollCommentsSuccessful
+  pollCommentsSuccessful,
+  FETCH_UNREAD_COMMENTS_COUNT,
+  setUnreadCommentsCount,
+  MARK_COMMENTS_AS_READ,
+  markCommentsAsRead
 } from '../actions/commentActions'
+import moment from 'moment'
 import { error } from '../actions/apiActions'
 import {
   totalCommentsSelector,
@@ -27,6 +32,8 @@ import { commentApi } from '../utils/api'
 export default function* commentSaga() {
   yield all([
     takeLatest([FETCH_COMMENTS, POLL_COMMENTS], fetchCommentsSaga),
+    takeLatest(FETCH_UNREAD_COMMENTS_COUNT, fetchUnreadCommentsCountSaga),
+    takeLatest(MARK_COMMENTS_AS_READ, markCommentsAsReadSaga),
     takeLatest(CREATE_COMMENT, createCommentSaga),
     takeLatest(EDIT_COMMENT, editCommentSaga),
     takeLatest(DELETE_COMMENT, deleteCommentSaga),
@@ -71,6 +78,45 @@ function* fetchCommentsSaga({ payload: projectId }, page, load = false) {
   }
 }
 
+function* fetchUnreadCommentsCountSaga({ payload: projectId }) {
+  try {
+    const unreadComments = yield call(
+      commentApi.get,
+      {
+        path: { id: projectId }
+      },
+      'unread/',
+      null,
+      null,
+      true
+    )
+    yield put(setUnreadCommentsCount(unreadComments.count))
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+function* markCommentsAsReadSaga({ payload: projectId }) {
+  const timestamp = moment().format('YYYY-MM-DDTHH:mm:ss')
+
+  try {
+    yield call(
+      commentApi.post,
+      { timestamp },
+      {
+        path: { id: projectId }
+      },
+      'mark_as_read/',
+      null,
+      null,
+      true
+    )
+    yield put(setUnreadCommentsCount(0))
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
 function* createCommentSaga({ payload: { id: projectId, content } }) {
   try {
     const newComment = yield call(
@@ -79,6 +125,7 @@ function* createCommentSaga({ payload: { id: projectId, content } }) {
       { path: { id: projectId } }
     )
     yield put(createCommentSuccessful(newComment))
+    yield put(markCommentsAsRead(projectId))
     yield call(fetchCommentsSaga, { payload: projectId })
   } catch (e) {
     yield put(error(e))
