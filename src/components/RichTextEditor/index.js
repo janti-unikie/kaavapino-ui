@@ -58,10 +58,7 @@ function RichTextEditor(props) {
       className={`rich-text-editor ${toolbarVisible ? 'toolbar-visible' : ''} ${
         largeField ? 'large' : ''
       }`}
-      onClick={() => {
-        console.log('click')
-        setToolbarVisible(true)
-      }}
+      onClick={() => setToolbarVisible(true)}
     >
       <ReactQuill
         {...inputProps}
