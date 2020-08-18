@@ -40,7 +40,6 @@ class CustomField extends Component {
       }
     })
   }
-
   renderNumber = props => <Input type="number" {...props} />
 
   renderString = props => <Input type="text" {...props} />

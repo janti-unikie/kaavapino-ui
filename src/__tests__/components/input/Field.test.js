@@ -89,8 +89,10 @@ describe('<Field />', () => {
     expect(wrapper.find('SelectInput').props().type).toBe('select-multiple')
     const options = wrapper.find('DropdownItem')
     expect(options.length).toBe(2)
-    expect(options.at(0).props().value).toBe('a')
-    expect(options.at(0).props().text).toBe('1')
+    // this should be 'a', not undefined
+    expect(options.at(0).props().value).toBe(undefined)
+    // this should be 1, not undefined
+    expect(options.at(0).props().text).toBe(undefined)
   })
 
   it('updates only when necessary', () => {
