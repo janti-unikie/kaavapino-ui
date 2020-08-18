@@ -161,7 +161,7 @@ class CustomField extends Component {
       return (
         <Field
           {...fieldProps}
-          defaultValue={attributeData[field.name]}
+          defaultValue={attributeData ? attributeData[field.name] : null}
           largeField={type === 'long_string'}
         />
       )
