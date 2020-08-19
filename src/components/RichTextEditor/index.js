@@ -66,7 +66,6 @@ function RichTextEditor(props) {
         theme="snow"
         modules={modules}
         formats={formats}
-        toolbar={false}
         // default value initialized, after that quill handles internal state
         // Do not explicitly set value. see comments at top of this file.
         defaultValue={value}
