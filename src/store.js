@@ -12,9 +12,11 @@ import userManager from './utils/userManager'
 export const history = createBrowserHistory()
 const sagaMiddleware = createSagaMiddleware()
 
-const combinedReducers = combineReducers({
-  ...reducers
-})
+const createRootReducer = history =>
+  combineReducers({
+    router: connectRouter(history),
+    ...reducers
+  })
 
 const middlewareArray = [routerMiddleware(history), sagaMiddleware]
 
@@ -28,7 +30,7 @@ if (process.env.NODE_ENV === 'development') {
 const composeEnhancers = composeWithDevTools({})
 
 const store = createStore(
-  connectRouter(history)(combinedReducers),
+  createRootReducer(history),
   composeEnhancers(applyMiddleware(...middlewareArray))
 )
 

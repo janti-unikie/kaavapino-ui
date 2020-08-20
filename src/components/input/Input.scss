@@ -57,8 +57,19 @@
       // background-color: yellow;
     }
   }
-}
 
+  .ui.checkbox.dropdown-checkbox label:before{
+    border-color: $gray;
+    border-radius: 0px;
+  }
+
+  .ui.checkbox.dropdown-checkbox label:after{
+    background-color: $color-primary;
+    color: $white;
+    border-radius: 0px;
+  }
+
+}
 .ui.form .fields {
   > .input-container {
     flex: 0 1 auto;
@@ -171,7 +182,7 @@
   &.active:hover {
     border-radius: 2px;
     border: 1px solid $color-input-emphasis;
-    box-shadow: 0px 0px 0px 1px $color-input-emphasis;
+    box-shadow: inset 0px 0px 0px 1px $color-input-emphasis;
   }
 }
 
@@ -470,7 +481,7 @@
       &.active,
       &.active:hover {
         border-color: $color-error-border !important;
-        box-shadow: 0px 0px 0px 1px $color-error-border !important;
+        box-shadow: inset 0px 0px 0px 1px $color-error-border !important;
       }
     }
 
@@ -485,7 +496,7 @@
       &.active,
       &.active:hover {
         border-color: $color-error-border !important;
-        box-shadow: 0px 0px 0px 1px $color-error-border !important;
+        box-shadow: inset 0px 0px 0px 1px $color-error-border !important;
       }
     }
 

@@ -9,6 +9,7 @@ $black: #000000;
 $black1: #1a1a1a;
 $border-black: #1a1a1a;
 $border-gray: #949494;
+$orange: #fd4f00;
 
 $gray: #b2b2b2;
 $gray2: #949494;
@@ -16,12 +17,15 @@ $gray3: #a3a3a3;
 $light-gray: #d9d9d9;
 $light-gray2: #f1f1f1;
 $light-gray3: #f5f5f5;
+$light-gray4: #E0E0E0;
 
 $red: #c4123e;
 $red2: #dc3545;
 
 $yellow: #fff4b4;
 $yellow2: #ffda07;
+
+$white: #ffffff;
 
 $color-primary: $dark-blue-color;
 $color-button-emphasis: $dark-blue-color-light20;
@@ -31,3 +35,4 @@ $color-error-text: $red;
 $color-error-border: $red2;
 $color-warning: $yellow;
 $color-warning2: $yellow2;
+$color-notification: $orange;

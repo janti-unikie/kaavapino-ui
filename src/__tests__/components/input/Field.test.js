@@ -49,7 +49,11 @@ describe('<Field />', () => {
 
   it('renders', () => {
     createFieldOfType('short_string')
-    expect(wrapper.find('Field').length).toBe(1)
+    /* React-redux version 8 makes a wrapping Field component and another Field component inside it,
+     * which is given _reduxForm context.
+     * Older ones seem to render only one.
+     * Both render only one input though. */
+    expect(wrapper.find('Field').length).not.toBe(0)
     expect(wrapper.find('input').length).toBe(1)
   })
 
@@ -83,12 +87,10 @@ describe('<Field />', () => {
     )
     expect(wrapper.find('SelectInput').length).toBe(1)
     expect(wrapper.find('SelectInput').props().type).toBe('select-multiple')
-    const options = wrapper.find('DropdownItem')
+    const options = wrapper.find('Checkbox')
     expect(options.length).toBe(2)
-    // this should be 'a', not undefined
-    expect(options.at(0).props().value).toBe(undefined)
-    // this should be 1, not undefined
-    expect(options.at(0).props().text).toBe(undefined)
+    expect(options.at(0).props().value).toBe('a')
+    expect(options.at(0).props().label).toBe('1')
   })
 
   it('updates only when necessary', () => {
