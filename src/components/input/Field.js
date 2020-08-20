@@ -106,8 +106,8 @@ class CustomField extends Component {
       case 'toggle':
         return this.renderToggle
       case 'string':
-      case 'uuid':
       case 'text':
+      case 'uuid':
       case 'short_string':
         return this.renderString
       case 'long_string':
