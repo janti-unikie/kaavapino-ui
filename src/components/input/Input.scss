@@ -61,12 +61,16 @@
   .ui.checkbox.dropdown-checkbox label:before{
     border-color: $gray;
     border-radius: 0px;
+    width: 24px;
+    height: 24px;
   }
 
   .ui.checkbox.dropdown-checkbox label:after{
     background-color: $color-primary;
-    color: $white;
+    color: $white !important; // without important the checkmark remains black
     border-radius: 0px;
+    width: 24px;
+    height: 24px;
   }
 
 }
