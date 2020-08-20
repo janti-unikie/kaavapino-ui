@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Dropdown } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
-import ControlledDropdown from './ControlledDropdown'
+import DropdownMultiselect from './DropdownMultiselect'
 
 const SelectInput = ({ input, meta: { error }, options, ...custom }) => {
   if (custom.multiple) {
     return (
-      <ControlledDropdown
+      <DropdownMultiselect
         input={input}
         error={error}
         options={options}

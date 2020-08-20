@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Checkbox ,Dropdown } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
 
-const ControlledDropdown = ({ input, error, options, ...custom }) => {
+const DropdownMultiselect = ({ input, error, options, ...custom }) => {
     return (
       <Dropdown
         {...input}
@@ -51,10 +51,10 @@ const trigger = (value) => {
   return <div>{val.length === 1 ? val[0] : `${val.length} valittu`}</div>
 }
 
-ControlledDropdown.propTypes = {
+DropdownMultiselect.propTypes = {
   input: PropTypes.object.isRequired,
   options: PropTypes.array.isRequired
 }
 
-export default ControlledDropdown
+export default DropdownMultiselect
 
