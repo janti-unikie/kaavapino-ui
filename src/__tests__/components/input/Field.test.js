@@ -59,8 +59,10 @@ describe('<Field />', () => {
 
   it('renders different types', () => {
     createFieldOfType('short_string')
-    expect(wrapper.find('.quill').length).toBe(1)
+    expect(wrapper.find('input').props().type).toBe('text')
     createFieldOfType('long_string')
+    expect(wrapper.find('textarea').length).toBe(1)
+    createFieldOfType('rich_text')
     expect(wrapper.find('.quill').length).toBe(1)
     createFieldOfType('boolean')
     expect(wrapper.find('RadioBooleanButton').length).toBe(1)

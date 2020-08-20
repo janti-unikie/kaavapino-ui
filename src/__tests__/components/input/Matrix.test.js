@@ -18,10 +18,10 @@ describe('<Matrix />', () => {
           rows: ['row1', 'row2'],
           columns: ['col1', 'col2'],
           fields: [
-            { name: '1', type: 'text', required: true, row: 0, column: 0 },
-            { name: '2', type: 'text', required: true, row: 0, column: 1 },
-            { name: '3', type: 'text', row: 1, column: 0 },
-            { name: '4', type: 'text', row: 1, column: 1 }
+            { name: '1', type: 'short_string', required: true, row: 0, column: 0 },
+            { name: '2', type: 'short_string', required: true, row: 0, column: 1 },
+            { name: '3', type: 'short_string', row: 1, column: 0 },
+            { name: '4', type: 'short_string', row: 1, column: 1 }
           ]
         }
       },

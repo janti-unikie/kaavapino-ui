@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Input from './Input'
 import SelectInput from './SelectInput'
 import BooleanRadio from './RadioBooleanButton'
+import TextArea from './TextArea'
 import File from './File'
 import FieldSet from './FieldSet'
 import Geometry from './Geometry'
@@ -44,6 +45,8 @@ class CustomField extends Component {
   renderNumber = props => <Input type="number" {...props} />
 
   renderString = props => <Input type="text" {...props} />
+
+  renderTextArea = props => <TextArea {...props} />
 
   renderRichText = props => <RichTextEditor {...props} />
 
@@ -105,9 +108,11 @@ class CustomField extends Component {
       case 'string':
       case 'uuid':
       case 'text':
-        return this.renderString
       case 'short_string':
+        return this.renderString
       case 'long_string':
+        return this.renderTextArea
+      case 'rich_text':
         return this.renderRichText
       case 'datetime':
         return this.renderDateTime
@@ -157,12 +162,12 @@ class CustomField extends Component {
       return <Field {...fieldProps} label={field.label} />
     }
 
-    if (type === 'long_string' || type === 'short_string') {
+    if (type === 'rich_text') {
       return (
         <Field
           {...fieldProps}
           defaultValue={attributeData ? attributeData[field.name] : null}
-          largeField={type === 'long_string'}
+          largeField
         />
       )
     }
