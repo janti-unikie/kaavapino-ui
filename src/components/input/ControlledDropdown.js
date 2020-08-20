@@ -25,17 +25,25 @@ const ControlledDropdown = ({ input, error, options, ...custom }) => {
         trigger={trigger(input.value)}
       >
         <Dropdown.Menu>
-          {options.map(({ key, text }) => (
-            <Dropdown.Item key={key}>
-              <Checkbox className='dropdown' label={text} onChange={(param, data) => {
-                if (input.value.indexOf(data.label) !== -1) {
-                  let nonSelectedValues = input.value.filter( opt => opt !== data.label )
-                  input.onChange(nonSelectedValues)
-                } else {
-                  input.onChange([...input.value, data.label])}
-              }} />
+          {options.map(({ key, text }) => {
+            return(
+              <Dropdown.Item key={key}>
+                <Checkbox
+                  className='dropdown'
+                  label={text}
+                  onChange={(param, data) => {
+                    if (input.value.indexOf(data.label) !== -1) {
+                      let nonSelectedValues = input.value.filter( opt => opt !== data.label )
+                      input.onChange(nonSelectedValues)
+                    } else {
+                      input.onChange([...input.value, data.label])
+                    }
+                    }}
+                  checked={input.value.indexOf(text) !== -1 ? true : false}
+                />
               </Dropdown.Item>
-          ))}
+            )
+          })}
         </Dropdown.Menu>
       </Dropdown>
     )
@@ -47,3 +55,4 @@ ControlledDropdown.propTypes = {
 }
 
 export default ControlledDropdown
+
