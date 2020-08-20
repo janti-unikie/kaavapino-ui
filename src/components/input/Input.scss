@@ -58,12 +58,12 @@
     }
   }
 
-  .ui.checkbox.dropdown label:before{
+  .ui.checkbox.dropdown-checkbox label:before{
     border-color: $gray;
     border-radius: 0px;
   }
-  
-  .ui.checkbox.dropdown label:after{
+
+  .ui.checkbox.dropdown-checkbox label:after{
     background-color: $dark-blue-color;
     color: $white;
     border-radius: 0px;
