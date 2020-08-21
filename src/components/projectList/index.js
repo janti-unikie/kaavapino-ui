@@ -5,7 +5,7 @@ import { fetchProjectSubtypes } from '../../actions/projectTypeActions'
 import { fetchUsers } from '../../actions/userActions'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
 import { usersSelector } from '../../selectors/userSelector'
-import { Tab } from 'semantic-ui-react'
+import { Responsive, Tab } from 'semantic-ui-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { createProject } from '../../actions/projectActions'
 import {
@@ -27,7 +27,9 @@ class ProjectListPage extends Component {
     this.state = {
       showBaseInformationForm: false,
       filter: '',
-      searchOpen: false
+      searchOpen: false,
+      activeIndex: 0,
+      screenWidth: window.innerWidth
     }
   }
 
@@ -36,13 +38,26 @@ class ProjectListPage extends Component {
     this.props.fetchProjects()
     this.props.fetchUsers()
     this.props.fetchProjectSubtypes()
+    window.addEventListener('resize', this.handleWindowSizeChange)
   }
 
-  toggleForm = (opened) => this.setState({ showBaseInformationForm: opened })
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowSizeChange)
+  }
 
-  toggleSearch = (opened) => this.setState({ searchOpen: opened })
+  handleWindowSizeChange = () => {
+    this.setState({ screenWidth: window.innerWidth })
+  }
 
-  setFilter = (value) => this.setState({ filter: value })
+  toggleForm = opened => this.setState({ showBaseInformationForm: opened })
+
+  toggleSearch = opened => this.setState({ searchOpen: opened })
+
+  setFilter = value => this.setState({ filter: value })
+
+  handleTabChange = (e, { activeIndex }) => {
+    this.setState({ activeIndex })
+  }
 
   render() {
     const {
@@ -54,10 +69,14 @@ class ProjectListPage extends Component {
       totalOwnProjects,
       totalProjects
     } = this.props
-    const { filter, searchOpen } = this.state
+
+    const { filter, searchOpen, activeIndex, screenWidth } = this.state
+
     const panes = [
       {
-        menuItem: `Omat projektit (${totalOwnProjects})`,
+        menuItem: `${screenWidth < 600 ? 'Omat' : 'Omat Projektit'} (${totalOwnProjects}${
+          totalOwnProjects > 0 ? ' kpl' : ''
+        })`,
         render: () => (
           <List
             projectSubtypes={projectSubtypes}
@@ -69,9 +88,14 @@ class ProjectListPage extends Component {
         )
       },
       {
-        menuItem: `Kaikki projektit (${totalProjects})`,
+        menuItem: `${
+          screenWidth < 600 ? 'Kaikki' : 'Kaikki Projektit'
+        } (${totalProjects}${totalProjects > 0 ? ' kpl' : ''})`,
         render: () => (
           <List
+            toggleSearch={this.toggleSearch}
+            searchOpen={searchOpen}
+            setFilter={this.setFilter}
             projectSubtypes={projectSubtypes}
             users={users}
             items={allProjects.slice(0, amountOfProjectsToShow)}
@@ -93,7 +117,9 @@ class ProjectListPage extends Component {
             <NavAction to={'/reports'}>Tee raportteja</NavAction>
           </>
         )}
-        <SearchBar
+        <Responsive
+          as={SearchBar}
+          minWidth={601}
           toggleSearch={this.toggleSearch}
           searchOpen={searchOpen}
           onChangeValue={this.setFilter}
@@ -116,14 +142,18 @@ class ProjectListPage extends Component {
           projectSubtypes={projectSubtypes}
         />
         <div className="project-list-container">
-          <Tab panes={panes} />
+          <Tab
+            panes={panes}
+            activeIndex={activeIndex}
+            onTabChange={this.handleTabChange}
+          />
         </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     ownProjects: ownProjectsSelector(state),
     allProjects: projectsSelector(state),

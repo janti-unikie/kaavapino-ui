@@ -10,7 +10,7 @@ class SubList extends Component {
   }
 
   toggleOpen = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       listOpen: !prevState.listOpen
     }))
   }

@@ -28,7 +28,7 @@ class List extends Component {
     }
   }
 
-  setSort = (type) => {
+  setSort = type => {
     const { sort, dir } = this.state
     let newSort = sort,
       newDir = dir
@@ -48,14 +48,14 @@ class List extends Component {
   }
 
   toggleGraph = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       showGraph: !prevState.showGraph
     }))
   }
 
-  filterItems = (items) => {
+  filterItems = items => {
     const { filter } = this.props
-    const filtered = items.filter((item) => {
+    const filtered = items.filter(item => {
       const filterFields = projectUtils.formatFilterProject(
         item,
         false,
@@ -63,7 +63,7 @@ class List extends Component {
         this.props.users
       )
       let includes = false
-      Object.keys(filterFields).forEach((key) => {
+      Object.keys(filterFields).forEach(key => {
         const fieldValue = filterFields[key]
         if (!fieldValue) {
           return
@@ -88,7 +88,10 @@ class List extends Component {
       phases,
       projectSubtypes,
       users,
-      pollingProjects
+      pollingProjects,
+      searchOpen,
+      setFilter,
+      toggleSearch
     } = this.props
     if (loadingProjects || !phases) {
       return (
@@ -102,7 +105,8 @@ class List extends Component {
 
     const items = this.filterItems(this.props.items)
     const headerItems = [
-      'Projektinumero',
+      'Pinonumero',
+      'Projekti (PW)',
       'Nimi',
       'Vaihe',
       'Koko',
@@ -115,15 +119,27 @@ class List extends Component {
 
     items.map(
       (
-        { attribute_data, name, id, modified_at, user, subtype, phase, onhold, archived },
+        {
+          attribute_data,
+          name,
+          id,
+          modified_at,
+          user,
+          subtype,
+          phase,
+          onhold,
+          archived,
+          pino_number
+        },
         i
       ) => {
         const listItem = {
           ...projectUtils.formatPhase(phase, phases),
           name,
           id,
+          pino_number,
           modified_at: projectUtils.formatDate(modified_at),
-          user: projectUtils.formatUsersName(users.find((u) => u.id === user)),
+          user: projectUtils.formatUsersName(users.find(u => u.id === user)),
           subtype: projectUtils.formatSubtype(subtype, projectSubtypes),
           projectId: attribute_data['hankenumero'] || '-'
         }
@@ -166,6 +182,9 @@ class List extends Component {
       <div className="project-list">
         {items.length > 0 && (
           <ListHeader
+            toggleSearch={toggleSearch}
+            searchOpen={searchOpen}
+            setFilter={setFilter}
             items={headerItems}
             selected={sort}
             dir={dir}
@@ -206,7 +225,7 @@ const mapDispatchToProps = {
   setAmountOfProjectsToIncrease
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   phases: phasesSelector(state),
   loadingProjects: loadingProjectsSelector(state),
   pollingProjects: pollingProjectsSelector(state),

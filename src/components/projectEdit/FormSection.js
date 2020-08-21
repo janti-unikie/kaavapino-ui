@@ -25,7 +25,7 @@ const FormSection = ({
           key={`${field.name}-${i}`}
           checking={checking}
           disabled={disabled}
-          field={{ ...field, disabled: disabled || field.disabled } }
+          field={{ ...field, disabled: disabled || field.disabled }}
           attributeData={attributeData}
           updated={updates[field.name] || null}
         />

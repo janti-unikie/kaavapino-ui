@@ -12,7 +12,7 @@ import userManager from './utils/userManager'
 export const history = createBrowserHistory()
 const sagaMiddleware = createSagaMiddleware()
 
-const createRootReducer = history =>
+const createRootReducer = (history) =>
   combineReducers({
     router: connectRouter(history),
     ...reducers

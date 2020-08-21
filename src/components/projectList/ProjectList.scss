@@ -16,6 +16,10 @@
           width: 24px;
           height: 22px;
         }
+
+        @media screen and (max-width: 599px) {
+          display: none;
+        }
       }
       a.action-item {
         color: white !important;
@@ -26,12 +30,15 @@
         justify-content: end;
       }
     }
+    @media screen and (max-width: 599px) {
+      min-height: 0;
+    }
   }
   .project-list-container {
     min-height: 273px;
 
     .project-list {
-      background-color: white;
+      background-color: #ffffff;
       padding: 10px 0px;
       border-top: none;
 
@@ -39,7 +46,7 @@
       .project-list-item {
         text-align: center;
         display: grid;
-        grid-template-columns: repeat(7, 1fr);
+        grid-template-columns: repeat(15, 1fr);
         column-gap: 10px;
         margin-top: 12px;
 
@@ -77,12 +84,29 @@
             height: 132px;
           }
         }
+        .project-card-mb {
+          display: none;
+          font-size: 16px;
+          color: $color-primary;
+          text-align: center;
+          justify-content: center;
+          border: 2px solid $color-primary;
+          margin-top: 18px;
+          margin-bottom: 32px;
+          padding-top: 18px;
+          padding-bottom: 18px;
+
+          @media screen and (max-width: 599px) {
+            display: flex;
+          }
+        }
       }
       .project-list-item {
         height: 64px;
         padding: 20px 28px 0;
         border: 2px solid #dedfe1;
         font-size: 16px;
+        position: relative;
 
         &:hover,
         &:focus,
@@ -104,6 +128,30 @@
         @media screen and (max-width: 800px) {
           height: 200px;
         }
+        @media screen and (max-width: 599px) {
+          padding-bottom: 20px;
+          text-align: left;
+        }
+        span {
+          grid-column: span 2;
+
+          &:nth-child(5) {
+            grid-column: span 1;
+          }
+          &:nth-child(3) {
+            grid-column: span 2;
+          }
+        }
+      }
+
+      .project-list-sort-text {
+        display: none;
+
+        @media screen and (max-width: 599px) {
+          display: block;
+          font-size: 16px;
+          color: $black;
+        }
       }
 
       .project-list-header {
@@ -114,7 +162,7 @@
 
         .project-timeline-toggle {
           cursor: pointer;
-          margin-right: 56px;
+          width: 68px;
 
           .ui.toggle.checkbox input:checked ~ label:after {
             left: 1.977rem;
@@ -139,6 +187,9 @@
               padding-left: 0;
             }
           }
+          @media screen and (max-width: 601px) {
+            display: none;
+          }
         }
 
         /*
@@ -154,6 +205,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          grid-column: span 2;
 
           .angle-icon {
             position: absolute;
@@ -181,33 +233,71 @@
               color: $black;
             }
           }
+          &:nth-child(5) {
+            grid-column: span 1;
+          }
+          &:nth-child(9) {
+            grid-column: span 1;
+          }
         }
+        @media screen and (max-width: 599px) {
+          position: relative;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          background: none;
+          color: $color-primary;
+          margin-bottom: 32px;
 
-        @media screen and (max-width: 800px) {
-          height: 200px;
+          .header-item {
+            flex-grow: 1;
+            margin-right: 12px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            padding: 4px 14px;
+            border: 2px solid $color-primary;
+
+            .angle-icon {
+              display: none;
+            }
+
+            &:last-of-type {
+              flex-grow: 0;
+              font-size: 14px;
+              border: none;
+              color: $black;
+            }
+
+            @media screen and (max-width: 365px) {
+              margin-right: 0;
+            }
+          }
         }
       }
 
       .project-list-button {
-        position: relative;
+        position: absolute;
         white-space: nowrap;
         color: white;
         border: none;
         outline: none;
         cursor: pointer;
         border-radius: 5px;
-        margin-right: 8px;
         max-height: 30px;
+        grid-column: span 1;
+        right: 36px;
+        top: 22px;
 
         svg {
-          position: absolute;
-          right: 0;
           height: 20px;
           width: 20px;
 
           @media screen and (max-width: 800px) {
             position: initial;
           }
+        }
+        @media screen and (max-width: 599px) {
+          display: none;
         }
       }
 
@@ -225,6 +315,36 @@
           padding-bottom: 20px;
         }
       }
+
+      .project-list-mb-actions{
+        position: relative;
+        display: flex;
+        margin-bottom: 4px;
+        min-height: 32px;
+        align-items: center;
+
+        .project-timeline-toggle-mb {
+          display: flex;
+          position: absolute;
+          margin-left: 2px;
+
+          .ui.toggle.checkbox input:checked ~ label:before {
+            background-color: $black !important;
+          }
+
+          .toggle {
+            z-index: 0;
+            margin-right: 8px;
+
+            label {
+              font-size: 16px;
+            }
+          }
+        }
+        @media screen and (min-width: 600px) {
+          display: none;
+        }
+      }
     }
 
     .empty-list-info {
@@ -238,7 +358,6 @@
       margin-top: 48px;
     }
   }
-
   .ui.tabular.menu {
     border: none;
     height: 50px;
@@ -246,6 +365,7 @@
     margin-top: -68px;
     font-size: 16px;
     .item {
+      border-radius: 0;
       border-bottom: 2px solid $border-gray;
       margin-right: 2px;
     }
@@ -257,10 +377,10 @@
       font-weight: normal !important;
     }
     @media screen and (max-width: 800px) {
-      margin-top: -60px;
+      margin-top: -46px;
     }
-    @media screen and (max-width: 512px) {
-      font-size: 12px;
+    @media screen and (max-width: 599px) {
+      font-size: 16px;
     }
   }
 }

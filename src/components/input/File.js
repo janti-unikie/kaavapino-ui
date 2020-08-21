@@ -144,9 +144,9 @@ class File extends Component {
               htmlFor={field.name}
               label={{
                 basic: true,
-                content: `${this.state.current ||
-                  (uploading && 'Ladataan...') ||
-                  'Valitse tiedosto'}`
+                content: `${
+                  this.state.current || (uploading && 'Ladataan...') || 'Valitse tiedosto'
+                }`
               }}
               onClick={this.handleClick}
               ref={this.inputButtonRef}
