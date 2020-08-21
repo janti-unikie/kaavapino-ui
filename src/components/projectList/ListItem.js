@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ReactComponent as ProjectEditIcon } from '../../assets//icons/edit-project.svg'
+import Graph from '../common/Graph'
 
 const Status = ({ color }) => {
   return (
@@ -15,37 +16,34 @@ const Status = ({ color }) => {
 }
 
 const ListItem = ({
-  item: {
-    phaseName,
-    phaseColor,
-    name,
-    id,
-    subtype,
-    modified_at,
-    user,
-    projectId,
-    nextDeadline
-  }
+  graphData,
+  showGraph,
+  item: { phaseName, phaseColor, name, id, subtype, modified_at, user, projectId }
 }) => {
   return (
-    <div className="project-list-item">
-      <span>{projectId}</span>
-      <span className="project-list-item-name">
-        <Link className="project-name" to={`/${id}`}>
-          {name}
+    <div className="project-list-item-container">
+      <div className="project-list-item">
+        <span>{projectId}</span>
+        <span className="project-list-item-name">
+          <Link className="project-name" to={`/${id}`}>
+            {name}
+          </Link>
+        </span>
+        <span className="project-list-item-phase">
+          <Status color={phaseColor} /> {phaseName}
+        </span>
+        <span>{subtype}</span>
+        <span>{modified_at}</span>
+        <span>{user}</span>
+        <Link className="project-list-button" to={`/${id}/edit`}>
+          <ProjectEditIcon />
         </Link>
-      </span>
-      <span className="project-list-item-phase">
-        <Status color={phaseColor} /> {phaseName}
-      </span>
-      <span>{nextDeadline}</span>
-      <span>{subtype}</span>
-      <span>{modified_at}</span>
-      <span>{user}</span>
-      <Link className="project-list-button" to={`/${id}/edit`}>
-        <FontAwesomeIcon icon="pen" />
-        Muokkaa
-      </Link>
+      </div>
+      <div className="project-list-item-graph">
+        {showGraph && (
+          <Graph data={[graphData]} height={Math.max(graphData.length * 65, 2 * 65)} />
+        )}
+      </div>
     </div>
   )
 }

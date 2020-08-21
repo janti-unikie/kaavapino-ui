@@ -1,31 +1,56 @@
+@import '../common/colors.scss';
+
 .project-list-page {
   flex: 1;
+  margin: 0 auto;
+  max-width: 1148px;
+  width: calc(100% - 32px);
+  .nav-header-container {
+    .nav-header-actions {
+      margin-top: 0;
+      .action-item {
+        margin-right: 14px;
+
+        svg {
+          position: relative;
+          width: 24px;
+          height: 22px;
+        }
+      }
+      a.action-item {
+        color: white !important;
+        border: 2px solid $color-primary !important;
+        background: $color-primary !important;
+      }
+      @media screen and (max-width: 800px) {
+        justify-content: end;
+      }
+    }
+  }
   .project-list-container {
-    margin: 5% 10% 10% 10%;
     min-height: 273px;
 
     .project-list {
       background-color: white;
-      padding: 10px 20px 10px 20px;
-      border: 1px solid #d4d4d5;
+      padding: 10px 0px;
       border-top: none;
 
       .project-list-header,
       .project-list-item {
+        text-align: center;
         display: grid;
-        grid-template-columns: repeat(8, 1fr);
+        grid-template-columns: repeat(7, 1fr);
         column-gap: 10px;
-        margin-top: 20px;
+        margin-top: 12px;
 
         > * {
           overflow: auto;
         }
 
-        @media screen and (max-width: 500px) {
+        @media screen and (max-width: 800px) {
           grid-template-columns: repeat(1, 1fr);
         }
       }
-
       .list-amount {
         display: flex;
         justify-content: center;
@@ -38,17 +63,32 @@
         justify-content: center;
         align-items: center;
         position: relative;
+        padding-top: 40px;
 
-        .list-action-dropdown {
-          position: absolute;
-          right: 0;
+        .button {
+          width: 300px;
+          height: 56px;
         }
       }
-
+      .project-list-item-container {
+        color: $black;
+        .project-list-item-graph {
+          .chart {
+            height: 132px;
+          }
+        }
+      }
       .project-list-item {
-        padding: 0 0 10px 0;
-        border-bottom: 1px solid #dedfe1;
+        height: 64px;
+        padding: 20px 28px 0;
+        border: 2px solid #dedfe1;
         font-size: 16px;
+
+        &:hover,
+        &:focus,
+        &:active {
+          border-color: $color-primary;
+        }
 
         .project-status {
           display: inline-block;
@@ -60,42 +100,114 @@
 
         .project-name {
           color: black;
-          text-decoration: underline;
-
-          &:hover {
-            color: blue;
-          }
+        }
+        @media screen and (max-width: 800px) {
+          height: 200px;
         }
       }
 
       .project-list-header {
-        border-bottom: 2px solid black;
-        padding-bottom: 10px;
+        background-color: $light-gray4;
         align-items: center;
+        min-height: 56px;
+        position: relative;
+
+        .project-timeline-toggle {
+          cursor: pointer;
+          margin-right: 56px;
+
+          .ui.toggle.checkbox input:checked ~ label:after {
+            left: 1.977rem;
+          }
+          .ui.toggle.checkbox input:checked ~ label:before {
+            background-color: $black !important;
+          }
+
+          .toggle {
+            padding-left: 6px;
+            position: absolute;
+            label:before {
+              width: 47px;
+              height: 20px;
+            }
+            label:after {
+              width: 20px;
+              height: 20px;
+            }
+
+            @media screen and (max-width: 1200px) {
+              padding-left: 0;
+            }
+          }
+        }
+
+        /*
+        Design did not have a clear style to indicate direction of filter. Currently gray.
+        */
 
         .header-item {
+          text-align: center;
           font-size: 16px;
           font-weight: bold;
           user-select: none;
           cursor: pointer;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+
+          .angle-icon {
+            position: absolute;
+            margin-left: 6px;
+            font-size: 12px;
+            color: $gray2;
+
+            @media screen and (max-width: 800px) {
+              position: initial;
+            }
+          }
+
+          .angle-up-icon {
+            top: 16px;
+
+            &.dir-up {
+              color: $black;
+            }
+          }
+
+          .angle-down-icon {
+            bottom: 14px;
+
+            &.dir-down {
+              color: $black;
+            }
+          }
+        }
+
+        @media screen and (max-width: 800px) {
+          height: 200px;
         }
       }
 
       .project-list-button {
+        position: relative;
         white-space: nowrap;
-        background-color: black;
         color: white;
         border: none;
         outline: none;
         cursor: pointer;
-        padding: 5px 10px 5px 10px;
         border-radius: 5px;
-        margin-right: 10px;
+        margin-right: 8px;
         max-height: 30px;
-        max-width: 130px;
 
-        :nth-child(n) {
-          margin-right: 10px;
+        svg {
+          position: absolute;
+          right: 0;
+          height: 20px;
+          width: 20px;
+
+          @media screen and (max-width: 800px) {
+            position: initial;
+          }
         }
       }
 
@@ -103,12 +215,52 @@
       .project-list-item-phase {
         white-space: nowrap;
       }
+
+      .project-list-sublist {
+        padding-top: 68px;
+        padding-bottom: 10px;
+        .project-sublist-title {
+          cursor: pointer;
+          font-size: 16px;
+          padding-bottom: 20px;
+        }
+      }
     }
 
     .empty-list-info {
-      margin-top: 20px;
-      display: block;
-      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      margin-top: 100px;
+      font-size: 24px;
+    }
+
+    @media screen and (max-width: 800px) {
+      margin-top: 48px;
+    }
+  }
+
+  .ui.tabular.menu {
+    border: none;
+    height: 50px;
+    margin-bottom: 30px;
+    margin-top: -68px;
+    font-size: 16px;
+    .item {
+      border-bottom: 2px solid $border-gray;
+      margin-right: 2px;
+    }
+    .active {
+      border: none;
+      color: $color-primary !important;
+      border-bottom: 2px solid $color-primary !important;
+      margin-bottom: 0 !important;
+      font-weight: normal !important;
+    }
+    @media screen and (max-width: 800px) {
+      margin-top: -60px;
+    }
+    @media screen and (max-width: 512px) {
+      font-size: 12px;
     }
   }
 }

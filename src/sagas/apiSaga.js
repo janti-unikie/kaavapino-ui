@@ -24,7 +24,6 @@ export default function* apiSaga() {
 }
 
 function* handleErrorSaga({ payload }) {
-  console.error(payload)
   if (payload.response) {
     const { status } = payload.response
     if (status === 401) {
