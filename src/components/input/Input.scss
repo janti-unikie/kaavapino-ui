@@ -57,23 +57,33 @@
       // background-color: yellow;
     }
   }
+  .ui.checkbox.dropdown-checkbox label {
+    align-items: center;
+    display: flex;
+    min-height: 24px;
+    padding-left: 32px;
 
-  .ui.checkbox.dropdown-checkbox label:before{
-    border-color: $gray;
-    border-radius: 0px;
-    width: 24px;
-    height: 24px;
+    &:before {
+      border-color: $gray;
+      border-radius: 0px;
+      height: 24px;
+      width: 24px;
+    }
+
+    &:after {
+      align-items: center;
+      background-color: $color-primary;
+      border-radius: 0px;
+      color: $white !important;
+      display: flex;
+      font-size: 16px;
+      height: 24px;
+      justify-content: center;
+      width: 24px;
+    }
   }
-
-  .ui.checkbox.dropdown-checkbox label:after{
-    background-color: $color-primary;
-    color: $white !important; // without important the checkmark remains black
-    border-radius: 0px;
-    width: 24px;
-    height: 24px;
-  }
-
 }
+
 .ui.form .fields {
   > .input-container {
     flex: 0 1 auto;
