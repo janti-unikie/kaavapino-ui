@@ -48,7 +48,9 @@ class CustomField extends Component {
 
   renderTextArea = props => <TextArea {...props} />
 
-  renderRichText = props => <RichTextEditor {...props} />
+  renderRichText = props => <RichTextEditor {...props} largeField />
+
+  renderRichTextShort = props => <RichTextEditor {...props} />
 
   renderDate = props => <Input type="date" {...props} />
 
@@ -114,6 +116,8 @@ class CustomField extends Component {
         return this.renderTextArea
       case 'rich_text':
         return this.renderRichText
+      case 'rich_text_short':
+        return this.renderRichTextShort
       case 'datetime':
         return this.renderDateTime
       case 'date':
@@ -162,12 +166,11 @@ class CustomField extends Component {
       return <Field {...fieldProps} label={field.label} />
     }
 
-    if (type === 'rich_text') {
+    if (type === 'rich_text' || type === 'rich_text_short') {
       return (
         <Field
           {...fieldProps}
           defaultValue={attributeData ? attributeData[field.name] : null}
-          largeField
         />
       )
     }
