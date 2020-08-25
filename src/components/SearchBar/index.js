@@ -5,14 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ReactComponent as MagnifierIcon } from '../../assets/icons/magnifier-icon.svg'
 
 class SearchBar extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      searchOpen: false
-    }
-  }
-
   render() {
     const { onChangeValue, searchOpen, toggleSearch } = this.props
 
@@ -24,7 +16,7 @@ class SearchBar extends Component {
           <div className="search-bar-bar">
             <Input
               autoFocus
-              onChange={(e) => onChangeValue(e.target.value)}
+              onChange={e => onChangeValue(e.target.value)}
               type="text"
               fluid
               placeholder="Hae"

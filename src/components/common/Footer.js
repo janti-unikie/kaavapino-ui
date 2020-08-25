@@ -34,13 +34,21 @@ class Footer extends Component {
         )
         if (footerData[key].links[key2].url.match(regex)) {
           values.push(
-            <List.Item as={'a'} href={footerData[key].links[key2].url} key={`${key}-${key2}`}>
+            <List.Item
+              as={'a'}
+              href={footerData[key].links[key2].url}
+              key={`${key}-${key2}`}
+            >
               {footerData[key].links[key2].link_text}
             </List.Item>
           )
         } else {
           values.push(
-            <List.Item as={Link} to={footerData[key].links[key2].url} key={`${key}-${key2}`}>
+            <List.Item
+              as={Link}
+              to={footerData[key].links[key2].url}
+              key={`${key}-${key2}`}
+            >
               {footerData[key].links[key2].link_text}
             </List.Item>
           )

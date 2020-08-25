@@ -80,6 +80,9 @@
           margin-right: 8px;
         }
       }
+      @media screen and (max-width: 600px) {
+        display: none;
+      }
     }
 
     .nav-header-content {

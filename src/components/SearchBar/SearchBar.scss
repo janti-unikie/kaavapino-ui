@@ -10,9 +10,12 @@
     border-radius: 0 !important;
     margin-top: 6px;
 
-    input {
+    input[type='text'] {
       text-indent: 62px;
       @media screen and (max-width: 599px) {
+        box-sizing: border-box;
+        border: none;
+        border-bottom: 2px solid $black;
         font-size: 12px;
         width: 226px;
         height: 32px;
@@ -26,10 +29,7 @@
       padding-left: 66px;
 
       @media screen and (max-width: 599px) {
-        font-size: 12px;
-        width: 60px;
-        height: 32px;
-        padding-left: 20px;
+        display: none !important;
       }
     }
     svg {
@@ -44,8 +44,8 @@
       }
 
       @media screen and (max-width: 599px) {
-        right: 68px;
-        bottom: 32px;
+        right: 0;
+        bottom: 11px;
       }
     }
     .magnifier-icon {
@@ -59,25 +59,25 @@
         fill: $color-primary !important;
       }
       @media screen and (max-width: 599px) {
-        bottom: 28px;
+        top: 50%;
+        transform: translate(0, -50%);
       }
     }
 
     @media screen and (max-width: 599px) {
+      z-index: 1;
       padding-right: 0 !important;
       font-size: 12px;
-      width: 286px;
+      width: 100%;
+      margin-top: -4px;
     }
-  }
-
-  .hidden {
-    display: none;
   }
 
   .magnifier-icon {
     margin-top: 24px;
     height: 24px;
     width: 24px;
+    z-index: 1;
 
     path {
       fill: $color-primary !important;
@@ -86,9 +86,17 @@
     &:hover {
       cursor: pointer;
     }
+    @media screen and (max-width: 599px) {
+      margin-top: 0;
+    }
   }
 
-  @media screen and (max-width: 800px) {
-    padding-top: 8px;
+  @media screen and (max-width: 599px) {
+    width: 100%;
+    .search-bar-bar {
+      .ui.input {
+        height: auto;
+      }
+    }
   }
 }

@@ -18,11 +18,22 @@ const Status = ({ color }) => {
 const ListItem = ({
   graphData,
   showGraph,
-  item: { phaseName, phaseColor, name, id, subtype, modified_at, user, projectId }
+  item: {
+    phaseName,
+    phaseColor,
+    name,
+    id,
+    subtype,
+    modified_at,
+    user,
+    projectId,
+    pino_number
+  }
 }) => {
   return (
     <div className="project-list-item-container">
       <div className="project-list-item">
+        <span className="project-list-item-pino">{pino_number}</span>
         <span>{projectId}</span>
         <span className="project-list-item-name">
           <Link className="project-name" to={`/${id}`}>
@@ -44,6 +55,9 @@ const ListItem = ({
           <Graph data={[graphData]} height={Math.max(graphData.length * 65, 2 * 65)} />
         )}
       </div>
+      <Link to={`/${id}`} className="project-card-mb">
+        Projektikortti, {name}
+      </Link>
     </div>
   )
 }
