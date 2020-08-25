@@ -10,13 +10,12 @@ const DropdownMultiselect = ({ input, error, options, ...custom }) => {
       {...custom}
       fluid
       search
+      selection
       clearable
       placeholder=""
       multiple
-      selection
-      options={options}
       noResultsMessage="Ei tuloksia"
-
+      options={options}
       error={inputUtils.hasError(error)}
       onBlur={() => input.onBlur(input.value.value)}
       trigger={trigger(input.value, custom.custom.placeholder)}
