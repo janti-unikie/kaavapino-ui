@@ -156,12 +156,6 @@
   border: 2px solid $black1;
 }
 
-.ui.selection.dropdown .menu {
-  /* The defaults were counting on 1px border */
-  margin: 0 -2px;
-  min-width: calc(100% + 4px);
-}
-
 .ui.label {
   // font-family: "Helsinki Grotesk";
   background-color: transparent;
