@@ -79,7 +79,6 @@ class EditForm extends Component {
           <Button
             value="Päivitä kerrosalatiedot"
             secondary
-            fluid
             onClick={showEditFloorAreaForm}
           />
           <Shoutbox project={projectId} />
