@@ -103,11 +103,8 @@ const Matrix = ({ field: { matrix }, checking, attributeData }) => {
                   checking &&
                   projectUtils.isFieldMissing(field.name, field.required, attributeData)
                 return (
-                  <>
-                    <span
-                      style={{ display: 'contents' }}
-                      key={`${field.name}-${y}-${x}-total`}
-                    >
+                  <React.Fragment key={`${field.name}-${y}-${x}-total`}>
+                    <span style={{ display: 'contents' }}>
                       {/* {x === 0 && <b>{rows[y]}</b>} */}
                       {field === 0 && <span />}
                       {field && field.type === TOTAL_FIELD_TYPE && (
@@ -130,7 +127,7 @@ const Matrix = ({ field: { matrix }, checking, attributeData }) => {
                         </span>
                       )}
                     </span>
-                  </>
+                  </React.Fragment>
                 )
               })}
             </React.Fragment>
