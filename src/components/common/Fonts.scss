@@ -1,0 +1,23 @@
+// Helsinki Grotesk regular
+@font-face {
+  font-family: 'Helsinki Grotesk Regular';
+  src:  url('./assets/fonts/HelsinkiGrotesk-Regular.ttf') format('truetype'),
+  url('./assets/fonts/HelsinkiGrotesk-Regular.eot') format('eot'),
+  url('./assets/fonts/HelsinkiGrotesk-Regular.woff') format('woff');
+}
+
+// Helsinki Grotesk Bold
+@font-face {
+  font-family: 'Helsinki Grotesk Bold';
+  src:  url('./assets/fonts/HelsinkiGrotesk-Bold.ttf') format('truetype'),
+  url('./assets/fonts/HelsinkiGrotesk-Bold.eot') format('eot'),
+  url('./assets/fonts/HelsinkiGrotesk-Bold.woff') format('woff');
+}
+
+// Helsinki Grotesk Medium
+@font-face {
+  font-family: 'Helsinki Grotesk Medium';
+  src:  url('./assets/fonts/HelsinkiGrotesk-Medium.ttf') format('truetype'),
+  url('./assets/fonts/HelsinkiGrotesk-Medium.eot') format('eot'),
+  url('./assets/fonts/HelsinkiGrotesk-Medium.woff') format('woff');
+}

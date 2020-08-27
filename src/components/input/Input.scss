@@ -95,6 +95,10 @@
     &[type='number'] {
       -moz-appearance: textfield;
     }
+
+    &::placeholder {
+      font-family: 'Helsinki Grotesk Regular';
+    }
   }
 }
 
@@ -137,7 +141,7 @@
 }
 
 .ui.label {
-  // font-family: "Helsinki Grotesk";
+  font-family: "Helsinki Grotesk Bold";
   background-color: transparent;
   color: $black1;
   font-size: 14px;
