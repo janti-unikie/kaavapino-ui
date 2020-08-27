@@ -10,16 +10,15 @@ const DropdownMultiselect = ({ input, error, options, ...custom }) => {
       {...custom}
       fluid
       search
+      selection
       clearable
       placeholder=""
       multiple
-      selection
-      options={options}
       noResultsMessage="Ei tuloksia"
-
+      options={options}
       error={inputUtils.hasError(error)}
       onBlur={() => input.onBlur(input.value.value)}
-      trigger={trigger(input.value)}
+      trigger={trigger(input.value, custom.custom.placeholder)}
     >
       <Dropdown.Menu>
         {options.map(({ key, text, value }) => {
@@ -47,9 +46,15 @@ const DropdownMultiselect = ({ input, error, options, ...custom }) => {
   )
 }
 
-const trigger = (value) => {
+const trigger = (value, placeholder) => {
   const val = value || []
-  return <div>{val.length === 1 ? val[0] : `${val.length} valittu`}</div>
+  if (val.length === 0) {
+    return <div>{placeholder}</div>
+  } else if (val.length === 1) {
+    return <div>{val[0]}</div>
+  } else {
+    return <div>{`${val.length} valittu`}</div>
+  }
 }
 
 DropdownMultiselect.propTypes = {

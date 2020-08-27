@@ -57,19 +57,33 @@
       // background-color: yellow;
     }
   }
+  .ui.checkbox.dropdown-checkbox label {
+    align-items: center;
+    display: flex;
+    min-height: 24px;
+    padding-left: 32px;
 
-  .ui.checkbox.dropdown-checkbox label:before{
-    border-color: $gray;
-    border-radius: 0px;
+    &:before {
+      border-color: $gray;
+      border-radius: 0px;
+      height: 24px;
+      width: 24px;
+    }
+
+    &:after {
+      align-items: center;
+      background-color: $color-primary;
+      border-radius: 0px;
+      color: $white !important;
+      display: flex;
+      font-size: 16px;
+      height: 24px;
+      justify-content: center;
+      width: 24px;
+    }
   }
-
-  .ui.checkbox.dropdown-checkbox label:after{
-    background-color: $color-primary;
-    color: $white;
-    border-radius: 0px;
-  }
-
 }
+
 .ui.form .fields {
   > .input-container {
     flex: 0 1 auto;
@@ -129,6 +143,7 @@
   }
 
   > input.search {
+    position: absolute;
     height: 56px;
     line-height: 56px;
     padding: 0 32px 0 8px;
@@ -139,12 +154,6 @@
 .ui.selection.active.dropdown .menu,
 .ui.selection.active.dropdown:hover .menu {
   border: 2px solid $black1;
-}
-
-.ui.selection.dropdown .menu {
-  /* The defaults were counting on 1px border */
-  margin: 0 -2px;
-  min-width: calc(100% + 4px);
 }
 
 .ui.label {
