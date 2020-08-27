@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 const Collapse = props => {
-  const { children, title } = props
+  const { children, title, ...rest } = props
   const [open, setOpen] = useState(false)
   const contentRef = useRef(null)
 
@@ -22,7 +22,7 @@ const Collapse = props => {
   }
 
   return (
-    <div className={`collapse ${open ? 'open' : ''}`}>
+    <div className={`collapse ${open ? 'open' : ''}`} {...rest}>
       <h2 className="collapse-header" onClick={handleClick}>
         <div>{title}</div>
         <FontAwesomeIcon icon={open ? faChevronUp : faChevronDown} />

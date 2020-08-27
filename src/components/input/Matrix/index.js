@@ -22,7 +22,7 @@ const addTotalFields = (
   const rowTotalFields = rows.map((row, i) => {
     const rowFields = dataFields.filter(field => field.row === i)
     const rowTotal = rowFields.reduce((total, current) => {
-      const val = attributeData[current.name]
+      const val = (attributeData && attributeData[current.name]) || 0
       return val ? total + val : total
     }, 0)
     const rowTotalField = {
@@ -38,7 +38,7 @@ const addTotalFields = (
   const columnTotalFields = columns.map((col, i) => {
     const colFields = dataFields.filter(field => field.column === i)
     const colTotal = colFields.reduce((total, current) => {
-      const val = attributeData[current.name]
+      const val = (attributeData && attributeData[current.name]) || 0
       return val ? total + val : total
     }, 0)
     const columnTotalField = {
@@ -52,7 +52,7 @@ const addTotalFields = (
 
   /* Make a total of all fields to the right bottom spot */
   const allTotalValue = dataFields.reduce((total, current) => {
-    const val = attributeData[current.name]
+    const val = (attributeData && attributeData[current.name]) || 0
     return val ? total + val : total
   }, 0)
   const allTotalField = {

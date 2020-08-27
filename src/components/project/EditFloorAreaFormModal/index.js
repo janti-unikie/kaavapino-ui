@@ -83,11 +83,15 @@ class EditFloorAreaFormModal extends Component {
     this.setState({ loading: false })
   }
 
-  getFormField = fieldProps => {
+  getFormField = (fieldProps, key) => {
     const { formValues, formSubmitErrors } = this.props
     const error =
       formSubmitErrors && fieldProps.field && formSubmitErrors[fieldProps.field.name]
-    return <FormField {...fieldProps} attributeData={formValues} error={error} />
+    return (
+      <div key={key}>
+        <FormField {...fieldProps} attributeData={formValues} error={error} />
+      </div>
+    )
   }
 
   render() {
@@ -107,9 +111,11 @@ class EditFloorAreaFormModal extends Component {
           <FloorAreaTotals />
           <Form>
             {floorAreaSections &&
-              floorAreaSections.map((section, i) => (
-                <Collapse title={section.title} key={i}>
-                  {section.fields.map(field => this.getFormField({ field }))}
+              floorAreaSections.map((section, sectionIndex) => (
+                <Collapse title={section.title} key={sectionIndex}>
+                  {section.fields.map((field, fieldIndex) =>
+                    this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
+                  )}
                 </Collapse>
               ))}
           </Form>

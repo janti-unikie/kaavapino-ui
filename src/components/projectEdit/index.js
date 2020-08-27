@@ -122,12 +122,14 @@ class ProjectEditPage extends Component {
           title={`${currentSchemaIndex + 1}. ${currentSchema.title}`}
           showEditFloorAreaForm={() => this.setState({ showEditFloorAreaForm: true })}
         />
-        <EditFloorAreaFormModal
-          attributeData={attribute_data}
-          open={this.state.showEditFloorAreaForm}
-          handleSubmit={saveProjectFloorArea}
-          handleClose={() => this.setState({ showEditFloorAreaForm: false })}
-        />
+        {this.state.showEditFloorAreaForm && (
+          <EditFloorAreaFormModal
+            attributeData={attribute_data}
+            open
+            handleSubmit={saveProjectFloorArea}
+            handleClose={() => this.setState({ showEditFloorAreaForm: false })}
+          />
+        )}
       </div>
     )
   }
