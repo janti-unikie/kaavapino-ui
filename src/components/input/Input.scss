@@ -149,6 +149,10 @@
     padding: 0 32px 0 8px;
     margin: 0;
   }
+
+  .placeholder {
+    color: $light-gray;
+  }
 }
 
 .ui.selection.active.dropdown .menu,

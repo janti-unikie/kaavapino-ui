@@ -49,7 +49,7 @@ const DropdownMultiselect = ({ input, error, options, ...custom }) => {
 const trigger = (value, placeholder) => {
   const val = value || []
   if (val.length === 0) {
-    return <div>{placeholder}</div>
+    return <div className="placeholder">{placeholder}</div>
   } else if (val.length === 1) {
     return <div>{val[0]}</div>
   } else {
