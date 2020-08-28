@@ -48,7 +48,7 @@ describe('<Field />', () => {
   }
 
   it('renders', () => {
-    createFieldOfType('short_string')
+    createFieldOfType('text')
     /* React-redux version 8 makes a wrapping Field component and another Field component inside it,
      * which is given _reduxForm context.
      * Older ones seem to render only one.
@@ -62,6 +62,8 @@ describe('<Field />', () => {
     expect(wrapper.find('input').props().type).toBe('text')
     createFieldOfType('long_string')
     expect(wrapper.find('textarea').length).toBe(1)
+    createFieldOfType('rich_text')
+    expect(wrapper.find('.quill').length).toBe(1)
     createFieldOfType('boolean')
     expect(wrapper.find('RadioBooleanButton').length).toBe(1)
     createFieldOfType('date')
