@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { takeLatest, put, all, call, select } from 'redux-saga/effects'
+import { isEqual } from 'lodash'
 import { push } from 'connected-react-router'
 import { actions as toastrActions } from 'react-redux-toastr'
 import {
@@ -231,7 +232,7 @@ function* createProject() {
 const getChangedAttributeData = (values, initial) => {
   const attribute_data = {}
   Object.keys(values).forEach(key => {
-    if (initial.hasOwnProperty(key) && initial[key] === values[key]) {
+    if (initial.hasOwnProperty(key) && isEqual(values[key], initial[key])) {
       return
     }
     if (values[key] === '') {

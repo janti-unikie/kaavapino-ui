@@ -5,6 +5,7 @@ import { Message } from 'semantic-ui-react'
 import FormSection from './FormSection'
 import Button from '../common/Button'
 import ConfirmModal from './ConfirmModal'
+import { EDIT_PROJECT_FORM } from '../../constants'
 import Shoutbox from '../shoutbox'
 
 class EditForm extends Component {
@@ -14,8 +15,6 @@ class EditForm extends Component {
   }
 
   componentDidMount() {
-    const { initialize, attributeData } = this.props
-    initialize(attributeData)
     this.autoSave = setInterval(() => this.props.handleSave(), 180000)
   }
 
@@ -129,6 +128,6 @@ class EditForm extends Component {
 }
 
 export default reduxForm({
-  form: 'editForm',
+  form: EDIT_PROJECT_FORM,
   enableReinitialize: true
 })(EditForm)

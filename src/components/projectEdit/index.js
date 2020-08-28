@@ -23,6 +23,7 @@ import Prompt from '../common/Prompt'
 import EditForm from './EditForm'
 import QuickNav from './quickNav/QuickNav'
 import EditFloorAreaFormModal from '../project/EditFloorAreaFormModal'
+import { EDIT_PROJECT_FORM } from '../../constants'
 
 class ProjectEditPage extends Component {
   state = {
@@ -111,6 +112,7 @@ class ProjectEditPage extends Component {
           attributeData={attribute_data}
           saving={saving}
           // changingPhase={changingPhase}
+          initialValues={attribute_data}
           phase={phase}
           selectedPhase={selectedPhase}
           setChecking={this.props.projectSetChecking}
@@ -143,7 +145,7 @@ const mapStateToProps = state => {
     validating: validatingSelector(state),
     hasErrors: hasErrorsSelector(state),
     checking: checkingSelector(state),
-    isDirty: isDirty('editForm')(state)
+    isDirty: isDirty(EDIT_PROJECT_FORM)(state)
   }
 }
 
