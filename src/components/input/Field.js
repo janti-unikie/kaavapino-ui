@@ -156,6 +156,8 @@ class CustomField extends Component {
       name: field.name,
       placeholder: field.placeholder || field.label,
       component: this.getInput(field),
+      parse:
+        field.type === 'integer' ? val => (val || val === 0 ? Number(val) : null) : null,
       ...custom,
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
       disabled: field.generated || field.disabled ? true : false

@@ -4,6 +4,7 @@ import { Loader } from 'semantic-ui-react'
 import { isDirty } from 'redux-form/immutable'
 import {
   saveProject,
+  saveProjectFloorArea,
   changeProjectPhase,
   validateProjectFields,
   projectSetChecking
@@ -46,6 +47,7 @@ class ProjectEditPage extends Component {
       schema,
       selectedPhase,
       saveProject,
+      saveProjectFloorArea,
       project: { name, attribute_data, phase, id },
       saving,
       changingPhase,
@@ -122,11 +124,14 @@ class ProjectEditPage extends Component {
           title={`${currentSchemaIndex + 1}. ${currentSchema.title}`}
           showEditFloorAreaForm={() => this.setState({ showEditFloorAreaForm: true })}
         />
-        <EditFloorAreaFormModal
-          open={this.state.showEditFloorAreaForm}
-          handleSubmit={() => {}}
-          handleClose={() => this.setState({ showEditFloorAreaForm: false })}
-        />
+        {this.state.showEditFloorAreaForm && (
+          <EditFloorAreaFormModal
+            attributeData={attribute_data}
+            open
+            handleSubmit={saveProjectFloorArea}
+            handleClose={() => this.setState({ showEditFloorAreaForm: false })}
+          />
+        )}
       </div>
     )
   }
@@ -147,6 +152,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   fetchSchemas,
   saveProject,
+  saveProjectFloorArea,
   changeProjectPhase,
   validateProjectFields,
   projectSetChecking

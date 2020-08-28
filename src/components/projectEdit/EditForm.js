@@ -78,7 +78,6 @@ class EditForm extends Component {
           <Button
             value="Päivitä kerrosalatiedot"
             secondary
-            help="feature not implemented yet"
             onClick={showEditFloorAreaForm}
           />
           <Shoutbox project={projectId} />

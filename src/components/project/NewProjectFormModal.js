@@ -156,7 +156,13 @@ class NewProjectFormModal extends Component {
           <Button secondary disabled={loading} onClick={this.handleClose}>
             Peruuta
           </Button>
-          <Button primary disabled={loading} type="submit" onClick={this.handleSubmit}>
+          <Button
+            primary
+            disabled={loading}
+            loading={loading}
+            type="submit"
+            onClick={this.handleSubmit}
+          >
             {isEdit ? 'Tallenna' : 'Luo projekti'}
           </Button>
         </Modal.Actions>

@@ -2,17 +2,15 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Form } from 'semantic-ui-react'
-import { reduxForm, getFormSubmitErrors } from 'redux-form'
+import { Modal, Form, Button } from 'semantic-ui-react'
+import { reduxForm, getFormSubmitErrors, getFormValues } from 'redux-form'
 import { connect } from 'react-redux'
 import { EDIT_FLOOR_AREA_FORM } from '../../../constants'
 import FormField from '../../input/FormField'
 import Collapse from '../../common/collapse'
-import floorAreaFormSections, {
-  mockAttributeData,
-  mockFloorAreaTotals
-} from '../floorAreaMockData'
+import { mockFloorAreaTotals } from '../floorAreaMockData'
 import './styles.scss'
+import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
 
 const FloorAreaTotals = () => (
   <div className="floor-area-totals">
@@ -85,19 +83,20 @@ class EditFloorAreaFormModal extends Component {
     this.setState({ loading: false })
   }
 
-  getFormField = fieldProps => {
-    const { formSubmitErrors } = this.props
+  getFormField = (fieldProps, key) => {
+    const { formValues, formSubmitErrors } = this.props
     const error =
-      formSubmitErrors &&
-      fieldProps &&
-      fieldProps.field &&
-      formSubmitErrors[fieldProps.field.name]
-    return <FormField {...fieldProps} error={error} />
+      formSubmitErrors && fieldProps.field && formSubmitErrors[fieldProps.field.name]
+    return (
+      <div key={key}>
+        <FormField {...fieldProps} attributeData={formValues} error={error} />
+      </div>
+    )
   }
 
   render() {
-    // const { loading } = this.state
-    // const { currentProject /* initialValues */ } = this.props
+    const { loading } = this.state
+    const { floorAreaSections } = this.props
 
     return (
       <Modal
@@ -111,13 +110,30 @@ class EditFloorAreaFormModal extends Component {
         <Modal.Content>
           <FloorAreaTotals />
           <Form>
-            {floorAreaFormSections.map((section, i) => (
-              <Collapse title={section.title} key={i}>
-                {this.getFormField(section.formField)}
-              </Collapse>
-            ))}
+            {floorAreaSections &&
+              floorAreaSections.map((section, sectionIndex) => (
+                <Collapse title={section.title} key={sectionIndex}>
+                  {section.fields.map((field, fieldIndex) =>
+                    this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
+                  )}
+                </Collapse>
+              ))}
           </Form>
         </Modal.Content>
+        <Modal.Actions>
+          <Button secondary disabled={loading} onClick={this.handleClose}>
+            Peruuta
+          </Button>
+          <Button
+            primary
+            disabled={loading}
+            loading={loading}
+            type="submit"
+            onClick={this.handleSubmit}
+          >
+            Tallenna
+          </Button>
+        </Modal.Actions>
       </Modal>
     )
   }
@@ -130,7 +146,8 @@ EditFloorAreaFormModal.propTypes = {
 
 const mapStateToProps = state => ({
   formSubmitErrors: getFormSubmitErrors(EDIT_FLOOR_AREA_FORM)(state),
-  attributeData: mockAttributeData
+  floorAreaSections: floorAreaSectionsSelector(state),
+  formValues: getFormValues(EDIT_FLOOR_AREA_FORM)(state)
 })
 
 const decoratedForm = reduxForm({

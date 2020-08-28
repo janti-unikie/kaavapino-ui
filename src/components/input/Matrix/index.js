@@ -7,64 +7,12 @@ import './styles.scss'
 
 const TOTAL_FIELD_TYPE = 'totalField'
 
-const addTotalRowAndColumn = ({
-  rows: dataRows,
-  columns: dataColumns,
-  fields: dataFields,
-  valueEnding,
-  ...rest
-}) => {
-  const rows = [...dataRows, 'Yhteensä']
-  const columns = [...dataColumns, 'Yhteensä']
-  const fields = [...dataFields]
-
-  /* Handle dispalying e.g. k-m^2 properly by using sup for the number 2 */
-  const valueEndingSplit = valueEnding.split('^')
-  const valueHtmlElement = (
-    <span>
-      3000
-      {valueEndingSplit[0]}
-      <sup>{valueEndingSplit.length > 0 && valueEndingSplit[1]}</sup>
-    </span>
-  )
-
-  for (let i = 0; i < dataRows.length; i += 1) {
-    fields.push({
-      type: TOTAL_FIELD_TYPE,
-      value: valueHtmlElement,
-      row: i,
-      column: dataColumns.length
-    })
-  }
-  for (let i = 0; i < dataColumns.length; i += 1) {
-    fields.push({
-      type: TOTAL_FIELD_TYPE,
-      value: valueHtmlElement,
-      row: dataRows.length,
-      column: i
-    })
-  }
-  fields.push({
-    type: TOTAL_FIELD_TYPE,
-    value: valueHtmlElement,
-    row: dataRows.length,
-    column: dataColumns.length
-  })
-
-  return {
-    rows,
-    columns,
-    fields,
-    ...rest
-  }
-}
-
 const Matrix = ({ field: { matrix }, checking, attributeData }) => {
-  const { rows, columns, fields } =
-    matrix && matrix.showTotals ? addTotalRowAndColumn(matrix) : matrix
+  const { rows, columns, fields } = matrix
+
   const matrixStyle = {
     display: 'grid',
-    gridTemplateColumns: `repeat(${columns.length}, minmax(auto, auto))`,
+    gridTemplateColumns: `repeat(${columns.length}, 1fr`,
     gridTemplateRows: `repeat(${rows.length}, minmax(auto, auto)`
   }
   const fieldMatrix = []
@@ -88,9 +36,8 @@ const Matrix = ({ field: { matrix }, checking, attributeData }) => {
                   checking &&
                   projectUtils.isFieldMissing(field.name, field.required, attributeData)
                 return (
-                  <>
-                    <span style={{ display: 'contents' }} key={`${field.name}-${y}-${x}`}>
-                      {/* {x === 0 && <b>{rows[y]}</b>} */}
+                  <React.Fragment key={`${field.name}-${y}-${x}-total`}>
+                    <span style={{ display: 'contents' }}>
                       {field === 0 && <span />}
                       {field && field.type === TOTAL_FIELD_TYPE && (
                         <span className="matrix-total-field">
@@ -99,7 +46,10 @@ const Matrix = ({ field: { matrix }, checking, attributeData }) => {
                         </span>
                       )}
                       {field !== 0 && field.type !== TOTAL_FIELD_TYPE && (
-                        <span className={`${highlighted ? 'highlighted' : ''}`}>
+                        <span
+                          className={`${highlighted ? 'highlighted' : ''}`}
+                          key={`${field.name}-${y}-${x}`}
+                        >
                           <b>{columns[x]}</b>
                           <Field
                             attributeData={attributeData}
@@ -109,7 +59,7 @@ const Matrix = ({ field: { matrix }, checking, attributeData }) => {
                         </span>
                       )}
                     </span>
-                  </>
+                  </React.Fragment>
                 )
               })}
             </React.Fragment>

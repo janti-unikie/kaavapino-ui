@@ -18,6 +18,8 @@ export const INITIALIZE_PROJECT = 'Initialize project'
 export const INITIALIZE_PROJECT_SUCCESSFUL = 'Initialize project successful'
 export const SAVE_PROJECT_BASE = 'Save project base'
 export const SAVE_PROJECT_BASE_SUCCESSFUL = 'Save project base successful'
+export const SAVE_PROJECT_FLOOR_AREA = 'Save project floor area'
+export const SAVE_PROJECT_FLOOR_AREA_SUCCESSFUL = 'Save project floor area successful'
 export const SAVE_PROJECT = 'Save project'
 export const SAVE_PROJECT_SUCCESSFUL = 'Save project successful'
 export const VALIDATE_PROJECT_FIELDS = 'Validate project fields'
@@ -91,6 +93,11 @@ export const createOwnProjectSuccessful = project => ({
 
 export const saveProjectBase = () => ({ type: SAVE_PROJECT_BASE })
 export const saveProjectBaseSuccessful = () => ({ type: SAVE_PROJECT_BASE_SUCCESSFUL })
+
+export const saveProjectFloorArea = () => ({ type: SAVE_PROJECT_FLOOR_AREA })
+export const saveProjectFloorAreaSuccessful = () => ({
+  type: SAVE_PROJECT_FLOOR_AREA_SUCCESSFUL
+})
 
 export const saveProject = () => ({ type: SAVE_PROJECT })
 export const saveProjectSuccessful = () => ({ type: SAVE_PROJECT_SUCCESSFUL })
