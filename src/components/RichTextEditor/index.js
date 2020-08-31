@@ -70,10 +70,12 @@ function RichTextEditor(props) {
         // Do not explicitly set value. see comments at top of this file.
         defaultValue={value}
         onChange={handleChange}
-        onBlur={(range, source, quill) => {
-          setToolbarVisible(false)
-          inputProps.onBlur(quill.getHTML())
-        }}
+        onBlur={
+          (/* range, source, quill */) => {
+            setToolbarVisible(false)
+            inputProps.onBlur()
+          }
+        }
         onClick={() => setToolbarVisible(true)}
       />
     </div>
