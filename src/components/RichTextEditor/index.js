@@ -78,28 +78,11 @@ function RichTextEditor(props) {
   }
 
   return (
-    <div
-      className={`rich-text-editor ${toolbarVisible || showComments ? 'toolbar-visible' : ''} ${
-        largeField ? 'large' : ''
-      }`}
-      onClick={() => setToolbarVisible(true)}
-    >
-      <ReactQuill
-        {...inputProps}
-        ref={editorRef}
-        theme="snow"
-        modules={modules}
-        formats={formats}
-        // default value initialized, after that quill handles internal state
-        // Do not explicitly set value. see comments at top of this file.
-        defaultValue={value}
-        onChange={handleChange}
-        onBlur={
-          (/* range, source, quill */) => {
-            setToolbarVisible(false)
-            inputProps.onBlur()
-          }
-        }
+    <div className="rich-text-editor-wrapper">
+      <div
+        className={`rich-text-editor ${
+          toolbarVisible || showComments ? 'toolbar-visible' : ''
+        } ${largeField ? 'large' : ''}`}
         onClick={() => setToolbarVisible(true)}
       >
         <div id={toolbarName} className="ql-toolbar">
