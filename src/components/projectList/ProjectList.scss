@@ -44,6 +44,7 @@
 
       .project-list-header,
       .project-list-item {
+        font-family: 'Helsinki Grotesk Regular';
         text-align: center;
         display: grid;
         grid-template-columns: repeat(15, 1fr);
@@ -155,6 +156,7 @@
       }
 
       .project-list-header {
+        font-family: 'Helsinki Grotesk Medium';
         background-color: $light-gray4;
         align-items: center;
         min-height: 56px;
@@ -348,6 +350,7 @@
     }
 
     .empty-list-info {
+      font-family: 'Helsinki Grotesk Regular';
       display: flex;
       justify-content: center;
       margin-top: 100px;
@@ -359,6 +362,7 @@
     }
   }
   .ui.tabular.menu {
+    font-family: 'Helsinki Grotesk Medium';
     border: none;
     height: 50px;
     margin-bottom: 30px;

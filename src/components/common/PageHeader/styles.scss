@@ -12,12 +12,12 @@
     filter: invert(1);
   }
   .navbar-logo {
-    font-family: Helvetica;
+    font-family: 'Helsinki Grotesk Bold';
     font-size: 20px;
     color: #1a1a1a;
   }
   .navbar-menu-item {
-    font-family: Helvetica;
+    font-family: 'Helsinki Grotesk Medium';
     font-size: 16px;
     span {
       color: #000000;
@@ -56,6 +56,7 @@
   display: flex;
   align-items: center;
   min-height: 200px;
+  font-family: 'Helsinki Grotesk Regular';
 
   .nav-header-inner-container {
     height: 100%;
