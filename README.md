@@ -64,3 +64,11 @@ docker exec -it kaavapino-api /bin/bash
 python manage.py import_attributes päivittyvä_Kaavaprojektitiedot.xlsx
 ```
 
+## Deploy staging
+
+Install kubectl locally. Check version and run:
+```
+#> pwd
+... kaavapino/web/deploy/rancher
+#> ./deploy_staging_web.sh web:<version> run
+```
