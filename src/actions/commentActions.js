@@ -1,7 +1,7 @@
 export const FETCH_COMMENTS = 'Fetch comments'
+export const FETCH_COMMENTS_SUCCESSFUL = 'Fetch comments successful'
 export const POLL_COMMENTS = 'Poll comments'
 export const POLL_COMMENTS_SUCCESSFUL = 'Poll comments successful'
-export const FETCH_COMMENTS_SUCCESSFUL = 'Fetch comments successful'
 export const CREATE_COMMENT = 'Create comment'
 export const CREATE_COMMENT_SUCCESSFUL = 'Create comment successful'
 export const EDIT_COMMENT = 'Edit comment'
@@ -15,6 +15,20 @@ export const LOAD_COMMENTS_SUCCESSFUL = 'Load comments successful'
 export const FETCH_UNREAD_COMMENTS_COUNT = 'Fetch unread comments count'
 export const SET_UNREAD_COMMENTS_COUNT = 'Fetch unread comments count successful'
 export const MARK_COMMENTS_AS_READ = 'Mark comments as read'
+
+export const FETCH_FIELD_COMMENTS = 'Fetch field comments'
+export const FETCH_FIELD_COMMENTS_SUCCESSFUL = 'Fetch field comments successful'
+export const FETCH_SINGLE_FIELD_COMMENTS = 'Fetch single field comments'
+export const FETCH_SINGLE_FIELD_COMMENTS_SUCCESSFUL =
+  'Fetch single field comments successful'
+export const POLL_FIELD_COMMENTS = 'Poll field comments'
+export const POLL_FIELD_COMMENTS_SUCCESSFUL = 'Poll field comments successful'
+export const CREATE_FIELD_COMMENT = 'create field comment'
+export const CREATE_FIELD_COMMENT_SUCCESSFUL = 'create field comment successful'
+export const EDIT_FIELD_COMMENT = 'Edit field comment'
+export const EDIT_FIELD_COMMENT_SUCCESSFUL = 'Edit field comment successful'
+export const DELETE_FIELD_COMMENT = 'Delete field comment'
+export const DELETE_FIELD_COMMENT_SUCCESSFUL = 'Delete field comment successful'
 
 // Fetch
 export const fetchComments = id => ({ type: FETCH_COMMENTS, payload: id })
@@ -31,11 +45,6 @@ export const pollCommentsSuccessful = () => ({ type: POLL_COMMENTS_SUCCESSFUL })
 export const setUnreadCommentsCount = count => ({
   type: SET_UNREAD_COMMENTS_COUNT,
   payload: count
-})
-
-export const markCommentsAsRead = projectId => ({
-  type: MARK_COMMENTS_AS_READ,
-  payload: projectId
 })
 
 // Create
@@ -80,4 +89,62 @@ export const setTotalComments = count => ({ type: SET_TOTAL_COMMENTS, payload: c
 export const loadCommentsSuccessful = comments => ({
   type: LOAD_COMMENTS_SUCCESSFUL,
   payload: comments
+})
+
+export const markCommentsAsRead = projectId => ({
+  type: MARK_COMMENTS_AS_READ,
+  payload: projectId
+})
+
+// Field comment actions
+
+// Fetch
+export const fetchFieldComments = id => ({ type: FETCH_FIELD_COMMENTS, payload: id })
+export const fetchFieldCommentsSuccessful = fieldComments => ({
+  type: FETCH_FIELD_COMMENTS_SUCCESSFUL,
+  payload: fieldComments
+})
+
+export const fetchSingleFieldComments = (projectId, fieldName) => ({
+  type: FETCH_SINGLE_FIELD_COMMENTS,
+  payload: { projectId, fieldName }
+})
+export const fetchSingleFieldCommentsSuccessful = (fieldName, singleFieldComments) => ({
+  type: FETCH_SINGLE_FIELD_COMMENTS_SUCCESSFUL,
+  payload: { fieldName, singleFieldComments }
+})
+
+export const pollFieldComments = id => ({ type: POLL_FIELD_COMMENTS, payload: id })
+export const pollFieldCommentsSuccessful = () => ({
+  type: POLL_FIELD_COMMENTS_SUCCESSFUL
+})
+
+// Create
+export const createFieldComment = (projectId, fieldName, content) => ({
+  type: CREATE_FIELD_COMMENT,
+  payload: { projectId, fieldName, content }
+})
+export const createFieldCommentSuccessful = comment => ({
+  type: CREATE_FIELD_COMMENT_SUCCESSFUL,
+  payload: comment
+})
+
+// Edit
+export const editFieldComment = (projectId, commentId, content, fieldName) => ({
+  type: EDIT_FIELD_COMMENT,
+  payload: { projectId, commentId, content, fieldName }
+})
+export const editFieldCommentSuccessful = comment => ({
+  type: EDIT_FIELD_COMMENT_SUCCESSFUL,
+  payload: comment
+})
+
+// Delete
+export const deleteFieldComment = (projectId, commentId, fieldName) => ({
+  type: DELETE_FIELD_COMMENT,
+  payload: { projectId, commentId, fieldName }
+})
+export const deleteFieldCommentSuccessful = commentId => ({
+  type: DELETE_FIELD_COMMENT_SUCCESSFUL,
+  payload: commentId
 })

@@ -17,80 +17,6 @@
     text-transform: uppercase;
   }
 
-  .comments {
-    margin: 0;
-    overflow: hidden;
-    overflow-y: auto;
-
-    .comments-message {
-      text-align: center;
-      margin-top: 16px;
-    }
-
-    .comment-container {
-      background-color: white;
-      border-bottom: 1px solid #dededf;
-      border-radius: 4px;
-      display: flex;
-      flex-direction: column;
-      margin-top: 12px;
-      overflow-wrap: break-word;
-      padding: 12px 22px;
-
-      &:first-child {
-        margin-top: 32px;
-      }
-
-      .comment-header-container {
-        display: flex;
-        justify-content: space-between;
-
-        .comment-header-text-container {
-          font-size: 12px;
-          max-width: 100%;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-
-          .comment-creator {
-            margin-right: 6px;
-
-            &.generated {
-              color: coral;
-            }
-          }
-        }
-
-        .comment-edit-container {
-          margin-right: -12px;
-        }
-
-        .comment-edit {
-          cursor: pointer;
-        }
-      }
-
-      .comment-content {
-        font-size: 16px;
-        margin: 16px 0;
-      }
-
-      .comment-footer {
-        align-items: center;
-        display: flex;
-        justify-content: flex-end;
-
-        .comment-footer-actions {
-          white-space: nowrap;
-
-          > button:not(:first-of-type) {
-            margin-left: 8px;
-          }
-        }
-      }
-    }
-  }
-
   .comment-submit-container {
     display: flex;
     flex-direction: column;
@@ -99,6 +25,80 @@
 
     .ui.button {
       height: 56px;
+    }
+  }
+}
+
+.comment-list {
+  margin: 0;
+  overflow: hidden;
+  overflow-y: auto;
+
+  .comments-message {
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .comment-container {
+    background-color: white;
+    border-bottom: 1px solid #dededf;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+    overflow-wrap: break-word;
+    padding: 12px 22px;
+
+    &:first-child {
+      margin-top: 32px;
+    }
+
+    .comment-header-container {
+      display: flex;
+      justify-content: space-between;
+
+      .comment-header-text-container {
+        font-size: 12px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        .comment-creator {
+          margin-right: 6px;
+
+          &.generated {
+            color: coral;
+          }
+        }
+      }
+
+      .comment-edit-container {
+        margin-right: -12px;
+      }
+
+      .comment-edit {
+        cursor: pointer;
+      }
+    }
+
+    .comment-content {
+      font-size: 16px;
+      margin: 16px 0;
+    }
+
+    .comment-footer {
+      align-items: center;
+      display: flex;
+      justify-content: flex-end;
+
+      .comment-footer-actions {
+        white-space: nowrap;
+
+        > button:not(:first-of-type) {
+          margin-left: 8px;
+        }
+      }
     }
   }
 }

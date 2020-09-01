@@ -17,7 +17,18 @@ import {
   FETCH_UNREAD_COMMENTS_COUNT,
   setUnreadCommentsCount,
   MARK_COMMENTS_AS_READ,
-  markCommentsAsRead
+  markCommentsAsRead,
+  createFieldCommentSuccessful,
+  CREATE_FIELD_COMMENT,
+  EDIT_FIELD_COMMENT,
+  DELETE_FIELD_COMMENT,
+  FETCH_FIELD_COMMENTS,
+  POLL_FIELD_COMMENTS,
+  fetchFieldCommentsSuccessful,
+  editFieldCommentSuccessful,
+  deleteFieldCommentSuccessful,
+  FETCH_SINGLE_FIELD_COMMENTS,
+  fetchSingleFieldCommentsSuccessful
 } from '../actions/commentActions'
 import moment from 'moment'
 import { error } from '../actions/apiActions'
@@ -37,7 +48,12 @@ export default function* commentSaga() {
     takeLatest(CREATE_COMMENT, createCommentSaga),
     takeLatest(EDIT_COMMENT, editCommentSaga),
     takeLatest(DELETE_COMMENT, deleteCommentSaga),
-    takeLatest(INCREASE_AMOUNT_OF_COMMENTS_TO_SHOW, increaseAmountOfCommentsToShowSaga)
+    takeLatest(INCREASE_AMOUNT_OF_COMMENTS_TO_SHOW, increaseAmountOfCommentsToShowSaga),
+    takeLatest([FETCH_FIELD_COMMENTS, POLL_FIELD_COMMENTS], fetchFieldCommentsSaga),
+    takeLatest(FETCH_SINGLE_FIELD_COMMENTS, fetchSingleFieldCommentsSaga),
+    takeLatest(CREATE_FIELD_COMMENT, createFieldCommentSaga),
+    takeLatest(EDIT_FIELD_COMMENT, editFieldCommentSaga),
+    takeLatest(DELETE_FIELD_COMMENT, deleteFieldCommentSaga)
   ])
 }
 
@@ -55,6 +71,7 @@ function* fetchCommentsSaga({ payload: projectId }, page, load = false) {
       null,
       true
     )
+
     if (!load) {
       // Check if current comments include the polled comments
       const currentIds = currentComments.map(c => c.id)
@@ -177,6 +194,110 @@ function* increaseAmountOfCommentsToShowSaga() {
     } else {
       yield put(setAmountOfCommentsToShow(amountOfCommentsToShow))
     }
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+/* Field comments */
+
+const sortFieldCommentsByField = results => {
+  const fieldCommentsByField = {}
+  for (let i = 0; i < results.length; i += 1) {
+    const comment = results[i]
+    if (!fieldCommentsByField[comment.field]) {
+      fieldCommentsByField[[comment.field]] = [comment]
+    } else {
+      fieldCommentsByField[[comment.field]].push(comment)
+    }
+  }
+  return fieldCommentsByField
+}
+
+function* fetchFieldCommentsSaga({ payload: projectId } /* , load = false */) {
+  try {
+    const fieldComments = yield call(
+      commentApi.get,
+      {
+        path: { id: projectId },
+        query: { ordering: '-created_at' }
+      },
+      'fields/',
+      null,
+      null,
+      true
+    )
+
+    yield put(
+      fetchFieldCommentsSuccessful(
+        sortFieldCommentsByField(fieldComments.results.reverse())
+      )
+    )
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+function* fetchSingleFieldCommentsSaga({ payload: { projectId, fieldName } }) {
+  try {
+    const singleFieldComments = yield call(
+      commentApi.get,
+      {
+        path: { id: projectId },
+        query: { ordering: '-created_at' }
+      },
+      `fields/field/${fieldName}`,
+      null,
+      null,
+      true
+    )
+    yield put(fetchSingleFieldCommentsSuccessful(fieldName, singleFieldComments.results))
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+function* createFieldCommentSaga({ payload: { projectId, fieldName, content } }) {
+  try {
+    const newFieldComment = yield call(
+      commentApi.post,
+      { content, field: fieldName },
+      { path: { id: projectId } },
+      'fields/'
+    )
+    yield put(createFieldCommentSuccessful(newFieldComment))
+    yield call(fetchSingleFieldCommentsSaga, { payload: { projectId, fieldName } })
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+function* editFieldCommentSaga({
+  payload: { projectId, commentId, content, fieldName }
+}) {
+  try {
+    const updatedComment = yield call(
+      commentApi.patch,
+      { content },
+      { path: { id: projectId, commentId } },
+      'fields/:commentId/'
+    )
+    yield put(editFieldCommentSuccessful(updatedComment))
+    yield call(fetchSingleFieldCommentsSaga, { payload: { projectId, fieldName } })
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+function* deleteFieldCommentSaga({ payload: { projectId, commentId, fieldName } }) {
+  try {
+    yield call(
+      commentApi.delete,
+      { path: { id: projectId, commentId } },
+      'fields/:commentId/'
+    )
+    yield put(deleteFieldCommentSuccessful(commentId))
+    yield call(fetchSingleFieldCommentsSaga, { payload: { projectId, fieldName } })
   } catch (e) {
     yield put(error(e))
   }

@@ -44,7 +44,7 @@ $comment-list-height-mobile: calc(
       height: $comment-list-header-height;
     }
 
-    .comments {
+    .comment-list {
       height: $comment-list-height-mobile;
     }
 
@@ -133,7 +133,7 @@ $comment-list-height-mobile: calc(
       height: $shoutbox-height;
       width: 440px;
 
-      .comments {
+      .comment-list {
         height: $comment-list-height;
       }
     }

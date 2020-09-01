@@ -1,19 +1,36 @@
 @import '../common/colors.scss';
 
-.rich-text-editor {
-  background-color: white;
+.rich-text-editor-wrapper {
+  .rich-text-editor {
+    background-color: white;
 
-  .quill {
     .ql-toolbar {
       border: 1px solid $gray2;
       display: none;
-    }
 
-    .ql-toolbar + .ql-container {
-      border: 1px solid $gray2;
+      .quill-toolbar-comment-button {
+        .comment-icon {
+          width: 16px;
+          height: 16px;
+
+          path {
+            fill: $black1 !important;
+          }
+        }
+        &:focus {
+          outline: none;
+        }
+        &:hover .comment-icon {
+          path {
+            // same as others in quill. Keep this way or change all in quill
+            fill: #06c !important;
+          }
+        }
+      }
     }
 
     .ql-container {
+      border: 1px solid $gray2;
       border-radius: 2px;
       border-top-width: 1px;
 
@@ -23,40 +40,57 @@
         min-height: 56px;
       }
     }
-  }
 
-  &.toolbar-visible {
-    .quill {
+    &.toolbar-visible {
       .ql-toolbar {
         display: block;
         border-top-left-radius: 2px;
         border-top-right-radius: 2px;
       }
 
-      .ql-toolbar + .ql-container {
+      .ql-container {
         border-top: 0;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
       }
     }
-  }
 
-  &:hover {
-    box-shadow: inset 0px 0px 0px 2px $black1;
-    border-radius: 2px;
+    &:hover {
+      box-shadow: inset 0px 0px 0px 2px $black1;
+      border-radius: 2px;
 
-    .quill {
-      .ql-toolbar {
-        border: 1px solid $black1;
+      .quill {
+        .ql-toolbar {
+          border: 1px solid $black1;
+        }
+
+        .ql-container {
+          border: 1px solid $black1;
+        }
       }
+    }
 
-      .ql-container {
-        border: 1px solid $black1;
+    &.large .quill .ql-editor {
+      min-height: 128px;
+    }
+
+    .add-comment-button,
+    .show-comments-button {
+      width: auto;
+
+      &:focus {
+        outline: none;
       }
     }
   }
 
-  &.large .quill .ql-editor {
-    min-height: 128px;
+  .comment-list {
+    padding: 16px;
+    background: $light-gray3;
+    border-radius: 0 0 2px 2px;
+
+    .comment-container:first-child {
+      margin-top: 0;
+    }
   }
 }
