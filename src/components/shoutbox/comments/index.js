@@ -7,7 +7,9 @@ import {
   createComment,
   editComment,
   deleteComment,
-  increaseAmountOfCommentsToShow
+  increaseAmountOfCommentsToShow,
+  fetchFieldComments,
+  pollFieldComments
 } from '../../../actions/commentActions'
 import {
   commentsSelector,
@@ -31,8 +33,13 @@ class Comments extends Component {
 
   componentDidMount() {
     this.props.fetchComments(this.props.project)
+    this.props.fetchFieldComments(this.props.project)
     this.props.fetchUnreadCommentsCount(this.props.project)
     this.poll = setInterval(() => this.props.pollComments(this.props.project), 60000)
+    this.pollFieldComments = setInterval(
+      () => this.props.pollFieldComments(this.props.project),
+      60000
+    )
   }
 
   componentDidUpdate(prevProps) {
@@ -94,7 +101,7 @@ class Comments extends Component {
     return (
       <div className="comment-list-container">
         <h2 className="comment-list-header">Viestit</h2>
-        <div className="comments" ref={this.commentsRef} onScroll={this.handleScroll}>
+        <div className="comment-list" ref={this.commentsRef} onScroll={this.handleScroll}>
           {(commentsLoading || pollingComments) && (
             <p className="comments-message">Ladataan...</p>
           )}
@@ -149,7 +156,9 @@ const mapDispatchToProps = {
   createComment,
   editComment,
   deleteComment,
-  increaseAmountOfCommentsToShow
+  increaseAmountOfCommentsToShow,
+  fetchFieldComments,
+  pollFieldComments
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comments)

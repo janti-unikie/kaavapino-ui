@@ -9,13 +9,17 @@ import {
   INCREASE_AMOUNT_OF_COMMENTS_TO_SHOW,
   SET_AMOUNT_OF_COMMENTS_TO_SHOW,
   LOAD_COMMENTS_SUCCESSFUL,
-  SET_UNREAD_COMMENTS_COUNT
+  SET_UNREAD_COMMENTS_COUNT,
+  FETCH_FIELD_COMMENTS_SUCCESSFUL,
+  FETCH_FIELD_COMMENTS,
+  FETCH_SINGLE_FIELD_COMMENTS_SUCCESSFUL
 } from '../actions/commentActions'
 
 import { INITIALIZE_PROJECT } from '../actions/projectActions'
 
 export const initialState = {
   comments: [],
+  fieldComments: {},
   commentsLoading: false,
   amountOfCommentsToShow: 10,
   totalComments: 0,
@@ -91,6 +95,28 @@ export const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         totalComments: payload
+      }
+
+    case FETCH_FIELD_COMMENTS:
+      return {
+        ...state,
+        fieldCommentsLoading: false
+      }
+
+    case FETCH_FIELD_COMMENTS_SUCCESSFUL:
+      return {
+        ...state,
+        fieldComments: payload,
+        fieldCommentsLoading: false
+      }
+
+    case FETCH_SINGLE_FIELD_COMMENTS_SUCCESSFUL:
+      return {
+        ...state,
+        fieldComments: {
+          ...state.fieldComments,
+          [payload.fieldName]: payload.singleFieldComments
+        }
       }
 
     case INITIALIZE_PROJECT:

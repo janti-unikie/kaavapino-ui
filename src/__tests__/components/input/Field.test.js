@@ -16,7 +16,13 @@ describe('<Field />', () => {
 
   beforeEach(() => {
     const mockStore = configureStore()
-    const initialState = { project: { checking: true } }
+    const initialState = {
+      auth: {},
+      comment: {
+        fieldComments: {}
+      },
+      project: { checking: true }
+    }
     store = mockStore(initialState)
     wrapper = null
   })
@@ -30,7 +36,12 @@ describe('<Field />', () => {
         '4': 'd',
         file: { link: '1', description: '2' }
       },
-      field: { name: '1', type, required: true, ...inputProps },
+      field: {
+        name: '1',
+        type,
+        required: true,
+        ...inputProps
+      },
       fields: [],
       ...fieldProps
     }
@@ -62,7 +73,8 @@ describe('<Field />', () => {
     expect(wrapper.find('input').props().type).toBe('text')
     createFieldOfType('long_string')
     expect(wrapper.find('textarea').length).toBe(1)
-    createFieldOfType('rich_text')
+    // When rendered by enzyme, quill doesn't find it's custom toolbar
+    createFieldOfType('rich_text', { modules: { toolbar: false } })
     expect(wrapper.find('.quill').length).toBe(1)
     createFieldOfType('boolean')
     expect(wrapper.find('RadioBooleanButton').length).toBe(1)

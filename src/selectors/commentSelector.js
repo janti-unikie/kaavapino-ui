@@ -27,3 +27,8 @@ export const pollingCommentsSelector = createSelector(
   selectComment,
   ({ pollingComments }) => pollingComments
 )
+
+export const fieldCommentsSelector = createSelector(
+  selectComment,
+  ({ fieldComments }) => fieldComments || {}
+)
