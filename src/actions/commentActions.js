@@ -109,6 +109,7 @@ export const fetchSingleFieldComments = (projectId, fieldName) => ({
   type: FETCH_SINGLE_FIELD_COMMENTS,
   payload: { projectId, fieldName }
 })
+
 export const fetchSingleFieldCommentsSuccessful = (fieldName, singleFieldComments) => ({
   type: FETCH_SINGLE_FIELD_COMMENTS_SUCCESSFUL,
   payload: { fieldName, singleFieldComments }
@@ -124,6 +125,7 @@ export const createFieldComment = (projectId, fieldName, content) => ({
   type: CREATE_FIELD_COMMENT,
   payload: { projectId, fieldName, content }
 })
+
 export const createFieldCommentSuccessful = comment => ({
   type: CREATE_FIELD_COMMENT_SUCCESSFUL,
   payload: comment
@@ -134,6 +136,7 @@ export const editFieldComment = (projectId, commentId, content, fieldName) => ({
   type: EDIT_FIELD_COMMENT,
   payload: { projectId, commentId, content, fieldName }
 })
+
 export const editFieldCommentSuccessful = comment => ({
   type: EDIT_FIELD_COMMENT_SUCCESSFUL,
   payload: comment
@@ -144,6 +147,7 @@ export const deleteFieldComment = (projectId, commentId, fieldName) => ({
   type: DELETE_FIELD_COMMENT,
   payload: { projectId, commentId, fieldName }
 })
+
 export const deleteFieldCommentSuccessful = commentId => ({
   type: DELETE_FIELD_COMMENT_SUCCESSFUL,
   payload: commentId
