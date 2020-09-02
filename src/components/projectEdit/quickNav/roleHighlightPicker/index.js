@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './styles.scss'
 
-const roles = ['Ylläpitäjä', 'Asiantuntija']
+const roles = ['Pääkäyttäjä', 'Asiantuntija']
 
 const RoleHighlightPicker = () => {
   const [highlightedRole, setHighlightedRole] = useState(null)

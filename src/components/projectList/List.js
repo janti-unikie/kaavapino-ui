@@ -106,7 +106,7 @@ class List extends Component {
     const items = this.filterItems(this.props.items)
     const headerItems = [
       'Pinonumero',
-      'Projekti (PW)',
+      'Hanke (PW)',
       'Nimi',
       'Vaihe',
       'Koko',

@@ -153,10 +153,10 @@ class ProjectPage extends Component {
     ) : (
       <NavActions>
         <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
-          Muokkaa perustietoja
+          Muokkaa luontitietoja
         </NavAction>
         <NavAction to={`/${id}`} primary>
-          Katso hankekortti
+          Katso projektikortti
         </NavAction>
       </NavActions>
     )

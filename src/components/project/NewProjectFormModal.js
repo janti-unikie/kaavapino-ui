@@ -141,7 +141,7 @@ class NewProjectFormModal extends Component {
                 {this.getFormField({
                   field: {
                     name: 'create_principles',
-                    label: 'Suunnitteluperiaatteet',
+                    label: 'Periaatteet',
                     type: 'toggle'
                   }
                 })}
