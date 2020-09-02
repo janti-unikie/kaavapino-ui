@@ -161,7 +161,7 @@ class QuickNav extends Component {
             value="Tallenna"
             loading={saving}
             secondary
-            help="Tallentaa hankkeen"
+            help="Tallentaa projektin"
           />
           <Button
             handleClick={this.tryToEndPhase}
