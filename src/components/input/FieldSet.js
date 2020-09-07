@@ -48,7 +48,7 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled }) => 
                     </Form.Field>
                   </div>
                   <Field
-                    field={{ ...field, disabled, name: `${set}.${field.name}` }}
+                    field={{ ...field, disabled }}
                     attributeData={attributeData}
                     fieldset={field.type === 'fieldset'}
                   />
