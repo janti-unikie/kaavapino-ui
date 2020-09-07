@@ -151,9 +151,9 @@ class CustomField extends Component {
         />
       )
     }
-
     const fieldProps = {
-      name: field.name,
+      // Some field.name are like 'sijaintikartta_fieldset[0].sijaintikartta_ahjolinkki'
+      name: field.name.includes('[') ? field.name.split('.')[1] : field.name,
       placeholder: field.placeholder || field.label,
       component: this.getInput(field),
       parse:

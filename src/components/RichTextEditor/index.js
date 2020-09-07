@@ -76,7 +76,6 @@ function RichTextEditor(props) {
   const modules = {
     toolbar: `#${toolbarName}`
   }
-
   return (
     <div className="rich-text-editor-wrapper">
       <div
