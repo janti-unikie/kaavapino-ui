@@ -89,8 +89,16 @@ class ProjectPage extends Component {
   }
 
   getCurrentPhases() {
-    const { currentProject, phases } = this.props
+    let { currentProject, phases } = this.props
     const { type, subtype } = currentProject
+
+    if (!currentProject['create_draft']) {
+      phases = phases.filter(e => e.name !== 'Luonnos')
+    }
+    if (!currentProject['create_principles']) {
+      phases = phases.filter(e => e.name !== 'Periaatteet')
+    }
+
     return phases.filter(({ project_type, project_subtype }) => {
       return project_type === type && project_subtype === subtype
     })
