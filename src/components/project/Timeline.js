@@ -23,7 +23,7 @@ class Timeline extends Component {
       <div className="timeline-container">
         <span className="timeline-title">Hankkeen vaihe</span>
         <div className={`timeline-items ${disabled ? 'disabled' : ''}`}>
-          {timelineItems.map(({ index, active, color, color_code, name, id }, i) => {
+          {timelineItems.map(({ index, active, color, color_code, name, id, list_prefix }, i) => {
             const isCompleted = projectPhase.index >= index
             const isCurrent = projectPhase.index === index
             const selected = phase.index === index
@@ -41,7 +41,7 @@ class Timeline extends Component {
                     })
                   }}
                 >
-                  {(!isCompleted || isCurrent) && i + 1}
+                  {(!isCompleted || isCurrent) && list_prefix}
                   {isCompleted && !isCurrent && <FontAwesomeIcon icon="check" />}
                 </span>
                 <span className={`timeline-item-title${classes}`}>
