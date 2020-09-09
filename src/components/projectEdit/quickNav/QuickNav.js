@@ -124,6 +124,7 @@ class QuickNav extends Component {
                     id={phase.id}
                     handleClick={this.handleAccordionTitleClick}
                     index={index}
+                    list_prefix={phase.list_prefix}
                   >
                     {phase.name}
                   </AccordionTitle>
