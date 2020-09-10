@@ -10,7 +10,7 @@ const OneLineFields = ['toggle']
 
 class FormField extends Component {
   renderField = () => {
-    const { field, attributeData, ...rest } = this.props
+    const { field, attributeData, handleSave, ...rest } = this.props
     switch (field.type) {
       case 'matrix':
         return <Matrix field={field} attributeData={attributeData} />
@@ -21,6 +21,7 @@ class FormField extends Component {
             field={field}
             attributeData={attributeData}
             fieldset={field.type === 'fieldset'}
+            onBlur={handleSave}
             {...rest}
           />
         )

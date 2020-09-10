@@ -13,7 +13,8 @@ const FormSection = ({
   checking,
   disabled,
   attributeData,
-  updates
+  updates,
+  handleSave
 }) => {
   return (
     <Segment>
@@ -28,6 +29,7 @@ const FormSection = ({
           field={{ ...field, disabled: disabled || field.disabled }}
           attributeData={attributeData}
           updated={updates[field.name] || null}
+          handleSave={handleSave}
         />
       ))}
     </Segment>

@@ -83,7 +83,7 @@ class EditForm extends Component {
           <Shoutbox project={projectId} />
         </div>
         {sections.map((section, i) => (
-          <FormSection key={i} section={section} disabled={disabled} />
+          <FormSection key={i} handleSave={this.props.handleSave} section={section} disabled={disabled} />
         ))}
         {/* Commenting end phase and save buttons out, since in these designs it's in quick nav.
          * Keeping it here in case it's needed in mobile styles. if not, remove.
