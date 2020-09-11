@@ -9,8 +9,10 @@ import projectUtils from '../../utils/projectUtils'
 const OneLineFields = ['toggle']
 
 const handleBlurSave = (evt, handleSave) => {
-  if (evt.target._wrapperState.initialValue !== evt.target.value) {
-    handleSave()
+  if (evt) {
+    if (evt.target._wrapperState.initialValue !== evt.target.value) {
+      handleSave()
+    }
   }
 }
 
