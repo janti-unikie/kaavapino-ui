@@ -10,9 +10,7 @@ const OneLineFields = ['toggle']
 
 const handleBlurSave = (evt, handleSave) => {
   if (evt && evt.target) {
-    if (evt.target._wrapperState.initialValue !== evt.target.value) {
-      handleSave()
-    }
+    handleSave()
   }
 }
 
@@ -29,7 +27,9 @@ class FormField extends Component {
             field={field}
             attributeData={attributeData}
             fieldset={field.type === 'fieldset'}
-            onBlur={e => {handleBlurSave(e, handleSave)}}
+            onBlur={e => {
+              handleBlurSave(e, handleSave)
+            }}
             {...rest}
           />
         )

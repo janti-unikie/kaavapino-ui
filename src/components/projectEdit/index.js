@@ -38,8 +38,13 @@ class ProjectEditPage extends Component {
   changePhase = () => this.props.changeProjectPhase(this.props.project.phase + 1)
 
   handleSave = () => {
-    if (!this.props.saving) {
     this.props.saveProject()
+  }
+  handleAutoSave = () => {
+    if (!this.props.saving) {
+      if (this.props.isDirty) {
+        this.props.saveProject()
+      }
     }
   }
 
@@ -107,7 +112,7 @@ class ProjectEditPage extends Component {
         <EditForm
           isCurrentPhase={selectedPhase === phase}
           isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
-          handleSave={this.handleSave}
+          handleSave={this.handleAutoSave}
           changePhase={this.changePhase}
           sections={currentSchema.sections}
           attributeData={attribute_data}
