@@ -10,7 +10,9 @@ const RadioBooleanButton = ({
 }) => {
   const handleOnChange = value => {
     rest.onChange(value)
-    custom.onRadioChange()
+    if (custom.onRadioChange) {
+      custom.onRadioChange()
+    }
   }
   return (
     <div className={`radio-input-container${inverted ? ' inverted' : ''}`}>

@@ -8,17 +8,9 @@ import projectUtils from '../../utils/projectUtils'
 
 const OneLineFields = ['toggle']
 
-const handleBlurSave = (evt, handleSave) => {
-  if (evt) {
-    setTimeout(function () {
-      handleSave()
-    }, 200)
-  }
-}
-
 class FormField extends Component {
   renderField = () => {
-    const { field, attributeData, handleSave, ...rest } = this.props
+    const { field, attributeData, ...rest } = this.props
     switch (field.type) {
       case 'matrix':
         return <Matrix field={field} attributeData={attributeData} />
@@ -29,10 +21,6 @@ class FormField extends Component {
             field={field}
             attributeData={attributeData}
             fieldset={field.type === 'fieldset'}
-            onBlur={e => {
-              handleBlurSave(e, handleSave)
-            }}
-            onRadioChange={handleSave}
             {...rest}
           />
         )

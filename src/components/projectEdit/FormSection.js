@@ -16,6 +16,14 @@ const FormSection = ({
   updates,
   handleSave
 }) => {
+  const handleBlurSave = (evt, handleSave) => {
+    if (evt) {
+      setTimeout(function () {
+        handleSave()
+      }, 200)
+    }
+  }
+
   return (
     <Segment>
       <h2 id={`title-${title}`} className="section-title">
@@ -30,6 +38,10 @@ const FormSection = ({
           attributeData={attributeData}
           updated={updates[field.name] || null}
           handleSave={handleSave}
+          onBlur={e => {
+            handleBlurSave(e, handleSave)
+          }}
+          onRadioChange={handleSave}
         />
       ))}
     </Segment>
