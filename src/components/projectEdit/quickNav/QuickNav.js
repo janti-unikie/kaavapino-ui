@@ -12,7 +12,8 @@ class QuickNav extends Component {
     this.state = {
       sectionHeights: [],
       active: 0,
-      activePhase: 0
+      activePhase: 0,
+      selected: 0
     }
   }
 
@@ -46,7 +47,7 @@ class QuickNav extends Component {
       const newPhaseIndex = currentPhases.findIndex(phase => phase.name === phaseTitle)
 
       if (newPhaseIndex !== this.state.activePhase - 1) {
-        this.setState({ activePhase: null })
+        this.setState({ activePhase: null, selected: null })
       }
     }
   }
@@ -79,9 +80,14 @@ class QuickNav extends Component {
     this.setState({ active: activeTitle })
   }
 
-  handleSectionTitleClick = title => {
+  handleSectionTitleClick = (title, index) => {
     const c = document.getElementById(`title-${title}`)
     c.scrollIntoView()
+
+    this.setState( {
+      ...this.state,
+      selected: index
+    })
   }
 
   handleAccordionTitleClick = titleIndex => {
@@ -130,14 +136,14 @@ class QuickNav extends Component {
                   </AccordionTitle>
                   <Accordion.Content active={activePhase === phase.id}>
                     {this.state.sectionHeights &&
-                      this.state.sectionHeights.map((section, i) => {
+                      this.state.sectionHeights.map((section, index) => {
                         return (
                           <span
-                            key={i}
+                            key={index}
                             className={`quicknav-item ${
-                              i === this.state.active ? 'active' : ''
+                              index === this.state.selected ? 'active' : ''
                             }`}
-                            onClick={() => this.handleSectionTitleClick(section.title)}
+                            onClick={() => this.handleSectionTitleClick(section.title, index)}
                           >
                             {section.title}
                           </span>
