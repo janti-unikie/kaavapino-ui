@@ -9,8 +9,10 @@ import projectUtils from '../../utils/projectUtils'
 const OneLineFields = ['toggle']
 
 const handleBlurSave = (evt, handleSave) => {
-  if (evt && evt.target) {
-    handleSave()
+  if (evt) {
+    setTimeout(function () {
+      handleSave()
+    }, 200)
   }
 }
 
@@ -30,6 +32,7 @@ class FormField extends Component {
             onBlur={e => {
               handleBlurSave(e, handleSave)
             }}
+            onRadioChange={handleSave}
             {...rest}
           />
         )

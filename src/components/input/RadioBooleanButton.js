@@ -8,6 +8,10 @@ const RadioBooleanButton = ({
   double,
   ...custom
 }) => {
+  const handleOnChange = value => {
+    rest.onChange(value)
+    custom.onRadioChange()
+  }
   return (
     <div className={`radio-input-container${inverted ? ' inverted' : ''}`}>
       <Radio
@@ -15,7 +19,7 @@ const RadioBooleanButton = ({
         {...custom}
         error={error}
         name={name}
-        onChange={() => rest.onChange(true)}
+        onChange={() => handleOnChange(true)}
         checked={value === true}
       />
       <Radio
@@ -23,7 +27,7 @@ const RadioBooleanButton = ({
         {...custom}
         error={error}
         name={name}
-        onChange={() => rest.onChange(false)}
+        onChange={() => handleOnChange(false)}
         checked={value === false}
       />
       {!double && (
@@ -32,7 +36,7 @@ const RadioBooleanButton = ({
           {...custom}
           error={error}
           name={name}
-          onChange={() => rest.onChange(null)}
+          onChange={() => handleOnChange(null)}
           checked={value !== true && value !== false}
         />
       )}
