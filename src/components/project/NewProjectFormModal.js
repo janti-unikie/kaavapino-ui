@@ -68,6 +68,7 @@ class NewProjectFormModal extends Component {
     const showXLProjectOptions = selectedSubType === 5
     const isEdit = !!currentProject
 
+    // Decision 22.9 that updating project size is not allowed in phase 1 and it is now disabled.
     return (
       <Modal
         className="form-modal"
@@ -76,7 +77,7 @@ class NewProjectFormModal extends Component {
         open={this.props.open}
         closeIcon
       >
-        <Modal.Header>Luo uusi projekti</Modal.Header>
+        <Modal.Header> {isEdit ? 'Muokkaa luontitietoja' : 'Luo uusi projekti'}</Modal.Header>
         <Modal.Content>
           <Form>
             <Form.Group widths="equal">
@@ -117,6 +118,7 @@ class NewProjectFormModal extends Component {
                   name: 'subtype',
                   label: 'Valitse prosessin koko',
                   type: 'radio',
+                  disabled: isEdit,
                   options: [
                     { value: 1, label: 'XS' },
                     { value: 2, label: 'S' },
