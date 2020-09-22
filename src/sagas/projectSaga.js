@@ -56,7 +56,8 @@ import {
   projectFileRemoveSuccessful,
   saveProject as saveProjectAction,
   PROJECT_SET_DEADLINES,
-  projectSetDeadlinesSuccessful
+  projectSetDeadlinesSuccessful,
+  initializeProject as initializeProjectAction
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
@@ -260,6 +261,7 @@ function* saveProjectBase() {
       )
       yield put(updateProject(updatedProject))
       yield put(setSubmitSucceeded(NEW_PROJECT_FORM))
+      yield put(initializeProjectAction(currentProjectId))
     } catch (e) {
       if (e.response.status === 400) {
         yield put(stopSubmit(NEW_PROJECT_FORM, e.response.data))

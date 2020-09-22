@@ -228,7 +228,7 @@ class ProjectPage extends Component {
       phase => phase.id === this.state.selectedPhase
     )
 
-    return (
+  return (
       <div className="project-container">
         <NavHeader
           routeItems={this.getRouteItems()}
@@ -257,7 +257,9 @@ class ProjectPage extends Component {
             name: currentProject.name,
             public: currentProject.public,
             subtype: currentProject.subtype,
-            user: currentProject.user
+            user: currentProject.user,
+            create_principles: currentProject.create_principles,
+            create_draft: currentProject.create_draft
           }}
           handleSubmit={this.props.saveProjectBase}
           handleClose={() => this.toggleBaseInformationForm(false)}
