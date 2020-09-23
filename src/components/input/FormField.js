@@ -10,10 +10,10 @@ const OneLineFields = ['toggle']
 
 class FormField extends Component {
   renderField = () => {
-    const { field, attributeData, ...rest } = this.props
+    const { field, attributeData, formName, ...rest } = this.props
     switch (field.type) {
       case 'matrix':
-        return <Matrix field={field} attributeData={attributeData} />
+        return <Matrix field={field} attributeData={attributeData} formName={formName}/>
       default:
         return (
           <Field
@@ -21,6 +21,7 @@ class FormField extends Component {
             field={field}
             attributeData={attributeData}
             fieldset={field.type === 'fieldset'}
+            formName={formName}
             {...rest}
           />
         )

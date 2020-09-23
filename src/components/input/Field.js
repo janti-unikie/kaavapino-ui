@@ -12,22 +12,44 @@ import { Field, FieldArray } from 'redux-form'
 import RadioButton from './RadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
+import AutofillInput from './AutofillInput/AutofillInput'
+import { isEqual } from 'lodash'
 
 class CustomField extends Component {
   shouldComponentUpdate(p) {
     if (!this.props.attributeData || !p.attributeData) {
       return true
     }
+
     if (this.props.field.disabled !== p.field.disabled) {
       return true
     }
     if (this.props.field.generated !== p.field.generated) {
       return true
     }
+
     if (
-      this.props.attributeData[this.props.field.name] !== p.attributeData[p.field.name]
+      !isEqual(
+        this.props.attributeData[this.props.field.name],
+        p.attributeData[p.field.name]
+      )
     ) {
       return true
+    }
+
+    /* Render again when a related field changes */
+    if (this.props.field.related_fields && this.props.field.related_fields.length > 0) {
+      const relatedFields = this.props.field.related_fields
+      for (let i = 0; i < relatedFields.length; i += 1) {
+        if (
+          !isEqual(
+            this.props.attributeData[relatedFields[i]],
+            p.attributeData[relatedFields[i]]
+          )
+        ) {
+          return true
+        }
+      }
     }
     return false
   }
@@ -135,7 +157,7 @@ class CustomField extends Component {
   }
 
   render() {
-    const { field, attributeData, fieldset, ...custom } = this.props
+    const { field, attributeData, fieldset, formName, ...custom } = this.props
     const type = field.type
 
     if (type === 'file' || type === 'image') {
@@ -161,7 +183,12 @@ class CustomField extends Component {
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
       disabled: field.generated || field.disabled ? true : false
     }
-
+    /* Some fields are autofilled to a value as per (autofill_rules)
+     * Some fields have their value calculated based on other fields (calculations)
+     * Some autofill fields are readonly, some are not (autofill_readonly) */
+    if (field.calculations || (field.autofill_rule && field.autofill_rule.length)) {
+      return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
+    }
     if (type === 'toggle') {
       return <Field {...fieldProps} label={field.label} />
     }
