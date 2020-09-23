@@ -8,6 +8,14 @@ import { connect } from 'react-redux'
 import { NEW_PROJECT_FORM } from '../../constants'
 import { newProjectSubtypeSelector } from '../../selectors/formSelector'
 import FormField from '../input/FormField'
+import { usersSelector } from '../../selectors/userSelector'
+
+const PROJECT_NAME = 'name'
+const USER = 'user'
+const PUBLIC = 'public'
+const SUB_TYPE = 'subtype'
+const CREATE_PRINCIPLES = 'create_principles'
+const CREATE_DRAFT = 'create_draft'
 
 class NewProjectFormModal extends Component {
   constructor(props) {
@@ -51,15 +59,27 @@ class NewProjectFormModal extends Component {
     this.props.handleClose()
     this.setState({ loading: false })
   }
+  getError = (errorObject, fieldName ) => {
 
-  getFormField = fieldProps => {
+    if  (errorObject) {
+       if ( fieldName === USER ) {
+         return errorObject.user
+       }
+    }
+    return errorObject
+
+  }
+
+  getFormField = ( fieldProps )  => {
     const { formSubmitErrors } = this.props
-    const error =
+
+    const errorObject =
       formSubmitErrors &&
       fieldProps &&
       fieldProps.field &&
       formSubmitErrors[fieldProps.field.name]
-    return <FormField {...fieldProps} error={error} />
+
+    return <FormField {...fieldProps} error={this.getError( errorObject, fieldProps.field.name) } />
   }
 
   render() {
@@ -83,7 +103,7 @@ class NewProjectFormModal extends Component {
             <Form.Group widths="equal">
               {this.getFormField({
                 field: {
-                  name: 'name',
+                  name: PROJECT_NAME,
                   label: 'Projektin nimi',
                   type: 'text'
                 }
@@ -91,7 +111,7 @@ class NewProjectFormModal extends Component {
               {this.getFormField({
                 className: 'ui fluid input',
                 field: {
-                  name: 'user',
+                  name: USER,
                   label: 'Vastuuhenkilö',
                   type: 'select',
                   choices: this.formatUsers()
@@ -100,7 +120,7 @@ class NewProjectFormModal extends Component {
             </Form.Group>
             {this.getFormField({
               field: {
-                name: 'public',
+                name: PUBLIC,
                 label: 'Luodaanko projekti näkyväksi',
                 type: 'boolean'
               },
@@ -115,7 +135,7 @@ class NewProjectFormModal extends Component {
             <div className="subtype-input-container">
               {this.getFormField({
                 field: {
-                  name: 'subtype',
+                  name: SUB_TYPE,
                   label: 'Valitse prosessin koko',
                   type: 'radio',
                   disabled: isEdit,
@@ -142,13 +162,13 @@ class NewProjectFormModal extends Component {
                 <h4>Valitse, laaditaanko</h4>
                 {this.getFormField({
                   field: {
-                    name: 'create_principles',
+                    name: CREATE_PRINCIPLES,
                     label: 'Periaatteet',
                     type: 'toggle'
                   }
                 })}
                 {this.getFormField({
-                  field: { name: 'create_draft', label: 'Kaavaluonnos', type: 'toggle' }
+                  field: { name: CREATE_DRAFT, label: 'Kaavaluonnos', type: 'toggle' }
                 })}
               </>
             )}
@@ -181,7 +201,8 @@ NewProjectFormModal.propTypes = {
 const mapStateToProps = state => ({
   selectedSubType: newProjectSubtypeSelector(state),
   formSubmitErrors: getFormSubmitErrors(NEW_PROJECT_FORM)(state),
-  formValues: getFormValues(NEW_PROJECT_FORM)(state)
+  formValues: getFormValues(NEW_PROJECT_FORM)(state),
+  users: usersSelector(state)
 })
 
 const decoratedForm = reduxForm({

@@ -3,17 +3,18 @@ import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Loader } from 'semantic-ui-react'
 import { initializeProject, saveProjectBase } from '../../actions/projectActions'
+import { fetchUsers } from '../../actions/userActions'
 import {
   currentProjectSelector,
   currentProjectLoadedSelector,
-  changingPhaseSelector,
-  usersSelector
+  changingPhaseSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
 import {
   latestEditFieldSelector,
   allEditFieldsSelector
 } from '../../selectors/schemaSelector'
+import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import Timeline from './Timeline'
 import ProjectEditPage from '../projectEdit'
@@ -43,9 +44,12 @@ class ProjectPage extends Component {
   }
 
   componentDidMount() {
-    const { currentProjectLoaded } = this.props
+    const { currentProjectLoaded, users } = this.props
     if (!currentProjectLoaded) {
       this.props.initializeProject(this.props.id)
+    }
+    if ( !users || users.length === 0) {
+      this.props.fetchUsers()
     }
   }
 
@@ -227,7 +231,6 @@ class ProjectPage extends Component {
     const selectedPhase = currentPhases.find(
       phase => phase.id === this.state.selectedPhase
     )
-
     return (
       <div className="project-container">
         <NavHeader
@@ -272,7 +275,8 @@ class ProjectPage extends Component {
 
 const mapDispatchToProps = {
   initializeProject,
-  saveProjectBase
+  saveProjectBase,
+  fetchUsers
 }
 
 const mapStateToProps = state => {
