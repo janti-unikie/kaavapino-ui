@@ -55,8 +55,12 @@ const Matrix = ({ field: { matrix }, checking, attributeData, formName }) => {
                           className={`${highlighted ? 'highlighted' : ''}`}
                           key={`${field.name}-${y}-${x}`}
                         >
-                          <b>{columns[x]}</b>
-                          {renderInfo(field)}
+                          <div className="input-header">
+                            <div className="input-title" >{columns[x]}</div>
+                            <div className="input-header-icons">
+                              {renderInfo(field)}
+                            </div>
+                        </div>
                           <Field
                             attributeData={attributeData}
                             field={field}

@@ -101,9 +101,7 @@ class EditFloorAreaFormModal extends Component {
 
     return (
       <div key={key}>
-        <FormField {...fieldProps} formName={EDIT_FLOOR_AREA_FORM} attributeData={{}} error={error}>
-          {this.renderInfo(fieldProps.field)}
-        </FormField>
+        <FormField {...fieldProps} formName={EDIT_FLOOR_AREA_FORM} attributeData={{}} error={error}/>
       </div>
     )
   }
@@ -127,14 +125,10 @@ class EditFloorAreaFormModal extends Component {
             {floorAreaSections &&
               floorAreaSections.map((section, sectionIndex) => (
                 <Collapse title={section.title} key={sectionIndex}>
-                  {section.fields.map((field, fieldIndex) => {
-                    return (
-                    <div key={fieldIndex}>
-                      {this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)}
-                      {this.renderInfo( field )}
-                    </div>
-                    )
-                  })}
+                  {section.fields.map((field, fieldIndex) => (
+                      this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
+                    ))
+                  }
                 </Collapse>
               ))}
           </Form>
