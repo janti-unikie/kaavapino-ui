@@ -58,27 +58,29 @@ class NewProjectFormModal extends Component {
     this.props.handleClose()
     this.setState({ loading: false })
   }
-  getError = (errorObject, fieldName ) => {
+  getError = (error, fieldName ) => {
 
-    if  (errorObject) {
+    // In case that there are field related errors, show errors.
+    // Required field error is handled differently
+    if  (error) {
        if ( fieldName === USER ) {
-         return errorObject.user
+         return error.user
        }
     }
-    return errorObject
+    return error
 
   }
 
   getFormField = ( fieldProps )  => {
     const { formSubmitErrors } = this.props
 
-    const errorObject =
+    const error =
       formSubmitErrors &&
       fieldProps &&
       fieldProps.field &&
       formSubmitErrors[fieldProps.field.name]
 
-    return <FormField {...fieldProps} error={this.getError( errorObject, fieldProps.field.name) } />
+    return <FormField {...fieldProps} error={this.getError( error, fieldProps.field.name) } />
   }
 
   render() {
