@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 import { NEW_PROJECT_FORM } from '../../constants'
 import { newProjectSubtypeSelector } from '../../selectors/formSelector'
 import FormField from '../input/FormField'
-import { usersSelector } from '../../selectors/userSelector'
 
 const PROJECT_NAME = 'name'
 const USER = 'user'
@@ -201,8 +200,7 @@ NewProjectFormModal.propTypes = {
 const mapStateToProps = state => ({
   selectedSubType: newProjectSubtypeSelector(state),
   formSubmitErrors: getFormSubmitErrors(NEW_PROJECT_FORM)(state),
-  formValues: getFormValues(NEW_PROJECT_FORM)(state),
-  users: usersSelector(state)
+  formValues: getFormValues(NEW_PROJECT_FORM)(state)
 })
 
 const decoratedForm = reduxForm({
