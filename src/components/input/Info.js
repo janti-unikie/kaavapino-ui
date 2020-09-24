@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Popup } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 class InfoContent extends PureComponent {
   render() {
@@ -9,9 +10,9 @@ class InfoContent extends PureComponent {
         <span className="content">{content}</span>
         {link && (
           <div>
-            <a href={`${link}`} target="_blank" rel="noopener noreferrer">
+            <Link to={{ pathname: link }} target="_blank">
               Lisäohjeita
-            </a>
+            </Link>
           </div>
         )}
       </React.Fragment>
@@ -25,9 +26,9 @@ class Info extends PureComponent {
       <Popup
         trigger={<div className="input-info" />}
         inverted
-        on="hover"
+        on="click"
         position="top center"
-        hideOnScroll
+        hoverable={false}
         content={<InfoContent {...this.props} />}
       />
     )
