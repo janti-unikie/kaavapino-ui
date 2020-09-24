@@ -60,7 +60,7 @@ const Matrix = ({ field: { matrix }, checking, attributeData, formName }) => {
                             <div className="input-header-icons">
                               {renderInfo(field)}
                             </div>
-                        </div>
+                          </div>
                           <Field
                             attributeData={attributeData}
                             field={field}
