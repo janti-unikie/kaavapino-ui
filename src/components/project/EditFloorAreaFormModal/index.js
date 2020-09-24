@@ -105,6 +105,20 @@ class EditFloorAreaFormModal extends Component {
       </div>
     )
   }
+  renderSection = (section, sectionIndex) => {
+
+    // "Yhteesä" section is handled separately
+    if ( section.title.includes('yhteensä') ) {
+      return null
+    }
+     return (
+        <Collapse title={section.title} key={sectionIndex}>
+          {section.fields.map((field, fieldIndex) => (
+              this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
+            ))
+          }
+        </Collapse> )
+    }
 
   render() {
     const { loading } = this.state
@@ -124,13 +138,9 @@ class EditFloorAreaFormModal extends Component {
           <Form>
             {floorAreaSections &&
               floorAreaSections.map((section, sectionIndex) => (
-                <Collapse title={section.title} key={sectionIndex}>
-                  {section.fields.map((field, fieldIndex) => (
-                      this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
-                    ))
-                  }
-                </Collapse>
-              ))}
+                this.renderSection(section, sectionIndex)
+              ))
+              }
           </Form>
         </Modal.Content>
         <Modal.Actions>
