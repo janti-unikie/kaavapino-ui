@@ -14,6 +14,7 @@ import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
 import AutofillInput from './AutofillInput/AutofillInput'
 import { isEqual } from 'lodash'
+import projectUtils from '../../utils/projectUtils'
 
 class CustomField extends Component {
   shouldComponentUpdate(p) {
@@ -63,19 +64,41 @@ class CustomField extends Component {
       }
     })
   }
-  renderNumber = props => <Input type="number" {...props} />
 
-  renderString = props => <Input type="text" {...props} />
+  renderNumber = props => {
+    projectUtils.checkInputValue(props)
+    return <Input type="number" {...props} />
+  }
 
-  renderTextArea = props => <TextArea {...props} />
+  renderString = props => {
+    projectUtils.checkInputValue(props)
+    return ( <Input type="text" {...props}  />)
+  }
 
-  renderRichText = props => <RichTextEditor {...props} largeField />
+  renderTextArea = props => {
+    projectUtils.checkInputValue(props)
+    return <TextArea {...props}/>
+  }
 
-  renderRichTextShort = props => <RichTextEditor {...props} />
+  renderRichText = props => {
+    projectUtils.checkInputValue(props)
+    return <RichTextEditor {...props} largeField />
+  }
 
-  renderDate = props => <Input type="date" {...props} />
+  renderRichTextShort = props => {
+    projectUtils.checkInputValue(props)
+    return <RichTextEditor {...props} />
+  }
 
-  renderGeometry = props => <Geometry {...props} />
+  renderDate = props => {
+    projectUtils.checkInputValue(props)
+    return <Input type="date" {...props} />
+  }
+
+  renderGeometry = props => {
+    projectUtils.checkInputValue(props)
+    return <Geometry {...props} />
+  }
 
   renderSelect = props => {
     const { choices, multiple_choice } = this.props.field
@@ -93,13 +116,25 @@ class CustomField extends Component {
     return <RadioButton options={options} {...props} />
   }
 
-  renderBooleanRadio = props => <BooleanRadio {...props} />
+  renderBooleanRadio = props => {
+    projectUtils.checkInputValue(props)
+    return <BooleanRadio {...props} />
+  }
 
-  renderToggle = props => <ToggleButton {...props} />
+  renderToggle = props => {
+    projectUtils.checkInputValue(props)
+    return <ToggleButton {...props} />
+  }
 
-  renderLink = props => <Link {...props} />
+  renderLink = props => {
+    projectUtils.checkInputValue(props)
+    return <Link {...props} />
+  }
 
-  renderDateTime = props => <DateTime {...props} />
+  renderDateTime = props => {
+    projectUtils.checkInputValue(props)
+    return <DateTime {...props} />
+  }
 
   renderFieldset = ({ fields: sets }) => (
     <FieldSet
@@ -111,10 +146,13 @@ class CustomField extends Component {
     />
   )
 
-  renderDecimal = props => <Input type="number" step="0.01" {...props} />
+  renderDecimal = props => {
+    projectUtils.checkInputValue(props)
+    return <Input type="number" step="0.01" {...props} />
+  }
 
   getInput = field => {
-    if (field.choices) {
+   if (field.choices) {
       /* Should perhaps check (field.type === 'select' && field.choices), but there were tests against it.
       Will get back to this. */
       return this.renderSelect
@@ -122,7 +160,6 @@ class CustomField extends Component {
     if (field.type === 'radio' && field.options) {
       return this.renderRadio
     }
-
     switch (field.type) {
       case 'boolean':
         return this.renderBooleanRadio
@@ -173,6 +210,7 @@ class CustomField extends Component {
         />
       )
     }
+
     const fieldProps = {
       name: field.name,
       placeholder: field.placeholder || field.label,
@@ -181,7 +219,8 @@ class CustomField extends Component {
         field.type === 'integer' ? val => (val || val === 0 ? Number(val) : null) : null,
       ...custom,
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
-      disabled: field.generated || field.disabled ? true : false
+      disabled: field.generated || field.disabled ? true : false,
+      attributeData
     }
     /* Some fields are autofilled to a value as per (autofill_rules)
      * Some fields have their value calculated based on other fields (calculations)

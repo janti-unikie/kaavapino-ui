@@ -242,7 +242,6 @@ const getChangedAttributeData = (values, initial) => {
       attribute_data[key] = values[key]
     }
   })
-
   return attribute_data
 }
 
@@ -310,7 +309,7 @@ function* saveProject() {
   const { initial, values } = editForm
 
   if (values) {
-    const attribute_data = getChangedAttributeData(values, initial)
+    const attribute_data = projectUtils.formatFieldset(getChangedAttributeData(values, initial))
     try {
       const updatedProject = yield call(
         projectApi.patch,
