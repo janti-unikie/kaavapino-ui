@@ -6,11 +6,11 @@ import inputUtils from '../../utils/inputUtils'
 const DropdownMultiselect = ({ input, error, options, ...custom }) => {
   return (
     <Dropdown
+      className="selection"
       {...input}
       {...custom}
       fluid
       search
-      selection
       clearable
       placeholder=""
       multiple
