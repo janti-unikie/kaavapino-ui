@@ -3,30 +3,36 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Modal, Form, Button } from 'semantic-ui-react'
-import { reduxForm, getFormSubmitErrors, getFormValues } from 'redux-form'
+import { reduxForm, getFormSubmitErrors } from 'redux-form'
 import { connect } from 'react-redux'
 import { EDIT_FLOOR_AREA_FORM } from '../../../constants'
 import FormField from '../../input/FormField'
 import Collapse from '../../common/collapse'
-import { mockFloorAreaTotals } from '../floorAreaMockData'
 import './styles.scss'
 import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
 
-const FloorAreaTotals = () => (
-  <div className="floor-area-totals">
-    <div className="floor-area-totals-header">Kerrosalan lisäys yhteensä</div>
-    <div className="totals">
-      {mockFloorAreaTotals.map((totalObject, i) => (
-        <div className="single-total-container" key={i}>
-          <div className="single-total-title">{totalObject.title}</div>
-          <div className="single-total-value">
-            {totalObject.value} k-m<sup>2</sup>
-          </div>
-        </div>
-      ))}
+const FloorAreaTotals = ({ formValues, floorAreaSections }) => {
+  // Would love a more rubust check than string includes if one becomes available
+  const totalSection = floorAreaSections.find(section =>
+    section.title.includes('yhteensä')
+  )
+
+  return (
+    <div className="floor-area-totals">
+      <div className="floor-area-totals-header">Kerrosalan lisäys yhteensä</div>
+      <div className="totals">
+        {totalSection.fields.map((totalMatrix, i) => (
+          <FormField
+            field={totalMatrix}
+            attributeData={formValues}
+            key={i}
+            formName={EDIT_FLOOR_AREA_FORM}
+          />
+        ))}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 class EditFloorAreaFormModal extends Component {
   constructor(props) {
     super(props)
@@ -83,16 +89,36 @@ class EditFloorAreaFormModal extends Component {
     this.setState({ loading: false })
   }
 
+  getFloorAreaTotalsComponent = () => {
+    const { floorAreaSections } = this.props
+    return <FloorAreaTotals formValues={{}} floorAreaSections={floorAreaSections} />
+  }
+
   getFormField = (fieldProps, key) => {
-    const { formValues, formSubmitErrors } = this.props
+    const { formSubmitErrors } = this.props
     const error =
       formSubmitErrors && fieldProps.field && formSubmitErrors[fieldProps.field.name]
+
     return (
       <div key={key}>
-        <FormField {...fieldProps} attributeData={formValues} error={error} />
+        <FormField {...fieldProps} formName={EDIT_FLOOR_AREA_FORM} attributeData={{}} error={error}/>
       </div>
     )
   }
+  renderSection = (section, sectionIndex) => {
+
+    // "Yhteesä" section is handled separately
+    if ( section.title.includes('yhteensä') ) {
+      return null
+    }
+     return (
+        <Collapse title={section.title} key={sectionIndex}>
+          {section.fields.map((field, fieldIndex) => (
+              this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
+            ))
+          }
+        </Collapse> )
+    }
 
   render() {
     const { loading } = this.state
@@ -108,16 +134,13 @@ class EditFloorAreaFormModal extends Component {
       >
         <Modal.Header>Päivitä kerrosalatiedot</Modal.Header>
         <Modal.Content>
-          <FloorAreaTotals />
+          {this.getFloorAreaTotalsComponent()}
           <Form>
             {floorAreaSections &&
               floorAreaSections.map((section, sectionIndex) => (
-                <Collapse title={section.title} key={sectionIndex}>
-                  {section.fields.map((field, fieldIndex) =>
-                    this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
-                  )}
-                </Collapse>
-              ))}
+                this.renderSection(section, sectionIndex)
+              ))
+              }
           </Form>
         </Modal.Content>
         <Modal.Actions>
@@ -146,8 +169,7 @@ EditFloorAreaFormModal.propTypes = {
 
 const mapStateToProps = state => ({
   formSubmitErrors: getFormSubmitErrors(EDIT_FLOOR_AREA_FORM)(state),
-  floorAreaSections: floorAreaSectionsSelector(state),
-  formValues: getFormValues(EDIT_FLOOR_AREA_FORM)(state)
+  floorAreaSections: floorAreaSectionsSelector(state)
 })
 
 const decoratedForm = reduxForm({

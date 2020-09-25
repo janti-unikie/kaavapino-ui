@@ -134,4 +134,59 @@ describe('<Field />', () => {
     expect(renderSpy).toHaveBeenCalledTimes(3)
     renderSpy.mockRestore()
   })
+  it('updates when a related field updates', () => {
+    const props = {
+      attributeData: {
+        '1': 'a',
+        '2': 'b',
+        '3': 'c',
+        '4': 'd',
+        '5': 'e'
+      },
+      field: {
+        name: '1',
+        type: 'short_string',
+        required: true,
+        related_fields: ['3', '4']
+      },
+      fields: []
+    }
+    const renderSpy = jest.spyOn(Field.prototype, 'render')
+    const test = shallow(<Field {...props} />)
+
+    expect(renderSpy).toHaveBeenCalledTimes(1)
+    test.setProps({ attributeData: { ...props.attributeData, '2': 'changed' } })
+    expect(renderSpy).toHaveBeenCalledTimes(1)
+    test.setProps({
+      attributeData: { ...props.attributeData, '2': 'changed', '3': 'changed' }
+    })
+
+    /* do not render again if the related_field attribute data is the same is the same */
+    expect(renderSpy).toHaveBeenCalledTimes(2)
+    test.setProps({
+      attributeData: { ...props.attributeData, '2': 'changed', '3': 'changed' }
+    })
+    expect(renderSpy).toHaveBeenCalledTimes(2)
+
+    test.setProps({
+      attributeData: {
+        ...props.attributeData,
+        '2': 'changed',
+        '3': 'changed',
+        '4': 'changed'
+      }
+    })
+    expect(renderSpy).toHaveBeenCalledTimes(3)
+    test.setProps({
+      attributeData: {
+        ...props.attributeData,
+        '2': 'changed',
+        '3': 'changed',
+        '4': 'changed',
+        '5': 'changed'
+      }
+    })
+    expect(renderSpy).toHaveBeenCalledTimes(3)
+    renderSpy.mockRestore()
+  })
 })
