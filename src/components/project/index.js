@@ -231,6 +231,7 @@ class ProjectPage extends Component {
     const selectedPhase = currentPhases.find(
       phase => phase.id === this.state.selectedPhase
     )
+
     return (
       <div className="project-container">
         <NavHeader
