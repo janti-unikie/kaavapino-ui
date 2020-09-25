@@ -15,7 +15,7 @@ const ToggleButton = ({
         error={error}
         name={name}
         onChange={() => rest.onChange(!value)}
-        checked={value}
+        checked={value ? true : false }
       />
     </div>
   )
