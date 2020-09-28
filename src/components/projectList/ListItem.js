@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { ReactComponent as ProjectEditIcon } from '../../assets//icons/edit-project.svg'
 import Graph from '../common/Graph'
+import { Popup } from 'semantic-ui-react'
 
 const Status = ({ color }) => {
   return (
@@ -35,17 +36,23 @@ const ListItem = ({
       <div className="project-list-item">
         <span className="project-list-item-pino">{pino_number}</span>
         <span>{projectId}</span>
-        <span className="project-list-item-name">
-          <Link className="project-name" to={`/${id}`}>
-            {name}
-          </Link>
+        <span className="project-list-item-name field-ellipsis">
+            <Popup
+              trigger={(<Link className="project-name" to={`/${id}`}>{name}</Link>)}
+              on="hover"
+              content={name}
+            />
         </span>
-        <span className="project-list-item-phase">
+        <span className="project-list-item-phase field-ellipsis">
           <Status color={phaseColor} /> {phaseName}
         </span>
         <span>{subtype}</span>
         <span>{modified_at}</span>
-        <span>{user}</span>
+          <Popup
+            trigger={<span className="field-ellipsis">{user}</span>}
+            on="hover"
+            content={user}
+          />
         <Link className="project-list-button" to={`/${id}/edit`}>
           <ProjectEditIcon />
         </Link>
