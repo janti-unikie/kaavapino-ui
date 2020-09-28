@@ -1,16 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Checkbox ,Dropdown } from 'semantic-ui-react'
+import { Checkbox, Dropdown } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
 
 const DropdownMultiselect = ({ input, error, options, ...custom }) => {
   return (
     <Dropdown
+      className="selection"
       {...input}
       {...custom}
       fluid
       search
-      selection
       clearable
       placeholder=""
       multiple
@@ -22,20 +22,22 @@ const DropdownMultiselect = ({ input, error, options, ...custom }) => {
     >
       <Dropdown.Menu>
         {options.map(({ key, text, value }) => {
-          return(
+          return (
             <Dropdown.Item key={key}>
               <Checkbox
-                className='dropdown-checkbox'
+                className="dropdown-checkbox"
                 label={text}
                 onChange={(param, data) => {
-                  if (input.value.indexOf(data.label) !== -1) {
-                    const nonSelectedValues = input.value.filter( opt => opt !== data.label )
+                  if (input.value.indexOf(data.value) !== -1) {
+                    const nonSelectedValues = input.value.filter(
+                      opt => opt !== data.value
+                    )
                     input.onChange(nonSelectedValues)
                   } else {
-                    input.onChange([...input.value, data.label])
+                    input.onChange([...input.value, data.value])
                   }
-                  }}
-                checked={input.value.indexOf(text) !== -1}
+                }}
+                checked={input.value.indexOf(key) !== -1}
                 value={value}
               />
             </Dropdown.Item>
@@ -63,4 +65,3 @@ DropdownMultiselect.propTypes = {
 }
 
 export default DropdownMultiselect
-
