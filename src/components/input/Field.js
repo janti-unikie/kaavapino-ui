@@ -13,6 +13,8 @@ import RadioButton from './RadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
 import AutofillInput from './AutofillInput/AutofillInput'
+import RestrictedInput from './RestrictedInput/RestrictedInput'
+
 import { isEqual } from 'lodash'
 import projectUtils from '../../utils/projectUtils'
 
@@ -210,7 +212,6 @@ class CustomField extends Component {
         />
       )
     }
-
     const fieldProps = {
       name: field.name,
       placeholder: field.placeholder || field.label,
@@ -228,6 +229,11 @@ class CustomField extends Component {
     if (field.calculations || (field.autofill_rule && field.autofill_rule.length)) {
       return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
     }
+
+    if (field.visibility_condition && field.visibility_condition.length) {
+      return <RestrictedInput field={field} fieldProps={fieldProps} formName={formName} />
+    }
+
     if (type === 'toggle') {
       return <Field {...fieldProps} label={field.label} />
     }
@@ -237,6 +243,7 @@ class CustomField extends Component {
         <Field
           {...fieldProps}
           defaultValue={attributeData ? attributeData[field.name] : null}
+          formName={formName}
         />
       )
     }
@@ -245,7 +252,7 @@ class CustomField extends Component {
       return <FieldArray {...fieldProps} />
     }
 
-    return <Field {...fieldProps} />
+    return <Field {...fieldProps} formName={formName}/>
   }
 }
 

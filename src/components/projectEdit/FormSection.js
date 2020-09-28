@@ -14,7 +14,8 @@ const FormSection = ({
   disabled,
   attributeData,
   updates,
-  handleSave
+  handleSave,
+  formName
 }) => {
   const handleBlurSave = (evt, handleSave) => {
     if (evt) {
@@ -42,6 +43,7 @@ const FormSection = ({
             handleBlurSave(e, handleSave)
           }}
           onRadioChange={handleSave}
+          formName={formName}
         />
       ))}
     </Segment>

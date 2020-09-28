@@ -27,6 +27,7 @@ const AutofillReadonlyInput = ({
   const formValues = useSelector(getFormValues(EDIT_FLOOR_AREA_FORM))
   const value = (formValues && formValues[name]) || null
 
+  console.log(formValues)
   useEffect(() => {
     if (!formValues) {
       return
@@ -54,7 +55,6 @@ const AutofillReadonlyInput = ({
       dispatch(change(formName, name, calculatedTotal))
     }
   }, [related_fields, formValues])
-
   return (
     <div className="autofill-input">
       {autofill_readonly ? (

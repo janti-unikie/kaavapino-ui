@@ -6,8 +6,8 @@ import Field from './Field'
 import { Form, Button } from 'semantic-ui-react'
 import projectUtils from '../../utils/projectUtils'
 
-const FieldSet = ({ sets, fields, checking, attributeData, name, disabled }) => {
-  return (<React.Fragment>
+const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formName }) => (
+  <React.Fragment>
     {sets.map((set, i) => {
       return (
         <React.Fragment key={`${name}-${i}`}>
@@ -52,6 +52,7 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled }) => 
                     attributeData={attributeData}
                     fieldset={field.type === 'fieldset'}
                     parentName={name}
+                    formName={formName}
                   />
                 </div>
               )
@@ -71,7 +72,7 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled }) => 
       Poista
     </Button>
   </React.Fragment>
-)}
+)
 
 const mapStateToProps = state => ({
   checking: checkingSelector(state)
