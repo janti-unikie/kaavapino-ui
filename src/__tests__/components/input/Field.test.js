@@ -34,7 +34,8 @@ describe('<Field />', () => {
         '2': 'b',
         '3': 'c',
         '4': 'd',
-        file: { link: '1', description: '2' }
+        file: { link: '1', description: '2' },
+        'fieldset': [{ 5: 'e' }]
       },
       field: {
         name: '1',

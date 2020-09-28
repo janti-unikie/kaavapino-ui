@@ -111,6 +111,58 @@ const formatSubtype = (id, subtypes) => {
   }
 }
 
+const formatFieldset = (fieldset) => {
+  const keys = Object.keys(fieldset)
+  if (keys[0].indexOf('fieldset') === -1) {
+    //this might be redundant
+    keys.forEach( key  => {
+      fieldset[key] = removeHTMLtags(fieldset[key])
+    })
+    return fieldset
+  }
+
+  const returnValue = {}
+  returnValue[keys[0]] =[]
+  keys.slice(1).forEach((key) => {
+    const temp = {}
+    temp[key] = removeHTMLtags(fieldset[key])
+    returnValue[keys[0]].push(temp)
+  })
+  return returnValue
+}
+
+const removeHTMLtags = (fieldsetData) => {
+  const div = document.createElement('div')
+  div.innerHTML = fieldsetData
+  return div.innerText
+}
+
+/* Might need this code later
+ * When you need to find out the parentName of fiedlset
+const getFieldsets = (data) => {
+  const filtered = Object.keys(data)
+    .filter(key => key.indexOf('fieldset') !== -1)
+    .reduce((obj, key) => {
+          obj[key] = data[key]
+          return obj
+    }, {})
+  return filtered
+}
+*/
+
+const getFieldsetValue = (data, fieldsetName) => {
+  let value
+    data.forEach(index => {
+      if (index.hasOwnProperty(fieldsetName)) value = index[fieldsetName]
+    })
+  return value
+}
+const checkInputValue = (props) => {
+  if (props.parentName && props.attributeData[props.parentName]) {
+    const inputValue = getFieldsetValue(props.attributeData[props.parentName], props.input.name)
+    if (inputValue) props.input.value = inputValue
+  }}
+
 export default {
   formatDate,
   formatTime,
@@ -123,5 +175,7 @@ export default {
   formatFilterProject,
   formatPhase,
   formatNextDeadline,
-  formatSubtype
+  formatSubtype,
+  formatFieldset,
+  checkInputValue
 }
