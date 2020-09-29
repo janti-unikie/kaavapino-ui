@@ -117,7 +117,8 @@ class EditFloorAreaFormModal extends Component {
               this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
             ))
           }
-        </Collapse> )
+        </Collapse>
+ )
     }
 
   render() {
