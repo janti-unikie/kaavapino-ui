@@ -7,7 +7,8 @@ import { Form, Button } from 'semantic-ui-react'
 import projectUtils from '../../utils/projectUtils'
 
 const FieldSet = ({ sets, fields, checking, attributeData, name, disabled }) => {
-  return (<React.Fragment>
+  return (
+<React.Fragment>
     {sets.map((set, i) => {
       return (
         <React.Fragment key={`${name}-${i}`}>
