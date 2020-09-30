@@ -127,7 +127,7 @@ class ProjectEditPage extends Component {
           hasErrors={hasErrors}
           disabled={formDisabled}
           projectId={id}
-          title={`${currentSchemaIndex + 1}. ${currentSchema.title}`}
+          title={`${currentSchema.list_prefix}. ${currentSchema.title}`}
           showEditFloorAreaForm={() => this.setState({ showEditFloorAreaForm: true })}
         />
         {this.state.showEditFloorAreaForm && (

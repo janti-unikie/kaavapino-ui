@@ -69,7 +69,7 @@ class EditForm extends Component {
 
     return (
       <Form className="form-container" autoComplete="off">
-        <h2>{title}</h2>
+        <h2 id="accordion-title">{title}</h2>
         <div className="edit-form-buttons">
           <Button
             value="Päivitä aikataulu"

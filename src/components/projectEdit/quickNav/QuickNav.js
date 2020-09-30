@@ -99,6 +99,12 @@ class QuickNav extends Component {
         activePhase: this.state.activePhase === titleIndex ? null : titleIndex
       })
       switchDisplayedPhase(titleIndex)
+
+      const accordionTitle = document.getElementById('accordion-title')
+      if ( accordionTitle ) {
+        accordionTitle.scrollIntoView()
+      }
+
     } else {
       this.setState({ activePhase: null })
     }
