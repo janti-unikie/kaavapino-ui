@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { projectFileUpload, projectFileRemove } from '../../actions/projectActions'
 import { downloadFile } from '../../actions/apiActions'
 import { Button, Progress } from 'semantic-ui-react'
+import { pdfjs, Document, Page } from 'react-pdf'
 
 class File extends Component {
   constructor(props) {
@@ -13,13 +14,21 @@ class File extends Component {
       const urlParts = src.split('/')
       current = urlParts[urlParts.length - 1]
     }
-    this.state = { percentCompleted: 0, current, uploading: false, reading: false }
+    this.state = {
+      percentCompleted: 0,
+      current,
+      uploading: false,
+      reading: false,
+      page: 1
+    }
     this.inputRef = React.createRef()
     if (props.image) {
       this.imageRef = React.createRef()
     }
+    if (this.imageRef) {
+      this.imageRef.current = {}
+    }
   }
-
   componentDidUpdate(prevProps) {
     if (prevProps.src !== this.props.src && !prevProps.uploading) {
       const { src, image } = this.props
@@ -41,6 +50,8 @@ class File extends Component {
 
   componentDidMount() {
     const { src, image } = this.props
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
+
     if (src && image) {
       this.imageRef.current.src = src
     }
@@ -131,8 +142,37 @@ class File extends Component {
 
   render() {
     const { current, uploading, percentCompleted } = this.state
-    const { field, image, description } = this.props
+    const { field, image, description, src } = this.props
     const disabled = field.disabled
+    let filePreview = (
+      <img
+        style={{
+          display: `${current && image ? 'block' : 'none'}`,
+          marginBottom: '10px'
+        }}
+        className="image-preview"
+        ref={this.imageRef}
+        alt={current ? current : ''}
+      />
+    )
+
+    if (current) {
+      if (current.includes('.pdf')) {
+        filePreview = (
+          <Document
+            style={{
+              display: `${current && image ? 'block' : 'none'}`,
+              marginBottom: '10px'
+            }}
+            className="image-preview"
+            file={src}
+            alt={current ? current : ''}
+          >
+            <Page pageNumber={1} />
+          </Document>
+        )
+      }
+    }
 
     return (
       <div>
@@ -189,6 +229,17 @@ class File extends Component {
         />
         {uploading && <Progress percent={percentCompleted} progress indicating />}
         {
+          filePreview
+          /*
+          <Document
+              style={{
+                display: `${current && image ? 'block' : 'none'}`,
+                marginBottom: '10px'
+              }}
+              className="image-preview"
+              file={this.imageRef ? this.imageRef.src : ''}
+              alt={current ? current : ''}
+          />
           <img
             style={{
               display: `${current && image ? 'block' : 'none'}`,
@@ -198,6 +249,7 @@ class File extends Component {
             ref={this.imageRef}
             alt={current ? current : ''}
           />
+           */
         }
         {current && description && (
           <span className="file-description">
