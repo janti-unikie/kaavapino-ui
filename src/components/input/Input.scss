@@ -408,12 +408,19 @@
   color: $black1;
 }
 
+@keyframes expand {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
 .fieldset-container {
   border: 1px solid gainsboro;
   padding: 10px;
   margin: 32px 0 16px;
   padding: 16px;
   position: relative;
+  animation: expand .5s ease-in-out;
 }
 .input-header + .fieldset-container {
   margin-top: 16px;
