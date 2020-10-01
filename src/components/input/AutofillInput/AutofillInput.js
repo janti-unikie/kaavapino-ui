@@ -1,73 +1,47 @@
-import React, { useEffect, useState } from 'react'
-import { isEqual } from 'lodash'
-import { change, getFormValues, Field } from 'redux-form'
-import { useDispatch, useSelector } from 'react-redux'
-import { handleAutofillCalculations } from './autofillUtils'
-import { EDIT_FLOOR_AREA_FORM } from '../../../constants'
+import React from 'react'
+import { getFormValues, Field, change } from 'redux-form'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-/* This component should calculate and update it's value in redux form whenever
- * the related fields change.
- *
- * It attempts to not do needless redux form changes. However, it can be rather
- * performance-heavy. If performance becomes a problem, I recommend either
- * 1) throttling these changes: only after the user has stopped typing make all these
- * calls
- * 2) reverse the logic: currently the field knows which fields it listens to (in related_fields).
- * If instead the field would know which fields to update, all of those could be do at once e.g. on blur
- * instead of change listeners
- */
+const AutofillInput = ({
+    field: { name, autofill_rule } ,
+    fieldProps,
+    formName
+  }) => {
+    const formValues = useSelector(getFormValues(formName))
 
-const AutofillReadonlyInput = ({
-  field: { autofill_readonly, name, related_fields, calculations, unit },
-  fieldProps,
-  formName
-}) => {
-  const dispatch = useDispatch()
-  const [previousRelatedFieldValues, setPreviousRelatedFieldValues] = useState([])
-  const formValues = useSelector(getFormValues(EDIT_FLOOR_AREA_FORM))
-  const value = (formValues && formValues[name]) || null
+    const dispatch = useDispatch()
+   // const dispatch = useDispatch()
 
-  console.log(formValues)
-  useEffect(() => {
-    if (!formValues) {
-      return
+    const getAutoFillValue = () => {
+      autofill_rule.forEach( autoFill => {
+
+        const condition = autoFill.condition
+        const comparisonValue = condition.comparison_value
+      //  const comparisonValueType = condition.comparison_value_type
+        const operator = condition.operator
+        const variable = condition.variable
+
+        const variableValue = formValues[variable]
+        if ( operator === '==') {
+
+          if( comparisonValue === variableValue ) {
+
+            return autoFill.then_branch
+          }
+        }
+
+      })
+      return null
+    }
+    const autoFillValue = getAutoFillValue()
+    console.log(autoFillValue)
+    if ( autoFillValue ) {
+      console.log(name)
+      dispatch(change(formName, name, autoFillValue))
     }
 
-    /* Optimization: don't recalculate if related form values have not changed */
-    let shouldRecalculate = false
-    for (let i = 0; i < related_fields.length; i += 1) {
-      if (!isEqual(formValues[related_fields[i]], previousRelatedFieldValues[i])) {
-        shouldRecalculate = true
-        break
-      }
-    }
-    if (!shouldRecalculate) {
-      return
-    }
-    setPreviousRelatedFieldValues(
-      related_fields.map(relatedField => formValues[relatedField])
-    )
-    /* end of optimization */
-
-    const calculatedTotal = handleAutofillCalculations(calculations, formValues)
-
-    if (calculatedTotal !== value) {
-      dispatch(change(formName, name, calculatedTotal))
-    }
-  }, [related_fields, formValues])
-  return (
-    <div className="autofill-input">
-      {autofill_readonly ? (
-        <div className="autofill-readonly-input">
-          <div className="autofill-readonly-input-value">
-            {`${value || 0}${value && unit ? ` ${unit}` : ''}`}
-          </div>
-        </div>
-      ) : (
-        <Field {...fieldProps} />
-      )}
-    </div>
-  )
+    return <Field {...fieldProps} />
 }
 
-export default AutofillReadonlyInput
+export default AutofillInput

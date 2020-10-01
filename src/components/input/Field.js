@@ -12,13 +12,13 @@ import { Field, FieldArray } from 'redux-form'
 import RadioButton from './RadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
-import AutofillInput from './AutofillInput/AutofillInput'
-import RestrictedInput from './RestrictedInput/RestrictedInput'
+import AutofillReadOnlyInput from './AutofillInputReadOnly/AutofillInputReadOnly'
 
 import { isEqual } from 'lodash'
 import projectUtils from '../../utils/projectUtils'
 
 class CustomField extends Component {
+
   shouldComponentUpdate(p) {
     if (!this.props.attributeData || !p.attributeData) {
       return true
@@ -74,7 +74,7 @@ class CustomField extends Component {
 
   renderString = props => {
     projectUtils.checkInputValue(props)
-    return ( <Input type="text" {...props}  />)
+    return <Input type="text" {...props}/>
   }
 
   renderTextArea = props => {
@@ -196,7 +196,7 @@ class CustomField extends Component {
   }
 
   render() {
-    const { field, attributeData, fieldset, formName, ...custom } = this.props
+    const { field, attributeData, fieldset, formName, formValues,...custom } = this.props
     const type = field.type
 
     if (type === 'file' || type === 'image') {
@@ -209,6 +209,7 @@ class CustomField extends Component {
           field={field}
           src={src}
           description={description}
+          formValues={formValues}
         />
       )
     }
@@ -226,12 +227,9 @@ class CustomField extends Component {
     /* Some fields are autofilled to a value as per (autofill_rules)
      * Some fields have their value calculated based on other fields (calculations)
      * Some autofill fields are readonly, some are not (autofill_readonly) */
-    if (field.calculations || (field.autofill_rule && field.autofill_rule.length)) {
-      return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
-    }
+    if( field.calculations || (field.autofill_rule && field.autofill_rule.length)) {
 
-    if (field.visibility_condition && field.visibility_condition.length) {
-      return <RestrictedInput field={field} fieldProps={fieldProps} formName={formName} />
+        return <AutofillReadOnlyInput field={field} fieldProps={fieldProps} formName={formName} />
     }
 
     if (type === 'toggle') {
@@ -252,7 +250,7 @@ class CustomField extends Component {
       return <FieldArray {...fieldProps} />
     }
 
-    return <Field {...fieldProps} formName={formName}/>
+    return <Field {...fieldProps} />
   }
 }
 
