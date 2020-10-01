@@ -7,9 +7,15 @@ import { Form, Button } from 'semantic-ui-react'
 import projectUtils from '../../utils/projectUtils'
 
 const FieldSet = ({ sets, fields, checking, attributeData, name, disabled }) => {
-  return (
-<React.Fragment>
+  let numberOfSets = 1
+  if (attributeData[sets.name]) {
+    if (sets.length !== attributeData[sets.name].length) {
+      numberOfSets = sets.length - attributeData[sets.name].length+1
+    }
+  }
+  return (<React.Fragment>
     {sets.map((set, i) => {
+      if (i < numberOfSets){
       return (
         <React.Fragment key={`${name}-${i}`}>
           <div key={i} className="fieldset-container">
@@ -59,7 +65,7 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled }) => 
             })}
           </div>
         </React.Fragment>
-      )
+      )}
     })}
     <Button className="fieldset-button-add" onClick={() => sets.push({})}>
       Lisää
