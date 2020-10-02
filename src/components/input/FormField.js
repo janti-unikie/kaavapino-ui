@@ -5,7 +5,7 @@ import Matrix from './Matrix'
 import { Form, Label, Popup } from 'semantic-ui-react'
 import Info from './Info'
 import projectUtils from '../../utils/projectUtils'
-import { showField } from '../projectEdit/editProjectUtils'
+import { showField } from '../../utils/projectVisibilityUtils'
 
 const OneLineFields = ['toggle']
 

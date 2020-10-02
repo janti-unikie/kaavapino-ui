@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { projectFileUpload, projectFileRemove } from '../../actions/projectActions'
 import { downloadFile } from '../../actions/apiActions'
 import { Button, Progress } from 'semantic-ui-react'
-import { showField } from '../projectEdit/editProjectUtils'
+import { showField } from '../../utils/projectVisibilityUtils'
 
 class File extends Component {
   constructor(props) {

@@ -1,3 +1,4 @@
+// Field returns info whether field given as a parameter should be shown or not.
 export const showField = (field, formValues) => {
   let returnValue = false
 
@@ -9,8 +10,6 @@ export const showField = (field, formValues) => {
       const operator = visibilityCondition.operator
       const comparisonValue = visibilityCondition.comparison_value
       const comparisonValueType = visibilityCondition.comparison_value_type
-
-      console.log(field.label)
 
       if (comparisonValueType === 'boolean') {
         const comparisonValueModified = comparisonValue === 'True' ? true : false

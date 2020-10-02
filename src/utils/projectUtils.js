@@ -113,6 +113,12 @@ const formatSubtype = (id, subtypes) => {
 
 const formatFieldset = (fieldset) => {
   const keys = Object.keys(fieldset)
+
+  // Bug fix which caused saga crash
+  if ( !keys || keys.length === 0) {
+    return
+  }
+
   if (keys[0].indexOf('fieldset') === -1) {
     //this might be redundant
     keys.forEach( key  => {
