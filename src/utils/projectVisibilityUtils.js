@@ -14,12 +14,31 @@ export const showField = (field, formValues) => {
       if (comparisonValueType === 'boolean') {
         const comparisonValueModified = comparisonValue === 'True' ? true : false
         const realValue = formValues[variable] ? formValues[variable] : false
-
         if (operator === '==' && comparisonValueModified === realValue) {
           returnValue = true
           return
         }
         if (operator === '!=' &&  comparisonValueModified !== realValue) {
+          returnValue = true
+          return
+        }
+      } else
+      if (comparisonValueType === 'string') {
+        if (operator === '==' && comparisonValue === formValues[variable]) {
+          returnValue = true
+          return
+        } else
+        if (operator === '!=' &&  comparisonValue !== formValues[variable]) {
+          returnValue = true
+          return
+        }
+      } else
+      if (comparisonValueType === 'number') {
+        if (operator === '==' && parseInt(comparisonValue) === formValues[variable]) {
+          returnValue = true
+          return
+        }
+        if (operator === '!=' &&  parseInt(comparisonValue) !== formValues[variable]) {
           returnValue = true
           return
         }
