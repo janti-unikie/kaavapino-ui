@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { projectFileUpload, projectFileRemove } from '../../actions/projectActions'
 import { downloadFile } from '../../actions/apiActions'
 import { Button, Progress } from 'semantic-ui-react'
+import { showField } from '../../utils/projectVisibilityUtils'
 
 class File extends Component {
   constructor(props) {
@@ -130,9 +131,12 @@ class File extends Component {
   }
 
   render() {
-    const { current, uploading, percentCompleted } = this.state
-    const { field, image, description } = this.props
+    const { current, uploading, percentCompleted  } = this.state
+    const { field, image, description, formValues } = this.props
     const disabled = field.disabled
+    if ( !showField(field, formValues) ) {
+      return null
+  }
 
     return (
       <div>

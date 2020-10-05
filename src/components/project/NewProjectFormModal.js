@@ -72,7 +72,7 @@ class NewProjectFormModal extends Component {
   }
 
   getFormField = ( fieldProps )  => {
-    const { formSubmitErrors } = this.props
+    const { formSubmitErrors, formValues } = this.props
 
     const error =
       formSubmitErrors &&
@@ -80,7 +80,7 @@ class NewProjectFormModal extends Component {
       fieldProps.field &&
       formSubmitErrors[fieldProps.field.name]
 
-    return <FormField {...fieldProps} error={this.getError( error, fieldProps.field.name) } />
+    return <FormField {...fieldProps} error={this.getError( error, fieldProps.field.name)} formValues={formValues} />
   }
 
   render() {

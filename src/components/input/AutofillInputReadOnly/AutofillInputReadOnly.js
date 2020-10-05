@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { isEqual } from 'lodash'
 import { change, getFormValues, Field } from 'redux-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { handleAutofillCalculations } from './autofillUtils'
-import { EDIT_FLOOR_AREA_FORM } from '../../../constants'
+import { handleAutofillCalculations } from './autofillReadOnlyUtils'
 
 /* This component should calculate and update it's value in redux form whenever
  * the related fields change.
@@ -24,7 +23,7 @@ const AutofillReadonlyInput = ({
 }) => {
   const dispatch = useDispatch()
   const [previousRelatedFieldValues, setPreviousRelatedFieldValues] = useState([])
-  const formValues = useSelector(getFormValues(EDIT_FLOOR_AREA_FORM))
+  const formValues = useSelector(getFormValues(formName))
   const value = (formValues && formValues[name]) || null
 
   useEffect(() => {
@@ -54,7 +53,6 @@ const AutofillReadonlyInput = ({
       dispatch(change(formName, name, calculatedTotal))
     }
   }, [related_fields, formValues])
-
   return (
     <div className="autofill-input">
       {autofill_readonly ? (
