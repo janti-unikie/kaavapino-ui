@@ -12,10 +12,11 @@ import { Field, FieldArray } from 'redux-form'
 import RadioButton from './RadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
-import AutofillReadOnlyInput from './AutofillInputReadOnly/AutofillInputReadOnly'
+import AutofillReadOnlyInput from './AutofillInputCalculation/AutofillInputCalculations'
 
 import { isEqual } from 'lodash'
 import projectUtils from '../../utils/projectUtils'
+import AutofillInput from './AutofillInput/AutofillInput'
 
 class CustomField extends Component {
 
@@ -198,10 +199,11 @@ class CustomField extends Component {
   render() {
     const { field, attributeData, fieldset, formName, formValues,...custom } = this.props
     const type = field.type
+
     if (type === 'file' || type === 'image') {
       const file = attributeData[field.name]
       const src = file ? file.link : null
-      const description = file ? file.description : null
+      const description = file ? file.descripstion : null
       return (
         <File
           image={type === 'image'}
@@ -226,9 +228,11 @@ class CustomField extends Component {
     /* Some fields are autofilled to a value as per (autofill_rules)
      * Some fields have their value calculated based on other fields (calculations)
      * Some autofill fields are readonly, some are not (autofill_readonly) */
-    if( field.calculations || (field.autofill_rule && field.autofill_rule.length)) {
-
+    if( field.calculations ) {
         return <AutofillReadOnlyInput field={field} fieldProps={fieldProps} formName={formName} />
+    }
+    if (field.autofill_rule && field.autofill_rule.length) {
+      return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
     }
 
     if (type === 'toggle') {

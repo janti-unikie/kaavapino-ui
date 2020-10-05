@@ -36,6 +36,7 @@ class FormField extends Component {
     const required =
       checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
     const isOneLineField = OneLineFields.indexOf(field.type) > -1
+    const isReadOnly = field && field.autofill_readonly
 
     /* Two ways to bring errors to FormField component:
      * 1) the missing attribute data of required fields is checked automatically.
@@ -53,13 +54,13 @@ class FormField extends Component {
           showError ? 'error' : ''
         }`}
       >
-        {!isOneLineField && (
+        {!isOneLineField  && (
           <div className="input-header">
             <Label className={`input-title${required ? ' highlight' : ''}`}>
               {field.label}
             </Label>
             <div className="input-header-icons">
-              {updated && (
+              {updated && !isReadOnly && (
                 <Popup
                   trigger={<FontAwesomeIcon icon="clock" />}
                   inverted
