@@ -163,10 +163,16 @@ const getFieldsetValue = (data, fieldsetName) => {
     })
   return value
 }
+
 const checkInputValue = (props) => {
   if (props.parentName && props.attributeData[props.parentName]) {
     const inputValue = getFieldsetValue(props.attributeData[props.parentName], props.input.name)
     if (inputValue) props.input.value = inputValue
+  }}
+
+const checkInputValue2 = (parentName, attributeData, name) => {
+  if (attributeData[parentName]) {
+    return getFieldsetValue(attributeData[parentName], name)
   }}
 
 export default {
@@ -183,5 +189,6 @@ export default {
   formatNextDeadline,
   formatSubtype,
   formatFieldset,
-  checkInputValue
+  checkInputValue,
+  checkInputValue2
 }

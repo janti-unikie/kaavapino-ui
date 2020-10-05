@@ -46,6 +46,7 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formN
                   } else if (checking && field.required) {
                     required = true
                   }
+                  const defaultValue = projectUtils.checkInputValue2(name, attributeData, field.name)
                   return (
                     <div className="input-container" key={j}>
                       <div className="input-header">
@@ -61,6 +62,7 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formN
                         fieldset={field.type === 'fieldset'}
                         parentName={name}
                         formName={formName}
+                        defaultValue={defaultValue}
                       />
                     </div>
                   )
@@ -68,6 +70,8 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formN
               </div>
             </React.Fragment>
           )
+        } else {
+          return undefined
         }
       })}
       <Button className="fieldset-button-add" onClick={() => sets.push({})}>
