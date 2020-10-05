@@ -3,7 +3,6 @@ export const showField = (field, formValues) => {
   let returnValue = false
 
   if (field && field.visibility_conditions && field.visibility_conditions.length > 0) {
-
     field.visibility_conditions.forEach(visibilityCondition => {
 
       const variable = visibilityCondition.variable
@@ -11,9 +10,16 @@ export const showField = (field, formValues) => {
       const comparisonValue = visibilityCondition.comparison_value
       const comparisonValueType = visibilityCondition.comparison_value_type
 
+      if ( comparisonValueType === 'list<string>' ) {
+        if ( comparisonValue.includes(formValues[variable])) {
+          returnValue = true
+          return
+        }
+      }
+
       if (comparisonValueType === 'boolean') {
         const comparisonValueModified = comparisonValue === 'True' ? true : false
-        const realValue = formValues[variable] ? formValues[variable] : false
+        const realValue = formValues[variable] ? formValues[variable] === true : false
         if (operator === '==' && comparisonValueModified === realValue) {
           returnValue = true
           return
@@ -22,17 +28,17 @@ export const showField = (field, formValues) => {
           returnValue = true
           return
         }
-      } else
+      }
       if (comparisonValueType === 'string') {
         if (operator === '==' && comparisonValue === formValues[variable]) {
           returnValue = true
           return
-        } else
+        }
         if (operator === '!=' &&  comparisonValue !== formValues[variable]) {
           returnValue = true
           return
         }
-      } else
+      }
       if (comparisonValueType === 'number') {
         if (operator === '==' && parseInt(comparisonValue) === formValues[variable]) {
           returnValue = true

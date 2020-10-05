@@ -346,5 +346,33 @@ describe('VisibilityCondition tests', () => {
       a: 1
     }
     expect(showField(field, formValues)).toBe(false)
+  }),
+  it('Shows field with in rule (list)', () => {
+    const field = {}
+    field.visibility_conditions = [{
+        variable: 'a',
+        operator: 'in',
+        comparison_value: 'test',
+        comparison_value_type: 'list<string>'
+      }]
+
+    const formValues = {
+      a: ['atest', 'btest', 'test', 'dtest']
+    }
+    expect(showField(field, formValues)).toBe(false)
+  })
+  it('Shows field with in rule (list) not found', () => {
+    const field = {}
+    field.visibility_conditions = [{
+        variable: 'a',
+        operator: 'in',
+        comparison_value: 'teste',
+        comparison_value_type: 'list<string>'
+      }]
+
+    const formValues = {
+      a: ['atest', 'btest', 'test', 'dtest']
+    }
+    expect(showField(field, formValues)).toBe(false)
   })
 })
