@@ -6,7 +6,7 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '==',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       }]
 
@@ -20,7 +20,7 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '==',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       }]
 
@@ -33,7 +33,7 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '==',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       }]
 
@@ -47,7 +47,7 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '==',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       }]
 
@@ -61,13 +61,13 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '==',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       },
       {
         variable: 'b',
         operator: '==',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       }]
 
@@ -82,13 +82,13 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '==',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       },
       {
         variable: 'b',
         operator: '==',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       }]
 
@@ -117,19 +117,19 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '!=',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       },
       {
         variable: 'b',
         operator: '!=',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       },
       {
         variable: 'c',
         operator: '!=',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       }]
 
@@ -145,19 +145,19 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '!=',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       },
       {
         variable: 'b',
         operator: '!=',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       },
       {
         variable: 'c',
         operator: '!=',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       }]
 
@@ -173,19 +173,19 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '!=',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       },
       {
         variable: 'b',
         operator: '!=',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       },
       {
         variable: 'c',
         operator: '!=',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       }]
 
@@ -201,19 +201,19 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '!=',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       },
       {
         variable: 'b',
         operator: '!=',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       },
       {
         variable: 'c',
         operator: '!=',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       }]
 
@@ -226,7 +226,7 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '!=',
-        comparison_value: 'True',
+        comparison_value: true,
         comparison_value_type: 'boolean'
       }]
 
@@ -296,7 +296,7 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '==',
-        comparison_value: '1',
+        comparison_value: 1,
         comparison_value_type: 'number'
       }]
 
@@ -310,7 +310,7 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '==',
-        comparison_value: '2',
+        comparison_value: 2,
         comparison_value_type: 'number'
       }]
 
@@ -324,7 +324,7 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '!=',
-        comparison_value: '2',
+        comparison_value: 2,
         comparison_value_type: 'number'
       }]
 
@@ -338,12 +338,12 @@ describe('VisibilityCondition tests', () => {
     field.visibility_conditions = [{
         variable: 'a',
         operator: '!=',
-        comparison_value: '1',
+        comparison_value: 2,
         comparison_value_type: 'number'
       }]
 
     const formValues = {
-      a: 1
+      a: 2
     }
     expect(showField(field, formValues)).toBe(false)
   }),

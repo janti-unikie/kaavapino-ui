@@ -18,33 +18,22 @@ export const showField = (field, formValues) => {
       }
 
       if (comparisonValueType === 'boolean') {
-        const comparisonValueModified = comparisonValue === 'True' ? true : false
         const realValue = formValues[variable] ? formValues[variable] === true : false
-        if (operator === '==' && comparisonValueModified === realValue) {
+        if (operator === '==' && comparisonValue === realValue) {
           returnValue = true
           return
         }
-        if (operator === '!=' &&  comparisonValueModified !== realValue) {
+        if (operator === '!=' &&  comparisonValue !== realValue) {
           returnValue = true
           return
         }
       }
-      if (comparisonValueType === 'string') {
+      if (comparisonValueType === 'string' || comparisonValueType === 'number' ) {
         if (operator === '==' && comparisonValue === formValues[variable]) {
           returnValue = true
           return
         }
         if (operator === '!=' &&  comparisonValue !== formValues[variable]) {
-          returnValue = true
-          return
-        }
-      }
-      if (comparisonValueType === 'number') {
-        if (operator === '==' && parseInt(comparisonValue) === formValues[variable]) {
-          returnValue = true
-          return
-        }
-        if (operator === '!=' &&  parseInt(comparisonValue) !== formValues[variable]) {
           returnValue = true
           return
         }
