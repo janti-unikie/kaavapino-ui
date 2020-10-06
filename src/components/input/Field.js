@@ -12,7 +12,7 @@ import { Field, FieldArray, formValues } from 'redux-form'
 import RadioButton from './RadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
-import AutofillReadOnlyInput from './AutofillInputCalculation/AutofillInputCalculations'
+import AutofillInputCalculations from './AutofillInputCalculation/AutofillInputCalculations'
 
 import { isEqual } from 'lodash'
 import projectUtils from '../../utils/projectUtils'
@@ -229,10 +229,10 @@ class CustomField extends Component {
     /* Some fields are autofilled to a value as per (autofill_rules)
      * Some fields have their value calculated based on other fields (calculations)
      * Some autofill fields are readonly, some are not (autofill_readonly) */
-    if( field.calculations ) {
-        return <AutofillReadOnlyInput field={field} fieldProps={fieldProps} formName={formName} />
+    if( this.props.isFloorCalculation ) {
+        return <AutofillInputCalculations field={field} fieldProps={fieldProps} formName={formName} />
     }
-    if (field.autofill_rule && field.autofill_rule.length) {
+    if (field.autofill_rule && field.autofill_rule.length && !this.props.isFloorCalculation) {
       return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
     }
 

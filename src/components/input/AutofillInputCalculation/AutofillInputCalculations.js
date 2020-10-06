@@ -16,7 +16,7 @@ import { handleAutofillCalculations } from './autofillCalculationsUtils'
  * instead of change listeners
  */
 
-const AutofillReadonlyInput = ({
+const AutofillInputCalculations = ({
   field: { autofill_readonly, name, related_fields, calculations, unit },
   fieldProps,
   formName
@@ -68,4 +68,4 @@ const AutofillReadonlyInput = ({
   )
 }
 
-export default AutofillReadonlyInput
+export default AutofillInputCalculations
