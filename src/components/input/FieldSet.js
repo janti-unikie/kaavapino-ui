@@ -6,7 +6,7 @@ import Field from './Field'
 import { Form, Button } from 'semantic-ui-react'
 import projectUtils from '../../utils/projectUtils'
 
-const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formName }) => {
+const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formName, formValues }) => {
   let numberOfSets = 1
   if (attributeData[sets.name]) {
     if (sets.length !== attributeData[sets.name].length) {
@@ -61,6 +61,7 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formN
                         fieldset={field.type === 'fieldset'}
                         parentName={name}
                         formName={formName}
+                        formValues={formValues}
                       />
                     </div>
                   )
