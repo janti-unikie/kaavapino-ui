@@ -204,7 +204,7 @@ class CustomField extends Component {
     if (type === 'file' || type === 'image') {
       const file = attributeData[field.name]
       const src = file ? file.link : null
-      const description = file ? file.descripstion : null
+      const description = file ? file.description : null
       return (
         <File
           image={type === 'image'}
