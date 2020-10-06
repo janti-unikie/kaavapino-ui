@@ -7,6 +7,8 @@ import {
 } from '../../selectors/projectSelector'
 import { Segment } from 'semantic-ui-react'
 import FormField from '../input/FormField'
+import { getFormValues } from 'redux-form'
+import { EDIT_PROJECT_FORM } from '../../constants'
 
 const FormSection = ({
   section: { title, fields },
@@ -14,7 +16,9 @@ const FormSection = ({
   disabled,
   attributeData,
   updates,
-  handleSave
+  handleSave,
+  formName,
+  formValues
 }) => {
   const handleBlurSave = (evt, handleSave) => {
     if (evt) {
@@ -23,7 +27,6 @@ const FormSection = ({
       }, 200)
     }
   }
-
   return (
     <Segment>
       <h2 id={`title-${title}`} className="section-title">
@@ -42,6 +45,8 @@ const FormSection = ({
             handleBlurSave(e, handleSave)
           }}
           onRadioChange={handleSave}
+          formName={formName}
+          formValues={formValues}
         />
       ))}
     </Segment>
@@ -51,7 +56,8 @@ const FormSection = ({
 const mapStateToProps = state => ({
   updates: updatesSelector(state),
   attributeData: attributeDataSelector(state),
-  checking: checkingSelector(state)
+  checking: checkingSelector(state),
+  formValues: getFormValues(EDIT_PROJECT_FORM)(state)
 })
 
 export default connect(mapStateToProps)(FormSection)

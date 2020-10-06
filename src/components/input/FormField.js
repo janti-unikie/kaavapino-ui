@@ -5,12 +5,14 @@ import Matrix from './Matrix'
 import { Form, Label, Popup } from 'semantic-ui-react'
 import Info from './Info'
 import projectUtils from '../../utils/projectUtils'
+import { showField } from '../../utils/projectVisibilityUtils'
 
 const OneLineFields = ['toggle']
 
 class FormField extends Component {
   renderField = () => {
-    const { field, attributeData, formName, ...rest } = this.props
+    const { field, attributeData, formName, formValues, ...rest } = this.props
+
     switch (field.type) {
       case 'matrix':
         return <Matrix field={field} attributeData={attributeData} formName={formName}/>
@@ -22,6 +24,7 @@ class FormField extends Component {
             attributeData={attributeData}
             fieldset={field.type === 'fieldset'}
             formName={formName}
+            formValues={formValues}
             {...rest}
           />
         )
@@ -29,7 +32,7 @@ class FormField extends Component {
   }
 
   render() {
-    const { field, attributeData, checking, updated, error } = this.props
+    const { field, attributeData, checking, updated, formValues, error } = this.props
     const required =
       checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
     const isOneLineField = OneLineFields.indexOf(field.type) > -1
@@ -40,6 +43,9 @@ class FormField extends Component {
      * Redux form gives error information to the Field component, but that's further down the line, and we need that information
      * here to modify the input header accordingly. */
     const showError = required ? 'pakollinen kenttä' : error
+    if ( !showField(field, formValues) ) {
+        return null
+    }
 
     return (
       <Form.Field

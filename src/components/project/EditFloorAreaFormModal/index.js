@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Modal, Form, Button } from 'semantic-ui-react'
-import { reduxForm, getFormSubmitErrors } from 'redux-form'
+import { reduxForm, getFormSubmitErrors, getFormValues } from 'redux-form'
 import { connect } from 'react-redux'
 import { EDIT_FLOOR_AREA_FORM } from '../../../constants'
 import FormField from '../../input/FormField'
@@ -27,6 +27,7 @@ const FloorAreaTotals = ({ formValues, floorAreaSections }) => {
             attributeData={formValues}
             key={i}
             formName={EDIT_FLOOR_AREA_FORM}
+            formValues={formValues}
           />
         ))}
       </div>
@@ -95,13 +96,13 @@ class EditFloorAreaFormModal extends Component {
   }
 
   getFormField = (fieldProps, key) => {
-    const { formSubmitErrors } = this.props
+    const { formSubmitErrors, formValues } = this.props
     const error =
       formSubmitErrors && fieldProps.field && formSubmitErrors[fieldProps.field.name]
 
     return (
       <div key={key}>
-        <FormField {...fieldProps} formName={EDIT_FLOOR_AREA_FORM} attributeData={{}} error={error}/>
+        <FormField {...fieldProps} formName={EDIT_FLOOR_AREA_FORM} attributeData={{}} error={error} formValues={formValues}/>
       </div>
     )
   }
@@ -170,7 +171,8 @@ EditFloorAreaFormModal.propTypes = {
 
 const mapStateToProps = state => ({
   formSubmitErrors: getFormSubmitErrors(EDIT_FLOOR_AREA_FORM)(state),
-  floorAreaSections: floorAreaSectionsSelector(state)
+  floorAreaSections: floorAreaSectionsSelector(state),
+  formValues: getFormValues(EDIT_FLOOR_AREA_FORM)(state)
 })
 
 const decoratedForm = reduxForm({

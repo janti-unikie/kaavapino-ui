@@ -4,6 +4,7 @@ import { projectFileUpload, projectFileRemove } from '../../actions/projectActio
 import { downloadFile } from '../../actions/apiActions'
 import { Button, Progress } from 'semantic-ui-react'
 import { Document, Page, pdfjs } from 'react-pdf'
+import { showField } from '../../utils/projectVisibilityUtils'
 
 class File extends Component {
   constructor(props) {
@@ -141,8 +142,12 @@ class File extends Component {
 
   render() {
     const { current, uploading, percentCompleted } = this.state
-    const { field, image, description, src } = this.props
+    const { field, image, description, src, formValues } = this.props
     const disabled = field.disabled
+    if ( !showField(field, formValues) ) {
+      return null
+    }
+
     let filePreview = (
       <img
         style={{
