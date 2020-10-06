@@ -37,16 +37,36 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
         const realValue = formValues[variable] ? formValues[variable] === true : false
 
         if (operator === '==' && comparisonValue === realValue ) {
-            returnValue = thenBranch === 'True' ? true : false
+          if ( thenBranch === 'True' ) {
+            returnValue = true
             return
+          } else if (thenBranch === 'False ') {
+            returnValue = false
+            return
+          } else {
+            if (returnValue) {
+              returnValue = returnValue + thenBranch
+            } else {
+              returnValue = thenBranch
+            }
+          }
+        }
+        if (operator === '!=' && comparisonValue !== realValue) {
+          if ( thenBranch === 'True') {
+            returnValue = true
+            return
+           } else if (thenBranch === 'False') {
+              returnValue = false
+              return
+          } else {
+            if (returnValue) {
+              returnValue = returnValue + thenBranch
+            } else {
+              returnValue = thenBranch
+            }
+          }
         }
 
-        if (operator === '!=' && comparisonValue !== realValue) {
-            returnValue = thenBranch === 'True' ? true : false
-            return
-        }
-        returnValue = false
-        return
       }
       if (comparisonValueType === 'number' || comparisonValueType === 'string') {
         if (operator === '==' && comparisonValue === formValues[variable]) {
