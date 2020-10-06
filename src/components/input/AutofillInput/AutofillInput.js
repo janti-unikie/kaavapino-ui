@@ -10,7 +10,7 @@ const AutofillInput = ({
 }) => {
   const formValues = useSelector(getFormValues(formName))
   const dispatch = useDispatch()
-  const value = (formValues && formValues[name]) || null
+  const value = (formValues && formValues[name]) || ''
 
   useEffect(() => {
     if (!formValues) {
