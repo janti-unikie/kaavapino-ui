@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { projectFileUpload, projectFileRemove } from '../../actions/projectActions'
 import { downloadFile } from '../../actions/apiActions'
 import { Button, Progress } from 'semantic-ui-react'
-import { pdfjs, Document, Page } from 'react-pdf'
+import { Document, Page, pdfjs } from 'react-pdf'
 
 class File extends Component {
   constructor(props) {
@@ -18,8 +18,7 @@ class File extends Component {
       percentCompleted: 0,
       current,
       uploading: false,
-      reading: false,
-      page: 1
+      reading: false
     }
     this.inputRef = React.createRef()
     if (props.image) {
@@ -50,7 +49,7 @@ class File extends Component {
 
   componentDidMount() {
     const { src, image } = this.props
-    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
+    pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.js'
 
     if (src && image) {
       this.imageRef.current.src = src
@@ -228,29 +227,7 @@ class File extends Component {
           disabled={disabled}
         />
         {uploading && <Progress percent={percentCompleted} progress indicating />}
-        {
-          filePreview
-          /*
-          <Document
-              style={{
-                display: `${current && image ? 'block' : 'none'}`,
-                marginBottom: '10px'
-              }}
-              className="image-preview"
-              file={this.imageRef ? this.imageRef.src : ''}
-              alt={current ? current : ''}
-          />
-          <img
-            style={{
-              display: `${current && image ? 'block' : 'none'}`,
-              marginBottom: '10px'
-            }}
-            className="image-preview"
-            ref={this.imageRef}
-            alt={current ? current : ''}
-          />
-           */
-        }
+        {filePreview}
         {current && description && (
           <span className="file-description">
             <b>Kuvaus: </b>
