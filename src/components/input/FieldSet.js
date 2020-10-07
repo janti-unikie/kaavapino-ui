@@ -46,7 +46,7 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formN
                   } else if (checking && field.required) {
                     required = true
                   }
-                  const defaultValue = projectUtils.checkInputValue2(name, attributeData, field.name)
+                  const defaultValue = projectUtils.getDefaultValue(name, attributeData, field.name)
                   return (
                     <div className="input-container" key={j}>
                       <div className="input-header">

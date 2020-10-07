@@ -76,13 +76,6 @@ function RichTextEditor(props) {
   const modules = {
     toolbar: `#${toolbarName}`
   }
-  if (value !== '') {
-    //delete rest.placeholder
-    //inputProps.value = value
-    //inputProps.defaultValue = value
-    //console.log(79, value, inputProps)
-    //console.log(80, rest)
-  }
   return (
     <div className="rich-text-editor-wrapper">
       <div

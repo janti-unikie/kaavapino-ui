@@ -307,9 +307,15 @@ function* saveProject() {
   const currentProjectId = yield select(currentProjectIdSelector)
   const editForm = yield select(editFormSelector) || {}
   const { initial, values } = editForm
-
   if (values) {
-    const attribute_data = projectUtils.formatFieldset(getChangedAttributeData(values, initial))
+    const currentProject = yield select(currentProjectSelector)
+    const schema = yield select(schemaSelector)
+    const currentSchema = schema.phases.find(s => s.id === currentProject.phase)
+    const { sections } = currentSchema
+    const changedValues = projectUtils.formatFieldset(getChangedAttributeData(values, initial))
+    const parentName = projectUtils.getParent(sections, changedValues)
+    const attribute_data = projectUtils.formatAttributeData(parentName, values[parentName], changedValues)
+    console.log(321, attribute_data)
     try {
       const updatedProject = yield call(
         projectApi.patch,

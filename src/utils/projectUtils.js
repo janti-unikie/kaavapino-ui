@@ -1,3 +1,5 @@
+import { difference } from 'lodash'
+
 const addZeroPrefixIfNecessary = value => (value < 10 ? `0${value}` : value)
 
 const formatDate = value => {
@@ -118,7 +120,6 @@ const formatFieldset = (fieldset) => {
   if ( !keys || keys.length === 0) {
     return
   }
-
   if (keys[0].indexOf('fieldset') === -1) {
     //this might be redundant
     keys.forEach( key  => {
@@ -143,18 +144,66 @@ const removeHTMLtags = (fieldsetData) => {
   return div.innerText
 }
 
-/* Might need this code later
- * When you need to find out the parentName of fiedlset
-const getFieldsets = (data) => {
-  const filtered = Object.keys(data)
-    .filter(key => key.indexOf('fieldset') !== -1)
-    .reduce((obj, key) => {
-          obj[key] = data[key]
-          return obj
-    }, {})
-  return filtered
+const getParent = (data, values) => {
+  const keyToSearch = Object.keys(values)[0]
+  let parentName
+  /* We could skip this loop, if the redux store would update the currentProject.phase data
+    *This loop can be removed when phase is fix'd
+    * */
+  data.some(title => {
+    if (parentName) return parentName
+
+    title.fields.some(fieldset => {
+      if (parentName) return parentName
+
+      if (fieldset.fieldset_attributes.length !== 0) {
+        fieldset.fieldset_attributes.some(attribute => {
+
+          if (attribute.name === keyToSearch) {
+            parentName = fieldset.name
+            return parentName
+          }
+        })
+      }
+    })
+  })
+  return parentName
 }
-*/
+
+const formatAttributeData = (parent, initialValues, newValues) => {
+  const returnObj = {}
+
+  //If adding fieldset for the first time
+  if (!parent || !initialValues) return newValues
+
+  // Create object from initialValues
+  const initialObject = initialValues.reduce((obj, item) => {
+    Object.assign(obj,item)
+    return obj
+  }, {})
+
+  const initialKeys = Object.keys(initialObject)
+  const newKeys = Object.keys(newValues)
+  const keysToAdd = difference(newKeys, initialKeys)
+
+  //Adding new keys to attributeData,
+  keysToAdd.forEach(key => {
+    returnObj[key] = newValues[key]
+  })
+
+  //Updating modified values
+  initialKeys.forEach(key => {
+    if (newValues.hasOwnProperty(key)) {
+      returnObj[key] = newValues[key]
+    } else {
+      returnObj[key] = initialObject[key]
+    }
+  })
+
+  const attributeData = {}
+  attributeData[parent] = [returnObj]
+  return attributeData
+}
 
 const getFieldsetValue = (data, fieldsetName) => {
   let value
@@ -170,7 +219,7 @@ const checkInputValue = (props) => {
     if (inputValue) props.input.value = inputValue
   }}
 
-const checkInputValue2 = (parentName, attributeData, name) => {
+const getDefaultValue = (parentName, attributeData, name) => {
   if (attributeData[parentName]) {
     return getFieldsetValue(attributeData[parentName], name)
   }}
@@ -190,5 +239,7 @@ export default {
   formatSubtype,
   formatFieldset,
   checkInputValue,
-  checkInputValue2
+  getDefaultValue,
+  getParent,
+  formatAttributeData
 }
