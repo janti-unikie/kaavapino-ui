@@ -28,7 +28,49 @@ describe('VisibilityCondition tests', () => {
     }
     expect(showField(field, formValues)).toBe(false)
   })
-  it('Does not show field with == rule with wrong type (boolean)', () => {
+  it('Does not show field with == rule with value (boolean)', () => {
+    const field = {}
+    field.visibility_conditions = [{
+        variable: 'a',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+      a: false
+    }
+    expect(showField(field, formValues)).toBe(false)
+  })
+  it('Show field with == rule with value (boolean)', () => {
+    const field = {}
+    field.visibility_conditions = [{
+        variable: 'yleiskaava_2002_mukainen',
+        operator: '!=',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+      yleiskaava_2002_mukainen: false
+    }
+    expect(showField(field, formValues)).toBe(true)
+  })
+  it('Show field with == rule with value (boolean) not found', () => {
+    const field = {}
+    field.visibility_conditions = [{
+        variable: 'yleiskaava_2002_mukainen',
+        operator: '!=',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+    }
+    expect(showField(field, formValues)).toBe(true)
+  })
+
+  it('Show field with == rule with wrong type (boolean) but field has value', () => {
     const field = {}
     field.visibility_conditions = [{
         variable: 'a',
@@ -39,6 +81,33 @@ describe('VisibilityCondition tests', () => {
 
     const formValues = {
       a:'kaavapino'
+    }
+    expect(showField(field, formValues)).toBe(true)
+  })
+  it('Show field with == rule with wrong type (boolean) but field has not value', () => {
+    const field = {}
+    field.visibility_conditions = [{
+        variable: 'a',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+      a: undefined
+    }
+    expect(showField(field, formValues)).toBe(false)
+  })
+  it('Show field with == rule with wrong type (boolean) but not exists', () => {
+    const field = {}
+    field.visibility_conditions = [{
+        variable: 'a',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
     }
     expect(showField(field, formValues)).toBe(false)
   })
@@ -232,6 +301,33 @@ describe('VisibilityCondition tests', () => {
 
     const formValues = {
       a: 'kaavapino'
+    }
+    expect(showField(field, formValues)).toBe(false)
+  })
+  it('Shows field with != rule multiple values with wrong value type (boolean) value undefined', () => {
+    const field = {}
+    field.visibility_conditions = [{
+        variable: 'a',
+        operator: '!=',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+      a: undefined
+    }
+    expect(showField(field, formValues)).toBe(true)
+  })
+  it('Shows field with != rule multiple values with wrong value type (boolean) value not found', () => {
+    const field = {}
+    field.visibility_conditions = [{
+        variable: 'a',
+        operator: '!=',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
     }
     expect(showField(field, formValues)).toBe(true)
   })

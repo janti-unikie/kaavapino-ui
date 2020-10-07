@@ -1,7 +1,6 @@
 // Field returns info whether field given as a parameter should be shown or not.
 export const showField = (field, formValues) => {
   let returnValue = false
-
   if (field && field.visibility_conditions && field.visibility_conditions.length > 0) {
     field.visibility_conditions.forEach(visibilityCondition => {
 
@@ -18,7 +17,14 @@ export const showField = (field, formValues) => {
       }
 
       if (comparisonValueType === 'boolean') {
-        const realValue = formValues[variable] ? formValues[variable] === true : false
+        const value = formValues[variable]
+        let realValue = false
+
+        if ( value === true || value === false ) {
+         realValue = value
+        } else {
+          realValue = value !== undefined ? true : false
+        }
         if (operator === '==' && comparisonValue === realValue) {
           returnValue = true
           return
@@ -27,6 +33,7 @@ export const showField = (field, formValues) => {
           returnValue = true
           return
         }
+
       }
       if (comparisonValueType === 'string' || comparisonValueType === 'number' ) {
         if (operator === '==' && comparisonValue === formValues[variable]) {
