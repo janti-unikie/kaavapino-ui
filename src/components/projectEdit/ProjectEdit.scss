@@ -1,5 +1,17 @@
 @import '../common/colors.scss';
 
+.hightlight-pääkäyttäjä {
+  .Pääkäyttäjät {
+    background-color: $yellow;
+  }
+}
+
+.hightlight-asiantuntija {
+  .Asiantuntijat {
+    background-color: $yellow;
+  }
+}
+
 .form-container {
   flex: 1;
   width: 100%;
