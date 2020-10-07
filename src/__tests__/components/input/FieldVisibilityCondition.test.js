@@ -443,6 +443,20 @@ describe('VisibilityCondition tests', () => {
     }
     expect(showField(field, formValues)).toBe(false)
   }),
+  it('Shows field with != rule fails (number)', () => {
+    const field = {}
+    field.visibility_conditions = [{
+        variable: 'a',
+        operator: '!=',
+        comparison_value: 0,
+        comparison_value_type: 'number'
+      }]
+
+    const formValues = {
+      a: 2
+    }
+    expect(showField(field, formValues)).toBe(true)
+  }),
   it('Shows field with in rule (list)', () => {
     const field = {}
     field.visibility_conditions = [{
