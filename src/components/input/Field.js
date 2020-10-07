@@ -73,8 +73,11 @@ class CustomField extends Component {
   }
 
   renderString = props => {
-    projectUtils.checkInputValue(props)
-    return <Input type="text" {...props}/>
+    if(props.defaultValue) {
+      props.input.defaultValue = props.defaultValue
+      delete props.input.value
+    }
+    return <Input type="text" {...props}  />
   }
 
   renderTextArea = props => {
