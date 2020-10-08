@@ -388,7 +388,6 @@ function* changeProjectPhase({ payload: phase }) {
       ':id/'
     )
     yield put(changeProjectPhaseSuccessful(updatedProject))
-    window.scrollTo(0, 0)
   } catch (e) {
     yield put(error(e))
     yield put(changeProjectPhaseFailure())
