@@ -3,8 +3,9 @@ import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { checkingSelector } from '../../selectors/projectSelector'
 import Field from './Field'
-import { Form, Button } from 'semantic-ui-react'
+import { Form, Button, Label } from 'semantic-ui-react'
 import projectUtils from '../../utils/projectUtils'
+import Info from './Info'
 
 const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formName }) => {
   let numberOfSets = 1
@@ -49,13 +50,18 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formN
                   const defaultValue = projectUtils.getDefaultValue(name, attributeData, field.name)
                   return (
                     <div className="input-container" key={j}>
-                      <div className="input-header">
-                        <Form.Field required={required}>
-                          <label className={`input-title${required ? ' highlight' : ''}`}>
+                      <Form.Field required={required}>
+                        <div className="input-header">
+                          <Label className={`input-title${required ? ' highlight' : ''}`}>
                             {field.label}
-                          </label>
-                        </Form.Field>
-                      </div>
+                          </Label>
+                          <div className="input-header-icons">
+                            {field.help_text && (
+                              <Info content={field.help_text} link={field.help_link} />
+                            )}
+                          </div>
+                        </div>
+                      </Form.Field>
                       <Field
                         field={{ ...field, disabled }}
                         attributeData={attributeData}
