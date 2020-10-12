@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Loader } from 'semantic-ui-react'
-import { initializeProject, saveProjectBase } from '../../actions/projectActions'
+import { initializeProject, saveProjectBase, changeProjectPhase } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
 import {
   currentProjectSelector,
@@ -67,7 +67,10 @@ class ProjectPage extends Component {
   }
 
   switchDisplayedPhase = phase => {
-    if (this.props.edit) this.setState({ selectedPhase: phase })
+    if ( this.props.edit ) {
+      this.props.changeProjectPhase( phase )
+      this.setState({ selectedPhase: phase })
+    }
   }
 
   getRouteItems = () => {
@@ -279,7 +282,8 @@ class ProjectPage extends Component {
 const mapDispatchToProps = {
   initializeProject,
   saveProjectBase,
-  fetchUsers
+  fetchUsers,
+  changeProjectPhase
 }
 
 const mapStateToProps = state => {
