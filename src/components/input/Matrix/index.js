@@ -6,7 +6,7 @@ import projectUtils from '../../../utils/projectUtils'
 import './styles.scss'
 import Info from '../../../components/input/Info'
 
-const Matrix = ({ field: { matrix }, checking, attributeData, formName }) => {
+const Matrix = ({ field: { matrix }, checking, attributeData, formName, isFloorCalculation }) => {
   const { rows, columns, fields } = matrix
 
   const columnCount = columns.length
@@ -66,6 +66,7 @@ const Matrix = ({ field: { matrix }, checking, attributeData, formName }) => {
                             field={field}
                             fieldset={field.type === 'fieldset'}
                             formName={formName}
+                            isFloorCalculation={isFloorCalculation}
                           />
                         </span>
                       )}

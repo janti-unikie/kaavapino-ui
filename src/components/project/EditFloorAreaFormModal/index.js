@@ -28,6 +28,7 @@ const FloorAreaTotals = ({ formValues, floorAreaSections }) => {
             key={i}
             formName={EDIT_FLOOR_AREA_FORM}
             formValues={formValues}
+            isFloorCalculation={true}
           />
         ))}
       </div>
@@ -102,7 +103,13 @@ class EditFloorAreaFormModal extends Component {
 
     return (
       <div key={key}>
-        <FormField {...fieldProps} formName={EDIT_FLOOR_AREA_FORM} attributeData={{}} error={error} formValues={formValues}/>
+        <FormField
+          {...fieldProps}
+          formName={EDIT_FLOOR_AREA_FORM}
+          attributeData={{}}
+          error={error}
+          formValues={formValues}
+          isFloorCalculation={true}/>
       </div>
     )
   }

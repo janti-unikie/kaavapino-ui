@@ -8,14 +8,15 @@ import FieldSet from './FieldSet'
 import Geometry from './Geometry'
 import Link from './Link'
 import DateTime from './DateTime'
-import { Field, FieldArray } from 'redux-form'
+import { Field, FieldArray, formValues } from 'redux-form'
 import RadioButton from './RadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
-import AutofillReadOnlyInput from './AutofillInputReadOnly/AutofillInputReadOnly'
+import AutofillInputCalculations from './AutofillInputCalculation/AutofillInputCalculations'
 
 import { isEqual } from 'lodash'
 import projectUtils from '../../utils/projectUtils'
+import AutofillInput from './AutofillInput/AutofillInput'
 
 class CustomField extends Component {
 
@@ -148,6 +149,7 @@ class CustomField extends Component {
       disabled={this.props.field.disabled}
       attributeData={this.props.attributeData}
       name={this.props.field.name}
+      formValues={formValues}
     />
   )
 
@@ -201,6 +203,7 @@ class CustomField extends Component {
   render() {
     const { field, attributeData, fieldset, formName, formValues,...custom } = this.props
     const type = field.type
+
     if (type === 'file' || type === 'image') {
       const file = attributeData[field.name]
       const src = file ? file.link : null
@@ -229,9 +232,11 @@ class CustomField extends Component {
     /* Some fields are autofilled to a value as per (autofill_rules)
      * Some fields have their value calculated based on other fields (calculations)
      * Some autofill fields are readonly, some are not (autofill_readonly) */
-    if( field.calculations || (field.autofill_rule && field.autofill_rule.length)) {
-
-        return <AutofillReadOnlyInput field={field} fieldProps={fieldProps} formName={formName} />
+    if( this.props.isFloorCalculation ) {
+        return <AutofillInputCalculations field={field} fieldProps={fieldProps} formName={formName} />
+    }
+    if (field.autofill_rule && field.autofill_rule.length && !this.props.isFloorCalculation) {
+      return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
     }
 
     if (type === 'toggle') {
