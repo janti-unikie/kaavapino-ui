@@ -214,7 +214,6 @@ const formatAttributeData = (parent, initialValues, newValues) => {
   const newKeys = Object.keys(newValues)
   //If adding fieldset for the first time
   if (!initialValues) {
-    console.log(209, newValues, newKeys)
     newKeys.forEach(key => returnObj[key] = newValues[key])
     return returnObj
 
