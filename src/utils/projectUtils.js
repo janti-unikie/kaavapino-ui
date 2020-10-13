@@ -118,7 +118,7 @@ const formatFieldset = (fieldset) => {
 
   // Bug fix which caused saga crash
   if ( !keys || keys.length === 0) {
-    return
+    return fieldset
   }
   if (keys[0].indexOf('fieldset') === -1) {
     //this might be redundant
@@ -145,7 +145,16 @@ const removeHTMLtags = (fieldsetData) => {
 }
 
 const getParent = (data, values) => {
+
+  if  (!data || !values ) {
+    return
+  }
   const keyToSearch = Object.keys(values)[0]
+
+   // Bug fix which caused saga crash
+  if ( !keyToSearch || keyToSearch.length === 0) {
+    return
+  }
   let parentName
   /* We could skip this loop, if the redux store would update the currentProject.phase data
     *This loop can be removed when phase is fix'd
