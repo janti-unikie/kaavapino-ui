@@ -1,4 +1,4 @@
-import { difference } from 'lodash'
+import { concat, difference, flattenDeep } from 'lodash'
 
 const addZeroPrefixIfNecessary = value => (value < 10 ? `0${value}` : value)
 
@@ -113,15 +113,25 @@ const formatSubtype = (id, subtypes) => {
   }
 }
 
-const formatFieldset = (fieldset) => {
-  const keys = Object.keys(fieldset)
+const formatFieldset = (fieldset, sections, parentName) => {
+  // Remove fieldset keys,only when adding a new fieldset
+  const keys = (Object.keys(fieldset)).filter(key => key !== parentName)
+  const fieldsetList = keys.filter(key => key.indexOf('fieldset') !== -1)
+  const fieldsetAttributes = flattenDeep(
+    fieldsetList.map(
+      currentFieldset => getFieldsetAtributes(currentFieldset, sections)
+    )
+  )
+  const allFieldsets = concat(fieldsetList, fieldsetAttributes)
+  const nonFieldsets = difference(keys, allFieldsets)
 
   // Bug fix which caused saga crash
   if ( !keys || keys.length === 0) {
     return fieldset
   }
-  if (keys[0].indexOf('fieldset') === -1) {
-    //this might be redundant
+
+  // No fieldset values
+  if (!parentName) {
     keys.forEach( key  => {
       fieldset[key] = removeHTMLtags(fieldset[key])
     })
@@ -129,11 +139,18 @@ const formatFieldset = (fieldset) => {
   }
 
   const returnValue = {}
-  returnValue[keys[0]] =[]
-  keys.slice(1).forEach((key) => {
-    const temp = {}
-    temp[key] = removeHTMLtags(fieldset[key])
-    returnValue[keys[0]].push(temp)
+  // Handle non fieldset values
+  nonFieldsets.forEach(key => returnValue[key] = removeHTMLtags(fieldset[key]))
+
+  // Handle fieldset values
+  fieldsetList.forEach(currentFieldset => {
+    const attributes= getFieldsetAtributes(currentFieldset, sections)
+    returnValue[currentFieldset] = []
+    attributes.forEach(attribute => {
+      if (fieldset[attribute]) {
+        returnValue[currentFieldset].push({ [attribute]: removeHTMLtags(fieldset[attribute]) })
+      }
+    })
   })
   return returnValue
 }
@@ -144,22 +161,30 @@ const removeHTMLtags = (fieldsetData) => {
   return div.innerText
 }
 
-const getParent = (data, values) => {
+const getParent = (sections, values) => {
 
-  if  (!data || !values ) {
+  if  (!sections || !values ) {
     return
   }
-  const keyToSearch = Object.keys(values)[0]
+  const keysToSearch = Object.keys(values)
 
    // Bug fix which caused saga crash
-  if ( !keyToSearch || keyToSearch.length === 0) {
+  if ( !keysToSearch || keysToSearch.length === 0) {
     return
   }
   let parentName
+
+  // Check if fieldset is in keysToSearch
+  keysToSearch.forEach(key => {
+   if (key.indexOf('fieldset') !== -1) parentName = key
+  })
+
+  const keyToSearch = keysToSearch[0]
+  if (parentName) return parentName
   /* We could skip this loop, if the redux store would update the currentProject.phase data
     *This loop can be removed when phase is fix'd
     * */
-  data.some(title => {
+  sections.some(title => {
     if (parentName) return parentName
 
     title.fields.some(fieldset => {
@@ -179,39 +204,63 @@ const getParent = (data, values) => {
   return parentName
 }
 
+const getFieldsetAtributes = (parent, sections) => {
+  let fieldsetAttributes
+  sections.some(title => {
+    if (fieldsetAttributes) return fieldsetAttributes
+    title.fields.some(fieldset => {
+      if (fieldset.name === parent) {
+        fieldsetAttributes = fieldset.fieldset_attributes.map(key => key.name)
+        return fieldsetAttributes
+      }
+    })
+  })
+  return fieldsetAttributes
+}
+
 const formatAttributeData = (parent, initialValues, newValues) => {
   const returnObj = {}
-
-  //If adding fieldset for the first time
-  if (!parent || !initialValues) return newValues
-
-  // Create object from initialValues
-  const initialObject = initialValues.reduce((obj, item) => {
-    Object.assign(obj,item)
-    return obj
-  }, {})
-
-  const initialKeys = Object.keys(initialObject)
   const newKeys = Object.keys(newValues)
-  const keysToAdd = difference(newKeys, initialKeys)
+  //If adding fieldset for the first time
+  if (!initialValues) {
+    newKeys.forEach(key => returnObj[key] = newValues[key])
+    return returnObj
 
-  //Adding new keys to attributeData,
-  keysToAdd.forEach(key => {
-    returnObj[key] = newValues[key]
-  })
+  } else {
+    // Create object from initialValues
+    const initialObject = initialValues.reduce((obj, item) => {
+      Object.assign(obj,item)
+      return obj
+    }, {})
 
-  //Updating modified values
-  initialKeys.forEach(key => {
-    if (newValues.hasOwnProperty(key)) {
+    const initialKeys = Object.keys(initialObject)
+    const keysToAdd = difference(newKeys, initialKeys)
+
+    //Adding new keys to attributeData,
+    keysToAdd.forEach(key => {
       returnObj[key] = newValues[key]
-    } else {
-      returnObj[key] = initialObject[key]
-    }
-  })
+    })
 
+    //Updating modified values
+    initialKeys.forEach(key => {
+      if (newValues.hasOwnProperty(key)) {
+        returnObj[key] = newValues[key]
+      } else {
+        returnObj[key] = initialObject[key]
+      }
+    })
+  }
   const attributeData = {}
   attributeData[parent] = [returnObj]
   return attributeData
+}
+
+const dataHasFieldset = (data) => {
+  const keys = Object.keys(data)
+  let returnValue = false
+  keys.forEach(key => {
+    if (key.indexOf('fieldset') !== -1) returnValue = key})
+  return returnValue
 }
 
 const getFieldsetValue = (data, fieldsetName) => {
@@ -250,5 +299,6 @@ export default {
   checkInputValue,
   getDefaultValue,
   getParent,
-  formatAttributeData
+  formatAttributeData,
+  dataHasFieldset
 }

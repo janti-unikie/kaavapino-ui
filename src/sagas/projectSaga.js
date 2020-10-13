@@ -239,7 +239,12 @@ const getChangedAttributeData = (values, initial) => {
     if (values[key] === '') {
       attribute_data[key] = null
     } else {
-      attribute_data[key] = values[key]
+      const newValue  = values[key]
+      if ( newValue instanceof Object ) {
+        attribute_data[key]  = JSON.stringify(newValue)
+      } else {
+        attribute_data[key] = newValue
+      }
     }
   })
   return attribute_data
@@ -312,10 +317,10 @@ function* saveProject() {
     const schema = yield select(schemaSelector)
     const currentSchema = schema.phases.find(s => s.id === currentProject.phase)
     const { sections } = currentSchema
-    const changedValues = projectUtils.formatFieldset(getChangedAttributeData(values, initial))
+    const changedValues = getChangedAttributeData(values, initial)
     const parentName = projectUtils.getParent(sections, changedValues)
-    const attribute_data = projectUtils.formatAttributeData(parentName, values[parentName], changedValues)
-    console.log(321, attribute_data)
+    const formatedData = projectUtils.formatFieldset(changedValues, sections, parentName)
+    const attribute_data = !parentName ? formatedData : projectUtils.formatAttributeData(parentName, values[parentName], formatedData)
     try {
       const updatedProject = yield call(
         projectApi.patch,
