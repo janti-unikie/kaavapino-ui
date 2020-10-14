@@ -127,7 +127,7 @@ const formatFieldset = (fieldset, sections, parentName) => {
 
   // Bug fix which caused saga crash
   if ( !keys || keys.length === 0) {
-    return
+    return fieldset
   }
 
   // No fieldset values
@@ -162,7 +162,16 @@ const removeHTMLtags = (fieldsetData) => {
 }
 
 const getParent = (sections, values) => {
+
+  if  (!sections || !values ) {
+    return
+  }
   const keysToSearch = Object.keys(values)
+
+   // Bug fix which caused saga crash
+  if ( !keysToSearch || keysToSearch.length === 0) {
+    return
+  }
   let parentName
 
   // Check if fieldset is in keysToSearch
