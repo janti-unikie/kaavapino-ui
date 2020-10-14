@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
 import Button from '../../common/Button'
-import { Accordion } from 'semantic-ui-react'
+import { Accordion, Form } from 'semantic-ui-react'
 import AccordionTitle from './AccordionTitle'
 import './styles.scss'
 import RoleHighlightPicker from './roleHighlightPicker'
+import FormField from '../../input/FormField'
+import { reduxForm } from 'redux-form'
+import { NEW_PROJECT_FORM } from '../../../constants'
+
+const ONHOLD = 'onhold'
 
 class QuickNav extends Component {
   constructor(props) {
@@ -84,7 +89,7 @@ class QuickNav extends Component {
     const c = document.getElementById(`title-${title}`)
     c.scrollIntoView()
 
-    this.setState( {
+    this.setState({
       ...this.state,
       selected: index
     })
@@ -101,16 +106,33 @@ class QuickNav extends Component {
       switchDisplayedPhase(titleIndex)
 
       const accordionTitle = document.getElementById('accordion-title')
-      if ( accordionTitle ) {
+      if (accordionTitle) {
         accordionTitle.scrollIntoView()
       }
-
     } else {
       this.setState({ activePhase: null })
     }
   }
 
   tryToEndPhase = () => this.props.validateProjectFields()
+
+  getFormField = fieldProps => {
+    const { formSubmitErrors, formValues } = this.props
+
+    const error =
+      formSubmitErrors &&
+      fieldProps &&
+      fieldProps.field &&
+      formSubmitErrors[fieldProps.field.name]
+
+    return (
+      <FormField
+        {...fieldProps}
+        error={error}
+        formValues={formValues}
+      />
+    )
+  }
 
   render() {
     const { activePhase } = this.state
@@ -120,7 +142,9 @@ class QuickNav extends Component {
       validating,
       saving,
       handleSave,
-      handleCheck
+      handleCheck,
+      currentProject,
+      saveProjectBase
     } = this.props
 
     return (
@@ -149,7 +173,9 @@ class QuickNav extends Component {
                             className={`quicknav-item ${
                               index === this.state.selected ? 'active' : ''
                             }`}
-                            onClick={() => this.handleSectionTitleClick(section.title, index)}
+                            onClick={() =>
+                              this.handleSectionTitleClick(section.title, index)
+                            }
                           >
                             {section.title}
                           </span>
@@ -185,9 +211,25 @@ class QuickNav extends Component {
             help="Yrittää lopettaa vaiheen"
           />
         </div>
+        <Form className='quicknav-onhold-form'>
+          {this.getFormField({
+            field: {
+              name: ONHOLD,
+              label: 'Projekti on toistaiseksi keskeytynyt',
+              type: 'checkbox',
+              onhold: currentProject.onhold,
+              saveProjectBase: saveProjectBase,
+              disabled: saving
+            }
+          })}
+        </Form>
       </div>
     )
   }
 }
 
-export default QuickNav
+const QuickNavForm = reduxForm({
+  form: NEW_PROJECT_FORM
+})(QuickNav)
+
+export default QuickNavForm
