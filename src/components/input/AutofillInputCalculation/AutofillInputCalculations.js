@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { isEqual } from 'lodash'
 import { change, getFormValues, Field } from 'redux-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { handleAutofillCalculations } from './autofillReadOnlyUtils'
+import { handleAutofillCalculations } from './autofillCalculationsUtils'
 
 /* This component should calculate and update it's value in redux form whenever
  * the related fields change.
@@ -16,7 +16,7 @@ import { handleAutofillCalculations } from './autofillReadOnlyUtils'
  * instead of change listeners
  */
 
-const AutofillReadonlyInput = ({
+const AutofillInputCalculations = ({
   field: { autofill_readonly, name, related_fields, calculations, unit },
   fieldProps,
   formName
@@ -68,4 +68,4 @@ const AutofillReadonlyInput = ({
   )
 }
 
-export default AutofillReadonlyInput
+export default AutofillInputCalculations

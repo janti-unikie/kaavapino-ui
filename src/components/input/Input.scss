@@ -294,6 +294,11 @@
   max-width: 100%;
   height: auto;
   max-height: 400px;
+
+  .react-pdf__Page__canvas {
+    max-height: 400px !important;
+    max-width: 300px !important;
+  }
 }
 
 .file-input-container {
