@@ -18,13 +18,14 @@ const FormSection = ({
   updates,
   handleSave,
   formName,
-  formValues
+  formValues,
+  syncronousErrors
 }) => {
   const handleBlurSave = (evt, handleSave) => {
     if (evt) {
       setTimeout(function () {
         handleSave()
-      }, 200)
+      }, 500)
     }
   }
   return (
@@ -47,6 +48,7 @@ const FormSection = ({
           onRadioChange={handleSave}
           formName={formName}
           formValues={formValues}
+          syncronousErrors={syncronousErrors}
         />
       ))}
     </Segment>

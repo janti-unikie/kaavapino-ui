@@ -4,6 +4,7 @@ import { Accordion } from 'semantic-ui-react'
 import AccordionTitle from './AccordionTitle'
 import './styles.scss'
 import RoleHighlightPicker from './roleHighlightPicker'
+import _ from 'lodash'
 
 class QuickNav extends Component {
   constructor(props) {
@@ -120,9 +121,11 @@ class QuickNav extends Component {
       validating,
       saving,
       handleSave,
-      handleCheck
+      handleCheck,
+      syncronousErrors
     } = this.props
 
+   const errors = syncronousErrors && !_.isEmpty(syncronousErrors) ? true : false
     return (
       <div className="quicknav-container">
         <div className="quicknav-navigation-section">
@@ -172,7 +175,7 @@ class QuickNav extends Component {
           <Button
             handleClick={handleSave}
             value="Tallenna"
-            loading={saving}
+            loading={saving || errors }
             secondary
             help="Tallentaa projektin"
           />
