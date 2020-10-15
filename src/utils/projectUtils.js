@@ -114,6 +114,7 @@ const formatSubtype = (id, subtypes) => {
 }
 
 const formatFieldset = (fieldset, sections, parentName) => {
+
   // Remove fieldset keys,only when adding a new fieldset
   const keys = (Object.keys(fieldset)).filter(key => key !== parentName)
   const fieldsetList = keys.filter(key => key.indexOf('fieldset') !== -1)
@@ -130,17 +131,12 @@ const formatFieldset = (fieldset, sections, parentName) => {
     return fieldset
   }
 
-  // No fieldset values
-  if (!parentName) {
-    keys.forEach( key  => {
-      fieldset[key] = removeHTMLtags(fieldset[key])
-    })
-    return fieldset
-  }
-
-  const returnValue = {}
+ // No fieldset values
+ if (!parentName) {
+  return fieldset
+}  const returnValue = {}
   // Handle non fieldset values
-  nonFieldsets.forEach(key => returnValue[key] = removeHTMLtags(fieldset[key]))
+  nonFieldsets.forEach(key => returnValue[key] = fieldset[key])
 
   // Handle fieldset values
   fieldsetList.forEach(currentFieldset => {
@@ -148,17 +144,11 @@ const formatFieldset = (fieldset, sections, parentName) => {
     returnValue[currentFieldset] = []
     attributes.forEach(attribute => {
       if (fieldset[attribute]) {
-        returnValue[currentFieldset].push({ [attribute]: removeHTMLtags(fieldset[attribute]) })
+        returnValue[currentFieldset].push({ [attribute]: fieldset[attribute] })
       }
     })
   })
   return returnValue
-}
-
-const removeHTMLtags = (fieldsetData) => {
-  const div = document.createElement('div')
-  div.innerHTML = fieldsetData
-  return div.innerText
 }
 
 const getParent = (sections, values) => {
