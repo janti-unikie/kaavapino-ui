@@ -244,10 +244,14 @@ class CustomField extends Component {
     }
 
     if (type === 'rich_text' || type === 'rich_text_short') {
+      // Fieldsets have calculated defaultValues
+      let defaultValue = fieldProps.defaultValue
+      // Non-fieldset fields get defaultValue from attributeData
+      if (!defaultValue) defaultValue = (attributeData ? attributeData[field.name] : null)
       return (
         <Field
           {...fieldProps}
-          defaultValue={attributeData ? attributeData[field.name] : null}
+          defaultValue={defaultValue}
           formName={formName}
         />
       )
