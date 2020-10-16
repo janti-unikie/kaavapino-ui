@@ -20,7 +20,10 @@ const SelectInput = ({ input, meta: { error }, options, ...custom }) => {
     <Dropdown
       {...input}
       {...custom}
-      onChange={(param, data) => input.onChange(data.value)}
+      onChange={(param, data) => {
+        input.onChange(data.value)
+        }
+      }
       fluid
       search
       selection

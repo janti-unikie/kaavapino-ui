@@ -11,11 +11,26 @@ const OneLineFields = ['toggle']
 
 class FormField extends Component {
   renderField = () => {
-    const { field, attributeData, formName, formValues, isFloorCalculation, ...rest } = this.props
+    const {
+      field,
+      attributeData,
+      formName,
+      formValues,
+      isFloorCalculation,
+      ...rest
+    } = this.props
 
     switch (field.type) {
       case 'matrix':
-        return <Matrix field={field} isFloorCalculation={isFloorCalculation} attributeData={attributeData} formValues={formValues} formName={formName}/>
+        return (
+          <Matrix
+            field={field}
+            isFloorCalculation={isFloorCalculation}
+            attributeData={attributeData}
+            formValues={formValues}
+            formName={formName}
+          />
+        )
       default:
         return (
           <Field
@@ -25,6 +40,7 @@ class FormField extends Component {
             fieldset={field.type === 'fieldset'}
             formName={formName}
             formValues={formValues}
+            syncronousErrors={this.props.syncronousErrors}
             {...rest}
           />
         )
@@ -32,25 +48,34 @@ class FormField extends Component {
   }
 
   render() {
-    const { field, attributeData, checking, updated, formValues, syncronousErrors } = this.props
+    const {
+      field,
+      attributeData,
+      checking,
+      updated,
+      formValues,
+      syncronousErrors
+    } = this.props
     const required =
       checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
     const isOneLineField = OneLineFields.indexOf(field.type) > -1
     const isReadOnly = field && field.autofill_readonly
 
-    const error =   syncronousErrors && syncronousErrors[field.name]
+    const error = syncronousErrors && syncronousErrors[field.name]
 
     /* Two ways to bring errors to FormField component:
      * 1) the missing attribute data of required fields is checked automatically.
      * 2) error text can be given directly to the component as props.
      * Redux form gives error information to the Field component, but that's further down the line, and we need that information
      * here to modify the input header accordingly. */
-    const showError = required ? 'pakollinen kenttä' :  error
-    if ( !showField(field, formValues) ) {
-        return null
+    const showError = required ? 'pakollinen kenttä' : error
+    if (!showField(field, formValues)) {
+      return null
     }
 
-    const title = field.character_limit ? `${field.label}  (Max ${field.character_limit} merkkiä)` : field.label
+    const title = field.character_limit
+      ? `${field.label}  (Max ${field.character_limit} merkkiä)`
+      : field.label
 
     return (
       <Form.Field
@@ -58,7 +83,7 @@ class FormField extends Component {
           showError ? 'error' : ''
         }`}
       >
-        {!isOneLineField  && (
+        {!isOneLineField && (
           <div className="input-header">
             <Label className={`input-title${required ? ' highlight' : ''}`}>
               {title}

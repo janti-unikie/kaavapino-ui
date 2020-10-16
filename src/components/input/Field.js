@@ -59,7 +59,6 @@ class CustomField extends Component {
   }
   validateFieldSize = value => {
     const field = this.props.field
-
     if ( value && field && field.character_limit && field.character_limit > 0 ) {
         if ( value.length >= field.character_limit ) {
           return 'Kentässä liikaa merkkejä'
@@ -160,6 +159,7 @@ class CustomField extends Component {
       name={this.props.field.name}
       formValues={formValues}
       validate={[this.validateFieldSize]}
+      syncronousErrors={this.props.syncronousErrors}
     />
   )
 
@@ -212,6 +212,7 @@ class CustomField extends Component {
 
   render() {
     const { field, attributeData, fieldset, formName, formValues, error, ...custom } = this.props
+
     const type = field.type
     if (type === 'file' || type === 'image') {
       const file = attributeData[field.name]

@@ -40,8 +40,6 @@ class ProjectEditPage extends Component {
   changePhase = () => this.props.changeProjectPhase(this.props.project.phase + 1)
 
   handleSave = () => {
-
-      console.log(this.props.syncErrors)
       this.props.saveProject()
   }
   handleAutoSave = () => {
