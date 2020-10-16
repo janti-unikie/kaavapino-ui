@@ -4,6 +4,10 @@
   .Pääkäyttäjät {
     outline: 20px $yellow solid;
   }
+  .checkbox {
+    outline: none;
+    background-color: $yellow;
+  }
 }
 
 .hightlight-asiantuntija {
