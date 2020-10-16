@@ -7,6 +7,9 @@
     .ql-toolbar {
       border: 1px solid $gray2;
       display: none;
+      position: relative;
+      background-color: $white;
+      z-index: 1;
 
       .quill-toolbar-comment-button {
         .comment-icon {

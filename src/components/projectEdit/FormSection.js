@@ -49,6 +49,7 @@ const FormSection = ({
           formName={formName}
           formValues={formValues}
           syncronousErrors={syncronousErrors}
+          className={field.highlight_group}
         />
       ))}
     </Segment>

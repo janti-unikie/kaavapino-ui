@@ -8,7 +8,8 @@ import {
   saveProjectFloorArea,
   changeProjectPhase,
   validateProjectFields,
-  projectSetChecking
+  projectSetChecking,
+  saveProjectBase
 } from '../../actions/projectActions'
 import { fetchSchemas } from '../../actions/schemaActions'
 import {
@@ -16,7 +17,8 @@ import {
   changingPhaseSelector,
   validatingSelector,
   hasErrorsSelector,
-  checkingSelector
+  checkingSelector,
+  currentProjectSelector
 } from '../../selectors/projectSelector'
 import { schemaSelector } from '../../selectors/schemaSelector'
 import NavigationPrompt from 'react-router-navigation-prompt'
@@ -29,7 +31,8 @@ import _ from 'lodash'
 
 class ProjectEditPage extends Component {
   state = {
-    showEditFloorAreaForm: false
+    showEditFloorAreaForm: false,
+    highlightGroup: ''
   }
 
   componentDidMount() {
@@ -51,6 +54,19 @@ class ProjectEditPage extends Component {
     }
   }
 
+  setSelectedRole = role => {
+    switch(role) {
+      case 0:
+        this.setState({ highlightGroup: 'hightlight-pääkäyttäjä' })
+        break
+      case 1:
+        this.setState({ highlightGroup: 'hightlight-asiantuntija' })
+        break
+      default:
+        this.setState({ highlightGroup: '' })
+    }
+  }
+
   render() {
     const {
       currentPhases,
@@ -64,8 +80,11 @@ class ProjectEditPage extends Component {
       validateProjectFields,
       validating,
       hasErrors,
-      syncErrors
+      syncErrors,
+      saveProjectBase,
+      currentProject
     } = this.props
+    const { highlightGroup } = this.state
     if (!schema) {
       return (
         <Loader inline={'centered'} active>
@@ -86,9 +105,8 @@ class ProjectEditPage extends Component {
         </Loader>
       )
     }
-
     return (
-      <div className="project-input-container">
+      <div className={`project-input-container ${highlightGroup}`}>
         <div className="project-input-left">
           <QuickNav
             changingPhase={changingPhase}
@@ -103,6 +121,9 @@ class ProjectEditPage extends Component {
             validating={validating}
             validateProjectFields={validateProjectFields}
             syncronousErrors={syncErrors}
+            saveProjectBase={saveProjectBase}
+            currentProject={currentProject}
+            setHighlightRole={this.setSelectedRole}
           />
           <NavigationPrompt when={this.props.isDirty}>
             {({ onConfirm, onCancel }) => (
@@ -158,7 +179,8 @@ const mapStateToProps = state => {
     hasErrors: hasErrorsSelector(state),
     checking: checkingSelector(state),
     isDirty: isDirty(EDIT_PROJECT_FORM)(state),
-    syncErrors: getFormSyncErrors(EDIT_PROJECT_FORM)(state)
+    syncErrors: getFormSyncErrors(EDIT_PROJECT_FORM)(state),
+    currentProject: currentProjectSelector(state)
   }
 }
 
@@ -168,7 +190,8 @@ const mapDispatchToProps = {
   saveProjectFloorArea,
   changeProjectPhase,
   validateProjectFields,
-  projectSetChecking
+  projectSetChecking,
+  saveProjectBase
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)
