@@ -54,7 +54,7 @@ function RichTextEditor(props) {
   const [toolbarVisible, setToolbarVisible] = useState(false)
   const editorRef = useRef(null)
 
-  const handleChange = (val, delta, source) => {
+  const handleChange = (_val, _delta, source) => {
     if (source === 'user') {
       /* Get the value from the editor - the delta provided to handlechange does not have complete state */
       const actualDeltaValue = editorRef.current.editor.getContents()
@@ -120,9 +120,9 @@ function RichTextEditor(props) {
           // Do not explicitly set value. see comments at top of this file.
           defaultValue={value}
           onChange={handleChange}
-          onBlur={(range, source, quill) => {
+          onBlur={(_range, _source, quill) => {
             setToolbarVisible(false)
-            inputProps.onBlur(quill.getHTML())
+            inputProps.onBlur(quill.getContents())
           }}
           onClick={() => setToolbarVisible(true)}
           {...rest}
