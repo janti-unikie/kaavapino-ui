@@ -3,8 +3,9 @@
 .quicknav-container {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  overflow-y: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+
 
   .quicknav-navigation-section {
     background-color: $light-gray3;
