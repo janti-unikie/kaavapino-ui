@@ -3,8 +3,12 @@ import './styles.scss'
 
 const roles = ['Pääkäyttäjä', 'Asiantuntija']
 
-const RoleHighlightPicker = () => {
+const RoleHighlightPicker = ({ onRoleUpdate }) => {
   const [highlightedRole, setHighlightedRole] = useState(null)
+  const handleOnClick = (index) => {
+    setHighlightedRole(index)
+    onRoleUpdate(index)
+  }
 
   return (
     <div className="role-highlight-picker">
@@ -15,7 +19,7 @@ const RoleHighlightPicker = () => {
           {roles.map((role, i) => (
             <div
               key={i}
-              onClick={() => setHighlightedRole(i)}
+              onClick={() => handleOnClick(i)}
               className={`role-button ${i === highlightedRole ? 'active' : ''}`}
             >
               {role}

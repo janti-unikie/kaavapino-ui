@@ -29,7 +29,8 @@ import { EDIT_PROJECT_FORM } from '../../constants'
 
 class ProjectEditPage extends Component {
   state = {
-    showEditFloorAreaForm: false
+    showEditFloorAreaForm: false,
+    highlightGroup: ''
   }
 
   componentDidMount() {
@@ -50,6 +51,19 @@ class ProjectEditPage extends Component {
     }
   }
 
+  setSelectedRole = role => {
+    switch(role) {
+      case 0:
+        this.setState({ highlightGroup: 'hightlight-pääkäyttäjä' })
+        break
+      case 1:
+        this.setState({ highlightGroup: 'hightlight-asiantuntija' })
+        break
+      default:
+        this.setState({ highlightGroup: '' })
+    }
+  }
+
   render() {
     const {
       currentPhases,
@@ -66,6 +80,7 @@ class ProjectEditPage extends Component {
       saveProjectBase,
       currentProject
     } = this.props
+    const { highlightGroup } = this.state
     if (!schema) {
       return (
         <Loader inline={'centered'} active>
@@ -86,9 +101,8 @@ class ProjectEditPage extends Component {
         </Loader>
       )
     }
-
     return (
-      <div className="project-input-container">
+      <div className={`project-input-container ${highlightGroup}`}>
         <div className="project-input-left">
           <QuickNav
             changingPhase={changingPhase}
@@ -104,6 +118,7 @@ class ProjectEditPage extends Component {
             validateProjectFields={validateProjectFields}
             saveProjectBase={saveProjectBase}
             currentProject={currentProject}
+            setHighlightRole={this.setSelectedRole}
           />
           <NavigationPrompt when={this.props.isDirty}>
             {({ onConfirm, onCancel }) => (

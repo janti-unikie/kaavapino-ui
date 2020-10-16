@@ -187,7 +187,7 @@ class QuickNav extends Component {
             </Accordion>
           </div>
         </div>
-        <RoleHighlightPicker />
+        <RoleHighlightPicker onRoleUpdate={this.props.setHighlightRole}/>
         <div className="quicknav-buttons">
           <Button
             handleClick={handleCheck}
