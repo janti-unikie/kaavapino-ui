@@ -47,6 +47,7 @@ const FormSection = ({
           onRadioChange={handleSave}
           formName={formName}
           formValues={formValues}
+          className={field.highlight_group}
         />
       ))}
     </Segment>

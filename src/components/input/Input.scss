@@ -17,6 +17,8 @@
     display: flex;
     font-weight: bold;
     justify-content: space-between;
+    position: relative;
+    z-index: 1;
   }
 
   .input-header-icons {

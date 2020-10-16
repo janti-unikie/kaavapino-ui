@@ -1,5 +1,27 @@
 @import '../common/colors.scss';
 
+.hightlight-pääkäyttäjä {
+  .Pääkäyttäjät {
+    outline: 20px $yellow solid;
+  }
+  .checkbox.Pääkäyttäjät {
+    outline: none;
+    background-color: $yellow !important;
+  }
+}
+
+.hightlight-asiantuntija {
+  .Asiantuntijat {
+    outline: 20px $yellow solid;
+  }
+  .checkbox.Asiantuntijat {
+    outline: none;
+    background-color: $yellow !important;
+  }
+}
+.checkbox.Pääkäyttäjät {
+  background: none !important;
+}
 .form-container {
   flex: 1;
   width: 100%;
