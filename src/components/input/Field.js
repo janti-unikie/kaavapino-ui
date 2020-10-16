@@ -281,12 +281,12 @@ class CustomField extends Component {
       return <FieldArray {...fieldProps} />
     }
 
-    return (<Field
-      {...fieldProps}
-      validate={[this.validateFieldSize]}
-      className={`${this.props.className} ${ error ? error : ''}`}
+    return (
+      <Field
+        {...fieldProps}
+        validate={[this.validateFieldSize]}
+        className={`${this.props.className} ${ error ? error : ''}`}
        />
-
     )
   }
 }
