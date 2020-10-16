@@ -12,6 +12,7 @@ import { Field, FieldArray, formValues } from 'redux-form'
 import RadioButton from './RadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
+import OnHoldCheckbox from './OnholdCheckbox'
 import AutofillInputCalculations from './AutofillInputCalculation/AutofillInputCalculations'
 
 import { isEqual } from 'lodash'
@@ -158,6 +159,11 @@ class CustomField extends Component {
     return <Input type="number" step="0.01" {...props} />
   }
 
+  renderCheckbox = props => {
+    const { onhold, saveProjectBase, disabled } = this.props.field
+    return <OnHoldCheckbox onhold={onhold} saveProjectBase={saveProjectBase} disabled={disabled} {...props} />
+  }
+
   getInput = field => {
    if (field.choices) {
       /* Should perhaps check (field.type === 'select' && field.choices), but there were tests against it.
@@ -195,6 +201,8 @@ class CustomField extends Component {
         return this.renderLink
       case 'decimal':
         return this.renderDecimal
+      case 'checkbox':
+        return this.renderCheckbox
       default:
         return this.renderNumber
     }

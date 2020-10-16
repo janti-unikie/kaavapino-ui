@@ -7,7 +7,8 @@ import {
   saveProjectFloorArea,
   changeProjectPhase,
   validateProjectFields,
-  projectSetChecking
+  projectSetChecking,
+  saveProjectBase
 } from '../../actions/projectActions'
 import { fetchSchemas } from '../../actions/schemaActions'
 import {
@@ -15,7 +16,8 @@ import {
   changingPhaseSelector,
   validatingSelector,
   hasErrorsSelector,
-  checkingSelector
+  checkingSelector,
+  currentProjectSelector
 } from '../../selectors/projectSelector'
 import { schemaSelector } from '../../selectors/schemaSelector'
 import NavigationPrompt from 'react-router-navigation-prompt'
@@ -74,7 +76,9 @@ class ProjectEditPage extends Component {
       switchDisplayedPhase,
       validateProjectFields,
       validating,
-      hasErrors
+      hasErrors,
+      saveProjectBase,
+      currentProject
     } = this.props
     const { highlightGroup } = this.state
     if (!schema) {
@@ -112,6 +116,8 @@ class ProjectEditPage extends Component {
             switchDisplayedPhase={switchDisplayedPhase}
             validating={validating}
             validateProjectFields={validateProjectFields}
+            saveProjectBase={saveProjectBase}
+            currentProject={currentProject}
             setHighlightRole={this.setSelectedRole}
           />
           <NavigationPrompt when={this.props.isDirty}>
@@ -166,7 +172,8 @@ const mapStateToProps = state => {
     validating: validatingSelector(state),
     hasErrors: hasErrorsSelector(state),
     checking: checkingSelector(state),
-    isDirty: isDirty(EDIT_PROJECT_FORM)(state)
+    isDirty: isDirty(EDIT_PROJECT_FORM)(state),
+    currentProject: currentProjectSelector(state)
   }
 }
 
@@ -176,7 +183,8 @@ const mapDispatchToProps = {
   saveProjectFloorArea,
   changeProjectPhase,
   validateProjectFields,
-  projectSetChecking
+  projectSetChecking,
+  saveProjectBase
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)
