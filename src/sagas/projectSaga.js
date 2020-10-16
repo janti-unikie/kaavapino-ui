@@ -239,12 +239,7 @@ const getChangedAttributeData = (values, initial) => {
     if (values[key] === '') {
       attribute_data[key] = null
     } else {
-      const newValue  = values[key]
-      if ( newValue instanceof Object ) {
-        attribute_data[key]  = JSON.stringify(newValue)
-      } else {
-        attribute_data[key] = newValue
-      }
+        attribute_data[key] = values[key]
     }
   })
   return attribute_data
