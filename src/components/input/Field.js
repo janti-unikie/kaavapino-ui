@@ -159,6 +159,7 @@ class CustomField extends Component {
       attributeData={this.props.attributeData}
       name={this.props.field.name}
       formValues={formValues}
+      validate={[this.validateFieldSize]}
     />
   )
 
@@ -261,8 +262,8 @@ class CustomField extends Component {
           {...fieldProps}
           defaultValue={defaultValue}
           formName={formName}
-          validate={[this.validateFieldSize]}
           className={`${ error ? 'error' : ''}`}
+          maxSize={field.character_limit}
         />
       )
     }

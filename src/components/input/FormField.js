@@ -50,6 +50,8 @@ class FormField extends Component {
         return null
     }
 
+    const title = field.character_limit ? `${field.label}  (Max ${field.character_limit} merkkiä)` : field.label
+
     return (
       <Form.Field
         className={`input-container ${isOneLineField ? 'small-margin' : ''} ${
@@ -59,7 +61,7 @@ class FormField extends Component {
         {!isOneLineField  && (
           <div className="input-header">
             <Label className={`input-title${required ? ' highlight' : ''}`}>
-              {field.label}
+              {title}
             </Label>
             <div className="input-header-icons">
               {updated && !isReadOnly && (
