@@ -4,6 +4,7 @@ import { Accordion, Form } from 'semantic-ui-react'
 import AccordionTitle from './AccordionTitle'
 import './styles.scss'
 import RoleHighlightPicker from './roleHighlightPicker'
+import _ from 'lodash'
 import FormField from '../../input/FormField'
 import { reduxForm } from 'redux-form'
 import { NEW_PROJECT_FORM } from '../../../constants'
@@ -143,10 +144,12 @@ class QuickNav extends Component {
       saving,
       handleSave,
       handleCheck,
+      syncronousErrors,
       currentProject,
       saveProjectBase
     } = this.props
 
+   const errors = syncronousErrors && !_.isEmpty(syncronousErrors) ? true : false
     return (
       <div className="quicknav-container">
         <div className="quicknav-navigation-section">
@@ -198,7 +201,7 @@ class QuickNav extends Component {
           <Button
             handleClick={handleSave}
             value="Tallenna"
-            loading={saving}
+            loading={saving || errors }
             secondary
             help="Tallentaa projektin"
           />

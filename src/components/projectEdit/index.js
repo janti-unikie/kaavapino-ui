@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { getFormSyncErrors } from 'redux-form'
 import { Loader } from 'semantic-ui-react'
 import { isDirty } from 'redux-form/immutable'
 import {
@@ -26,6 +27,7 @@ import EditForm from './EditForm'
 import QuickNav from './quickNav/QuickNav'
 import EditFloorAreaFormModal from '../project/EditFloorAreaFormModal'
 import { EDIT_PROJECT_FORM } from '../../constants'
+import _ from 'lodash'
 
 class ProjectEditPage extends Component {
   state = {
@@ -41,13 +43,14 @@ class ProjectEditPage extends Component {
   changePhase = () => this.props.changeProjectPhase(this.props.project.phase + 1)
 
   handleSave = () => {
-    this.props.saveProject()
+      this.props.saveProject()
   }
   handleAutoSave = () => {
-    if (!this.props.saving) {
-      if (this.props.isDirty) {
-        this.props.saveProject()
-      }
+    if ( this.props.syncErrors && !_.isEmpty( this.props.syncErrors )) {
+      return
+    }
+    if (this.props.isDirty) {
+      this.props.saveProject()
     }
   }
 
@@ -77,6 +80,7 @@ class ProjectEditPage extends Component {
       validateProjectFields,
       validating,
       hasErrors,
+      syncErrors,
       saveProjectBase,
       currentProject
     } = this.props
@@ -116,6 +120,7 @@ class ProjectEditPage extends Component {
             switchDisplayedPhase={switchDisplayedPhase}
             validating={validating}
             validateProjectFields={validateProjectFields}
+            syncronousErrors={syncErrors}
             saveProjectBase={saveProjectBase}
             currentProject={currentProject}
             setHighlightRole={this.setSelectedRole}
@@ -148,6 +153,7 @@ class ProjectEditPage extends Component {
           hasErrors={hasErrors}
           disabled={formDisabled}
           projectId={id}
+          syncronousErrors={syncErrors}
           title={`${currentSchema.list_prefix}. ${currentSchema.title}`}
           showEditFloorAreaForm={() => this.setState({ showEditFloorAreaForm: true })}
         />
@@ -173,6 +179,7 @@ const mapStateToProps = state => {
     hasErrors: hasErrorsSelector(state),
     checking: checkingSelector(state),
     isDirty: isDirty(EDIT_PROJECT_FORM)(state),
+    syncErrors: getFormSyncErrors(EDIT_PROJECT_FORM)(state),
     currentProject: currentProjectSelector(state)
   }
 }

@@ -53,13 +53,20 @@ function RichTextEditor(props) {
 
   const [toolbarVisible, setToolbarVisible] = useState(false)
   const editorRef = useRef(null)
+  const [counter, setCounter] = useState(props.currentSize)
+  const [showCounter, setShowCounter] = useState(false)
 
   const handleChange = (_val, _delta, source) => {
+
     if (source === 'user') {
       /* Get the value from the editor - the delta provided to handlechange does not have complete state */
+
       const actualDeltaValue = editorRef.current.editor.getContents()
+
       dispatch(change(EDIT_PROJECT_FORM, inputProps.name, actualDeltaValue))
-    }
+      setCounter(actualDeltaValue.length() - 1 )
+      setShowCounter(true)
+  }
   }
   const addComment = () => {
     /* If cursor position is needed, you can get it like this */
@@ -122,6 +129,7 @@ function RichTextEditor(props) {
           onChange={handleChange}
           onBlur={(_range, _source, quill) => {
             setToolbarVisible(false)
+            setShowCounter(false)
             inputProps.onBlur(quill.getContents())
           }}
           onClick={() => setToolbarVisible(true)}
@@ -147,6 +155,8 @@ function RichTextEditor(props) {
           ))}
         </div>
       )}
+      {showCounter && props.maxSize ?
+      <p className={counter > props.maxSize ? 'quill-warning' : ''}>Merkkejä {counter + '/' + props.maxSize  }</p> : null}
     </div>
   )
 }

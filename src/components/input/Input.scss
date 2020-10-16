@@ -428,6 +428,7 @@
   padding: 16px;
   position: relative;
   animation: expand .5s ease-in-out;
+ 
 }
 .input-header + .fieldset-container {
   margin-top: 16px;
@@ -497,7 +498,8 @@
  * Using #root selector to help with more specific selectors */
 .modal,
 #root {
-  .input-container.field.error {
+  .input-container.field.error,
+  .fieldset-container .input-container.error .field {
     .ui.input input,
     .ui.dropdown,
     .ui.selection.dropdown,
@@ -505,6 +507,7 @@
     .textarea-wrapper textarea {
       background: white !important;
       border-color: $color-error-border !important;
+      color: $color-error-border;
 
       &:focus,
       &:hover,

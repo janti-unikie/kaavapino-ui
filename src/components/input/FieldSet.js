@@ -7,13 +7,14 @@ import { Form, Button, Label } from 'semantic-ui-react'
 import projectUtils from '../../utils/projectUtils'
 import Info from './Info'
 
-const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formName, formValues }) => {
+const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formName, formValues, validate, syncronousErrors }) => {
   let numberOfSets = 1
   if (attributeData[sets.name]) {
     if (sets.length !== attributeData[sets.name].length) {
       numberOfSets = sets.length - attributeData[sets.name].length+1
     }
   }
+
   return (
     <React.Fragment>
       {sets.map((set, i) => {
@@ -48,12 +49,24 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formN
                     required = true
                   }
                   const defaultValue = projectUtils.getDefaultValue(name, attributeData, field.name)
+
+                  const title = field.character_limit ?
+                    `${field.label}  (Max ${field.character_limit} merkkiä)` : field.label
+                  const error = syncronousErrors && syncronousErrors[field.name]
+
+                  /* Two ways to bring errors to FormField component:
+                  * 1) the missing attribute data of required fields is checked automatically.
+                  * 2) error text can be given directly to the component as props.
+                  * Redux form gives error information to the Field component, but that's further down the line, and we need that information
+                  * here to modify the input header accordingly. */
+                  const showError = required ? 'pakollinen kenttä' :  error
+
                   return (
-                    <div className="input-container" key={j}>
+                    <div className={`input-container ${showError ? 'error' : ''}`} key={j}>
                       <Form.Field required={required}>
                         <div className="input-header">
-                          <Label className={`input-title${required ? ' highlight' : ''}`}>
-                            {field.label}
+                          <Label className={`input-title${required ? ' highlight' : ''} ${showError ? 'error' : ''}` }>
+                            {title}
                           </Label>
                           <div className="input-header-icons">
                             {field.help_text && (
@@ -61,7 +74,6 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formN
                             )}
                           </div>
                         </div>
-                      </Form.Field>
                       <Field
                         field={{ ...field, disabled }}
                         attributeData={attributeData}
@@ -70,7 +82,10 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formN
                         formName={formName}
                         formValues={formValues}
                         defaultValue={defaultValue}
+                        validate={validate}
                       />
+                       {showError && <div className="error-text">{showError}</div>}
+                      </Form.Field>
                     </div>
                   )
                 })}

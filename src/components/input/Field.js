@@ -58,6 +58,14 @@ class CustomField extends Component {
     }
     return false
   }
+  validateFieldSize = value => {
+    const field = this.props.field
+    if ( value && field && field.character_limit && field.character_limit > 0 ) {
+        if ( value.length >= field.character_limit ) {
+          return 'Kentässä liikaa merkkejä'
+        }
+    }
+  }
 
   formatOptions = options => {
     return options.map(option => {
@@ -151,6 +159,8 @@ class CustomField extends Component {
       attributeData={this.props.attributeData}
       name={this.props.field.name}
       formValues={formValues}
+      validate={[this.validateFieldSize]}
+      syncronousErrors={this.props.syncronousErrors}
     />
   )
 
@@ -209,9 +219,9 @@ class CustomField extends Component {
   }
 
   render() {
-    const { field, attributeData, fieldset, formName, formValues,...custom } = this.props
-    const type = field.type
+    const { field, attributeData, fieldset, formName, formValues, error, ...custom } = this.props
 
+    const type = field.type
     if (type === 'file' || type === 'image') {
       const file = attributeData[field.name]
       const src = file ? file.link : null
@@ -261,6 +271,8 @@ class CustomField extends Component {
           {...fieldProps}
           defaultValue={defaultValue}
           formName={formName}
+          className={`${ error ? 'error' : ''}`}
+          maxSize={field.character_limit}
         />
       )
     }
@@ -269,7 +281,7 @@ class CustomField extends Component {
       return <FieldArray {...fieldProps} />
     }
 
-    return <Field {...fieldProps} />
+    return <Field {...fieldProps} validate={[this.validateFieldSize]} className={`${ error  ? 'error' : ''}`} />
   }
 }
 

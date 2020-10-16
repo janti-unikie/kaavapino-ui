@@ -64,7 +64,8 @@ class EditForm extends Component {
       // changingPhase,
       projectId,
       showEditFloorAreaForm,
-      attributeData
+      attributeData,
+      syncronousErrors
     } = this.props
 
     return (
@@ -84,7 +85,15 @@ class EditForm extends Component {
           <Shoutbox project={projectId} />
         </div>
         {sections.map((section, i) => (
-          <FormSection formName={EDIT_PROJECT_FORM} key={i} handleSave={this.props.handleSave} section={section} disabled={disabled} attributeData={attributeData}/>
+          <FormSection
+            syncronousErrors={syncronousErrors}
+            formName={EDIT_PROJECT_FORM}
+            key={i} handleSave={this.props.handleSave}
+            section={section}
+            disabled={disabled}
+            attributeData={attributeData}
+
+            />
         ))}
         {/* Commenting end phase and save buttons out, since in these designs it's in quick nav.
          * Keeping it here in case it's needed in mobile styles. if not, remove.
