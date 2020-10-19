@@ -156,7 +156,7 @@ function RichTextEditor(props) {
         </div>
       )}
       {showCounter && props.maxSize ?
-      <p className={counter > props.maxSize ? 'quill-warning' : ''}>Merkkejä {counter + '/' + props.maxSize  }</p> : null}
+      <p className={counter > props.maxSize ? 'quill-counter quill-warning' : 'quill-counter'}>{counter + '/' + props.maxSize  }</p> : null}
     </div>
   )
 }
