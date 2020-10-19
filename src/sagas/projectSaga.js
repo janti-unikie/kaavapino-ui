@@ -314,8 +314,8 @@ function* saveProject() {
     const { sections } = currentSchema
     const changedValues = getChangedAttributeData(values, initial)
     const parentName = projectUtils.getParent(sections, changedValues)
-    const formatedData = projectUtils.formatFieldset(changedValues, sections, parentName)
-    const attribute_data = !parentName ? formatedData : projectUtils.formatAttributeData(parentName, values[parentName], formatedData)
+    const formatedData = projectUtils.formatPayload(changedValues, sections, parentName, initial)
+    const attribute_data = formatedData
     try {
       const updatedProject = yield call(
         projectApi.patch,
