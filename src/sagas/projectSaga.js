@@ -303,14 +303,6 @@ function* saveProjectFloorArea() {
   }
 }
 
-/* const isFieldset = (formatedData) => {
-  let isFieldset = false
-  Object.keys(formatedData).forEach(key => {
-    if (key.indexOf('fieldset') !== -1) isFieldset = true
-  })
-  return isFieldset
-}*/
-
 function* saveProject() {
   const currentProjectId = yield select(currentProjectIdSelector)
   const editForm = yield select(editFormSelector) || {}
