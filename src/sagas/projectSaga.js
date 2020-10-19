@@ -65,7 +65,7 @@ import { setLatestEditField, setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
 import { projectApi } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
-import { NEW_PROJECT_FORM, EDIT_FLOOR_AREA_FORM } from '../constants'
+import { NEW_PROJECT_FORM, EDIT_FLOOR_AREA_FORM, EDIT_PROJECT_FORM } from '../constants'
 
 export default function* projectSaga() {
   yield all([
@@ -239,7 +239,7 @@ const getChangedAttributeData = (values, initial) => {
     if (values[key] === '') {
       attribute_data[key] = null
     } else {
-        attribute_data[key] = values[key]
+      attribute_data[key] = values[key]
     }
   })
   return attribute_data
@@ -315,7 +315,9 @@ function* saveProject() {
     const changedValues = getChangedAttributeData(values, initial)
     const parentName = projectUtils.getParent(sections, changedValues)
     const formatedData = projectUtils.formatFieldset(changedValues, sections, parentName)
-    const attribute_data = !parentName ? formatedData : projectUtils.formatAttributeData(parentName, values[parentName], formatedData)
+    const attribute_data = !parentName
+      ? formatedData
+      : projectUtils.formatAttributeData(parentName, values[parentName], formatedData)
     try {
       const updatedProject = yield call(
         projectApi.patch,
@@ -325,7 +327,11 @@ function* saveProject() {
       )
       yield put(updateProject(updatedProject))
     } catch (e) {
-      yield put(error(e))
+      if (e.response.status === 400) {
+        yield put(stopSubmit(EDIT_PROJECT_FORM, e.response.data))
+      } else {
+        yield put(error(e))
+      }
     }
   }
   yield put(saveProjectSuccessful())

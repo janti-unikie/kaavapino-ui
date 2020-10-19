@@ -54,20 +54,29 @@ class FormField extends Component {
       checking,
       updated,
       formValues,
-      syncronousErrors
+      syncronousErrors,
+      submitErrors
     } = this.props
     const required =
       checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
     const isOneLineField = OneLineFields.indexOf(field.type) > -1
     const isReadOnly = field && field.autofill_readonly
 
-    const error = syncronousErrors && syncronousErrors[field.name]
+    const syncError = syncronousErrors && syncronousErrors[field.name]
+    let submitErrorText = ''
+    if ( submitErrors && submitErrors[field.name]) {
+      const submitErrorObject = submitErrors[field.name]
+      submitErrorText = submitErrorObject ? submitErrorObject[field.name] : ''
+    }
+
+    const error = submitErrorText ? submitErrorText : syncError
 
     /* Two ways to bring errors to FormField component:
      * 1) the missing attribute data of required fields is checked automatically.
      * 2) error text can be given directly to the component as props.
      * Redux form gives error information to the Field component, but that's further down the line, and we need that information
      * here to modify the input header accordingly. */
+
     const showError = required ? 'pakollinen kenttä' : error
     if (!showField(field, formValues)) {
       return null
