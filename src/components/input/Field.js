@@ -89,11 +89,12 @@ class CustomField extends Component {
       if ( this.yearOptions.length === 0 ) {
         this.yearOptions = projectUtils.generateArrayOfYears()
       }
-      return ( <SelectInput
-        multiple={multiple_choice}
-        options={this.formatOptions(this.yearOptions)}
-        {...props}
-      />
+      return (
+        <SelectInput
+          multiple={multiple_choice}
+          options={this.formatOptions(this.yearOptions)}
+          {...props}
+        />
      )
   }
 
