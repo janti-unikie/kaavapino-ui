@@ -19,7 +19,8 @@ const FormSection = ({
   handleSave,
   formName,
   formValues,
-  syncronousErrors
+  syncronousErrors,
+  submitErrors
 }) => {
   const handleBlurSave = (evt, handleSave) => {
     if (evt) {
@@ -49,6 +50,7 @@ const FormSection = ({
           formName={formName}
           formValues={formValues}
           syncronousErrors={syncronousErrors}
+          submitErrors={submitErrors}
           className={field.highlight_group}
         />
       ))}
@@ -61,6 +63,6 @@ const mapStateToProps = state => ({
   attributeData: attributeDataSelector(state),
   checking: checkingSelector(state),
   formValues: getFormValues(EDIT_PROJECT_FORM)(state)
-})
+ })
 
 export default connect(mapStateToProps)(FormSection)

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getFormSyncErrors } from 'redux-form'
+import { getFormSyncErrors, getFormSubmitErrors } from 'redux-form'
 import { Loader } from 'semantic-ui-react'
 import { isDirty } from 'redux-form/immutable'
 import {
@@ -82,7 +82,8 @@ class ProjectEditPage extends Component {
       hasErrors,
       syncErrors,
       saveProjectBase,
-      currentProject
+      currentProject,
+      submitErrors
     } = this.props
     const { highlightGroup } = this.state
     if (!schema) {
@@ -154,6 +155,7 @@ class ProjectEditPage extends Component {
           disabled={formDisabled}
           projectId={id}
           syncronousErrors={syncErrors}
+          submitErrors={submitErrors}
           title={`${currentSchema.list_prefix}. ${currentSchema.title}`}
           showEditFloorAreaForm={() => this.setState({ showEditFloorAreaForm: true })}
         />
@@ -180,7 +182,8 @@ const mapStateToProps = state => {
     checking: checkingSelector(state),
     isDirty: isDirty(EDIT_PROJECT_FORM)(state),
     syncErrors: getFormSyncErrors(EDIT_PROJECT_FORM)(state),
-    currentProject: currentProjectSelector(state)
+    currentProject: currentProjectSelector(state),
+    submitErrors: getFormSubmitErrors(EDIT_PROJECT_FORM)(state)
   }
 }
 
