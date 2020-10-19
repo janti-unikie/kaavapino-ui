@@ -303,6 +303,14 @@ function* saveProjectFloorArea() {
   }
 }
 
+/* const isFieldset = (formatedData) => {
+  let isFieldset = false
+  Object.keys(formatedData).forEach(key => {
+    if (key.indexOf('fieldset') !== -1) isFieldset = true
+  })
+  return isFieldset
+}*/
+
 function* saveProject() {
   const currentProjectId = yield select(currentProjectIdSelector)
   const editForm = yield select(editFormSelector) || {}
@@ -314,8 +322,8 @@ function* saveProject() {
     const { sections } = currentSchema
     const changedValues = getChangedAttributeData(values, initial)
     const parentName = projectUtils.getParent(sections, changedValues)
-    const formatedData = projectUtils.formatFieldset(changedValues, sections, parentName)
-    const attribute_data = !parentName ? formatedData : projectUtils.formatAttributeData(parentName, values[parentName], formatedData)
+    const formatedData = projectUtils.formatPayload(changedValues, sections, parentName, initial)
+    const attribute_data = formatedData
     try {
       const updatedProject = yield call(
         projectApi.patch,
