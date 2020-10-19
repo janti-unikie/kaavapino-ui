@@ -21,6 +21,7 @@ import AutofillInput from './AutofillInput/AutofillInput'
 
 class CustomField extends Component {
 
+  yearOptions = []
   shouldComponentUpdate(p) {
     if (!this.props.attributeData || !p.attributeData) {
       return true
@@ -82,6 +83,20 @@ class CustomField extends Component {
     return <Input type="number" {...props} />
   }
 
+  renderYearSelect = props => {
+      const { multiple_choice } = this.props.field
+
+      if ( this.yearOptions.length === 0 ) {
+        this.yearOptions = projectUtils.generateArrayOfYears()
+      }
+      return ( <SelectInput
+        multiple={multiple_choice}
+        options={this.formatOptions(this.yearOptions)}
+        {...props}
+      />
+     )
+  }
+
   renderString = props => {
     if(props.defaultValue) {
       props.input.defaultValue = props.defaultValue
@@ -117,6 +132,7 @@ class CustomField extends Component {
 
   renderSelect = props => {
     const { choices, multiple_choice } = this.props.field
+    console.log( choices)
     return (
       <SelectInput
         multiple={multiple_choice}
@@ -180,6 +196,10 @@ class CustomField extends Component {
       Will get back to this. */
       return this.renderSelect
     }
+    if ( field.display === 'dropdown') {
+      return  this.renderYearSelect
+    }
+
     if (field.type === 'radio' && field.options) {
       return this.renderRadio
     }
@@ -220,6 +240,8 @@ class CustomField extends Component {
 
   render() {
     const { field, attributeData, fieldset, formName, formValues, error, ...custom } = this.props
+
+    console.log(this.props.field.display )
 
     const type = field.type
     if (type === 'file' || type === 'image') {
