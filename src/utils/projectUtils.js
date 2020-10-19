@@ -113,40 +113,43 @@ const formatSubtype = (id, subtypes) => {
   }
 }
 
-const formatFieldset = (fieldset, sections, parentName) => {
-
-  // Remove fieldset keys,only when adding a new fieldset
-  const keys = (Object.keys(fieldset)).filter(key => key !== parentName)
+const formatPayload = (fieldset, sections, parentName, initialValues) => {
+  const keys = Object.keys(fieldset)
   const fieldsetList = keys.filter(key => key.indexOf('fieldset') !== -1)
   const fieldsetAttributes = flattenDeep(
     fieldsetList.map(
-      currentFieldset => getFieldsetAtributes(currentFieldset, sections)
+      currentFieldset => getFieldsetAttributes(currentFieldset, sections)
     )
   )
   const allFieldsets = concat(fieldsetList, fieldsetAttributes)
   const nonFieldsets = difference(keys, allFieldsets)
-
   // Bug fix which caused saga crash
-  if ( !keys || keys.length === 0) {
-    return fieldset
+  if (!keys || keys.length === 0) return fieldset
+
+  const returnValue = {}
+
+  // No fieldset values, fieldsets have attributes
+  if (fieldsetAttributes.length === 0) {
+    nonFieldsets.forEach(key => returnValue[key] = fieldset[key])
+    return returnValue
   }
 
- // No fieldset values
- if (!parentName) {
-  return fieldset
-}  const returnValue = {}
   // Handle non fieldset values
-  nonFieldsets.forEach(key => returnValue[key] = fieldset[key])
+  if (nonFieldsets.length !== 0) nonFieldsets.forEach(key => returnValue[key] = fieldset[key])
 
-  // Handle fieldset values
   fieldsetList.forEach(currentFieldset => {
-    const attributes= getFieldsetAtributes(currentFieldset, sections)
-    returnValue[currentFieldset] = []
+    const attributes= getFieldsetAttributes(currentFieldset, sections)
+    const currentObject = {}
     attributes.forEach(attribute => {
+      //use new value for this field
       if (fieldset[attribute]) {
-        returnValue[currentFieldset].push({ [attribute]: fieldset[attribute] })
+        currentObject[attribute] = fieldset[attribute]
+      // use initlavalue
+      } else if (initialValues[attribute]) {
+        currentObject[attribute] = initialValues[attribute]
       }
     })
+    returnValue[currentFieldset] = [currentObject]
   })
   return returnValue
 }
@@ -194,7 +197,7 @@ const getParent = (sections, values) => {
   return parentName
 }
 
-const getFieldsetAtributes = (parent, sections) => {
+const getFieldsetAttributes = (parent, sections) => {
   let fieldsetAttributes
   sections.some(title => {
     if (fieldsetAttributes) return fieldsetAttributes
@@ -206,51 +209,6 @@ const getFieldsetAtributes = (parent, sections) => {
     })
   })
   return fieldsetAttributes
-}
-
-const formatAttributeData = (parent, initialValues, newValues) => {
-  const returnObj = {}
-  const newKeys = Object.keys(newValues)
-  //If adding fieldset for the first time
-  if (!initialValues) {
-    newKeys.forEach(key => returnObj[key] = newValues[key])
-    return returnObj
-
-  } else {
-    // Create object from initialValues
-    const initialObject = initialValues.reduce((obj, item) => {
-      Object.assign(obj,item)
-      return obj
-    }, {})
-
-    const initialKeys = Object.keys(initialObject)
-    const keysToAdd = difference(newKeys, initialKeys)
-
-    //Adding new keys to attributeData,
-    keysToAdd.forEach(key => {
-      returnObj[key] = newValues[key]
-    })
-
-    //Updating modified values
-    initialKeys.forEach(key => {
-      if (newValues.hasOwnProperty(key)) {
-        returnObj[key] = newValues[key]
-      } else {
-        returnObj[key] = initialObject[key]
-      }
-    })
-  }
-  const attributeData = {}
-  attributeData[parent] = [returnObj]
-  return attributeData
-}
-
-const dataHasFieldset = (data) => {
-  const keys = Object.keys(data)
-  let returnValue = false
-  keys.forEach(key => {
-    if (key.indexOf('fieldset') !== -1) returnValue = key})
-  return returnValue
 }
 
 const getFieldsetValue = (data, fieldsetName) => {
@@ -285,10 +243,8 @@ export default {
   formatPhase,
   formatNextDeadline,
   formatSubtype,
-  formatFieldset,
   checkInputValue,
   getDefaultValue,
   getParent,
-  formatAttributeData,
-  dataHasFieldset
+  formatPayload
 }
