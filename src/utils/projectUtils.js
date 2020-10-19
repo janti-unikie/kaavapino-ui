@@ -236,8 +236,8 @@ const generateArrayOfYears = () => {
   const years = []
 
   // eslint-disable-next-line for-direction
-  for ( let i = max; i >= min ; i-- ) {
-    years.push( { key: i.toString(),  label: i.toString(), value: i.toString() } )
+  for ( let year = max; year >= min ; year-- ) {
+    years.push( { key: year.toString(),  label: year.toString(), value: year } )
   }
   return years
 }

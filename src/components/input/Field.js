@@ -132,7 +132,6 @@ class CustomField extends Component {
 
   renderSelect = props => {
     const { choices, multiple_choice } = this.props.field
-    console.log( choices)
     return (
       <SelectInput
         multiple={multiple_choice}
@@ -240,8 +239,6 @@ class CustomField extends Component {
 
   render() {
     const { field, attributeData, fieldset, formName, formValues, error, ...custom } = this.props
-
-    console.log(this.props.field.display )
 
     const type = field.type
     if (type === 'file' || type === 'image') {
