@@ -35,7 +35,10 @@ export const PROJECT_SET_CHECKING = 'Project set checking'
 export const PROJECT_SET_DEADLINES = 'Project set deadlines'
 export const PROJECT_SET_DEADLINES_SUCCESSFUL = 'Project set deadlines successful'
 
-export const fetchProjects = () => ({ type: FETCH_PROJECTS })
+export const fetchProjects = searchQuery => ({
+  type: FETCH_PROJECTS,
+  payload: searchQuery
+})
 export const fetchOwnProjectsSuccessful = projects => ({
   type: FETCH_OWN_PROJECTS_SUCCESSFUL,
   payload: projects

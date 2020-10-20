@@ -41,6 +41,16 @@ class ProjectListPage extends Component {
     window.addEventListener('resize', this.handleWindowSizeChange)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { filter } = this.state
+
+    if (prevState.filter !== filter) {
+      if (filter.length > 1) {
+        this.props.fetchProjects(filter)
+      }
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowSizeChange)
   }
@@ -70,7 +80,7 @@ class ProjectListPage extends Component {
       totalProjects
     } = this.props
 
-    const { filter, searchOpen, activeIndex, screenWidth } = this.state
+    const { searchOpen, activeIndex, screenWidth } = this.state
 
     const panes = [
       {
@@ -83,7 +93,6 @@ class ProjectListPage extends Component {
             users={users}
             items={ownProjects.slice(0, amountOfProjectsToShow)}
             total={totalOwnProjects}
-            filter={filter}
           />
         )
       },
@@ -100,7 +109,6 @@ class ProjectListPage extends Component {
             users={users}
             items={allProjects.slice(0, amountOfProjectsToShow)}
             total={totalProjects}
-            filter={filter}
           />
         )
       }

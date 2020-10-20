@@ -86,9 +86,10 @@ export default function* projectSaga() {
   ])
 }
 
-function* fetchProjects(_, page, own = true, all = true) {
+function* fetchProjects({ page, own = true, all = true, payload: searchQuery }) {
   try {
     const userId = yield select(userIdSelector)
+    console.debug(searchQuery) // needs api implementation
     if (own) {
       const ownProjects = yield call(
         projectApi.get,
@@ -314,7 +315,12 @@ function* saveProject() {
     const { sections } = currentSchema
     const changedValues = getChangedAttributeData(values, initial)
     const parentName = projectUtils.getParent(sections, changedValues)
-    const formatedData = projectUtils.formatPayload(changedValues, sections, parentName, initial)
+    const formatedData = projectUtils.formatPayload(
+      changedValues,
+      sections,
+      parentName,
+      initial
+    )
     const attribute_data = formatedData
     try {
       const updatedProject = yield call(

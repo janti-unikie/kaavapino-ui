@@ -53,33 +53,6 @@ class List extends Component {
     }))
   }
 
-  filterItems = items => {
-    const { filter } = this.props
-    const filtered = items.filter(item => {
-      const filterFields = projectUtils.formatFilterProject(
-        item,
-        false,
-        this.props.phases,
-        this.props.users
-      )
-      let includes = false
-      Object.keys(filterFields).forEach(key => {
-        const fieldValue = filterFields[key]
-        if (!fieldValue) {
-          return
-        }
-        if (
-          String(fieldValue).trim().toLowerCase().indexOf(filter.trim().toLowerCase()) >
-          -1
-        ) {
-          includes = true
-        }
-      })
-      return includes
-    })
-    return filtered
-  }
-
   render() {
     const { sort, dir, showGraph } = this.state
     const {
@@ -90,7 +63,6 @@ class List extends Component {
       users,
       pollingProjects,
       searchOpen,
-      setFilter,
       toggleSearch
     } = this.props
     if (loadingProjects || !phases) {
@@ -103,7 +75,7 @@ class List extends Component {
       )
     }
 
-    const items = this.filterItems(this.props.items)
+    const items = this.props.items
     const headerItems = [
       'Pinonumero',
       'Hanke (PW)',
@@ -184,7 +156,6 @@ class List extends Component {
           <ListHeader
             toggleSearch={toggleSearch}
             searchOpen={searchOpen}
-            setFilter={setFilter}
             items={headerItems}
             selected={sort}
             dir={dir}
