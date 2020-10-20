@@ -24,7 +24,7 @@ class EditForm extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { setChecking, hasErrors, saving, initialize, attributeData } = this.props
+    const { setChecking, hasErrors, saving, initialize, attributeData, submitErrors } = this.props
 
     if (prevProps.validating && !this.props.validating) {
       /* Beginning validation is started in quicknav. */
@@ -38,8 +38,7 @@ class EditForm extends Component {
         setChecking(true)
       }
     }
-
-    if (prevProps.saving && !saving) {
+    if (prevProps.saving && !saving && !submitErrors && Object.keys(submitErrors).length > 0) {
       initialize(attributeData)
     }
   }
@@ -65,7 +64,8 @@ class EditForm extends Component {
       projectId,
       showEditFloorAreaForm,
       attributeData,
-      syncronousErrors
+      syncronousErrors,
+      submitErrors
     } = this.props
 
     return (
@@ -87,6 +87,7 @@ class EditForm extends Component {
         {sections.map((section, i) => (
           <FormSection
             syncronousErrors={syncronousErrors}
+            submitErrors={submitErrors}
             formName={EDIT_PROJECT_FORM}
             key={i} handleSave={this.props.handleSave}
             section={section}
