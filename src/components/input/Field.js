@@ -241,24 +241,22 @@ class CustomField extends Component {
       component: this.getInput(field),
       ...custom,
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
-      disabled: field.generated || field.disabled ? true : false,
+      disabled: field.generated || field.disabled || field.autofill_readonly ? true : false,
       attributeData
     }
+
     /* Some fields are autofilled to a value as per (autofill_rules)
      * Some fields have their value calculated based on other fields (calculations)
      * Some autofill fields are readonly, some are not (autofill_readonly) */
     if( this.props.isFloorCalculation ) {
-        return <AutofillInputCalculations field={field} fieldProps={fieldProps} formName={formName} />
+      fieldProps = {
+        ...fieldProps,
+        parse: field.type === 'integer' ? val => (val || val === 0 ? Number(val) : null) : null
+      }
+      return <AutofillInputCalculations field={field} fieldProps={fieldProps} formName={formName} />
     }
     if (field.autofill_rule && field.autofill_rule.length && !this.props.isFloorCalculation) {
       return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
-    }
-    if ( field.autofill_readonly && field.autofill_readonly !== null ) {
-      console.log( field.autofill_readonly)
-      fieldProps = {
-        ...fieldProps,
-         disabled: true
-      }
     }
 
     if (type === 'toggle') {
