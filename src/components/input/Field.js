@@ -18,7 +18,6 @@ import AutofillInputCalculations from './AutofillInputCalculation/AutofillInputC
 import { isEqual } from 'lodash'
 import projectUtils from '../../utils/projectUtils'
 import AutofillInput from './AutofillInput/AutofillInput'
-
 class CustomField extends Component {
 
   shouldComponentUpdate(p) {
@@ -236,7 +235,7 @@ class CustomField extends Component {
         />
       )
     }
-    const fieldProps = {
+    let fieldProps = {
       name: field.name,
       placeholder: field.placeholder || field.label,
       component: this.getInput(field),
@@ -253,6 +252,13 @@ class CustomField extends Component {
     }
     if (field.autofill_rule && field.autofill_rule.length && !this.props.isFloorCalculation) {
       return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
+    }
+    if ( field.autofill_readonly && field.autofill_readonly !== null ) {
+      console.log( field.autofill_readonly)
+      fieldProps = {
+        ...fieldProps,
+         disabled: true
+      }
     }
 
     if (type === 'toggle') {
