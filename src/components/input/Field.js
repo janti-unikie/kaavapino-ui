@@ -61,7 +61,7 @@ class CustomField extends Component {
   validateFieldSize = value => {
     const field = this.props.field
     if ( value && field && field.character_limit && field.character_limit > 0 ) {
-        if ( value.length >= field.character_limit ) {
+        if ( value.length > field.character_limit ) {
           return 'Kentässä liikaa merkkejä'
         }
     }
@@ -240,8 +240,6 @@ class CustomField extends Component {
       name: field.name,
       placeholder: field.placeholder || field.label,
       component: this.getInput(field),
-      parse:
-        field.type === 'integer' ? val => (val || val === 0 ? Number(val) : null) : null,
       ...custom,
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
       disabled: field.generated || field.disabled ? true : false,
