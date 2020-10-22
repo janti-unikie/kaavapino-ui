@@ -7,6 +7,10 @@
 export const getFieldAutofillValue = (autofill_rule, formValues) => {
   let returnValue
   let projectNameAdded = false
+  const EQUAL = '=='
+  const NOT_EQUAL = '!='
+  const TRUE_STRING = 'True'
+  const FALSE_STRING = 'False'
 
   if (autofill_rule && autofill_rule.length > 0) {
     autofill_rule.forEach(autofill => {
@@ -38,20 +42,20 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
       }
       // String
       if (comparisonValueType === 'string') {
-        if (operator === '==' && comparisonValue === formValues[variable]) {
+        if (operator === EQUAL && comparisonValue === formValues[variable]) {
           returnValue = thenBranch
           return
         }
-        if (operator === '!=' && comparisonValue !== formValues[variable]) {
+        if (operator === NOT_EQUAL && comparisonValue !== formValues[variable]) {
           returnValue = thenBranch
           return
         }
       }
-
+      // Boolean type
       if (comparisonValueType === 'boolean') {
         const realValue = formValues[variable] ? formValues[variable] === true : false
-        if (operator === '==' && comparisonValue === realValue ) {
-          if ( thenBranch === 'True' ) {
+        if (operator === EQUAL && comparisonValue === realValue ) {
+          if ( thenBranch === TRUE_STRING ) {
             returnValue = true
             return
           } else if (thenBranch === 'False ') {
@@ -80,11 +84,11 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
             projectNameAdded = true
           }
         }
-        if (operator === '!=' && comparisonValue !== realValue) {
-          if ( thenBranch === 'True') {
+        if (operator === NOT_EQUAL && comparisonValue !== realValue) {
+          if ( thenBranch === TRUE_STRING) {
             returnValue = true
             return
-           } else if (thenBranch === 'False') {
+           } else if (thenBranch === FALSE_STRING) {
               returnValue = false
               return
           } else {
@@ -97,11 +101,11 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
         }
       }
       if (comparisonValueType === 'number' || comparisonValueType === 'string') {
-        if (operator === '==' && comparisonValue === formValues[variable]) {
+        if (operator === EQUAL && comparisonValue === formValues[variable]) {
           returnValue = thenBranch
           return
         }
-        if (operator === '!=' && comparisonValue !== formValues[variable]) {
+        if (operator === NOT_EQUAL && comparisonValue !== formValues[variable]) {
           returnValue = thenBranch
           return
         }
