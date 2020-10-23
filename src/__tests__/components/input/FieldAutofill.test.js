@@ -323,7 +323,7 @@ describe('Autofill tests', () => {
       sisaltyyko_kaavoittamatonta: true,
       sisaltyyko_kaavoitettua: false
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('asemakaava ja')
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(' asemakaava ja')
   })
   it('Autofill rule combine rule (boolean) 2', () => {
     const field = {}
@@ -348,7 +348,7 @@ describe('Autofill tests', () => {
       sisaltyyko_kaavoittamatonta: false,
       sisaltyyko_kaavoitettua: true
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('asemakaavan muuttaminen')
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(' asemakaavan muuttaminen')
   })
   it('Autofill rule succeeds combine rule (boolean) 3', () => {
     const field = {}
@@ -373,8 +373,9 @@ describe('Autofill tests', () => {
       sisaltyyko_kaavoittamatonta: true,
       sisaltyyko_kaavoitettua: true
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('asemakaava ja asemakaavan muuttaminen')
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(' asemakaava ja asemakaavan muuttaminen')
   })
+
   it('Autofill rule succeeds combine rule (boolean) 4', () => {
     const field = {}
     const conditionObject1 = {}
@@ -399,6 +400,133 @@ describe('Autofill tests', () => {
       sisaltyyko_kaavoitettua: false
     }
     expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(undefined)
+  })
+  it('Autofill rule succeeds combine rule with variables (boolean) 1', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
+    conditionObject2.operator = '=='
+    conditionObject2.comparison_value = true
+    conditionObject2.comparison_value_type = 'boolean'
+
+    const condition = { condition: conditionObject1, then_branch : 'asemakaava ja', variables: ['projektin_nimi'] }
+    const condition2 = { condition: conditionObject2, then_branch : 'asemakaavan muuttaminen' , variables: ['projektin_nimi'] }
+
+    field.autofill_rule =[condition, condition2]
+
+    const formValues = {
+      sisaltyyko_kaavoittamatonta: true,
+      sisaltyyko_kaavoitettua: true,
+      projektin_nimi: 'testiprojekti'
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('testiprojekti asemakaava ja asemakaavan muuttaminen')
+  })
+  it('Autofill rule succeeds combine rule with variables (boolean) 2', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
+    conditionObject2.operator = '=='
+    conditionObject2.comparison_value = true
+    conditionObject2.comparison_value_type = 'boolean'
+
+    const condition = { condition: conditionObject1, then_branch : 'asemakaava ja', variables: ['projektin_nimi'] }
+    const condition2 = { condition: conditionObject2, then_branch : 'asemakaavan muuttaminen', variables: ['projektin_nimi'] }
+    const variables = { variables: ['projektin_nimi'] }
+    field.autofill_rule =[condition, condition2, variables]
+
+    const formValues = {
+      sisaltyyko_kaavoittamatonta: false,
+      sisaltyyko_kaavoitettua: true,
+      projektin_nimi: 'testiprojekti'
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('testiprojekti asemakaavan muuttaminen')
+  })
+  it('Autofill rule succeeds combine rule with variables (boolean) 3', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
+    conditionObject2.operator = '=='
+    conditionObject2.comparison_value = true
+    conditionObject2.comparison_value_type = 'boolean'
+
+    const condition = { condition: conditionObject1, then_branch : 'asemakaava ja', variables: ['projektin_nimi'] }
+    const condition2 = { condition: conditionObject2, then_branch : 'asemakaavan muuttaminen', variables: ['projektin_nimi'] }
+
+    field.autofill_rule =[condition, condition2]
+
+    const formValues = {
+      sisaltyyko_kaavoittamatonta: true,
+      sisaltyyko_kaavoitettua: false,
+      projektin_nimi: 'testiprojekti'
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('testiprojekti asemakaava ja')
+  })
+  it('Autofill rule succeeds combine rule with variables (boolean) 4', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
+    conditionObject2.operator = '=='
+    conditionObject2.comparison_value = true
+    conditionObject2.comparison_value_type = 'boolean'
+
+    const condition = { condition: conditionObject1, then_branch : 'asemakaava ja', variables: ['projektin_nimi'] }
+    const condition2 = { condition: conditionObject2, then_branch : 'asemakaavan muuttaminen', variables: ['projektin_nimi'] }
+    field.autofill_rule =[condition, condition2]
+
+    const formValues = {
+      sisaltyyko_kaavoittamatonta: false,
+      sisaltyyko_kaavoitettua: false,
+      projektin_nimi: 'testiprojekti'
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('testiprojekti')
+  })
+  it('Autofill rule succeeds combine rule with variables (boolean) 5', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
+    conditionObject2.operator = '=='
+    conditionObject2.comparison_value = true
+    conditionObject2.comparison_value_type = 'boolean'
+
+    const condition = { condition: conditionObject1, then_branch : 'asemakaava ja', variables: ['projektin_nimi'] }
+    const condition2 = { condition: conditionObject2, then_branch : 'asemakaavan muuttaminen', variables: ['projektin_nimi'] }
+    field.autofill_rule =[condition, condition2]
+
+    const formValues = {
+      sisaltyyko_kaavoittamatonta: true,
+      sisaltyyko_kaavoitettua: true
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(' asemakaava ja asemakaavan muuttaminen')
   })
   it('Autofill rule fails boolean if/else', () => {
     const field = {}
