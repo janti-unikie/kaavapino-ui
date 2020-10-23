@@ -155,11 +155,8 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
   return returnValue
 }
 // mee fieldset ja fieldseting kentt
-const getParents = (sections, changedValues) => {
+const getParents = changedValues => {
 
-  if  (!sections || !changedValues ) {
-    return
-  }
   const keysToSearch = Object.keys(changedValues)
 
    // Bug fix which caused saga crash
@@ -199,7 +196,7 @@ const getFieldValue = (data, fieldName) => {
 }
 
 const checkInputValue = (props) => {
-  if (props.parentName && props.attributeData[props.parentName]) {
+ if (props.parentName && props.attributeData[props.parentName]) {
     const inputValue = getFieldValue(props.attributeData[props.parentName], props.input.name)
     if (inputValue) props.input.value = inputValue
   }}
