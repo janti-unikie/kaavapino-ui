@@ -41,6 +41,7 @@ class ProjectListPage extends Component {
     window.addEventListener('resize', this.handleWindowSizeChange)
   }
 
+  /*
   componentDidUpdate(prevProps, prevState) {
     const { filter } = this.state
 
@@ -50,6 +51,7 @@ class ProjectListPage extends Component {
       }
     }
   }
+   */
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowSizeChange)
@@ -64,6 +66,11 @@ class ProjectListPage extends Component {
   toggleSearch = opened => this.setState({ searchOpen: opened })
 
   setFilter = value => this.setState({ filter: value })
+
+  fetchFilteredItems = () => {
+    const { filter } = this.state
+    this.props.fetchProjects(filter)
+  }
 
   handleTabChange = (e, { activeIndex }) => {
     this.setState({ activeIndex })
@@ -104,11 +111,11 @@ class ProjectListPage extends Component {
           <List
             toggleSearch={this.toggleSearch}
             searchOpen={searchOpen}
-            setFilter={this.setFilter}
             projectSubtypes={projectSubtypes}
             users={users}
             items={allProjects.slice(0, amountOfProjectsToShow)}
             total={totalProjects}
+            setFilter={this.setFilter}
           />
         )
       }
@@ -130,7 +137,8 @@ class ProjectListPage extends Component {
           minWidth={601}
           toggleSearch={this.toggleSearch}
           searchOpen={searchOpen}
-          onChangeValue={this.setFilter}
+          setFilter={this.setFilter}
+          buttonAction={this.fetchFilteredItems}
         />
       </NavActions>
     )

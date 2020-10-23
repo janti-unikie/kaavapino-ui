@@ -14,11 +14,17 @@
       text-indent: 62px;
       @media screen and (max-width: 599px) {
         box-sizing: border-box;
-        border: none;
-        border-bottom: 2px solid $black;
+        border: none !important;
+        border-bottom: 1px solid $black !important;
         font-size: 12px;
         width: 226px;
         height: 32px;
+      }
+      &:focus {
+          box-shadow: none !important;
+      }
+      &:hover {
+        box-shadow: none !important;
       }
     }
 

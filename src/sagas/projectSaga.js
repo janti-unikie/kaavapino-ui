@@ -89,16 +89,24 @@ export default function* projectSaga() {
 function* fetchProjects({ page, own = true, all = true, payload: searchQuery }) {
   try {
     const userId = yield select(userIdSelector)
-    console.debug(searchQuery) // needs api implementation
     if (own) {
+      let query = {
+        includes_users: userId,
+        page: page ? page : 1,
+        ordering: '-modified_at'
+      }
+      if (searchQuery) {
+        query = {
+          includes_users: userId,
+          page: page ? page : 1,
+          ordering: '-modified_at',
+          search: searchQuery
+        }
+      }
       const ownProjects = yield call(
         projectApi.get,
         {
-          query: {
-            includes_users: userId,
-            page: page ? page : 1,
-            ordering: '-modified_at'
-          }
+          query
         },
         '',
         null,
@@ -109,9 +117,22 @@ function* fetchProjects({ page, own = true, all = true, payload: searchQuery }) 
       yield put(setTotalOwnProjects(ownProjects.count))
     }
     if (all) {
+      let query = {
+        page: page ? page : 1,
+        ordering: '-modified_at'
+      }
+      if (searchQuery) {
+        query = {
+          page: page ? page : 1,
+          ordering: '-modified_at',
+          search: searchQuery
+        }
+      }
       const allProjects = yield call(
         projectApi.get,
-        { query: { page: page ? page : 1, ordering: '-modified_at' } },
+        {
+          query
+        },
         '',
         null,
         null,
