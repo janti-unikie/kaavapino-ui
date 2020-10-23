@@ -364,7 +364,7 @@ describe('Autofill tests', () => {
     conditionObject2.comparison_value = true
     conditionObject2.comparison_value_type = 'boolean'
 
-    const condition = { condition: conditionObject1, then_branch : 'asemakaava ja ' }
+    const condition = { condition: conditionObject1, then_branch : 'asemakaava ja' }
     const condition2 = { condition: conditionObject2, then_branch : 'asemakaavan muuttaminen' }
 
     field.autofill_rule =[condition, condition2]
@@ -389,7 +389,7 @@ describe('Autofill tests', () => {
     conditionObject2.comparison_value = true
     conditionObject2.comparison_value_type = 'boolean'
 
-    const condition = { condition: conditionObject1, then_branch : 'asemakaava ja ' }
+    const condition = { condition: conditionObject1, then_branch : 'asemakaava ja' }
     const condition2 = { condition: conditionObject2, then_branch : 'asemakaavan muuttaminen' }
 
     field.autofill_rule =[condition, condition2]

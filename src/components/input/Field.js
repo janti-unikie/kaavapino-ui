@@ -32,6 +32,9 @@ class CustomField extends Component {
     if (this.props.field.generated !== p.field.generated) {
       return true
     }
+    if (this.props.field.autofill_readOnly !== p.field.autofill_readOnly) {
+      return true
+    }
 
     if (
       !isEqual(
@@ -261,7 +264,11 @@ class CustomField extends Component {
       component: this.getInput(field),
       ...custom,
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
+<<<<<<< HEAD
       disabled: field.generated || field.disabled || field.autofill_readonly ? true : false,
+=======
+      disabled: field.generated || field.disabled || field.autofill_readonly? true : false,
+>>>>>>> development
       attributeData
     }
 
