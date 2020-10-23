@@ -33,6 +33,9 @@ class CustomField extends Component {
     if (this.props.field.generated !== p.field.generated) {
       return true
     }
+    if (this.props.field.autofill_readOnly !== p.field.autofill_readOnly) {
+      return true
+    }
 
     if (
       !isEqual(
@@ -264,7 +267,7 @@ class CustomField extends Component {
         field.type === 'integer' && field.display !== 'dropdown'? val => (val || val === 0 ? Number(val) : null) : null,
       ...custom,
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
-      disabled: field.generated || field.disabled ? true : false,
+      disabled: field.generated || field.disabled || field.autofill_readonly? true : false,
       attributeData
     }
     /* Some fields are autofilled to a value as per (autofill_rules)

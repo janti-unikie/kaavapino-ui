@@ -45,7 +45,7 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
             return
           } else {
             if (returnValue) {
-              returnValue = returnValue + thenBranch
+              returnValue = `${returnValue} ${thenBranch}`
             } else {
               returnValue = thenBranch
             }
