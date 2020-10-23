@@ -22,6 +22,9 @@ const SelectInput = ({ input, meta: { error }, options, ...custom }) => {
       {...custom}
       onChange={(param, data) => {
         input.onChange(data.value)
+        if ( data.value && custom.handleSave) {
+          custom.handleSave(data.value)
+        }
         }
       }
       fluid
@@ -32,7 +35,7 @@ const SelectInput = ({ input, meta: { error }, options, ...custom }) => {
       noResultsMessage="Ei tuloksia"
       options={options}
       error={inputUtils.hasError(error)}
-      onBlur={() => input.onBlur(input.value.value)}
+      value={input.value}
     />
   )
 }

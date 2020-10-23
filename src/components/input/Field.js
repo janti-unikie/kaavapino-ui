@@ -21,6 +21,7 @@ import AutofillInput from './AutofillInput/AutofillInput'
 
 class CustomField extends Component {
 
+  yearOptions = []
   shouldComponentUpdate(p) {
     if (!this.props.attributeData || !p.attributeData) {
       return true
@@ -30,6 +31,9 @@ class CustomField extends Component {
       return true
     }
     if (this.props.field.generated !== p.field.generated) {
+      return true
+    }
+    if (this.props.field.autofill_readOnly !== p.field.autofill_readOnly) {
       return true
     }
 
@@ -80,6 +84,21 @@ class CustomField extends Component {
   renderNumber = props => {
     projectUtils.checkInputValue(props)
     return <Input type="number" {...props} />
+  }
+
+  renderYearSelect = props => {
+      const { multiple_choice } = this.props.field
+
+      if ( this.yearOptions.length === 0 ) {
+        this.yearOptions = projectUtils.generateArrayOfYears()
+      }
+      return (
+        <SelectInput
+          multiple={multiple_choice}
+          options={this.formatOptions(this.yearOptions)}
+          {...props}
+        />
+     )
   }
 
   renderString = props => {
@@ -180,6 +199,10 @@ class CustomField extends Component {
       Will get back to this. */
       return this.renderSelect
     }
+    if ( field.display === 'dropdown') {
+      return  this.renderYearSelect
+    }
+
     if (field.type === 'radio' && field.options) {
       return this.renderRadio
     }
@@ -241,10 +264,10 @@ class CustomField extends Component {
       placeholder: field.placeholder || field.label,
       component: this.getInput(field),
       parse:
-        field.type === 'integer' ? val => (val || val === 0 ? Number(val) : null) : null,
+        field.type === 'integer' && field.display !== 'dropdown'? val => (val || val === 0 ? Number(val) : null) : null,
       ...custom,
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
-      disabled: field.generated || field.disabled ? true : false,
+      disabled: field.generated || field.disabled || field.autofill_readonly? true : false,
       attributeData
     }
     /* Some fields are autofilled to a value as per (autofill_rules)
