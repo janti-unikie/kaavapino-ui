@@ -10,7 +10,6 @@ const AutofillInput = ({
 }) => {
   const formValues = useSelector(getFormValues(formName))
   const dispatch = useDispatch()
-  const value = (formValues && formValues[name]) || ''
 
   useEffect(() => {
     if (!formValues) {
@@ -25,20 +24,18 @@ const AutofillInput = ({
       dispatch(change(formName, name, autoFillValue))
     }
   }, [formValues])
-  return (
-    <div className="autofill-input">
-    {autofill_readonly ? (
-      <div className="autofill-readonly-input">
-        <div className="autofill-readonly-input-value">
-          {value}
-        </div>
-      </div>
-    ) : (
-      <Field {...fieldProps} />
-    )}
-  </div>
 
-  )
+  let newFieldProps = { ...fieldProps }
+
+  if ( autofill_readonly ) {
+    newFieldProps = {
+      ...newFieldProps,
+      disabled: true
+    }
+  }
+  return (
+      <Field {...newFieldProps} />
+    )
 }
 
 export default AutofillInput

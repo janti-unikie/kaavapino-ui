@@ -18,7 +18,6 @@ import AutofillInputCalculations from './AutofillInputCalculation/AutofillInputC
 import { isEqual } from 'lodash'
 import projectUtils from '../../utils/projectUtils'
 import AutofillInput from './AutofillInput/AutofillInput'
-
 class CustomField extends Component {
 
   yearOptions = []
@@ -31,6 +30,9 @@ class CustomField extends Component {
       return true
     }
     if (this.props.field.generated !== p.field.generated) {
+      return true
+    }
+    if (this.props.field.autofill_readOnly !== p.field.autofill_readOnly) {
       return true
     }
 
@@ -62,7 +64,7 @@ class CustomField extends Component {
   validateFieldSize = value => {
     const field = this.props.field
     if ( value && field && field.character_limit && field.character_limit > 0 ) {
-        if ( value.length >= field.character_limit ) {
+        if ( value.length > field.character_limit ) {
           return 'Kentässä liikaa merkkejä'
         }
     }
@@ -256,22 +258,25 @@ class CustomField extends Component {
         />
       )
     }
-    const fieldProps = {
+    let fieldProps = {
       name: field.name,
       placeholder: field.placeholder || field.label,
       component: this.getInput(field),
-      parse:
-        field.type === 'integer' && field.display !== 'dropdown'? val => (val || val === 0 ? Number(val) : null) : null,
       ...custom,
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
-      disabled: field.generated || field.disabled ? true : false,
+      disabled: field.generated || field.disabled || field.autofill_readonly ? true : false,
       attributeData
     }
+
     /* Some fields are autofilled to a value as per (autofill_rules)
      * Some fields have their value calculated based on other fields (calculations)
      * Some autofill fields are readonly, some are not (autofill_readonly) */
     if( this.props.isFloorCalculation ) {
-        return <AutofillInputCalculations field={field} fieldProps={fieldProps} formName={formName} />
+      fieldProps = {
+        ...fieldProps,
+        parse: field.type === 'integer' ? val => (val || val === 0 ? Number(val) : null) : null
+      }
+      return <AutofillInputCalculations field={field} fieldProps={fieldProps} formName={formName} />
     }
     if (field.autofill_rule && field.autofill_rule.length && !this.props.isFloorCalculation) {
       return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />

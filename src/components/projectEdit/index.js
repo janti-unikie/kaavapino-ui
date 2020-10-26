@@ -49,9 +49,7 @@ class ProjectEditPage extends Component {
     if ( this.props.syncErrors && !_.isEmpty( this.props.syncErrors )) {
       return
     }
-    if (this.props.isDirty) {
       this.props.saveProject()
-    }
   }
 
   setSelectedRole = role => {
