@@ -49,7 +49,7 @@ const ListHeader = ({
         <SearchBar
           toggleSearch={toggleSearch}
           searchOpen={searchOpen}
-          onChangeValue={setFilter}
+          setFilter={setFilter}
         />
       </div>
     </div>
