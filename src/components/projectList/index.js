@@ -41,18 +41,6 @@ class ProjectListPage extends Component {
     window.addEventListener('resize', this.handleWindowSizeChange)
   }
 
-  /*
-  componentDidUpdate(prevProps, prevState) {
-    const { filter } = this.state
-
-    if (prevState.filter !== filter) {
-      if (filter.length > 1) {
-        this.props.fetchProjects(filter)
-      }
-    }
-  }
-   */
-
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowSizeChange)
   }
