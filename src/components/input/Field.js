@@ -36,6 +36,16 @@ class CustomField extends Component {
       return true
     }
 
+    /*This is for updating fieldset value*/
+    const oldParent = this.props.parentName
+    const oldFieldset = this.props.attributeData[oldParent]
+    const newParent = p.parentName
+    const newFieldset = p.attributeData[newParent]
+    if ((oldParent && !oldFieldset) && (newParent && newFieldset)) {
+      return true
+      }
+
+    /*This is for adding fieldsets  */
     if (
       !isEqual(
         this.props.attributeData[this.props.field.name],
@@ -241,8 +251,7 @@ class CustomField extends Component {
   }
 
   render() {
-    const { field, attributeData, fieldset, formName, formValues, error, ...custom } = this.props
-
+    const { field, attributeData, fieldset, formName, formValues, error, defaultValue, ...custom } = this.props
     const type = field.type
     if (type === 'file' || type === 'image') {
       const file = attributeData[field.name]
@@ -261,11 +270,12 @@ class CustomField extends Component {
     let fieldProps = {
       name: field.name,
       placeholder: field.placeholder || field.label,
+      disabled: field.generated || field.disabled || field.autofill_readonly ? true : false,
+      attributeData,
+      defaultValue,
       component: this.getInput(field),
       ...custom,
-      ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
-      disabled: field.generated || field.disabled || field.autofill_readonly ? true : false,
-      attributeData
+      ...(field.multiple_choice ? { type: 'select-multiple' } : {})
     }
 
     /* Some fields are autofilled to a value as per (autofill_rules)
