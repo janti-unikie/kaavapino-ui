@@ -6,7 +6,6 @@ import {
   Grid,
   Header,
   List,
-  Responsive,
   Segment
 } from 'semantic-ui-react'
 import Link from 'react-router-dom/Link'
@@ -92,17 +91,11 @@ class Footer extends Component {
                 </Link>
               </p>
             </Grid.Column>
-            <Responsive
-              as={Grid.Column}
-              minWidth={800}
-              className="footer-feedback"
-              floated="right"
-              width={2}
-            >
+            <Grid.Column className="footer-feedback" floated="right" width={4}>
               <a href="mailto: name@domain">
                 <span>Anna palautetta</span>
               </a>
-            </Responsive>
+            </Grid.Column>
           </Grid>
         </Container>
       </Segment>
