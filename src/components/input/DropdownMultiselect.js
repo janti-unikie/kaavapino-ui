@@ -52,9 +52,7 @@ const trigger = (value, placeholder) => {
   const val = value || []
   if (val.length === 0) {
     return <div className="placeholder">{placeholder}</div>
-  } else if (val.length === 1) {
-    return <div>{val[0]}</div>
-  } else {
+  }  else {
     return <div>{`${val.length} valittu`}</div>
   }
 }

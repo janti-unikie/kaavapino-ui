@@ -36,7 +36,8 @@ import { ReactComponent as CommentIcon } from '../../assets/icons/comment-icon.s
  * Do not set the value to input.value - it will make the component lose focus after every letter
  * */
 
-const formats = ['bold', 'italic', 'underline', 'strike', 'color', 'background']
+const formats =
+  ['bold', 'italic', 'underline', 'strike', 'color', 'background', 'list', 'ordered', 'bullet', 'script', 'sub', 'super']
 
 function RichTextEditor(props) {
   const {
@@ -66,7 +67,7 @@ function RichTextEditor(props) {
       dispatch(change(EDIT_PROJECT_FORM, inputProps.name, actualDeltaValue))
       setCounter(actualDeltaValue.length() - 1 )
       setShowCounter(true)
-  }
+   }
   }
   const addComment = () => {
     /* If cursor position is needed, you can get it like this */
@@ -101,7 +102,14 @@ function RichTextEditor(props) {
           <span className="ql-formats">
             <select className="ql-color" />
             <select className="ql-background" />
-            <button className="ql-clean" />
+          </span>
+          <span className="ql-formats">
+            <button className="ql-list" value="ordered" />
+            <button className="ql-list" value="bullet" />
+          </span>
+          <span className="ql-formats">
+            <button className="ql-script" value="super" />
+            <button className="ql-script" value="sub" />
           </span>
           <span className="ql-formats">
             <button className="quill-toolbar-comment-button" onClick={addComment}>
