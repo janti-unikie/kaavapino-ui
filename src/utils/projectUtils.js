@@ -179,7 +179,6 @@ const getParent = (sections, values) => {
     * */
   sections.some(title => {
     if (parentName) return parentName
-    console.log(title)
     title.fields.some(fieldset => {
       if (parentName) return parentName
 
