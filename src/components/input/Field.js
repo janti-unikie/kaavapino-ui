@@ -8,7 +8,7 @@ import FieldSet from './FieldSet'
 import Geometry from './Geometry'
 import Link from './Link'
 import DateTime from './DateTime'
-import { Field, FieldArray, formValues } from 'redux-form'
+import { Field, FieldArray } from 'redux-form'
 import RadioButton from './RadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
@@ -176,7 +176,7 @@ class CustomField extends Component {
       disabled={this.props.field.disabled}
       attributeData={this.props.attributeData}
       name={this.props.field.name}
-      formValues={formValues}
+      formValues={this.props.formValues}
       validate={[this.validateFieldSize]}
       syncronousErrors={this.props.syncronousErrors}
     />
