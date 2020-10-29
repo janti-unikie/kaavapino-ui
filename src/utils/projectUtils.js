@@ -151,7 +151,6 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
     })
     returnValue[currentFieldset] = [currentObject]
   })
-
   return returnValue
 }
 // mee fieldset ja fieldseting kentt
@@ -182,7 +181,9 @@ const getFieldsetAttributes = (parent, sections) => {
         fieldsetAttributes = fieldset.fieldset_attributes.map(key => key.name)
         return fieldsetAttributes
       }
+      return null
     })
+    return null
   })
   return fieldsetAttributes
 }
@@ -237,5 +238,6 @@ export default {
   getDefaultValue,
   getParents,
   formatPayload,
-  generateArrayOfYears
+  generateArrayOfYears,
+  getFieldsetAttributes
 }
