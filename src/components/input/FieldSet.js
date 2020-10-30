@@ -6,6 +6,7 @@ import Field from './Field'
 import { Form, Button, Label } from 'semantic-ui-react'
 import projectUtils from '../../utils/projectUtils'
 import Info from './Info'
+import { showField } from '../../utils/projectVisibilityUtils'
 
 const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formName, formValues, validate, syncronousErrors }) => {
   let numberOfSets = 1
@@ -33,7 +34,12 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formN
                   />
                 </div>
                 {fields.map((field, j) => {
+                  if (!showField(field, formValues) || !field.fieldset_index) {
+                    return null
+                  }
+
                   let required = false
+
                   if (checking && !(!attributeData[name] || !attributeData[name][i])) {
                     if (
                       checking &&
@@ -60,7 +66,6 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formN
                   * Redux form gives error information to the Field component, but that's further down the line, and we need that information
                   * here to modify the input header accordingly. */
                   const showError = required ? 'pakollinen kenttä' :  error
-
                   return (
                     <div className={`input-container ${showError ? 'error' : ''}`} key={j}>
                       <Form.Field required={required}>
