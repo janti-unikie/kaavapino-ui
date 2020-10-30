@@ -34,7 +34,7 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formN
                   />
                 </div>
                 {fields.map((field, j) => {
-                  if (!showField(field, formValues)) {
+                  if (!showField(field, formValues) || !field.fieldset_index) {
                     return null
                   }
 
