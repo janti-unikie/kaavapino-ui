@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { change } from 'redux-form'
-import Field from '../input/Field'
+import CustomField from '../input/CustomField'
 
 class FilterField extends Component {
   componentWillUnmount() {
@@ -11,7 +11,7 @@ class FilterField extends Component {
 
   render() {
     const { type, id, selectedOption } = this.props
-    return <Field field={{ type, name: `${id}__${selectedOption}` }} />
+    return <CustomField field={{ type, name: `${id}__${selectedOption}` }} />
   }
 }
 

@@ -1,4 +1,4 @@
-import { concat, difference, flattenDeep } from 'lodash'
+import { concat, difference, flattenDeep, isBoolean } from 'lodash'
 
 const addZeroPrefixIfNecessary = value => (value < 10 ? `0${value}` : value)
 
@@ -142,10 +142,10 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
     const currentObject = {}
     attributes.forEach(attribute => {
       //use new value for this field
-      if (changedValues[attribute]) {
+      if (changedValues[attribute] || isBoolean(changedValues[attribute])) {
         currentObject[attribute] = changedValues[attribute]
       // use initlavalue
-      } else if (initialValues[attribute]) {
+      } else if (initialValues[attribute] || isBoolean(initialValues[attribute])) {
         currentObject[attribute] = initialValues[attribute]
       }
     })
@@ -193,20 +193,23 @@ const getFieldValue = (data, fieldName) => {
   data.forEach(index => {
     if (index.hasOwnProperty(fieldName)) value = index[fieldName]
   })
+
   return value
 }
 
-const checkInputValue = (props) => {
- if (props.parentName && props.attributeData[props.parentName]) {
-    const inputValue = getFieldValue(props.attributeData[props.parentName], props.input.name)
-    if (inputValue) props.input.value = inputValue
-  }}
+const checkInputValue = props => {
 
+  const fieldsetValues = props.attributeData[props.parentName]
+  if (props.parentName && fieldsetValues) {
+      const inputValue = getFieldValue(fieldsetValues, props.input.name)
+      if ( inputValue || isBoolean( inputValue ) ) props.input.value = inputValue
+    }
+}
 const getDefaultValue = (parentName, attributeData, name) => {
   const fieldsetFields = attributeData[parentName]
 
   if (fieldsetFields) {
-    return getFieldValue(attributeData[parentName], name)
+    return fieldsetFields[0][name]
   }}
 
 const generateArrayOfYears = () => {

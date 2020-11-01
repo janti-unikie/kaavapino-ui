@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import Field from '../input/Field'
+import CustomField from '../input/CustomField'
 import { deadlinesSelector } from '../../selectors/projectSelector'
 import { projectSetDeadlines } from '../../actions/projectActions'
 import { Button, Modal, Form } from 'semantic-ui-react'
@@ -73,7 +73,7 @@ class NewProjectFormModal extends Component {
                   <h4 className="deadline-title">{deadline.phase_name}</h4>
                   <div className="deadline-input-container">
                     {i === 0 && (
-                      <Field
+                      <CustomField
                         disabled={i !== 0}
                         name={`${deadline.phase_name}-start`}
                         field={{ type: 'datetime' }}
@@ -85,7 +85,7 @@ class NewProjectFormModal extends Component {
                       </span>
                     )}
                     <span className="deadline-splitter">-</span>
-                    <Field
+                    <CustomField
                       name={`${deadline.phase_name}-deadline`}
                       field={{ type: 'datetime' }}
                     />

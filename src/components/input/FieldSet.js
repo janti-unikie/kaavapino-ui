@@ -2,12 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { checkingSelector } from '../../selectors/projectSelector'
-import Field from './Field'
+import CustomField from './CustomField'
 import { Form, Button, Label } from 'semantic-ui-react'
 import projectUtils from '../../utils/projectUtils'
 import Info from './Info'
 
-const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formName, formValues, validate, syncronousErrors }) => {
+const FieldSet = ({
+  sets, fields, checking, attributeData, name, disabled, formName, formValues, validate, syncronousErrors, handleSave, onRadioChange }) => {
   let numberOfSets = 1
   if (attributeData[sets.name]) {
     if (sets.length !== attributeData[sets.name].length) {
@@ -74,14 +75,16 @@ const FieldSet = ({ sets, fields, checking, attributeData, name, disabled, formN
                             )}
                           </div>
                         </div>
-                      <Field
+                      <CustomField
                         field={{ ...field, disabled }}
                         attributeData={attributeData}
                         fieldset={field.type === 'fieldset'}
                         parentName={name}
+                        defaultValue={defaultValue}
                         formName={formName}
                         formValues={formValues}
-                        defaultValue={defaultValue}
+                        handleSave={handleSave}
+                        onRadioChange={onRadioChange}
                         validate={validate}
                       />
                        {showError && <div className="error-text">{showError}</div>}
