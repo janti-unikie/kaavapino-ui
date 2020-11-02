@@ -228,7 +228,7 @@ class CustomField extends Component {
   }
 
   getInput = field => {
-    if (field.choices) {
+    if (field.type === 'select' && field.choices) {
       /* Should perhaps check (field.type === 'select' && field.choices), but there were tests against it.
       Will get back to this. */
       return this.renderSelect

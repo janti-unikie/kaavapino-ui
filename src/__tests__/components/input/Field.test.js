@@ -97,7 +97,8 @@ describe('<Field />', () => {
           { value: 'a', label: '1' },
           { value: 'b', label: '2' }
         ],
-        multiple_choice: true
+        multiple_choice: true,
+        type: 'select'
       }
     )
     expect(wrapper.find('SelectInput').length).toBe(1)
