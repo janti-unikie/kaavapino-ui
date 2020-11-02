@@ -153,7 +153,7 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
   })
   return returnValue
 }
-// mee fieldset ja fieldseting kentt
+// Returns parents from changed values.
 const getParents = changedValues => {
 
   const keysToSearch = Object.keys(changedValues)
