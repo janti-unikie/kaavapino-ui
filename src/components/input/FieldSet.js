@@ -8,12 +8,29 @@ import projectUtils from '../../utils/projectUtils'
 import Info from './Info'
 
 const FieldSet = ({
-  sets, fields, checking, attributeData, name, disabled, formName, formValues, validate, syncronousErrors, handleSave, onRadioChange }) => {
+  sets,
+  fields,
+  checking,
+  attributeData,
+  name,
+  disabled,
+  formName,
+  formValues,
+  validate,
+  syncronousErrors,
+  handleSave,
+  onRadioChange  }) => {
   let numberOfSets = 1
   if (attributeData[sets.name]) {
     if (sets.length !== attributeData[sets.name].length) {
       numberOfSets = sets.length - attributeData[sets.name].length+1
     }
+  }
+
+  const handleBlurSave = () => {
+    setTimeout(function () {
+      handleSave()
+    }, 500)
   }
 
   return (
@@ -85,6 +102,7 @@ const FieldSet = ({
                         formValues={formValues}
                         handleSave={handleSave}
                         onRadioChange={onRadioChange}
+                        onBlur={handleBlurSave}
                         validate={validate}
                       />
                        {showError && <div className="error-text">{showError}</div>}

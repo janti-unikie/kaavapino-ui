@@ -1,4 +1,4 @@
-import { concat, difference, flattenDeep, isBoolean } from 'lodash'
+import { concat, difference, flattenDeep, isBoolean, isNaN } from 'lodash'
 
 const addZeroPrefixIfNecessary = value => (value < 10 ? `0${value}` : value)
 
@@ -199,16 +199,18 @@ const getFieldValue = (data, fieldName) => {
 
 const checkInputValue = props => {
 
-  const fieldsetValues = props.attributeData[props.parentName]
-  if (props.parentName && fieldsetValues) {
-      const inputValue = getFieldValue(fieldsetValues, props.input.name)
-      if ( inputValue || isBoolean( inputValue ) ) props.input.value = inputValue
+  if (props.parentName && props.attributeData[props.parentName]) {
+    if ( !props.input.value || isBoolean( props.input.value ) ) {
+
+        const inputValue = getFieldValue(props.attributeData[props.parentName], props.input.name)
+        if ( inputValue || isBoolean( inputValue ) || !isNaN( inputValue )) props.input.value = inputValue
+      }
     }
 }
 const getDefaultValue = (parentName, attributeData, name) => {
   const fieldsetFields = attributeData[parentName]
 
-  if (fieldsetFields) {
+  if (fieldsetFields && fieldsetFields.length > 0) {
     return fieldsetFields[0][name]
   }}
 
