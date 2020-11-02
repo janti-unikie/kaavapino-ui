@@ -228,7 +228,10 @@ class CustomField extends Component {
   }
 
   getInput = field => {
-    if (( field.type === 'select' || field.type === 'choice' ) && field.choices) {
+
+    // Since there might be rules which has boolean type and choices, avoid selecting select and select
+    // boolean radiobutton intead
+    if (field.choices && field.type !== 'boolean') {
       /* Should perhaps check (field.type === 'select' && field.choices), but there were tests against it.
       Will get back to this. */
       return this.renderSelect
