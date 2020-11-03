@@ -58,6 +58,7 @@ class EditTimeTableModal extends Component {
      * 2) how do we show errors? */
 
     this.setState({ loading: true })
+
     const errors = this.props.handleSubmit()
     console.log(errors)
   }
@@ -86,7 +87,6 @@ class EditTimeTableModal extends Component {
     )
   }
   renderSection = (section, sectionIndex) => {
-    console.log(section)
      return (
         <Collapse title={section.title} key={sectionIndex}>
           {section.fields.map((field, fieldIndex) => (

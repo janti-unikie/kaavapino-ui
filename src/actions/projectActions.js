@@ -20,6 +20,8 @@ export const SAVE_PROJECT_BASE = 'Save project base'
 export const SAVE_PROJECT_BASE_SUCCESSFUL = 'Save project base successful'
 export const SAVE_PROJECT_FLOOR_AREA = 'Save project floor area'
 export const SAVE_PROJECT_FLOOR_AREA_SUCCESSFUL = 'Save project floor area successful'
+export const SAVE_PROJECT_TIMETABLE = 'Save project timetable'
+export const SAVE_PROJECT_TIMETABLE_SUCCESSFUL = 'Save project timetable successful'
 export const SAVE_PROJECT = 'Save project'
 export const SAVE_PROJECT_SUCCESSFUL = 'Save project successful'
 export const VALIDATE_PROJECT_FIELDS = 'Validate project fields'
@@ -100,6 +102,11 @@ export const saveProjectBaseSuccessful = () => ({ type: SAVE_PROJECT_BASE_SUCCES
 export const saveProjectFloorArea = () => ({ type: SAVE_PROJECT_FLOOR_AREA })
 export const saveProjectFloorAreaSuccessful = () => ({
   type: SAVE_PROJECT_FLOOR_AREA_SUCCESSFUL
+})
+
+export const saveProjectTimetable = () => ({ type: SAVE_PROJECT_TIMETABLE })
+export const saveProjectTimetableSuccessful = () => ({
+  type: SAVE_PROJECT_TIMETABLE_SUCCESSFUL
 })
 
 export const saveProject = () => ({ type: SAVE_PROJECT })

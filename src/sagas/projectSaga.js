@@ -7,7 +7,8 @@ import {
   editFormSelector,
   deadlineModalSelector,
   newProjectFormSelector,
-  editFloorAreaFormSelector
+  editFloorAreaFormSelector,
+  editProjectTimetableFormSelector
 } from '../selectors/formSelector'
 import {
   currentProjectSelector,
@@ -43,6 +44,7 @@ import {
   initializeProjectSuccessful,
   SAVE_PROJECT_BASE,
   SAVE_PROJECT_FLOOR_AREA,
+  SAVE_PROJECT_TIMETABLE,
   SAVE_PROJECT,
   saveProjectSuccessful,
   CHANGE_PROJECT_PHASE,
@@ -65,7 +67,7 @@ import { setLatestEditField, setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
 import { projectApi } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
-import { NEW_PROJECT_FORM, EDIT_FLOOR_AREA_FORM, EDIT_PROJECT_FORM } from '../constants'
+import { NEW_PROJECT_FORM, EDIT_FLOOR_AREA_FORM, EDIT_PROJECT_FORM, EDIT_PROJECT_TIMETABLE_FORM } from '../constants'
 
 export default function* projectSaga() {
   yield all([
@@ -74,6 +76,7 @@ export default function* projectSaga() {
     takeLatest(CREATE_PROJECT, createProject),
     takeLatest(SAVE_PROJECT_BASE, saveProjectBase),
     takeLatest(SAVE_PROJECT_FLOOR_AREA, saveProjectFloorArea),
+    takeLatest(SAVE_PROJECT_TIMETABLE, saveProjectTimetable),
     takeLatest(SAVE_PROJECT, saveProject),
     takeLatest(CHANGE_PROJECT_PHASE, changeProjectPhase),
     takeLatest(VALIDATE_PROJECT_FIELDS, validateProjectFields),
@@ -254,6 +257,7 @@ function* createProject() {
 
 const getChangedAttributeData = (values, initial, sections) => {
   let attribute_data = {}
+
   Object.keys(values).forEach(key => {
     if (initial.hasOwnProperty(key) && isEqual(values[key], initial[key])) {
       return
@@ -265,21 +269,25 @@ const getChangedAttributeData = (values, initial, sections) => {
       attribute_data[key] = values[key]
     }
     let fieldSetName
+
     // When editing a field inside fieldset, the fieldset is not included by default.
     // This workaround adds fieldset if field is inside fieldset.
-    sections.some(title => {
-      title.fields.some(fieldset => {
-      const fieldsetAttributes = fieldset.fieldset_attributes
-      fieldsetAttributes.forEach( value => {
-        if ( value.name === key ) {
-          fieldSetName = fieldset.name
-          attribute_data[fieldset.name] = fieldset.name
-        }
+    if ( sections ) {
+      sections.some(title => {
+        title.fields.some(fieldset => {
+        const fieldsetAttributes = fieldset.fieldset_attributes
+        fieldsetAttributes.forEach( value => {
+          if ( value.name === key ) {
+            fieldSetName = fieldset.name
+            attribute_data[fieldset.name] = fieldset.name
+          }
+        })
+        return null
+        })
+        return null
       })
-      return null
-      })
-      return null
-    })
+    }
+
     const initialFieldSetValues = initial[fieldSetName]
     if ( initialFieldSetValues ) {
       attribute_data = Object.assign({}, initialFieldSetValues[0], attribute_data)
@@ -339,6 +347,37 @@ function* saveProjectFloorArea() {
     } catch (e) {
       if (e.response.status === 400) {
         yield put(stopSubmit(EDIT_FLOOR_AREA_FORM, e.response.data))
+      } else {
+        yield put(error(e))
+      }
+    }
+  }
+}
+function* saveProjectTimetable() {
+  yield put(startSubmit(EDIT_PROJECT_TIMETABLE_FORM))
+  const { initial, values } = yield select(editProjectTimetableFormSelector)
+  const currentProjectId = yield select(currentProjectIdSelector)
+
+  if (values) {
+    const attribute_data = getChangedAttributeData(values, initial)
+    try {
+      const updatedProject = yield call(
+        projectApi.patch,
+        { attribute_data },
+        { path: { id: currentProjectId } },
+        ':id/'
+      )
+      yield put(updateProject(updatedProject))
+      yield put(setSubmitSucceeded(EDIT_PROJECT_TIMETABLE_FORM))
+      yield put(
+        toastrActions.add({
+          type: 'success',
+          title: 'Aikataulut tallennettu onnistuneesti'
+        })
+      )
+    } catch (e) {
+      if (e.response.status === 400) {
+        yield put(stopSubmit(EDIT_PROJECT_TIMETABLE_FORM, e.response.data))
       } else {
         yield put(error(e))
       }

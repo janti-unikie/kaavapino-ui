@@ -6,6 +6,7 @@ import { isDirty } from 'redux-form/immutable'
 import {
   saveProject,
   saveProjectFloorArea,
+  saveProjectTimetable,
   changeProjectPhase,
   validateProjectFields,
   projectSetChecking,
@@ -73,6 +74,7 @@ class ProjectEditPage extends Component {
       schema,
       selectedPhase,
       saveProjectFloorArea,
+      saveProjectTimetable,
       project: { name, attribute_data, phase, id },
       saving,
       changingPhase,
@@ -172,7 +174,7 @@ class ProjectEditPage extends Component {
           <EditProjectTimetableModal
             attributeData={attribute_data}
             open
-            handleSubmit={saveProjectFloorArea}
+            handleSubmit={saveProjectTimetable}
             handleClose={() => this.setState({ showEditProjectTimetableForm: false })}
           />
         )}
@@ -200,6 +202,7 @@ const mapDispatchToProps = {
   fetchSchemas,
   saveProject,
   saveProjectFloorArea,
+  saveProjectTimetable,
   changeProjectPhase,
   validateProjectFields,
   projectSetChecking,
