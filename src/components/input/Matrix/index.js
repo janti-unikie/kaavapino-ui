@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { checkingSelector } from '../../../selectors/projectSelector'
-import Field from '../Field'
+import CustomField from '../CustomField'
 import projectUtils from '../../../utils/projectUtils'
 import './styles.scss'
 import Info from '../../../components/input/Info'
@@ -61,7 +61,7 @@ const Matrix = ({ field: { matrix }, checking, attributeData, formName, isFloorC
                               {renderInfo(field)}
                             </div>
                           </div>
-                          <Field
+                          <CustomField
                             attributeData={attributeData}
                             field={field}
                             fieldset={field.type === 'fieldset'}

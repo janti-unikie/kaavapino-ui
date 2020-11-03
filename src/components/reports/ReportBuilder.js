@@ -5,7 +5,7 @@ import { downloadReport } from '../../actions/reportActions'
 import { reportsSelector } from '../../selectors/reportSelector'
 import { reportFormSelectedReportSelector } from '../../selectors/formSelector'
 import { Form, Button } from 'semantic-ui-react'
-import Field from '../input/Field'
+import CustomField from '../input/CustomField'
 import ReportFilters from './ReportFilters'
 
 class ReportBuilder extends Component {
@@ -28,7 +28,7 @@ class ReportBuilder extends Component {
       <Form onSubmit={this.handleSubmit} className="report-builder-container">
         <div className="select-report-container">
           <h2>Valitse raportti</h2>
-          <Field field={{ choices: this.formatReports(), name: 'report' }} />
+          <CustomField field={{ choices: this.formatReports(), name: 'report' }} />
         </div>
         {selectedReport && (
           <div className="report-filter-container">
