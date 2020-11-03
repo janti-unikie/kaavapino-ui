@@ -120,6 +120,7 @@ class CustomField extends Component {
       props.input.defaultValue = props.defaultValue
       delete props.input.value
     }
+
     return <Input type="text" {...props} />
   }
 
@@ -198,8 +199,6 @@ class CustomField extends Component {
           this.props.field.generated ||
           this.props.field.disabled ||
           this.props.field.autofill_readonly
-            ? true
-            : false
         }
         formValues={this.props.formValues}
         validate={[this.validateFieldSize]}
@@ -306,15 +305,15 @@ class CustomField extends Component {
     }
 
     let fieldProps = {
+      ...custom,
       name: field.name,
       placeholder: field.placeholder || field.label,
       disabled:
-        field.generated || field.disabled || field.autofill_readonly ? true : false,
+        field.generated || field.disabled || field.autofill_readonly,
       attributeData,
       defaultValue,
       component: this.getInput(field),
-      ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
-      ...custom
+      ...(field.multiple_choice ? { type: 'select-multiple' } : {})
     }
 
     /* Some fields are autofilled to a value as per (autofill_rules)
