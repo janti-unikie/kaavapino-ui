@@ -265,21 +265,24 @@ const getChangedAttributeData = (values, initial, sections) => {
       attribute_data[key] = values[key]
     }
     let fieldSetName
+
+    if ( sections ) {
     // When editing a field inside fieldset, the fieldset is not included by default.
     // This workaround adds fieldset if field is inside fieldset.
     sections.some(title => {
-      title.fields.some(fieldset => {
-      const fieldsetAttributes = fieldset.fieldset_attributes
-      fieldsetAttributes.forEach( value => {
-        if ( value.name === key ) {
-          fieldSetName = fieldset.name
-          attribute_data[fieldset.name] = fieldset.name
-        }
+        title.fields.some(fieldset => {
+        const fieldsetAttributes = fieldset.fieldset_attributes
+        fieldsetAttributes.forEach( value => {
+          if ( value.name === key ) {
+            fieldSetName = fieldset.name
+            attribute_data[fieldset.name] = fieldset.name
+          }
+        })
+        return null
+        })
+        return null
       })
-      return null
-      })
-      return null
-    })
+    }
     const initialFieldSetValues = initial[fieldSetName]
     if ( initialFieldSetValues ) {
       attribute_data = Object.assign({}, initialFieldSetValues[0], attribute_data)
