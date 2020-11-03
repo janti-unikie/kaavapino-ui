@@ -18,11 +18,15 @@ import AutofillInputCalculations from './AutofillInputCalculation/AutofillInputC
 import { isEqual } from 'lodash'
 import projectUtils from '../../utils/projectUtils'
 import AutofillInput from './AutofillInput/AutofillInput'
+import _ from 'lodash'
 class CustomField extends Component {
-
   yearOptions = []
   shouldComponentUpdate(p) {
-    if (!this.props.attributeData || !p.attributeData) {
+    if (
+      !this.props.attributeData ||
+      !p.attributeData ||
+      !_.isEqual(this.props.attributeData, p.attributeData)
+    ) {
       return true
     }
 
@@ -41,9 +45,9 @@ class CustomField extends Component {
     const oldFieldset = this.props.attributeData[oldParent]
     const newParent = p.parentName
     const newFieldset = p.attributeData[newParent]
-    if ((oldParent && !oldFieldset) && (newParent && newFieldset)) {
+    if (oldParent && !oldFieldset && newParent && newFieldset) {
       return true
-      }
+    }
 
     /*This is for adding fieldsets  */
     if (
@@ -73,10 +77,10 @@ class CustomField extends Component {
   }
   validateFieldSize = value => {
     const field = this.props.field
-    if ( value && field && field.character_limit && field.character_limit > 0 ) {
-        if ( value.length > field.character_limit ) {
-          return 'Kentässä liikaa merkkejä'
-        }
+    if (value && field && field.character_limit && field.character_limit > 0) {
+      if (value.length > field.character_limit) {
+        return 'Kentässä liikaa merkkejä'
+      }
     }
   }
 
@@ -96,31 +100,33 @@ class CustomField extends Component {
   }
 
   renderYearSelect = props => {
-      const { multiple_choice } = this.props.field
+    const { multiple_choice } = this.props.field
+    projectUtils.checkInputValue(props)
 
-      if ( this.yearOptions.length === 0 ) {
-        this.yearOptions = projectUtils.generateArrayOfYears()
-      }
-      return (
-        <SelectInput
-          multiple={multiple_choice}
-          options={this.formatOptions(this.yearOptions)}
-          {...props}
-        />
-     )
+    if (this.yearOptions.length === 0) {
+      this.yearOptions = projectUtils.generateArrayOfYears()
+    }
+    return (
+      <SelectInput
+        multiple={multiple_choice}
+        options={this.formatOptions(this.yearOptions)}
+        {...props}
+      />
+    )
   }
 
   renderString = props => {
-    if(props.defaultValue) {
+    if (props.defaultValue) {
       props.input.defaultValue = props.defaultValue
       delete props.input.value
     }
-    return <Input type="text" {...props}  />
+
+    return <Input type="text" {...props} />
   }
 
   renderTextArea = props => {
     projectUtils.checkInputValue(props)
-    return <TextArea {...props}/>
+    return <TextArea {...props} />
   }
 
   renderRichText = props => {
@@ -145,6 +151,7 @@ class CustomField extends Component {
 
   renderSelect = props => {
     const { choices, multiple_choice } = this.props.field
+    projectUtils.checkInputValue(props)
     return (
       <SelectInput
         multiple={multiple_choice}
@@ -156,6 +163,7 @@ class CustomField extends Component {
 
   renderRadio = props => {
     const { options } = this.props.field
+    projectUtils.checkInputValue(props)
     return <RadioButton options={options} {...props} />
   }
 
@@ -179,18 +187,27 @@ class CustomField extends Component {
     return <DateTime {...props} />
   }
 
-  renderFieldset = ({ fields: sets }) => (
-    <FieldSet
-      sets={sets}
-      fields={this.props.field.fieldset_attributes}
-      disabled={this.props.field.disabled}
-      attributeData={this.props.attributeData}
-      name={this.props.field.name}
-      formValues={this.props.formValues}
-      validate={[this.validateFieldSize]}
-      syncronousErrors={this.props.syncronousErrors}
-    />
-  )
+  renderFieldset = ({ fields: sets, ...props }) => {
+    return (
+      <FieldSet
+        sets={sets}
+        fields={this.props.field.fieldset_attributes}
+        attributeData={this.props.attributeData}
+        name={this.props.field.name}
+        placeholder={props.placeholder || this.props.field.label}
+        disabled={
+          this.props.field.generated ||
+          this.props.field.disabled ||
+          this.props.field.autofill_readonly
+        }
+        formValues={this.props.formValues}
+        validate={[this.validateFieldSize]}
+        syncronousErrors={this.props.syncronousErrors}
+        handleSave={this.props.handleSave}
+        onRadioChange={this.props.onRadioChange}
+      />
+    )
+  }
 
   renderDecimal = props => {
     projectUtils.checkInputValue(props)
@@ -199,17 +216,27 @@ class CustomField extends Component {
 
   renderCheckbox = props => {
     const { onhold, saveProjectBase, disabled } = this.props.field
-    return <OnHoldCheckbox onhold={onhold} saveProjectBase={saveProjectBase} disabled={disabled} {...props} />
+    return (
+      <OnHoldCheckbox
+        onhold={onhold}
+        saveProjectBase={saveProjectBase}
+        disabled={disabled}
+        {...props}
+      />
+    )
   }
 
   getInput = field => {
-   if (field.choices) {
+
+    // Since there might be rules which has boolean type and choices, avoid selecting select and select
+    // boolean radiobutton intead
+    if (field.choices && field.type !== 'boolean') {
       /* Should perhaps check (field.type === 'select' && field.choices), but there were tests against it.
       Will get back to this. */
       return this.renderSelect
     }
-    if ( field.display === 'dropdown') {
-      return  this.renderYearSelect
+    if (field.display === 'dropdown') {
+      return this.renderYearSelect
     }
 
     if (field.type === 'radio' && field.options) {
@@ -251,7 +278,16 @@ class CustomField extends Component {
   }
 
   render() {
-    const { field, attributeData, fieldset, formName, formValues, error, defaultValue, ...custom } = this.props
+    const {
+      field,
+      attributeData,
+      fieldset,
+      formName,
+      formValues,
+      error,
+      defaultValue,
+      ...custom
+    } = this.props
     const type = field.type
     if (type === 'file' || type === 'image') {
       const file = attributeData[field.name]
@@ -267,28 +303,41 @@ class CustomField extends Component {
         />
       )
     }
+
     let fieldProps = {
+      ...custom,
       name: field.name,
       placeholder: field.placeholder || field.label,
-      disabled: field.generated || field.disabled || field.autofill_readonly ? true : false,
+      disabled:
+        field.generated || field.disabled || field.autofill_readonly,
       attributeData,
       defaultValue,
       component: this.getInput(field),
-      ...custom,
       ...(field.multiple_choice ? { type: 'select-multiple' } : {})
     }
 
     /* Some fields are autofilled to a value as per (autofill_rules)
      * Some fields have their value calculated based on other fields (calculations)
      * Some autofill fields are readonly, some are not (autofill_readonly) */
-    if( this.props.isFloorCalculation ) {
+    if (this.props.isFloorCalculation) {
       fieldProps = {
         ...fieldProps,
-        parse: field.type === 'integer' ? val => (val || val === 0 ? Number(val) : null) : null
+        parse:
+          field.type === 'integer' ? val => (val || val === 0 ? Number(val) : null) : null
       }
-      return <AutofillInputCalculations field={field} fieldProps={fieldProps} formName={formName} />
+      return (
+        <AutofillInputCalculations
+          field={field}
+          fieldProps={fieldProps}
+          formName={formName}
+        />
+      )
     }
-    if (field.autofill_rule && field.autofill_rule.length && !this.props.isFloorCalculation) {
+    if (
+      field.autofill_rule &&
+      field.autofill_rule.length &&
+      !this.props.isFloorCalculation
+    ) {
       return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
     }
 
@@ -300,13 +349,13 @@ class CustomField extends Component {
       // Fieldsets have calculated defaultValues
       let defaultValue = fieldProps.defaultValue
       // Non-fieldset fields get defaultValue from attributeData
-      if (!defaultValue) defaultValue = (attributeData ? attributeData[field.name] : null)
+      if (!defaultValue) defaultValue = attributeData ? attributeData[field.name] : null
       return (
         <Field
           {...fieldProps}
           defaultValue={defaultValue}
           formName={formName}
-          className={`${this.props.className} ${ error ? error : ''}`}
+          className={`${this.props.className} ${error ? error : ''}`}
           maxSize={field.character_limit}
         />
       )
@@ -320,8 +369,8 @@ class CustomField extends Component {
       <Field
         {...fieldProps}
         validate={[this.validateFieldSize]}
-        className={`${this.props.className} ${ error ? error : ''}`}
-       />
+        className={`${this.props.className} ${error ? error : ''}`}
+      />
     )
   }
 }

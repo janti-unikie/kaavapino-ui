@@ -1,4 +1,4 @@
-import { concat, difference, flattenDeep } from 'lodash'
+import { concat, difference, flattenDeep, isBoolean, isNaN } from 'lodash'
 
 const addZeroPrefixIfNecessary = value => (value < 10 ? `0${value}` : value)
 
@@ -113,8 +113,8 @@ const formatSubtype = (id, subtypes) => {
   }
 }
 
-const formatPayload = (fieldset, sections, parentName, initialValues) => {
-  const keys = Object.keys(fieldset)
+const formatPayload = (changedValues, sections, parentNames, initialValues) => {
+  const keys = Object.keys(changedValues)
   const fieldsetList = keys.filter(key => key.indexOf('fieldset') !== -1)
   const fieldsetAttributes = flattenDeep(
     fieldsetList.map(
@@ -124,28 +124,28 @@ const formatPayload = (fieldset, sections, parentName, initialValues) => {
   const allFieldsets = concat(fieldsetList, fieldsetAttributes)
   const nonFieldsets = difference(keys, allFieldsets)
   // Bug fix which caused saga crash
-  if (!keys || keys.length === 0) return fieldset
+  if (!keys || keys.length === 0) return changedValues
 
   const returnValue = {}
 
   // No fieldset values, fieldsets have attributes
   if (fieldsetAttributes.length === 0) {
-    nonFieldsets.forEach(key => returnValue[key] = fieldset[key])
+    nonFieldsets.forEach(key => returnValue[key] = changedValues[key])
     return returnValue
   }
 
   // Handle non fieldset values
-  if (nonFieldsets.length !== 0) nonFieldsets.forEach(key => returnValue[key] = fieldset[key])
+  if (nonFieldsets.length !== 0) nonFieldsets.forEach(key => returnValue[key] = changedValues[key])
 
   fieldsetList.forEach(currentFieldset => {
     const attributes= getFieldsetAttributes(currentFieldset, sections)
     const currentObject = {}
     attributes.forEach(attribute => {
       //use new value for this field
-      if (fieldset[attribute]) {
-        currentObject[attribute] = fieldset[attribute]
+      if (changedValues[attribute] || isBoolean(changedValues[attribute])) {
+        currentObject[attribute] = changedValues[attribute]
       // use initlavalue
-      } else if (initialValues[attribute]) {
+      } else if (initialValues[attribute] || isBoolean(initialValues[attribute])) {
         currentObject[attribute] = initialValues[attribute]
       }
     })
@@ -153,48 +153,23 @@ const formatPayload = (fieldset, sections, parentName, initialValues) => {
   })
   return returnValue
 }
+// Returns parents from changed values.
+const getParents = changedValues => {
 
-const getParent = (sections, values) => {
-
-  if  (!sections || !values ) {
-    return
-  }
-  const keysToSearch = Object.keys(values)
+  const keysToSearch = Object.keys(changedValues)
 
    // Bug fix which caused saga crash
   if ( !keysToSearch || keysToSearch.length === 0) {
     return
   }
-  let parentName
+  const parentNames = []
 
   // Check if fieldset is in keysToSearch
   keysToSearch.forEach(key => {
-   if (key.indexOf('fieldset') !== -1) parentName = key
+   if (key.indexOf('fieldset') !== -1) parentNames.push(key)
   })
 
-  const keyToSearch = keysToSearch[0]
-  if (parentName) return parentName
-  /* We could skip this loop, if the redux store would update the currentProject.phase data
-    *This loop can be removed when phase is fix'd
-    * */
-  sections.some(title => {
-    if (parentName) return parentName
-
-    title.fields.some(fieldset => {
-      if (parentName) return parentName
-
-      if (fieldset.fieldset_attributes.length !== 0) {
-        fieldset.fieldset_attributes.some(attribute => {
-
-          if (attribute.name === keyToSearch) {
-            parentName = fieldset.name
-            return parentName
-          }
-        })
-      }
-    })
-  })
-  return parentName
+  return parentNames
 }
 
 const getFieldsetAttributes = (parent, sections) => {
@@ -206,28 +181,37 @@ const getFieldsetAttributes = (parent, sections) => {
         fieldsetAttributes = fieldset.fieldset_attributes.map(key => key.name)
         return fieldsetAttributes
       }
+      return null
     })
+    return null
   })
   return fieldsetAttributes
 }
 
-const getFieldsetValue = (data, fieldsetName) => {
+const getFieldValue = (data, fieldName) => {
   let value
-    data.forEach(index => {
-      if (index.hasOwnProperty(fieldsetName)) value = index[fieldsetName]
-    })
+  data.forEach(index => {
+    if (index.hasOwnProperty(fieldName)) value = index[fieldName]
+  })
+
   return value
 }
 
-const checkInputValue = (props) => {
-  if (props.parentName && props.attributeData[props.parentName]) {
-    const inputValue = getFieldsetValue(props.attributeData[props.parentName], props.input.name)
-    if (inputValue) props.input.value = inputValue
-  }}
+const checkInputValue = props => {
 
+  if (props.parentName && props.attributeData[props.parentName]) {
+    if ( !props.input.value || isBoolean( props.input.value ) ) {
+
+        const inputValue = getFieldValue(props.attributeData[props.parentName], props.input.name)
+        if ( inputValue || isBoolean( inputValue ) || !isNaN( inputValue )) props.input.value = inputValue
+      }
+    }
+}
 const getDefaultValue = (parentName, attributeData, name) => {
-  if (attributeData[parentName]) {
-    return getFieldsetValue(attributeData[parentName], name)
+  const fieldsetFields = attributeData[parentName]
+
+  if (fieldsetFields && fieldsetFields.length > 0) {
+    return fieldsetFields[0][name]
   }}
 
 const generateArrayOfYears = () => {
@@ -257,7 +241,8 @@ export default {
   formatSubtype,
   checkInputValue,
   getDefaultValue,
-  getParent,
+  getParents,
   formatPayload,
-  generateArrayOfYears
+  generateArrayOfYears,
+  getFieldsetAttributes
 }

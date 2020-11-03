@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Field from './Field'
+import CustomField from './CustomField'
 import Matrix from './Matrix'
 import { Form, Label, Popup } from 'semantic-ui-react'
 import Info from './Info'
@@ -33,7 +33,7 @@ class FormField extends Component {
         )
       default:
         return (
-          <Field
+          <CustomField
             disabled={field.disabled}
             field={field}
             attributeData={attributeData}

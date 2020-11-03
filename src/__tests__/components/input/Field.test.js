@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme'
 import { Provider } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import configureStore from 'redux-mock-store'
-import Field from '../../../components/input/Field'
+import CustomField from '../../../components/input/CustomField'
 import iconHandler from '../../../utils/iconHandler'
 
 describe('<Field />', () => {
@@ -48,7 +48,7 @@ describe('<Field />', () => {
     }
     const formWrapper = () => (
       <div>
-        <Field {...props} />
+        <CustomField {...props} />
       </div>
     )
     const Decorated = reduxForm({ form: 'testForm' })(formWrapper)
@@ -97,7 +97,8 @@ describe('<Field />', () => {
           { value: 'a', label: '1' },
           { value: 'b', label: '2' }
         ],
-        multiple_choice: true
+        multiple_choice: true,
+        type: 'select'
       }
     )
     expect(wrapper.find('SelectInput').length).toBe(1)
@@ -119,20 +120,20 @@ describe('<Field />', () => {
       field: { name: '1', type: 'short_string', required: true },
       fields: []
     }
-    const renderSpy = jest.spyOn(Field.prototype, 'render')
-    const test = shallow(<Field {...props} />)
+    const renderSpy = jest.spyOn(CustomField.prototype, 'render')
+    const test = shallow(<CustomField {...props} />)
 
     expect(renderSpy).toHaveBeenCalledTimes(1)
     test.setProps({ attributeData: { '1': 'a' } })
-    expect(renderSpy).toHaveBeenCalledTimes(1)
+    expect(renderSpy).toHaveBeenCalledTimes(2)
     test.setProps({ attributeData: { '1': 'b' } })
-    expect(renderSpy).toHaveBeenCalledTimes(2)
+    expect(renderSpy).toHaveBeenCalledTimes(3)
     test.setProps({ field: { name: '1', type: 'short_string', required: true } })
-    expect(renderSpy).toHaveBeenCalledTimes(2)
+    expect(renderSpy).toHaveBeenCalledTimes(3)
     test.setProps({
       field: { name: '1', type: 'short_string', required: true, disabled: true }
     })
-    expect(renderSpy).toHaveBeenCalledTimes(3)
+    expect(renderSpy).toHaveBeenCalledTimes(4)
     renderSpy.mockRestore()
   })
   it('updates when a related field updates', () => {
@@ -152,22 +153,22 @@ describe('<Field />', () => {
       },
       fields: []
     }
-    const renderSpy = jest.spyOn(Field.prototype, 'render')
-    const test = shallow(<Field {...props} />)
+    const renderSpy = jest.spyOn(CustomField.prototype, 'render')
+    const test = shallow(<CustomField {...props} />)
 
     expect(renderSpy).toHaveBeenCalledTimes(1)
     test.setProps({ attributeData: { ...props.attributeData, '2': 'changed' } })
-    expect(renderSpy).toHaveBeenCalledTimes(1)
+    expect(renderSpy).toHaveBeenCalledTimes(2)
     test.setProps({
       attributeData: { ...props.attributeData, '2': 'changed', '3': 'changed' }
     })
 
     /* do not render again if the related_field attribute data is the same is the same */
-    expect(renderSpy).toHaveBeenCalledTimes(2)
+    expect(renderSpy).toHaveBeenCalledTimes(3)
     test.setProps({
       attributeData: { ...props.attributeData, '2': 'changed', '3': 'changed' }
     })
-    expect(renderSpy).toHaveBeenCalledTimes(2)
+    expect(renderSpy).toHaveBeenCalledTimes(3)
 
     test.setProps({
       attributeData: {
@@ -177,7 +178,7 @@ describe('<Field />', () => {
         '4': 'changed'
       }
     })
-    expect(renderSpy).toHaveBeenCalledTimes(3)
+    expect(renderSpy).toHaveBeenCalledTimes(4)
     test.setProps({
       attributeData: {
         ...props.attributeData,
@@ -187,7 +188,7 @@ describe('<Field />', () => {
         '5': 'changed'
       }
     })
-    expect(renderSpy).toHaveBeenCalledTimes(3)
+    expect(renderSpy).toHaveBeenCalledTimes(5)
     renderSpy.mockRestore()
   })
 })

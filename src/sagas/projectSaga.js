@@ -252,16 +252,37 @@ function* createProject() {
   }
 }
 
-const getChangedAttributeData = (values, initial) => {
-  const attribute_data = {}
+const getChangedAttributeData = (values, initial, sections) => {
+  let attribute_data = {}
   Object.keys(values).forEach(key => {
     if (initial.hasOwnProperty(key) && isEqual(values[key], initial[key])) {
       return
     }
+
     if (values[key] === '') {
       attribute_data[key] = null
     } else {
       attribute_data[key] = values[key]
+    }
+    let fieldSetName
+    // When editing a field inside fieldset, the fieldset is not included by default.
+    // This workaround adds fieldset if field is inside fieldset.
+    sections.some(title => {
+      title.fields.some(fieldset => {
+      const fieldsetAttributes = fieldset.fieldset_attributes
+      fieldsetAttributes.forEach( value => {
+        if ( value.name === key ) {
+          fieldSetName = fieldset.name
+          attribute_data[fieldset.name] = fieldset.name
+        }
+      })
+      return null
+      })
+      return null
+    })
+    const initialFieldSetValues = initial[fieldSetName]
+    if ( initialFieldSetValues ) {
+      attribute_data = Object.assign({}, initialFieldSetValues[0], attribute_data)
     }
   })
   return attribute_data
@@ -334,14 +355,10 @@ function* saveProject() {
     const schema = yield select(schemaSelector)
     const currentSchema = schema.phases.find(s => s.id === currentProject.phase)
     const { sections } = currentSchema
-    const changedValues = getChangedAttributeData(values, initial)
-    const parentName = projectUtils.getParent(sections, changedValues)
-    const formatedData = projectUtils.formatPayload(
-      changedValues,
-      sections,
-      parentName,
-      initial
-    )
+    const changedValues = getChangedAttributeData(values, initial, sections)
+    const parentNames = projectUtils.getParents(sections, changedValues)
+    const formatedData = projectUtils.formatPayload(changedValues, sections, parentNames, initial)
+
     const attribute_data = formatedData
     try {
       const updatedProject = yield call(
