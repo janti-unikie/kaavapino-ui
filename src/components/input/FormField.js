@@ -61,6 +61,7 @@ class FormField extends Component {
       checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
     const isOneLineField = OneLineFields.indexOf(field.type) > -1
     const isReadOnly = field && field.autofill_readonly
+    const isCheckBox = field && field.type === 'checkbox'
 
     const syncError = syncronousErrors && syncronousErrors[field.name]
     let submitErrorText = ''
@@ -86,7 +87,23 @@ class FormField extends Component {
       ? `${field.label}  (Max ${field.character_limit} merkkiä)`
       : field.label
 
-    return (
+    const renderCheckBox = () => {
+       return (
+        <Form.Field
+          className={`checkbox-container small-margin'} ${
+          showError ? 'error' : ''
+        }`}
+        >
+          <Label>
+              <span className="checkbox">{this.renderField()}</span>
+              <span>{title}</span>
+          </Label>
+       </Form.Field>
+       )
+    }
+
+    const renderNormalField = () => {
+      return (
       <Form.Field
         className={`input-container ${isOneLineField ? 'small-margin' : ''} ${
           showError ? 'error' : ''
@@ -125,7 +142,10 @@ class FormField extends Component {
         {this.renderField()}
         {showError && <div className="error-text">{showError}</div>}
       </Form.Field>
-    )
+      )
+    }
+
+   return isCheckBox ? renderCheckBox() : renderNormalField()
   }
 }
 

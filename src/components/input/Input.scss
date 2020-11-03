@@ -496,6 +496,12 @@
     opacity: 0.6;
   }
 }
+.checkbox-container {
+  .checkbox {
+    padding-top: 3px;
+    padding-right: 5px;
+  }
+}
 
 /* Error styles. Semantic UI uses a lot of !important, thus these overrides became scetchier than I hoped.
  * Using #root selector to help with more specific selectors */

@@ -4,6 +4,12 @@ const editDateFieldStart = {
         label: 'Suunniteltu deadline',
         help_text: 'Nam sed sapien vitae ex tempus vestibulum ut et massa.'
 }
+const editDateFieldCheckbox = {
+        type: 'checkbox',
+        name: 'vahvistus_start',
+        label: 'Vahvista aikataulu',
+        help_text: 'Nam sed sapien vitae ex tempus vestibulum ut et massa.'
+}
 const editDateFieldPrinciple = {
     type: 'date',
     name: 'principle_deadline',
@@ -43,7 +49,7 @@ const editDateFieldInception = {
 
 const start = {
     title: 'Käynnistys',
-    fields: [editDateFieldStart]
+    fields: [editDateFieldStart, editDateFieldCheckbox]
 }
 const principle = {
     title: 'Periaatteet',

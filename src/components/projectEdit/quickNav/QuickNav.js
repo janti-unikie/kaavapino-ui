@@ -219,7 +219,7 @@ class QuickNav extends Component {
             field: {
               name: ONHOLD,
               label: 'Projekti on toistaiseksi keskeytynyt',
-              type: 'checkbox',
+              type: 'checkbox-onhold',
               onhold: currentProject.onhold,
               saveProjectBase: saveProjectBase,
               disabled: saving

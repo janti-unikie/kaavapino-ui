@@ -13,6 +13,8 @@ import RadioButton from './RadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
 import OnHoldCheckbox from './OnholdCheckbox'
+import CustomCheckbox from './CustomCheckbox'
+
 import AutofillInputCalculations from './AutofillInputCalculation/AutofillInputCalculations'
 
 import { isEqual } from 'lodash'
@@ -215,6 +217,13 @@ class CustomField extends Component {
   }
 
   renderCheckbox = props => {
+    projectUtils.checkInputValue(props)
+    return (
+      <CustomCheckbox {...props} />
+    )
+  }
+
+  renderOnholdCheckbox = props => {
     const { onhold, saveProjectBase, disabled } = this.props.field
     return (
       <OnHoldCheckbox
@@ -270,6 +279,8 @@ class CustomField extends Component {
         return this.renderLink
       case 'decimal':
         return this.renderDecimal
+      case 'checkbox-onhold':
+        return this.renderOnholdCheckbox
       case 'checkbox':
         return this.renderCheckbox
       default:
