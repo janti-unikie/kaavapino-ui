@@ -28,10 +28,12 @@ import QuickNav from './quickNav/QuickNav'
 import EditFloorAreaFormModal from '../project/EditFloorAreaFormModal'
 import { EDIT_PROJECT_FORM } from '../../constants'
 import _ from 'lodash'
+import EditProjectTimetableModal from '../project/EditProjectTimetableModal'
 
 class ProjectEditPage extends Component {
   state = {
     showEditFloorAreaForm: false,
+    showEditProjectTimetableForm: false,
     highlightGroup: ''
   }
 
@@ -156,6 +158,7 @@ class ProjectEditPage extends Component {
           submitErrors={submitErrors}
           title={`${currentSchema.list_prefix}. ${currentSchema.title}`}
           showEditFloorAreaForm={() => this.setState({ showEditFloorAreaForm: true })}
+          showEditProjectTimetableForm={() => this.setState({ showEditProjectTimetableForm: true })}
         />
         {this.state.showEditFloorAreaForm && (
           <EditFloorAreaFormModal
@@ -163,6 +166,14 @@ class ProjectEditPage extends Component {
             open
             handleSubmit={saveProjectFloorArea}
             handleClose={() => this.setState({ showEditFloorAreaForm: false })}
+          />
+        )}
+        {this.state.showEditProjectTimetableForm && (
+          <EditProjectTimetableModal
+            attributeData={attribute_data}
+            open
+            handleSubmit={saveProjectFloorArea}
+            handleClose={() => this.setState({ showEditProjectTimetableForm: false })}
           />
         )}
       </div>

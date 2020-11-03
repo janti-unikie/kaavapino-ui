@@ -5,37 +5,14 @@ import PropTypes from 'prop-types'
 import { Modal, Form, Button } from 'semantic-ui-react'
 import { reduxForm, getFormSubmitErrors, getFormValues } from 'redux-form'
 import { connect } from 'react-redux'
-import { EDIT_FLOOR_AREA_FORM } from '../../../constants'
+import {  EDIT_PROJECT_TIMETABLE_FORM } from '../../../constants'
 import FormField from '../../input/FormField'
 import Collapse from '../../common/collapse'
 import './styles.scss'
-import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
+//import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
+import projectTimetableEditSectionsMock from '../timetableEditMockData'
 
-const FloorAreaTotals = ({ formValues, floorAreaSections }) => {
-  // Would love a more rubust check than string includes if one becomes available
-  const totalSection = floorAreaSections.find(section =>
-    section.title.includes('yhteensä')
-  )
-
-  return (
-    <div className="floor-area-totals">
-      <div className="floor-area-totals-header">Kerrosalan lisäys yhteensä</div>
-      <div className="totals">
-        {totalSection.fields.map((totalMatrix, i) => (
-          <FormField
-            field={totalMatrix}
-            attributeData={formValues}
-            key={i}
-            formName={EDIT_FLOOR_AREA_FORM}
-            formValues={formValues}
-            isFloorCalculation={true}
-          />
-        ))}
-      </div>
-    </div>
-  )
-}
-class EditFloorAreaFormModal extends Component {
+class EditTimeTableModal extends Component {
   constructor(props) {
     super(props)
 
@@ -90,12 +67,6 @@ class EditFloorAreaFormModal extends Component {
     this.props.handleClose()
     this.setState({ loading: false })
   }
-
-  getFloorAreaTotalsComponent = () => {
-    const { floorAreaSections } = this.props
-    return <FloorAreaTotals formValues={{}} floorAreaSections={floorAreaSections} />
-  }
-
   getFormField = (fieldProps, key) => {
     const { formSubmitErrors, formValues } = this.props
     const error =
@@ -105,22 +76,17 @@ class EditFloorAreaFormModal extends Component {
       <div key={key}>
         <FormField
           {...fieldProps}
-          formName={EDIT_FLOOR_AREA_FORM}
+          formName={EDIT_PROJECT_TIMETABLE_FORM}
           attributeData={{}}
           error={error}
           formValues={formValues}
-          isFloorCalculation={true}
           className='modal-field'
-          />
+          isProjectTimetableEdit={true}/>
       </div>
     )
   }
   renderSection = (section, sectionIndex) => {
-
-    // "Yhteesä" section is handled separately
-    if ( section.title.includes('yhteensä') ) {
-      return null
-    }
+    console.log(section)
      return (
         <Collapse title={section.title} key={sectionIndex}>
           {section.fields.map((field, fieldIndex) => (
@@ -128,27 +94,25 @@ class EditFloorAreaFormModal extends Component {
             ))
           }
         </Collapse>
- )
+      )
     }
 
   render() {
     const { loading } = this.state
-    const { floorAreaSections } = this.props
-
+    //const { timetableEditSections } = this.props
     return (
       <Modal
-        className="form-modal edit-floor-area-form-modal"
+        className="form-modal edit-project-timetable-form-modal"
         size={'small'}
-        onClose={this.props.handleClose}
+        onClose={this.handleClose}
         open={this.props.open}
         closeIcon
       >
-        <Modal.Header>Päivitä kerrosalatiedot</Modal.Header>
+        <Modal.Header>Päivitä aikataulut</Modal.Header>
         <Modal.Content>
-          {this.getFloorAreaTotalsComponent()}
           <Form>
-            {floorAreaSections &&
-              floorAreaSections.map((section, sectionIndex) => (
+            {projectTimetableEditSectionsMock &&
+              projectTimetableEditSectionsMock.map((section, sectionIndex) => (
                 this.renderSection(section, sectionIndex)
               ))
               }
@@ -173,19 +137,19 @@ class EditFloorAreaFormModal extends Component {
   }
 }
 
-EditFloorAreaFormModal.propTypes = {
+EditTimeTableModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
-  formSubmitErrors: getFormSubmitErrors(EDIT_FLOOR_AREA_FORM)(state),
-  floorAreaSections: floorAreaSectionsSelector(state),
-  formValues: getFormValues(EDIT_FLOOR_AREA_FORM)(state)
+  formSubmitErrors: getFormSubmitErrors(EDIT_PROJECT_TIMETABLE_FORM)(state),
+ // floorAreaSections: floorAreaSectionsSelector(state),
+  formValues: getFormValues(EDIT_PROJECT_TIMETABLE_FORM)(state)
 })
 
 const decoratedForm = reduxForm({
-  form: EDIT_FLOOR_AREA_FORM
-})(EditFloorAreaFormModal)
+  form: EDIT_PROJECT_TIMETABLE_FORM
+})(EditTimeTableModal)
 
 export default connect(mapStateToProps, () => ({}))(decoratedForm)
