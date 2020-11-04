@@ -11,6 +11,7 @@ import Collapse from '../../common/collapse'
 import './styles.scss'
 //import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
 import projectTimetableEditSectionsMock from '../timetableEditMockData'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class EditTimeTableModal extends Component {
   constructor(props) {
@@ -93,6 +94,12 @@ class EditTimeTableModal extends Component {
               this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
             ))
           }
+          <div className="section-deadline-info">
+            <div>
+              <FontAwesomeIcon className="deadline-info-icon" icon="clock" />
+              Määräaika 10.12.2010
+            </div>
+          </div>
         </Collapse>
       )
     }
