@@ -188,6 +188,8 @@ class CustomField extends Component {
   }
 
   renderFieldset = ({ fields: sets, ...props }) => {
+    const { field } = this.props
+
     return (
       <FieldSet
         sets={sets}
@@ -195,16 +197,13 @@ class CustomField extends Component {
         attributeData={this.props.attributeData}
         name={this.props.field.name}
         placeholder={props.placeholder || this.props.field.label}
-        disabled={
-          this.props.field.generated ||
-          this.props.field.disabled ||
-          this.props.field.autofill_readonly
-        }
+        disabled={field.generated || field.disabled || field.autofill_readonly ? true : false}
         formValues={this.props.formValues}
         validate={[this.validateFieldSize]}
         syncronousErrors={this.props.syncronousErrors}
         handleSave={this.props.handleSave}
         onRadioChange={this.props.onRadioChange}
+        field={field}
       />
     )
   }
@@ -308,8 +307,7 @@ class CustomField extends Component {
       ...custom,
       name: field.name,
       placeholder: field.placeholder || field.label,
-      disabled:
-        field.generated || field.disabled || field.autofill_readonly,
+      disabled: field.generated || field.disabled || field.autofill_readonly ? true : false,
       attributeData,
       defaultValue,
       component: this.getInput(field),
@@ -333,11 +331,7 @@ class CustomField extends Component {
         />
       )
     }
-    if (
-      field.autofill_rule &&
-      field.autofill_rule.length &&
-      !this.props.isFloorCalculation
-    ) {
+     if ( field.autofill_rule ) {
       return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
     }
 

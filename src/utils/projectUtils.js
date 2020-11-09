@@ -226,6 +226,21 @@ const generateArrayOfYears = () => {
   return years
 }
 
+const findValueFromObject = (object, key) => {
+  let value
+  Object.keys(object).some((currentKey) =>  {
+      if (currentKey === key) {
+          value = object[currentKey]
+          return true
+      }
+      if (object[currentKey] && typeof object[currentKey] === 'object') {
+          value = findValueFromObject(object[currentKey], key)
+          return value !== undefined
+      }
+      return false
+  })
+  return value
+  }
 export default {
   formatDate,
   formatTime,
@@ -244,5 +259,6 @@ export default {
   getParents,
   formatPayload,
   generateArrayOfYears,
-  getFieldsetAttributes
+  getFieldsetAttributes,
+  findValueFromObject
 }
