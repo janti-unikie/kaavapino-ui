@@ -27,7 +27,7 @@ class Link extends PureComponent {
           onClick={this.openLink}
         />
         {valid && <FontAwesomeIcon size="lg" icon="check" color="green" />}
-        {!valid && value.length > 0 && (
+        {!valid && value && value.length > 0 && (
           <FontAwesomeIcon size="lg" icon="times" color="red" />
         )}
       </div>
