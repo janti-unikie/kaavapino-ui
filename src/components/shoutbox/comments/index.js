@@ -128,9 +128,10 @@ class Comments extends Component {
               fluid
               placeholder="Lisää kommentti"
               action={
-                <Button primary onClick={this.handleSubmit}>
+                ( <Button primary onClick={this.handleSubmit}>
                   Lähetä
                 </Button>
+                )
               }
               value={this.state.value}
             />

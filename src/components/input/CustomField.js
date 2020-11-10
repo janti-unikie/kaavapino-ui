@@ -127,10 +127,6 @@ class CustomField extends Component {
     const { onBlur, attributeData, parentName } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName )
 
-    if (props.defaultValue) {
-      props.input.defaultValue = props.defaultValue
-      delete props.input.value
-    }
     return <Input onBlur={onBlur} type="text" {...props} />
   }
 
@@ -141,32 +137,33 @@ class CustomField extends Component {
       <TextArea
         onBlur={onBlur}
         {...props}
-      />)
+      />
+      )
   }
 
   renderRichText = props => {
-    const { onBlur, handleSave, attributeData, parentName, modules } = this.props
+    const { onBlur, handleSave, attributeData, parentName, meta } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
 
     return (
       <RichTextEditor
         onBlur={onBlur}
         handleSave={handleSave}
-        modules={modules}
+        meta={meta}
         {...props}
         largeField />
         )
   }
 
   renderRichTextShort = props => {
-    const { onBlur, handleSave, attributeData, parentName, modules } = this.props
+    const { onBlur, handleSave, attributeData, parentName, meta } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
 
     return (
     <RichTextEditor
         onBlur={onBlur}
         handleSave={handleSave}
-        modules={modules}
+        meta={meta}
         {...props}
         />
         )
@@ -185,9 +182,8 @@ class CustomField extends Component {
   }
 
   renderGeometry = props => {
-    const { attributeData, parentName } = this.props
+    const { attributeData, parentName, onBlur } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
-    const { onBlur } = this.props
     return (
     <Geometry
       onBlur={onBlur}
@@ -233,7 +229,8 @@ class CustomField extends Component {
         input={input}
         onRadioChange={onRadioChange}
         defaultValue={defaultValue}
-        {...props} />)
+        {...props} />
+        )
   }
 
   renderToggle = props => {
@@ -243,7 +240,8 @@ class CustomField extends Component {
       <ToggleButton
         onBlur={onBlur}
         handleSave={handleSave}
-        {...props} />)
+        {...props} />
+        )
   }
 
   renderLink = props => {
@@ -254,7 +252,8 @@ class CustomField extends Component {
       <Link
         onBlur={onBlur}
         handleSave={handleSave}
-        {...props} />)
+        {...props} />
+        )
   }
 
   renderDateTime = props => {
@@ -265,7 +264,8 @@ class CustomField extends Component {
       <DateTime
         onBlur={onBlur}
         handleSave={handleSave}
-        {...props} />)
+        {...props} />
+        )
   }
 
   renderFieldset = ({ fields: sets }) => {
@@ -310,7 +310,8 @@ class CustomField extends Component {
         step="0.01"
         onBlur={onBlur}
         handleSave={handleSave}
-        {...props} />)
+        {...props} />
+        )
   }
 
   renderCheckbox = props => {
@@ -396,7 +397,6 @@ class CustomField extends Component {
       formName,
       formValues,
       error,
-      defaultValue,
       updated
     } = this.props
     const type = field.type
@@ -421,7 +421,6 @@ class CustomField extends Component {
       placeholder: field.placeholder || field.label,
       disabled:
         field.generated || field.disabled || field.autofill_readonly,
-      defaultValue,
       component: this.getInput(field),
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
       updated: { updated }
@@ -454,7 +453,8 @@ class CustomField extends Component {
           field={field}
           fieldProps={fieldProps}
           formName={formName}
-        />)
+        />
+        )
     }
 
     if (type === 'toggle') {
@@ -463,7 +463,8 @@ class CustomField extends Component {
           {...fieldProps}
           label={field.label}
           attributeData={ this.props.attributeData }
-        />)
+        />
+        )
     }
 
     if (type === 'rich_text' || type === 'rich_text_short') {

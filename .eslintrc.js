@@ -43,7 +43,7 @@ module.exports = {
         arrow: "parens-new-line",
         condition: "parens-new-line",
         logical: "parens-new-line",
-        prop: "ignore",
+        prop: "parens-new-line",
       },
     ],
     "no-multiple-empty-lines": ["error", { max: 1 }],

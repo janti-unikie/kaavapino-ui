@@ -15,7 +15,6 @@ const RadioBooleanButton = ({
       onRadioChange()
     }
   }
-  console.log('radioCustom', custom)
   return (
     <div className={`radio-input-container${inverted ? ' inverted' : ''}`}>
       <Radio

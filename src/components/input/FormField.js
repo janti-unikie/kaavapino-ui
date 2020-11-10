@@ -123,13 +123,14 @@ class FormField extends Component {
                   position="top center"
                   hideOnScroll
                   content={
-                    <span className="input-history">
+                    ( <span className="input-history">
                       <span>{`${projectUtils.formatDate(
                         updated.timestamp
                       )} ${projectUtils.formatTime(updated.timestamp)} ${
                         updated.user_name
                       }`}</span>
                     </span>
+                    )
                   }
                 />
               )}
