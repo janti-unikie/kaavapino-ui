@@ -5,15 +5,16 @@ import PropTypes from 'prop-types'
 import { Modal, Form, Button } from 'semantic-ui-react'
 import { reduxForm, getFormSubmitErrors, getFormValues } from 'redux-form'
 import { connect } from 'react-redux'
-import {  EDIT_PROJECT_TIMETABLE_FORM } from '../../../constants'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { EDIT_PROJECT_TIMETABLE_FORM } from '../../../constants'
 import FormField from '../../input/FormField'
 import Collapse from '../../common/collapse'
 import './styles.scss'
-//import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
+// import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
+import { currentProjectSelector } from '../../../selectors/projectSelector'
 import projectTimetableEditSectionsMock from '../timetableEditMockData'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-class EditTimeTableModal extends Component {
+class EditProjectTimeTableModal extends Component {
   constructor(props) {
     super(props)
 
@@ -23,34 +24,39 @@ class EditTimeTableModal extends Component {
   }
 
   componentDidMount() {
-    const { initialize, attributeData } = this.props
-    initialize(attributeData)
+    const { initialize } = this.props
+    initialize({ kaynnistys_deadline: '2009-01-01' })
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      saving,
+      initialize,
+      attributeData,
+      submitSucceeded,
+      submitFailed,
+      loading
+    } = this.props
+
+    function setLoadingFalse() {
+      this.setState({ loading: false })
+    }
+
+    /* handle submit success / failure */
+
+    if (prevProps.submitting && submitSucceeded) {
+      this.handleClose()
+    } else if (prevProps.submitting && submitFailed && !submitSucceeded && loading) {
+      setLoadingFalse()
+    }
+    if (prevProps.saving && !saving) {
+      initialize(attributeData)
+    }
   }
 
   componentWillUnmount() {
     clearTimeout(this.timeout)
     clearInterval(this.autoSave)
-  }
-
-  componentDidUpdate(prevProps) {
-    const { saving, initialize, attributeData } = this.props
-
-    /* handle submit success / failure */
-
-    if (prevProps.submitting && this.props.submitSucceeded) {
-      this.handleClose()
-    } else if (
-      prevProps.submitting &&
-      this.props.submitFailed &&
-      !this.props.submitSucceeded &&
-      this.state.loading
-    ) {
-      this.setState({ loading: false })
-    }
-
-    if (prevProps.saving && !saving) {
-      initialize(attributeData)
-    }
   }
 
   handleSubmit = () => {
@@ -60,69 +66,81 @@ class EditTimeTableModal extends Component {
 
     this.setState({ loading: true })
 
-    const errors = this.props.handleSubmit()
+    const { handleSubmit } = this.props
+
+    const errors = handleSubmit()
     console.log(errors)
   }
 
   handleClose = () => {
-    this.props.reset()
-    this.props.handleClose()
+    const { reset, handleClose } = this.props
+    reset()
+    handleClose()
     this.setState({ loading: false })
   }
+
   getFormField = (fieldProps, key) => {
-    const { formSubmitErrors, formValues } = this.props
+    const { formSubmitErrors, formValues, currentProject } = this.props
     const error =
       formSubmitErrors && fieldProps.field && formSubmitErrors[fieldProps.field.name]
+
+    const { deadlines } = currentProject
+
+    const startDate = deadlines[0].start
 
     return (
       <div key={key}>
         <FormField
-          {...fieldProps}
+          field={fieldProps.field}
           formName={EDIT_PROJECT_TIMETABLE_FORM}
           attributeData={{}}
           error={error}
           formValues={formValues}
-          className='modal-field'
-          isProjectTimetableEdit={true}/>
+          className="modal-field"
+          defaultValue={startDate}
+          currentProject={currentProject}
+          isProjectTimetableEdit
+        />
       </div>
     )
   }
+
   renderSection = (section, sectionIndex) => {
-     return (
-        <Collapse title={section.title} key={sectionIndex}>
-          {section.fields.map((field, fieldIndex) => (
-              this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
-            ))
-          }
-          <div className="section-deadline-info">
-            <div>
-              <FontAwesomeIcon className="deadline-info-icon" icon="clock" />
-              Määräaika 10.12.2010
-            </div>
+    return (
+      <Collapse title={section.title} key={sectionIndex}>
+        {section.fields.map((field, fieldIndex) =>
+          this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
+        )}
+        <div className="section-deadline-info">
+          <div>
+            <FontAwesomeIcon className="deadline-info-icon" icon="clock" />
+            Määräaika 10.12.2010
           </div>
-        </Collapse>
-      )
-    }
+        </div>
+      </Collapse>
+    )
+  }
 
   render() {
     const { loading } = this.state
-    //const { timetableEditSections } = this.props
+    const { open } = this.props
+    // const { timetableEditSections } = this.props
+
     return (
       <Modal
         className="form-modal edit-project-timetable-form-modal"
-        size={'small'}
+        size="small"
         onClose={this.handleClose}
-        open={this.props.open}
+        open={open}
         closeIcon
       >
         <Modal.Header>Päivitä aikataulut</Modal.Header>
         <Modal.Content>
           <Form>
             {projectTimetableEditSectionsMock &&
-              projectTimetableEditSectionsMock.map((section, sectionIndex) => (
+              projectTimetableEditSectionsMock.map((section, sectionIndex) =>
                 this.renderSection(section, sectionIndex)
-              ))
-              }
+              )}
           </Form>
         </Modal.Content>
         <Modal.Actions>
@@ -144,19 +162,21 @@ class EditTimeTableModal extends Component {
   }
 }
 
-EditTimeTableModal.propTypes = {
+EditProjectTimeTableModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
   formSubmitErrors: getFormSubmitErrors(EDIT_PROJECT_TIMETABLE_FORM)(state),
- // floorAreaSections: floorAreaSectionsSelector(state),
-  formValues: getFormValues(EDIT_PROJECT_TIMETABLE_FORM)(state)
+  // floorAreaSections: floorAreaSectionsSelector(state),
+  formValues: getFormValues(EDIT_PROJECT_TIMETABLE_FORM)(state),
+  currentProject: currentProjectSelector(state)
 })
 
 const decoratedForm = reduxForm({
-  form: EDIT_PROJECT_TIMETABLE_FORM
-})(EditTimeTableModal)
+  form: EDIT_PROJECT_TIMETABLE_FORM,
+  enableReinitialize: true
+})(EditProjectTimeTableModal)
 
 export default connect(mapStateToProps, () => ({}))(decoratedForm)

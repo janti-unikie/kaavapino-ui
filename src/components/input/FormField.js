@@ -34,6 +34,7 @@ class FormField extends Component {
       default:
         return (
           <CustomField
+           {...rest}
             disabled={field.disabled}
             field={field}
             attributeData={attributeData}
@@ -41,7 +42,6 @@ class FormField extends Component {
             formName={formName}
             formValues={formValues}
             syncronousErrors={this.props.syncronousErrors}
-            {...rest}
           />
         )
     }

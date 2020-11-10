@@ -4,22 +4,21 @@ import { Dropdown } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
 import DropdownMultiselect from './DropdownMultiselect'
 
-const SelectInput = ({ input, meta: { error }, options, ...custom }) => {
+const SelectInput = ({ input, meta: { error }, options, onBlur, placeholder, ...custom }) => {
   if (custom.multiple) {
     return (
       <DropdownMultiselect
         input={input}
         error={error}
         options={options}
-        custom={custom}
+        onBlur={onBlur}
+        placeholder={placeholder}
       />
     )
   }
-
   return (
     <Dropdown
       {...input}
-      {...custom}
       onChange={(param, data) => {
         input.onChange(data.value)
         if ( data.value && custom.handleSave) {

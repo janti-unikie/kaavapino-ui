@@ -33,7 +33,6 @@ const FieldSet = ({
       handleSave()
     }, 500)
   }
-
   return (
     <React.Fragment>
       {sets.map((set, i) => {

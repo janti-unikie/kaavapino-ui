@@ -6,14 +6,16 @@ const RadioBooleanButton = ({
   meta: { error },
   inverted,
   double,
+  onRadioChange,
   ...custom
 }) => {
   const handleOnChange = value => {
     rest.onChange(value)
-    if (custom.onRadioChange) {
-      custom.onRadioChange()
+    if (onRadioChange) {
+      onRadioChange()
     }
   }
+  console.log('radioCustom', custom)
   return (
     <div className={`radio-input-container${inverted ? ' inverted' : ''}`}>
       <Radio
