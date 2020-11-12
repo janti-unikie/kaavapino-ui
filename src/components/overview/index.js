@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
 
 class Overview extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class Overview extends Component {
   render() {
     return (
       <div>
+        <ProjectTimeline/>
         <h1>Yleisnäkymä</h1>
       </div>
     )

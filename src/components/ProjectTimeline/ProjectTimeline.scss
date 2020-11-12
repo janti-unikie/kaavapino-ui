@@ -1,0 +1,56 @@
+.timeline-graph-container {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 20px;
+  .timeline-item-container {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 46px;
+      height: 20px;
+      &.first {
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+      }
+      &.last {
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+      }
+      span {
+        position: absolute;
+        bottom: 20px;
+      }
+    }
+  }
+  .timeline-months {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+
+    .timeline-month {
+      border-bottom: 2px solid gray;
+      border-left: 2px solid gray;
+      text-align: center;
+      position: relative;
+      height: 10px;
+      margin-bottom: 30px;
+      span {
+        position: absolute;
+        left: 25%;
+        top: 10px;
+      }
+      .now-marker {
+        position: absolute;
+        width: 1px;
+        height: 60px;
+        border: 1px solid blue;
+        bottom: 0;
+        span {
+          margin-left: 2px;
+          margin-top: 16px;
+        }
+      }
+    }
+  }
+}
