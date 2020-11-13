@@ -5,9 +5,14 @@ const roles = ['Pääkäyttäjä', 'Asiantuntija']
 
 const RoleHighlightPicker = ({ onRoleUpdate }) => {
   const [highlightedRole, setHighlightedRole] = useState(null)
-  const handleOnClick = (index) => {
-    setHighlightedRole(index)
-    onRoleUpdate(index)
+  const handleOnClick = index => {
+    if (highlightedRole === index) {
+      setHighlightedRole(null)
+      onRoleUpdate(null)
+    } else {
+      setHighlightedRole(index)
+      onRoleUpdate(index)
+    }
   }
 
   return (
