@@ -36,6 +36,8 @@ export const PROJECT_FILE_REMOVE_SUCCESSFUL = 'Project file remove successful'
 export const PROJECT_SET_CHECKING = 'Project set checking'
 export const PROJECT_SET_DEADLINES = 'Project set deadlines'
 export const PROJECT_SET_DEADLINES_SUCCESSFUL = 'Project set deadlines successful'
+export const FETCH_PROJECT_DEADLINES = 'Fetch project deadlines'
+export const FETCH_PROJECT_DEADLINES_SUCCESSFUL = 'Fetch project deadlines successful'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -79,6 +81,12 @@ export const sortProjects = options => ({ type: SORT_PROJECTS, payload: options 
 export const fetchProjectSuccessful = project => ({
   type: FETCH_PROJECT_SUCCESSFUL,
   payload: project
+})
+
+export const fetchProjectDeadlines = subtype => ({ type: FETCH_PROJECT_DEADLINES, payload: subtype })
+export const fetchProjectDeadlinesSuccessful = deadlines => ({
+  type: FETCH_PROJECT_DEADLINES_SUCCESSFUL,
+  payload: deadlines
 })
 
 export const updateProject = updatedProject => ({

@@ -126,7 +126,6 @@ class CustomField extends Component {
   renderString = props => {
     const { onBlur, attributeData, parentName } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName )
-
     return <Input onBlur={onBlur} type="text" {...props} />
   }
 
@@ -171,7 +170,6 @@ class CustomField extends Component {
 
   renderDate = props => {
     const { onBlur, attributeData, parentName  } = this.props
-
     projectUtils.checkInputValue(props, attributeData, parentName)
     return (
     <Input
@@ -245,13 +243,12 @@ class CustomField extends Component {
   }
 
   renderLink = props => {
-    const { onBlur, handleSave, attributeData, parentName } = this.props
-
+    const { onBlur, attributeData, parentName } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
+
     return (
       <Link
         onBlur={onBlur}
-        handleSave={handleSave}
         {...props} />
         )
   }
@@ -288,20 +285,20 @@ class CustomField extends Component {
         disabled={
           generated ||
           disabled ||
-          autofill_readonly
+          autofill_readonly ? true : false
         }
         formValues={formValues}
         validate={[this.validateFieldSize]}
         syncronousErrors={syncronousErrors}
         handleSave={handleSave}
         onRadioChange={onRadioChange}
-        fiels={field}
+        field={field}
       />
     )
   }
 
   renderDecimal = props => {
-    const { onBlur, handleSave, attributeData, parentName } = this.props
+    const { onBlur, attributeData, parentName } = this.props
 
     projectUtils.checkInputValue(props, attributeData, parentName)
     return (
@@ -309,7 +306,6 @@ class CustomField extends Component {
         type="number"
         step="0.01"
         onBlur={onBlur}
-        handleSave={handleSave}
         {...props} />
         )
   }
@@ -420,7 +416,7 @@ class CustomField extends Component {
       name: field.name,
       placeholder: field.placeholder || field.label,
       disabled:
-        field.generated || field.disabled || field.autofill_readonly,
+        field.generated || field.disabled || field.autofill_readonly ? true : false,
       component: this.getInput(field),
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
       updated: { updated }

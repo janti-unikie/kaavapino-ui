@@ -18,7 +18,7 @@ import {
   amountOfCommentsToShowSelector
 } from '../../../selectors/commentSelector'
 import { userIdSelector } from '../../../selectors/authSelector'
-import { Form, Input, Button } from 'semantic-ui-react'
+import { Input, Button } from 'semantic-ui-react'
 import Comment from './Comment'
 
 class Comments extends Component {
@@ -121,7 +121,6 @@ class Comments extends Component {
           ))}
         </div>
         <div className="comment-submit-container">
-          <Form>
             <Input
               onChange={this.handleChange}
               type="text"
@@ -136,7 +135,6 @@ class Comments extends Component {
               }
               value={this.state.value}
             />
-          </Form>
         </div>
       </div>
     )

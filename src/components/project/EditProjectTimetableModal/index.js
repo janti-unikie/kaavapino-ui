@@ -11,7 +11,7 @@ import FormField from '../../input/FormField'
 import Collapse from '../../common/collapse'
 import './styles.scss'
 // import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
-import { currentProjectSelector } from '../../../selectors/projectSelector'
+// import { currentProjectSelector } from '../../../selectors/projectSelector'
 import projectTimetableEditSectionsMock from '../timetableEditMockData'
 
 class EditProjectTimeTableModal extends Component {
@@ -80,13 +80,13 @@ class EditProjectTimeTableModal extends Component {
   }
 
   getFormField = (fieldProps, key) => {
-    const { formSubmitErrors, formValues, currentProject } = this.props
+    const { formSubmitErrors, formValues } = this.props
     const error =
       formSubmitErrors && fieldProps.field && formSubmitErrors[fieldProps.field.name]
 
-    const { deadlines } = currentProject
+  /*  const { deadlines } = currentProject
 
-    const startDate = deadlines[0].start
+    const startDate = deadlines[0].start*/
 
     return (
       <div key={key}>
@@ -97,8 +97,8 @@ class EditProjectTimeTableModal extends Component {
           error={error}
           formValues={formValues}
           className="modal-field"
-          defaultValue={startDate}
-          currentProject={currentProject}
+       //   defaultValue={startDate}
+    //      currentProject={currentProject}
           isProjectTimetableEdit
         />
       </div>
@@ -170,8 +170,8 @@ EditProjectTimeTableModal.propTypes = {
 const mapStateToProps = state => ({
   formSubmitErrors: getFormSubmitErrors(EDIT_PROJECT_TIMETABLE_FORM)(state),
   // floorAreaSections: floorAreaSectionsSelector(state),
-  formValues: getFormValues(EDIT_PROJECT_TIMETABLE_FORM)(state),
-  currentProject: currentProjectSelector(state)
+  formValues: getFormValues(EDIT_PROJECT_TIMETABLE_FORM)(state)
+ // currentProject: currentProjectSelector(state)
 })
 
 const decoratedForm = reduxForm({

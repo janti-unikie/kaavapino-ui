@@ -10,7 +10,8 @@ import {
   changeProjectPhase,
   validateProjectFields,
   projectSetChecking,
-  saveProjectBase
+  saveProjectBase,
+  fetchProjectDeadlines
 } from '../../actions/projectActions'
 import { fetchSchemas } from '../../actions/schemaActions'
 import {
@@ -41,6 +42,7 @@ class ProjectEditPage extends Component {
   componentDidMount() {
     const { project } = this.props
     this.props.fetchSchemas(project.subtype)
+  //  this.props.fetchProjectDeadlines(project.subtype)
   }
 
   changePhase = () => this.props.changeProjectPhase(this.props.project.phase + 1)
@@ -206,7 +208,8 @@ const mapDispatchToProps = {
   changeProjectPhase,
   validateProjectFields,
   projectSetChecking,
-  saveProjectBase
+  saveProjectBase,
+  fetchProjectDeadlines
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)

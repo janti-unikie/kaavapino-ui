@@ -59,19 +59,22 @@ import {
   saveProject as saveProjectAction,
   PROJECT_SET_DEADLINES,
   projectSetDeadlinesSuccessful,
-  initializeProject as initializeProjectAction
+  initializeProject as initializeProjectAction,
+  FETCH_PROJECT_DEADLINES,
+  fetchProjectDeadlinesSuccessful
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
 import { setLatestEditField, setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
-import { projectApi } from '../utils/api'
+import { projectApi, projectDeadlinesApi } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
 import { NEW_PROJECT_FORM, EDIT_FLOOR_AREA_FORM, EDIT_PROJECT_FORM, EDIT_PROJECT_TIMETABLE_FORM } from '../constants'
 
 export default function* projectSaga() {
   yield all([
     takeLatest(FETCH_PROJECTS, fetchProjects),
+    takeLatest(FETCH_PROJECT_DEADLINES, fetchProjectDeadlines),
     takeLatest(INITIALIZE_PROJECT, initializeProject),
     takeLatest(CREATE_PROJECT, createProject),
     takeLatest(SAVE_PROJECT_BASE, saveProjectBase),
@@ -148,6 +151,15 @@ function* fetchProjects({ page, own = true, all = true, payload: searchQuery }) 
     if (e.response && e.response.status !== 404) {
       yield put(error(e))
     }
+  }
+}
+
+function* fetchProjectDeadlines({ payload: projectId }) {
+  try {
+    const deadlines = yield call(projectDeadlinesApi.get, { path: { projectId } }, ':projectId/')
+    yield put(fetchProjectDeadlinesSuccessful(deadlines))
+  } catch (e) {
+    yield put(error(e))
   }
 }
 
