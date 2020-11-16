@@ -116,14 +116,13 @@ class List extends Component {
           subtype: projectUtils.formatSubtype(subtype, projectSubtypes),
           projectId: attribute_data['hankenumero'] || '-'
         }
-        const graphData = projectUtils.formatDeadlines(items[i], phases)
         if (onhold) {
           abortedProjects.push(
             <ListItem
               key={i}
               item={listItem}
-              graphData={graphData}
               showGraph={showGraph}
+              phases={phases}
             />
           )
           return false
@@ -132,8 +131,8 @@ class List extends Component {
             <ListItem
               key={i}
               item={listItem}
-              graphData={graphData}
               showGraph={showGraph}
+              phases={phases}
             />
           )
           return false
@@ -142,8 +141,8 @@ class List extends Component {
             <ListItem
               key={i}
               item={listItem}
-              graphData={graphData}
               showGraph={showGraph}
+              phases={phases}
             />
           )
           return false

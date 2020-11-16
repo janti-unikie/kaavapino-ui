@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './ProjectTimeline.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 
 /* POC of how Dead lines could be created*/
-const ProjectTimeline = () => {
+function ProjectTimeline(props) {
+  const { /*deadlines,*/ phases } = props
+  const [showError /*, setShowError*/] = useState(false)
+  const monthDates = []
+  const drawMonths = []
+  const drawItems = []
   const monthNames = {
     0: 'Tammi',
     1: 'Helmi',
@@ -17,32 +24,117 @@ const ProjectTimeline = () => {
     10: 'Marras',
     11: 'Joulu'
   }
-
-  const projectDeadlines = {
-    0: {
-      phase: 'Käynnistys' /* this would be phase_id and gotten from phases list*/,
-      length: 1 /* how many cells does this occupy, sum of lengths and distancePrevious should not exceed 13 */,
-      distancePrevious: 0 /* used to create empty space or distance between deadline */,
-      color: '#94ffa5'
+  // mock data
+  const deadlines = [
+    {
+      past_due: false,
+      out_of_sync: false,
+      is_under_min_distance_previous: false,
+      is_under_min_distance_next: false,
+      date: '2020-09-20',
+      distance_reference_deadline_id: null,
+      deadline: {
+        abbreviation: 'dedline-1',
+        identifier: 'dl-1',
+        editable: true,
+        deadline_type: 'start_point',
+        date_type_id: null,
+        error_past_due: '',
+        phase_id: 1,
+        index: 0,
+        min_distance: 0,
+        error_min_distance_previous: '',
+        warning_min_distance_next: ''
+      }
     },
-    1: {
-      phase: 'Periaatteet',
-      length: 6,
-      distancePrevious: 2,
-      color: '#ffd420'
+    {
+      past_due: false,
+      out_of_sync: false,
+      is_under_min_distance_previous: false,
+      is_under_min_distance_next: false,
+      date: '2020-11-20',
+      distance_reference_deadline_id: null,
+      deadline: {
+        abbreviation: 'dedline-1',
+        identifier: 'dl-1',
+        editable: true,
+        deadline_type: 'end_point',
+        date_type_id: null,
+        error_past_due: '',
+        phase_id: 1,
+        index: 0,
+        min_distance: 0,
+        error_min_distance_previous: '',
+        warning_min_distance_next: ''
+      }
     },
-    2: {
-      phase: 'OAS',
-      length: 3,
-      distancePrevious: 1,
-      color: '#26aee8'
+    {
+      past_due: false,
+      out_of_sync: false,
+      is_under_min_distance_previous: false,
+      is_under_min_distance_next: false,
+      date: '2021-01-20',
+      distance_reference_deadline_id: null,
+      deadline: {
+        abbreviation: 'dedline-2',
+        identifier: 'dl-2',
+        editable: true,
+        deadline_type: 'start_point',
+        date_type_id: null,
+        error_past_due: '',
+        phase_id: 20,
+        index: 0,
+        min_distance: 0,
+        error_min_distance_previous: '',
+        warning_min_distance_next: ''
+      }
+    },
+    {
+      past_due: false,
+      out_of_sync: false,
+      is_under_min_distance_previous: false,
+      is_under_min_distance_next: false,
+      date: '2021-03-21',
+      distance_reference_deadline_id: null,
+      deadline: {
+        abbreviation: 'dedline-2',
+        identifier: 'dl-2',
+        editable: true,
+        deadline_type: 'milestone',
+        date_type_id: null,
+        error_past_due: '',
+        phase_id: 20,
+        index: 0,
+        min_distance: 0,
+        error_min_distance_previous: '',
+        warning_min_distance_next: ''
+      }
+    },
+    {
+      past_due: false,
+      out_of_sync: false,
+      is_under_min_distance_previous: false,
+      is_under_min_distance_next: false,
+      date: '2021-04-21',
+      distance_reference_deadline_id: null,
+      deadline: {
+        abbreviation: 'dedline-2',
+        identifier: 'dl-2',
+        editable: true,
+        deadline_type: 'end_point',
+        date_type_id: null,
+        error_past_due: '',
+        phase_id: 20,
+        index: 0,
+        min_distance: 0,
+        error_min_distance_previous: '',
+        warning_min_distance_next: ''
+      }
     }
-  }
+  ]
 
-  function drawDates() {
-    const date = new Date()
-    let drawMonths = []
-
+  function createMonths() {
+    const date = new Date(deadlines[0].date)
     if (date.getMonth() === 0) {
       date.setMonth(11)
     } else {
@@ -52,10 +144,42 @@ const ProjectTimeline = () => {
       if (i > 0) {
         date.setMonth(date.getMonth() + 1)
       }
-      // Check for second month to draw marker for now
+      monthDates.push({ date: `${date.getFullYear()}-${date.getMonth() + 1}` })
+    }
+  }
+  function findInMonths(month) {
+    let monthIndex = null
+    for (let i = 0; i < monthDates.length; i++) {
+      if (month === monthDates[i].date) {
+        monthIndex = i
+        break
+      }
+    }
+    return monthIndex
+  }
+  function fillGaps() {
+    let deadlineIdentifier = null
+    let phaseId = null
+    for (let i = 0; i < monthDates.length; i++) {
+      if (monthDates[i].deadline_type === 'start_point') {
+        deadlineIdentifier = monthDates[i].identifier
+        phaseId = monthDates[i].phase_id
+      } else if (monthDates[i].deadline_type === 'end_point') {
+        deadlineIdentifier = null
+        phaseId = null
+      } else if (deadlineIdentifier && monthDates[i].deadline_type !== 'milestone') {
+        monthDates[i].identifier = deadlineIdentifier
+        monthDates[i].deadline_type = 'mid_point'
+        monthDates[i].phase_id = phaseId
+      }
+    }
+  }
+  function createDrawMonths() {
+    for (let i = 0; i < monthDates.length; i++) {
+      const date = new Date(monthDates[i].date)
       if (i === 1) {
         drawMonths.push(
-          <div className="timeline-month">
+          <div key={i} className="timeline-month">
             <div className="now-marker">
               <span>Nyt</span>
             </div>
@@ -64,109 +188,97 @@ const ProjectTimeline = () => {
         )
       } else {
         drawMonths.push(
-          <div className="timeline-month">
+          <div key={i} className="timeline-month">
             <span>{`${monthNames[date.getMonth()]} ${date.getFullYear()}`}</span>
           </div>
         )
       }
     }
-    return drawMonths
   }
-
-  function drawTimelineItems() {
-    const timelineItems = []
-    let deadLinesIteration = 0
-    let deadlineLoopIteration = 0
-
-    for (let i = 0; i < 13; i++) {
-      const deadLineIterations =
-        projectDeadlines[deadLinesIteration].length +
-        projectDeadlines[deadLinesIteration].distancePrevious
-
-      if (projectDeadlines[deadLinesIteration].distancePrevious > deadlineLoopIteration) {
-        timelineItems.push(
-          <div className="timeline-item" /> // space
-        )
-      } else {
-        if (
-          deadlineLoopIteration === projectDeadlines[deadLinesIteration].distancePrevious
-        ) {
-          if (i === 0 && projectDeadlines[deadLinesIteration].length === 1) {
-            timelineItems.push(
-              <div
-                style={{ background: projectDeadlines[deadLinesIteration].color }}
-                className="timeline-item last"
-              >
-                <span>{projectDeadlines[deadLinesIteration].phase}</span>
-              </div>
-            )
-          } else if (i === 0) {
-            timelineItems.push(
-              <div
-                style={{ background: projectDeadlines[deadLinesIteration].color }}
-                className="timeline-item"
-              >
-                <span>{projectDeadlines[deadLinesIteration].phase}</span>
-              </div>
-            )
-          }
-          else if (projectDeadlines[deadLinesIteration].length === 1) {
-            //first and last
-            timelineItems.push(
-              <div
-                style={{ background: projectDeadlines[deadLinesIteration].color }}
-                className="timeline-item first last"
-              >
-                <span>{projectDeadlines[deadLinesIteration].phase}</span>
-              </div>
-            )
-          } else {
-            // first element so that we can round
-            timelineItems.push(
-              <div
-                style={{ background: projectDeadlines[deadLinesIteration].color }}
-                className="timeline-item first"
-              >
-                <span>{projectDeadlines[deadLinesIteration].phase}</span>
-              </div>
-            )
-          }
-        } else if (
-          deadlineLoopIteration ===
-          projectDeadlines[deadLinesIteration].distancePrevious +
-            projectDeadlines[deadLinesIteration].length -
-            1
-        ) {
-          // last element so that we can round
-          timelineItems.push(
+  function createDrawItems() {
+    for (let i = 0; i < monthDates.length; i++) {
+      if (Object.keys(monthDates[i]).length > 1) {
+        if (monthDates[i].deadline_type === 'start_point') {
+          drawItems.push(
             <div
-              style={{ background: projectDeadlines[deadLinesIteration].color }}
+              key={`${monthDates[i].identifier}-${i}`}
+              style={{
+                background: phases.find(x => x.id === monthDates[i].phase_id).color_code
+              }}
+              className="timeline-item first"
+            >
+              <span>{phases.find(x => x.id === monthDates[i].phase_id).name}</span>
+            </div>
+          )
+        } else if (monthDates[i].deadline_type === 'mid_point') {
+          drawItems.push(
+            <div
+              key={`${monthDates[i].identifier}-${i}`}
+              style={{
+                background: phases.find(x => x.id === monthDates[i].phase_id).color_code
+              }}
+              className="timeline-item"
+            />
+          )
+        } else if (monthDates[i].deadline_type === 'milestone') {
+          drawItems.push(
+            <div
+              key={`${monthDates[i].identifier}-${i}`}
+              style={{
+                background: phases.find(x => x.id === monthDates[i].phase_id).color_code
+              }}
+              className="timeline-item"
+            />
+          )
+        } else if (monthDates[i].deadline_type === 'end_point') {
+          drawItems.push(
+            <div
+              key={`${monthDates[i].identifier}-${i}`}
+              style={{
+                background: phases.find(x => x.id === monthDates[i].phase_id).color_code
+              }}
               className="timeline-item last"
             />
           )
-        } else {
-          // filler element "body of bar"
-          timelineItems.push(
-            <div
-              style={{ background: projectDeadlines[deadLinesIteration].color }}
-              className="timeline-item filler"
-            />
-          )
         }
-      }
-
-      deadlineLoopIteration++
-      if (deadlineLoopIteration === deadLineIterations) {
-        deadlineLoopIteration = 0
-        deadLinesIteration++
+      } else {
+        drawItems.push(
+          <div className="timeline-item" key={`${monthDates[i].identifier}-${i}`} /> // space
+        )
       }
     }
-    return timelineItems
   }
+  function createTimelineItems() {
+    createMonths()
+    deadlines.forEach(deadline => {
+      let date = new Date(deadline.date)
+      date = `${date.getFullYear()}-${date.getMonth() + 1}`
+      const monthIndex = findInMonths(date)
+      if (monthIndex) {
+        monthDates[monthIndex].identifier = deadline.deadline.identifier
+        monthDates[monthIndex].deadline_type = deadline.deadline.deadline_type
+        monthDates[monthIndex].phase_id = deadline.deadline.phase_id
+      }
+    })
+    fillGaps()
+    createDrawMonths()
+    createDrawItems()
+  }
+  createTimelineItems()
   return (
     <div className="timeline-graph-container">
-      <div className="timeline-item-container">{drawTimelineItems()}</div>
-      <div className="timeline-months">{drawDates()}</div>
+      {showError ? (
+        <div className="timeline-error-message">
+          <FontAwesomeIcon icon={faExclamationTriangle} size="3x" />
+          <span>Projektin aikataulu ei ole ajan tasalla.</span>
+        </div>
+      ) : null}
+      <div className={`timeline-item-container ${showError ? 'timeline-error' : null}`}>
+        {drawItems}
+      </div>
+      <div className={`timeline-months ${showError ? 'timeline-error' : null}`}>
+        {drawMonths}
+      </div>
     </div>
   )
 }
