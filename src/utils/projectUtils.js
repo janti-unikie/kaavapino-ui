@@ -140,16 +140,19 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
   fieldsetList.forEach(currentFieldset => {
     const attributes= getFieldsetAttributes(currentFieldset, sections)
     const currentObject = {}
-    attributes.forEach(attribute => {
-      //use new value for this field
-      if (changedValues[attribute] || isBoolean(changedValues[attribute])) {
-        currentObject[attribute] = changedValues[attribute]
-      // use initlavalue
-      } else if (initialValues[attribute] || isBoolean(initialValues[attribute])) {
-        currentObject[attribute] = initialValues[attribute]
-      }
-    })
-    returnValue[currentFieldset] = [currentObject]
+
+    if ( attributes ) {
+      attributes.forEach(attribute => {
+        //use new value for this field
+        if (changedValues[attribute] || isBoolean(changedValues[attribute])) {
+          currentObject[attribute] = changedValues[attribute]
+        // use initlavalue
+        } else if (initialValues[attribute] || isBoolean(initialValues[attribute])) {
+          currentObject[attribute] = initialValues[attribute]
+        }
+      })
+      returnValue[currentFieldset] = [currentObject]
+    }
   })
   return returnValue
 }

@@ -204,6 +204,7 @@ class CustomField extends Component {
         handleSave={this.props.handleSave}
         onRadioChange={this.props.onRadioChange}
         field={field}
+        formName={this.props.formName}
       />
     )
   }
