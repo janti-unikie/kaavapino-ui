@@ -144,7 +144,7 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
     if ( attributes ) {
       attributes.forEach(attribute => {
         //use new value for this field
-        if (changedValues[attribute] || isBoolean(changedValues[attribute])) {
+        if (changedValues[attribute] || isBoolean(changedValues[attribute]) || changedValues[attribute] === '')  {
           currentObject[attribute] = changedValues[attribute]
         // use initlavalue
         } else if (initialValues[attribute] || isBoolean(initialValues[attribute])) {
