@@ -1,6 +1,5 @@
 import { getFieldAutofillValue } from '../../../utils/projectAutofillUtils'
 describe('Autofill tests', () => {
-
   it('Autofill rule succeeds (string)', () => {
     const field = {}
     const conditionObject = {}
@@ -575,5 +574,253 @@ describe('Autofill tests', () => {
       maanomistus_yksityinen: true
     }
     expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+  })
+  it('Autofill list', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject1.operator = 'in'
+    conditionObject1.comparison_value = ['OAS', 'saatekirje']
+    conditionObject1.comparison_value_type = 'list<string>'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject2.operator = 'in'
+    conditionObject2.comparison_value = ['osallisten_osoitelista',
+      'Lehti-ilmoitus',
+      'oas_jatai_luonnosvaiheessa_mielipiteen_esittaneet',
+      'kirje_hakijalle_maksusta']
+    conditionObject2.comparison_value_type = 'list<string>'
+
+    const condition = { condition: conditionObject1, then_branch : 'True' }
+    const condition2 = { condition: conditionObject2, then_branch : 'False' }
+     field.autofill_rule =[condition, condition2, []]
+
+    const formValues = {
+      oasvaiheen_dokumentin_nimi: 'Lehti-ilmoitus'
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+  })
+  it('Autofill rule list 2', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject1.operator = 'in'
+    conditionObject1.comparison_value = ['OAS', 'saatekirje']
+    conditionObject1.comparison_value_type = 'list<string>'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject2.operator = 'in'
+    conditionObject2.comparison_value = ['osallisten_osoitelista',
+      'Lehti-ilmoitus',
+      'oas_jatai_luonnosvaiheessa_mielipiteen_esittaneet',
+      'kirje_hakijalle_maksusta']
+    conditionObject2.comparison_value_type = 'list<string>'
+
+    const condition = { condition: conditionObject1, then_branch : 'True' }
+    const condition2 = { condition: conditionObject2, then_branch : 'False' }
+     field.autofill_rule =[condition, condition2, []]
+
+    const formValues = {
+      oasvaiheen_dokumentin_nimi: 'saatekirje'
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+  })
+  it('Autofill rule list 3', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject1.operator = 'in'
+    conditionObject1.comparison_value = ['OAS', 'saatekirje']
+    conditionObject1.comparison_value_type = 'list<string>'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject2.operator = 'in'
+    conditionObject2.comparison_value = ['osallisten_osoitelista',
+      'Lehti-ilmoitus',
+      'oas_jatai_luonnosvaiheessa_mielipiteen_esittaneet',
+      'kirje_hakijalle_maksusta']
+    conditionObject2.comparison_value_type = 'list<string>'
+
+    const condition = { condition: conditionObject1, then_branch : 'True' }
+    const condition2 = { condition: conditionObject2, then_branch : 'False' }
+     field.autofill_rule =[condition, condition2, []]
+
+    const formValues = {
+      oasvaiheen_dokumentin_nimi: 'tadaa'
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(undefined)
+  })
+  it('Autofill rule list 4', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject1.operator = 'in'
+    conditionObject1.comparison_value = ['OAS', 'saatekirje']
+    conditionObject1.comparison_value_type = 'list<string>'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject2.operator = 'in'
+    conditionObject2.comparison_value = ['osallisten_osoitelista',
+      'Lehti-ilmoitus',
+      'oas_jatai_luonnosvaiheessa_mielipiteen_esittaneet',
+      'kirje_hakijalle_maksusta']
+    conditionObject2.comparison_value_type = 'list<string>'
+
+    const condition = { condition: conditionObject1, then_branch : 'True' }
+    const condition2 = { condition: conditionObject2, then_branch : 'False' }
+     field.autofill_rule =[condition, condition2, []]
+
+    const formValues = {
+      oasvaiheen_dokumentin_nimi: 'kirje_hakijalle_maksusta'
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+  })
+  it('Autofill rule list 4', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject1.operator = 'in'
+    conditionObject1.comparison_value = ['OAS', 'saatekirje']
+    conditionObject1.comparison_value_type = 'list<string>'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject2.operator = 'in'
+    conditionObject2.comparison_value = ['osallisten_osoitelista',
+      'Lehti-ilmoitus',
+      'oas_jatai_luonnosvaiheessa_mielipiteen_esittaneet',
+      'kirje_hakijalle_maksusta']
+    conditionObject2.comparison_value_type = 'list<string>'
+
+    const condition = { condition: conditionObject1, then_branch : 'True' }
+    const condition2 = { condition: conditionObject2, then_branch : 'False' }
+     field.autofill_rule =[condition, condition2, []]
+
+    const formValues = {
+      oasvaiheen_dokumentin_nimi: 'kirje_hakijalle_maksusta'
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+  })
+  it('Autofill rule list 4', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject1.operator = 'in'
+    conditionObject1.comparison_value = ['OAS', 'saatekirje']
+    conditionObject1.comparison_value_type = 'list<string>'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject2.operator = 'in'
+    conditionObject2.comparison_value = ['osallisten_osoitelista',
+      'Lehti-ilmoitus',
+      'oas_jatai_luonnosvaiheessa_mielipiteen_esittaneet',
+      'kirje_hakijalle_maksusta']
+    conditionObject2.comparison_value_type = 'list<string>'
+
+    const condition = { condition: conditionObject1, then_branch : 'True' }
+    const condition2 = { condition: conditionObject2, then_branch : 'False' }
+     field.autofill_rule =[condition, condition2, []]
+
+    const formValues = {
+      testfieldset: {
+        oasvaiheen_dokumentin_nimi: 'saatekirje'
+      }
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+  })
+  it('Autofill rule list 4 deeper', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject1.operator = 'in'
+    conditionObject1.comparison_value = ['OAS', 'saatekirje']
+    conditionObject1.comparison_value_type = 'list<string>'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject2.operator = 'in'
+    conditionObject2.comparison_value = ['osallisten_osoitelista',
+      'Lehti-ilmoitus',
+      'oas_jatai_luonnosvaiheessa_mielipiteen_esittaneet',
+      'kirje_hakijalle_maksusta']
+    conditionObject2.comparison_value_type = 'list<string>'
+
+    const condition = { condition: conditionObject1, then_branch : 'True' }
+    const condition2 = { condition: conditionObject2, then_branch : 'False' }
+     field.autofill_rule =[condition, condition2, []]
+
+    const formValues = {
+      testfieldset: {
+        tokafieldset: {
+          oasvaiheen_dokumentin_nimi: 'saatekirje'
+        }
+      }
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+  })
+  it('Autofill rule list 5 fails', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject1.operator = 'in'
+    conditionObject1.comparison_value = ['OAS', 'saatekirje']
+    conditionObject1.comparison_value_type = 'list<string>'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject2.operator = 'in'
+    conditionObject2.comparison_value = ['osallisten_osoitelista',
+      'Lehti-ilmoitus',
+      'oas_jatai_luonnosvaiheessa_mielipiteen_esittaneet',
+      'kirje_hakijalle_maksusta']
+    conditionObject2.comparison_value_type = 'list<string>'
+
+    const condition = { condition: conditionObject1, then_branch : 'True' }
+    const condition2 = { condition: conditionObject2, then_branch : 'False' }
+     field.autofill_rule =[condition, condition2, []]
+
+    const formValues = {
+      testfieldset: {
+        tokafieldset: {
+          oasvaiheen_dokumentin_nimi: 'saatkirje'
+        }
+      }
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(undefined)
+  })
+  it('Autofill rule list 6 false', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject1.operator = 'in'
+    conditionObject1.comparison_value = ['OAS', 'saatekirje']
+    conditionObject1.comparison_value_type = 'list<string>'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'oasvaiheen_dokumentin_nimi'
+    conditionObject2.operator = 'in'
+    conditionObject2.comparison_value = ['osallisten_osoitelista',
+      'Lehti-ilmoitus',
+      'oas_jatai_luonnosvaiheessa_mielipiteen_esittaneet',
+      'kirje_hakijalle_maksusta']
+    conditionObject2.comparison_value_type = 'list<string>'
+
+    const condition = { condition: conditionObject1, then_branch : 'True' }
+    const condition2 = { condition: conditionObject2, then_branch : 'False' }
+     field.autofill_rule =[condition, condition2, []]
+
+    const formValues = {
+      testfieldset: {
+        tokafieldset: {
+          oasvaiheen_dokumentin_nimi: 'kirje_hakijalle_maksusta'
+        }
+      }
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
   })
 })

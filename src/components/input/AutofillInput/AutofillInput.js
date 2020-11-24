@@ -1,41 +1,49 @@
-import React, { useEffect } from 'react'
-import { change, getFormValues, Field } from 'redux-form'
+import React, { useEffect, useState } from 'react'
+import { autofill, getFormValues, Field } from 'redux-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { getFieldAutofillValue } from '../../../utils/projectAutofillUtils'
+import { isBoolean } from 'lodash'
 
 const AutofillInput = ({
   field:{ name, autofill_readonly, autofill_rule },
   fieldProps,
-  formName
+  formName,
+  saveAutofill
 }) => {
   const formValues = useSelector(getFormValues(formName))
   const dispatch = useDispatch()
 
-  useEffect(() => {
+  let newFieldProps = fieldProps
+
+  const [autoFillValue, setAutofillValue] = useState('')
+
+  useEffect( () => {
     if (!formValues) {
       return
     }
-    const autoFillValue = getFieldAutofillValue( autofill_rule, formValues )
+
+    setAutofillValue(getFieldAutofillValue( autofill_rule, formValues ))
 
     if ( formValues[name] === autoFillValue ) {
       return
     }
-    if ( autoFillValue ) {
-      dispatch(change(formName, name, autoFillValue))
+
+    if ( isBoolean( autoFillValue )) {
+       dispatch(autofill(formName, name, autoFillValue))
+       saveAutofill()
     }
-  }, [formValues])
+  }, [formValues, dispatch, autoFillValue])
 
-  let newFieldProps = { ...fieldProps }
-
-  if ( autofill_readonly ) {
+  if ( autofill_readonly || isBoolean( autoFillValue )) {
     newFieldProps = {
-      ...newFieldProps,
+      ...fieldProps,
       disabled: true
     }
   }
+
   return (
-      <Field {...newFieldProps} />
-    )
+    <Field {...newFieldProps} />
+  )
 }
 
 export default AutofillInput

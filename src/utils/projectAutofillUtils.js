@@ -1,3 +1,5 @@
+import projectUtils from './projectUtils'
+
 /* Field returns info whether field given as a parameter should be shown or not.
 *
 *  Autofill_rule has variables property which is meant to add a value from form to
@@ -26,6 +28,10 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
       const comparisonValueType = condition.comparison_value_type
       const extraVariables = autofill.variables
 
+      let formValue = formValues[variable] !== undefined ?
+        formValues[variable] :
+        projectUtils.findValueFromObject( formValues, variable)
+
        // Now only one variable is expected
       let formExtraValue = extraVariables ? formValues[extraVariables[0]] : ''
 
@@ -35,25 +41,35 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
 
        // List rule
       if (comparisonValueType === 'list<string>') {
-        if (comparisonValue.includes(formValues[variable])) {
+
+        if (comparisonValue.includes(formValue)) {
+
+          if ( thenBranch === TRUE_STRING ) {
+            returnValue = true
+            return
+          }
+          if ( thenBranch === FALSE_STRING ) {
+            returnValue = false
+            return
+          }
           returnValue = thenBranch
           return
-        }
+         }
       }
       // String
       if (comparisonValueType === 'string') {
-        if (operator === EQUAL && comparisonValue === formValues[variable]) {
+        if (operator === EQUAL && comparisonValue === formValue) {
           returnValue = thenBranch
           return
         }
-        if (operator === NOT_EQUAL && comparisonValue !== formValues[variable]) {
+        if (operator === NOT_EQUAL && comparisonValue !== formValue) {
           returnValue = thenBranch
           return
         }
       }
       // Boolean type
       if (comparisonValueType === 'boolean') {
-        const realValue = formValues[variable] ? formValues[variable] === true : false
+        const realValue = formValue ? formValue === true : false
         if (operator === EQUAL && comparisonValue === realValue ) {
           if ( thenBranch === TRUE_STRING ) {
             returnValue = true
@@ -101,11 +117,11 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
         }
       }
       if (comparisonValueType === 'number' || comparisonValueType === 'string') {
-        if (operator === EQUAL && comparisonValue === formValues[variable]) {
+        if (operator === EQUAL && comparisonValue === formValue) {
           returnValue = thenBranch
           return
         }
-        if (operator === NOT_EQUAL && comparisonValue !== formValues[variable]) {
+        if (operator === NOT_EQUAL && comparisonValue !== formValue) {
           returnValue = thenBranch
           return
         }

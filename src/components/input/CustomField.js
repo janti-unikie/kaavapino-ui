@@ -188,6 +188,7 @@ class CustomField extends Component {
   }
 
   renderFieldset = ({ fields: sets, ...props }) => {
+    const { field } = this.props
     return (
       <FieldSet
         sets={sets}
@@ -195,16 +196,14 @@ class CustomField extends Component {
         attributeData={this.props.attributeData}
         name={this.props.field.name}
         placeholder={props.placeholder || this.props.field.label}
-        disabled={
-          this.props.field.generated ||
-          this.props.field.disabled ||
-          this.props.field.autofill_readonly
-        }
+        disabled={ field.generated || field.disabled || field.autofill_readonly }
         formValues={this.props.formValues}
         validate={[this.validateFieldSize]}
         syncronousErrors={this.props.syncronousErrors}
         handleSave={this.props.handleSave}
         onRadioChange={this.props.onRadioChange}
+        field={field}
+        formName={this.props.formName}
       />
     )
   }
@@ -308,14 +307,12 @@ class CustomField extends Component {
       ...custom,
       name: field.name,
       placeholder: field.placeholder || field.label,
-      disabled:
-        field.generated || field.disabled || field.autofill_readonly,
+      disabled: field.generated || field.disabled || field.autofill_readonly ,
       attributeData,
       defaultValue,
       component: this.getInput(field),
       ...(field.multiple_choice ? { type: 'select-multiple' } : {})
     }
-
     /* Some fields are autofilled to a value as per (autofill_rules)
      * Some fields have their value calculated based on other fields (calculations)
      * Some autofill fields are readonly, some are not (autofill_readonly) */
@@ -333,12 +330,8 @@ class CustomField extends Component {
         />
       )
     }
-    if (
-      field.autofill_rule &&
-      field.autofill_rule.length &&
-      !this.props.isFloorCalculation
-    ) {
-      return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
+     if ( field.autofill_rule ) {
+      return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} saveAutofill={custom.handleSave}/>
     }
 
     if (type === 'toggle') {
