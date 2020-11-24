@@ -202,6 +202,7 @@ class CustomField extends Component {
         syncronousErrors={this.props.syncronousErrors}
         handleSave={this.props.handleSave}
         onRadioChange={this.props.onRadioChange}
+        updated={this.props.updated}
         field={field}
         formName={this.props.formName}
       />
@@ -285,6 +286,7 @@ class CustomField extends Component {
       formValues,
       error,
       defaultValue,
+      updated,
       ...custom
     } = this.props
     const type = field.type
@@ -310,6 +312,7 @@ class CustomField extends Component {
       disabled: field.generated || field.disabled || field.autofill_readonly ,
       attributeData,
       defaultValue,
+      updated: { updated },
       component: this.getInput(field),
       ...(field.multiple_choice ? { type: 'select-multiple' } : {})
     }
@@ -340,13 +343,14 @@ class CustomField extends Component {
 
     if (type === 'rich_text' || type === 'rich_text_short') {
       // Fieldsets have calculated defaultValues
-      let defaultValue = fieldProps.defaultValue
+      let currentDefaultValue = defaultValue
+
       // Non-fieldset fields get defaultValue from attributeData
-      if (!defaultValue) defaultValue = attributeData ? attributeData[field.name] : null
+      if (!defaultValue) currentDefaultValue = attributeData ? attributeData[field.name] : null
       return (
         <Field
           {...fieldProps}
-          defaultValue={defaultValue}
+          defaultValue={currentDefaultValue}
           formName={formName}
           className={`${this.props.className} ${error ? error : ''}`}
           maxSize={field.character_limit}
