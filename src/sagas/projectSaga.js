@@ -270,6 +270,8 @@ function* createProject() {
 const getChangedAttributeData = (values, initial, sections) => {
   let attribute_data = {}
 
+  console.log(values)
+
   Object.keys(values).forEach(key => {
     if (initial.hasOwnProperty(key) && isEqual(values[key], initial[key])) {
       return
@@ -288,6 +290,7 @@ const getChangedAttributeData = (values, initial, sections) => {
       sections.some(title => {
         title.fields.some(fieldset => {
         const fieldsetAttributes = fieldset.fieldset_attributes
+
         fieldsetAttributes.forEach( value => {
           if ( value.name === key ) {
             fieldSetName = fieldset.name
@@ -295,8 +298,8 @@ const getChangedAttributeData = (values, initial, sections) => {
           }
         })
         return null
-        })
-        return null
+      })
+      return null
       })
     }
     const initialFieldSetValues = initial[fieldSetName]
@@ -304,6 +307,7 @@ const getChangedAttributeData = (values, initial, sections) => {
       attribute_data = Object.assign({}, initialFieldSetValues[0], attribute_data)
     }
   })
+  console.log('Saga: attribute_data', attribute_data)
   return attribute_data
 }
 
@@ -406,10 +410,12 @@ function* saveProject() {
     const currentSchema = schema.phases.find(s => s.id === currentProject.phase)
     const { sections } = currentSchema
     const changedValues = getChangedAttributeData(values, initial, sections)
-    const parentNames = projectUtils.getParents(sections, changedValues)
+    const parentNames = projectUtils.getParents(changedValues)
     const formatedData = projectUtils.formatPayload(changedValues, sections, parentNames, initial)
 
     const attribute_data = formatedData
+
+    console.log( 'Attribute_data', attribute_data)
     try {
       const updatedProject = yield call(
         projectApi.patch,
@@ -418,6 +424,7 @@ function* saveProject() {
         ':id/'
       )
       yield put(updateProject(updatedProject))
+      console.log('Updated project', updatedProject.attribute_data)
     } catch (e) {
       if (e.response.status === 400) {
         yield put(stopSubmit(EDIT_PROJECT_FORM, e.response.data))

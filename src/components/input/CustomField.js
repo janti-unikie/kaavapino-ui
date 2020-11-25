@@ -141,7 +141,7 @@ class CustomField extends Component {
   }
 
   renderRichText = props => {
-    const { onBlur, handleSave, attributeData, parentName, meta } = this.props
+    const { onBlur, handleSave, attributeData, parentName, meta, defaultValue } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
 
     return (
@@ -149,6 +149,7 @@ class CustomField extends Component {
         onBlur={onBlur}
         handleSave={handleSave}
         meta={meta}
+        defaultValue={defaultValue}
         {...props}
         largeField />
         )

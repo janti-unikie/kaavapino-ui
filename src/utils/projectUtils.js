@@ -114,13 +114,20 @@ const formatSubtype = (id, subtypes) => {
 }
 
 const formatPayload = (changedValues, sections, parentNames, initialValues) => {
+
   const keys = Object.keys(changedValues)
   const fieldsetList = keys.filter(key => key.indexOf('fieldset') !== -1)
+
   const fieldsetAttributes = flattenDeep(
     fieldsetList.map(currentFieldset => getFieldsetAttributes(currentFieldset, sections))
   )
+
+  console.log( 'Fieldset attributes',  fieldsetAttributes)
   const allFieldsets = concat(fieldsetList, fieldsetAttributes)
+  console.log( 'All fieldsets',  allFieldsets)
   const nonFieldsets = difference(keys, allFieldsets)
+  console.log( 'Non fieldsets',  nonFieldsets)
+
   // Bug fix which caused saga crash
   if (!keys || keys.length === 0) return changedValues
 
@@ -153,6 +160,7 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
     }
     returnValue[currentFieldset] = [currentObject]
   })
+  console.log( returnValue)
   return returnValue
 }
 // Returns parents from changed values.
@@ -176,16 +184,17 @@ const getParents = changedValues => {
 function getFieldsetAttributes(parent, sections) {
   let fieldsetAttributes
   sections.some(title => {
-    if (fieldsetAttributes)
-      return fieldsetAttributes
+    if (fieldsetAttributes) {
+      return fieldsetAttributes ? true : false
+    }
     title.fields.some(fieldset => {
       if (fieldset.name === parent) {
         fieldsetAttributes = fieldset.fieldset_attributes.map(key => key.name)
-        return fieldsetAttributes
+        return fieldsetAttributes ? true : false
       }
-      return null
+      return false
     })
-    return null
+    return false
   })
   return fieldsetAttributes
 }
@@ -231,6 +240,23 @@ const generateArrayOfYears = () => {
   }
   return years
 }
+
+const findValueFromObject = (object, key) => {
+  let value
+
+  Object.keys(object).forEach((currentKey) =>  {
+     if (currentKey === key) {
+          value = object[currentKey]
+          return true
+      }
+      if (object[currentKey] && typeof object[currentKey] === 'object') {
+          value = findValueFromObject(object[currentKey], key)
+          return value !== undefined
+      }
+      return false
+   })
+  return value
+  }
 
 export default {
   formatDate,

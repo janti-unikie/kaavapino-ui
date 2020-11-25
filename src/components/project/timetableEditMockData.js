@@ -79,3 +79,170 @@ const inception = {
 const projectTimetableEditSectionsMock = [start, principle, oas, proposition, checkProposition, acceptance, inception]
 
 export default projectTimetableEditSectionsMock
+
+export const deadlines = { deadline_sections: [
+    {
+        'id': 1,
+        'title': 'Käynnistys',
+        'color': '#02d7a7',
+        'color_code': '#02d7a7',
+        'list_prefix': '1',
+        'sections': [
+            {
+                'name': '1. Käynnistys',
+                'attributes': [
+                    {
+                        'label': 'Kylk:in hyväksymispäätöksen päivämäärä',
+                        'name': 'kylk_hyvaksymispaatos_pvm',
+                        'help_text': 'Pääkäyttäjä merkitsee päivämäärän sen jälkeen kun lautakunta on tehnyt päätöksen. Tieto siirtyy projektikorttiin, kaavaselostukseen ja kaavan tietomalliin.',
+                        'help_link': null,
+                        'multiple_choice': false,
+                        'character_limit': null,
+                        'fieldset_attributes': [],
+                        'fieldset_index': null,
+                        'type': 'date',
+                        'required': false,
+                        'choices': null,
+                        'generated': false,
+                        'unit': null,
+                        'calculations': null,
+                        'visibility_conditions': [],
+                        'autofill_rule': null,
+                        'autofill_readonly': null,
+                        'updates_autofill': false,
+                        'related_fields': [],
+                        'searchable': false,
+                        'highlight_group': 'Pääkäyttäjät',
+                        'display': null
+                    }
+                ]
+            }
+        ]
+    }, {
+    'id': 2,
+        'title': 'OAS',
+        'color': '#03d7a7',
+        'color_code': '#03d7a7',
+        'list_prefix': '2',
+        'sections': [
+            {
+                'name': '2. OAS',
+                'attributes': [
+                    {
+                        'label': 'Kylk:in hyväksymispäätöksen päivämäärä',
+                        'name': 'kylk_hyvaksymispaatos_pvm',
+                        'help_text': 'Pääkäyttäjä merkitsee päivämäärän sen jälkeen kun lautakunta on tehnyt päätöksen. Tieto siirtyy projektikorttiin, kaavaselostukseen ja kaavan tietomalliin.',
+                        'help_link': null,
+                        'multiple_choice': false,
+                        'character_limit': null,
+                        'fieldset_attributes': [],
+                        'fieldset_index': null,
+                        'type': 'date',
+                        'required': false,
+                        'choices': null,
+                        'generated': false,
+                        'unit': null,
+                        'calculations': null,
+                        'visibility_conditions': [],
+                        'autofill_rule': null,
+                        'autofill_readonly': null,
+                        'updates_autofill': false,
+                        'related_fields': [],
+                        'searchable': false,
+                        'highlight_group': 'Pääkäyttäjät',
+                        'display': null
+                    },
+                    {
+                        'label': 'Kylk:in hyväksymispäätöksen päivämäärä',
+                        'name': 'kylk_hyvaksymispaatos_pvm',
+                        'help_text': 'Pääkäyttäjä merkitsee päivämäärän sen jälkeen kun lautakunta on tehnyt päätöksen. Tieto siirtyy projektikorttiin, kaavaselostukseen ja kaavan tietomalliin.',
+                        'help_link': null,
+                        'multiple_choice': false,
+                        'character_limit': null,
+                        'fieldset_attributes': [],
+                        'fieldset_index': null,
+                        'type': 'checkbox',
+                        'required': false,
+                        'choices': null,
+                        'generated': false,
+                        'unit': null,
+                        'calculations': null,
+                        'visibility_conditions': [],
+                        'autofill_rule': null,
+                        'autofill_readonly': null,
+                        'updates_autofill': false,
+                        'related_fields': [],
+                        'searchable': false,
+                        'highlight_group': 'Pääkäyttäjät',
+                        'display': null
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        'id': 3,
+            'title': 'Ehdotus',
+            'color': '#03d7a7',
+            'color_code': '#03d7a7',
+            'list_prefix': '3',
+            'sections': [
+                {
+                    'name': '3. Ehdotus',
+                    'attributes': [
+                        {
+                            'label': 'Ehdotus päivämäärä',
+                            'name': 'kylk_hyvaksymispaatos_pvm',
+                            'help_text': 'Pääkäyttäjä merkitsee päivämäärän sen jälkeen kun lautakunta on tehnyt päätöksen. Tieto siirtyy projektikorttiin, kaavaselostukseen ja kaavan tietomalliin.',
+                            'help_link': null,
+                            'multiple_choice': false,
+                            'character_limit': null,
+                            'fieldset_attributes': [],
+                            'fieldset_index': null,
+                            'type': 'date',
+                            'required': false,
+                            'choices': null,
+                            'generated': false,
+                            'unit': null,
+                            'calculations': null,
+                            'visibility_conditions': [],
+                            'autofill_rule': null,
+                            'autofill_readonly': null,
+                            'updates_autofill': false,
+                            'related_fields': [],
+                            'searchable': false,
+                            'highlight_group': 'Pääkäyttäjät',
+                            'display': null
+                        },
+                        {
+                            'label': 'Kylk:in hyväksymispäätöksen päivämäärä',
+                            'name': 'kylk_hyvaksymispaatos_pvm',
+                            'help_text': 'Pääkäyttäjä merkitsee päivämäärän sen jälkeen kun lautakunta on tehnyt päätöksen. Tieto siirtyy projektikorttiin, kaavaselostukseen ja kaavan tietomalliin.',
+                            'help_link': null,
+                            'multiple_choice': false,
+                            'character_limit': null,
+                            'fieldset_attributes': [],
+                            'fieldset_index': null,
+                            'type': 'checkbox',
+                            'required': false,
+                            'choices': null,
+                            'generated': false,
+                            'unit': null,
+                            'calculations': null,
+                            'visibility_conditions': [],
+                            'autofill_rule': null,
+                            'autofill_readonly': null,
+                            'updates_autofill': false,
+                            'related_fields': [],
+                            'searchable': false,
+                            'highlight_group': 'Pääkäyttäjät',
+                            'display': null
+                        }
+                    ]
+                }
+            ]
+        }
+
+]
+
+    }

@@ -10,9 +10,9 @@ import { EDIT_PROJECT_TIMETABLE_FORM } from '../../../constants'
 import FormField from '../../input/FormField'
 import Collapse from '../../common/collapse'
 import './styles.scss'
-// import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
+// import { dea } from '../../../selectors/schemaSelector'
 // import { currentProjectSelector } from '../../../selectors/projectSelector'
-import projectTimetableEditSectionsMock from '../timetableEditMockData'
+import { deadlines } from '../timetableEditMockData'
 
 class EditProjectTimeTableModal extends Component {
   constructor(props) {
@@ -24,11 +24,11 @@ class EditProjectTimeTableModal extends Component {
   }
 
   componentDidMount() {
-    const { initialize } = this.props
-    initialize({ kaynnistys_deadline: '2009-01-01' })
+    const { initialize, attributeData } = this.props
+    initialize(attributeData)
   }
 
-  componentDidUpdate(prevProps) {
+ componentDidUpdate(prevProps) {
     const {
       saving,
       initialize,
@@ -54,11 +54,6 @@ class EditProjectTimeTableModal extends Component {
     }
   }
 
-  componentWillUnmount() {
-    clearTimeout(this.timeout)
-    clearInterval(this.autoSave)
-  }
-
   handleSubmit = () => {
     /* The designs do not have a save-button.
      * Thus we need to clarify: 1) do we save this with the rest of the edit form, and if so,
@@ -79,19 +74,15 @@ class EditProjectTimeTableModal extends Component {
     this.setState({ loading: false })
   }
 
-  getFormField = (fieldProps, key) => {
+  getFormField(fieldProps, key) {
     const { formSubmitErrors, formValues } = this.props
     const error =
       formSubmitErrors && fieldProps.field && formSubmitErrors[fieldProps.field.name]
 
-  /*  const { deadlines } = currentProject
-
-    const startDate = deadlines[0].start*/
-
     return (
       <div key={key}>
         <FormField
-          field={fieldProps.field}
+          {...fieldProps}
           formName={EDIT_PROJECT_TIMETABLE_FORM}
           attributeData={{}}
           error={error}
@@ -104,13 +95,22 @@ class EditProjectTimeTableModal extends Component {
       </div>
     )
   }
+  getFormFields = (sections, sectionIndex) => {
+    const formFields = []
+    sections.forEach((subsection) => {
+      subsection.attributes.forEach(( field, fieldIndex ) => {
+          formFields.push( this.getFormField( { field }, `${sectionIndex} - ${fieldIndex}` ))
+        })
+    }
+    )
+    return formFields
+  }
 
   renderSection = (section, sectionIndex) => {
+    const sections = section.sections
     return (
       <Collapse title={section.title} key={sectionIndex}>
-        {section.fields.map((field, fieldIndex) =>
-          this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
-        )}
+        {this.getFormFields(sections, sectionIndex)}
         <div className="section-deadline-info">
           <div>
             <FontAwesomeIcon className="deadline-info-icon" icon="clock" />
@@ -137,8 +137,8 @@ class EditProjectTimeTableModal extends Component {
         <Modal.Header>Päivitä aikataulut</Modal.Header>
         <Modal.Content>
           <Form>
-            {projectTimetableEditSectionsMock &&
-              projectTimetableEditSectionsMock.map((section, sectionIndex) =>
+            {deadlines &&
+              deadlines.deadline_sections.map((section, sectionIndex) =>
                 this.renderSection(section, sectionIndex)
               )}
           </Form>
@@ -175,8 +175,7 @@ const mapStateToProps = state => ({
 })
 
 const decoratedForm = reduxForm({
-  form: EDIT_PROJECT_TIMETABLE_FORM,
-  enableReinitialize: true
+  form: EDIT_PROJECT_TIMETABLE_FORM
 })(EditProjectTimeTableModal)
 
 export default connect(mapStateToProps, () => ({}))(decoratedForm)

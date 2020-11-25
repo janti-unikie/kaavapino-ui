@@ -13,7 +13,7 @@ import {
   saveProjectBase,
   fetchProjectDeadlines
 } from '../../actions/projectActions'
-import { fetchSchemas } from '../../actions/schemaActions'
+import { fetchSchemas, setAllEditFields } from '../../actions/schemaActions'
 import {
   savingSelector,
   changingPhaseSelector,
@@ -42,23 +42,24 @@ class ProjectEditPage extends Component {
   componentDidMount() {
     const { project } = this.props
     this.props.fetchSchemas(project.subtype)
-  //  this.props.fetchProjectDeadlines(project.subtype)
   }
 
   changePhase = () => this.props.changeProjectPhase(this.props.project.phase + 1)
 
   handleSave = () => {
-      this.props.saveProject()
+    this.props.saveProject()
+    this.props.setAllEditFields()
   }
   handleAutoSave = () => {
-    if ( this.props.syncErrors && !_.isEmpty( this.props.syncErrors )) {
+    if (this.props.syncErrors && !_.isEmpty(this.props.syncErrors)) {
       return
     }
-      this.props.saveProject()
+    this.props.saveProject()
+    this.props.setAllEditFields()
   }
 
   setSelectedRole = role => {
-    switch(role) {
+    switch (role) {
       case 0:
         this.setState({ highlightGroup: 'hightlight-pääkäyttäjä' })
         break
@@ -162,7 +163,9 @@ class ProjectEditPage extends Component {
           submitErrors={submitErrors}
           title={`${currentSchema.list_prefix}. ${currentSchema.title}`}
           showEditFloorAreaForm={() => this.setState({ showEditFloorAreaForm: true })}
-          showEditProjectTimetableForm={() => this.setState({ showEditProjectTimetableForm: true })}
+          showEditProjectTimetableForm={() =>
+            this.setState({ showEditProjectTimetableForm: true })
+          }
         />
         {this.state.showEditFloorAreaForm && (
           <EditFloorAreaFormModal
@@ -209,7 +212,8 @@ const mapDispatchToProps = {
   validateProjectFields,
   projectSetChecking,
   saveProjectBase,
-  fetchProjectDeadlines
+  fetchProjectDeadlines,
+  setAllEditFields
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)
