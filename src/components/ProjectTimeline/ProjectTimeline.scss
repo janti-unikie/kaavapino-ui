@@ -1,3 +1,5 @@
+@import '../common/colors';
+
 .timeline-graph-container {
   font-family: 'Helsinki Grotesk Medium';
   margin-left: 10px;
@@ -12,14 +14,13 @@
     left: 50%;
     width: 320px;
     height: 56px;
-    border-left: 4px solid #D8000C;
+    border-left: 4px solid #d8000c;
     background-color: #ff8179;
     text-align: center;
   }
 
   .timeline-item-container {
     display: grid;
-    grid-template-columns: repeat(65, 1fr);
 
     .timeline-item {
       position: relative;
@@ -33,16 +34,68 @@
         border-top-right-radius: 20px;
         border-bottom-right-radius: 20px;
       }
-      .deadline-name {
+      .deadline-name-over {
         position: absolute;
         bottom: 20px;
+        font-size: 12px;
+      }
+      .deadline-name-inside {
+        position: absolute;
+        left: 2px;
+        z-index: 1;
+        font-size: 12px;
+        width: 120px;
       }
       .deadline-milestone {
-        position: absolute;
-        font-size: 12px;
-        top: 20px;
-        left: 5px;
-        width: 86px;
+        .milestone-message {
+          position: absolute;
+          top: 20px;
+          width: 100px;
+          font-size: 12px;
+          &.under {
+            top: 32px;
+          }
+        }
+        .milestone-icon {
+          position: absolute;
+          z-index: 2;
+          width: 15px;
+          height: 15px;
+          top: 2px;
+          &.square {
+            top: 7px;
+            left: 2px;
+            width: 5px;
+            height: 5px;
+            &.second {
+              left: 10px;
+            }
+          }
+          &.inner {
+            top: 4px;
+            height: 12px;
+            width: 16px;
+            &.start {
+              border-bottom-left-radius: 5px;
+              border-top-left-radius: 5px;
+            }
+            &.end {
+              right: 2px;
+              border-bottom-right-radius: 5px;
+              border-top-right-radius: 5px;
+            }
+          }
+          &.sphere {
+            border-radius: 15px;
+          }
+          &.white {
+            background-color: $white;
+          }
+          &.black {
+            background-color: $black;
+            border: 2px solid $white;
+          }
+        }
       }
     }
   }
@@ -51,8 +104,9 @@
     grid-template-columns: repeat(13, 1fr);
 
     .timeline-month {
-      border-bottom: 2px solid gray;
-      border-left: 2px solid gray;
+      border-bottom: 2px solid $gray;
+      border-left: 2px solid $gray;
+      color: $gray;
       text-align: center;
       position: relative;
       height: 10px;
@@ -64,6 +118,7 @@
         top: 10px;
       }
       .now-marker {
+        color: $black;
         position: absolute;
         width: 1px;
         height: 60px;

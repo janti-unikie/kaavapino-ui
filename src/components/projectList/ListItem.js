@@ -18,7 +18,6 @@ const Status = ({ color }) => {
 
 const ListItem = ({
   showGraph,
-  phases,
   item: {
     phaseName,
     phaseColor,
@@ -63,7 +62,7 @@ const ListItem = ({
       </div>
       <div className="project-list-item-graph">
         {showGraph && (
-          <ProjectTimeline phases={phases}/>
+          <ProjectTimeline/>
         )}
       </div>
       <Link to={`/${id}`} className="project-card-mb">
