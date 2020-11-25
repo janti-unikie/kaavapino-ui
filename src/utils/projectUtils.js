@@ -122,11 +122,8 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
     fieldsetList.map(currentFieldset => getFieldsetAttributes(currentFieldset, sections))
   )
 
-  console.log( 'Fieldset attributes',  fieldsetAttributes)
   const allFieldsets = concat(fieldsetList, fieldsetAttributes)
-  console.log( 'All fieldsets',  allFieldsets)
   const nonFieldsets = difference(keys, allFieldsets)
-  console.log( 'Non fieldsets',  nonFieldsets)
 
   // Bug fix which caused saga crash
   if (!keys || keys.length === 0) return changedValues
@@ -160,7 +157,6 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
       returnValue[currentFieldset] = [currentObject]
     }
   })
-  console.log( returnValue)
   return returnValue
 }
 // Returns parents from changed values.

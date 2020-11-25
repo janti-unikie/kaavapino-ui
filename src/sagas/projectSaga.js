@@ -270,8 +270,6 @@ function* createProject() {
 const getChangedAttributeData = (values, initial, sections) => {
   let attribute_data = {}
 
-  console.log(values)
-
   Object.keys(values).forEach(key => {
     if (initial.hasOwnProperty(key) && isEqual(values[key], initial[key])) {
       return
@@ -307,7 +305,6 @@ const getChangedAttributeData = (values, initial, sections) => {
       attribute_data = Object.assign({}, initialFieldSetValues[0], attribute_data)
     }
   })
-  console.log('Saga: attribute_data', attribute_data)
   return attribute_data
 }
 
@@ -415,7 +412,6 @@ function* saveProject() {
 
     const attribute_data = formatedData
 
-    console.log( 'Attribute_data', attribute_data)
     try {
       const updatedProject = yield call(
         projectApi.patch,
@@ -424,7 +420,6 @@ function* saveProject() {
         ':id/'
       )
       yield put(updateProject(updatedProject))
-      console.log('Updated project', updatedProject.attribute_data)
     } catch (e) {
       if (e.response.status === 400) {
         yield put(stopSubmit(EDIT_PROJECT_FORM, e.response.data))
