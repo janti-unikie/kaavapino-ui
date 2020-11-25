@@ -18,14 +18,19 @@ const SelectInput = ({ input, meta: { error }, options, onBlur, placeholder, ...
   }
   return (
     <Dropdown
-      {...input}
       onChange={(param, data) => {
-        input.onChange(data.value)
-        if ( data.value && custom.handleSave) {
-          custom.handleSave(data.value)
+
+        let returnValue = data.value
+        if ( returnValue === '' ) {
+          returnValue = null
+        }
+        input.onChange(returnValue)
+        if ( custom.handleSave ) {
+          custom.handleSave(returnValue)
         }
         }
       }
+      name={input.name}
       fluid
       search
       selection
@@ -33,8 +38,8 @@ const SelectInput = ({ input, meta: { error }, options, onBlur, placeholder, ...
       placeholder=""
       noResultsMessage="Ei tuloksia"
       options={options}
+      defaultValue={input.value}
       error={inputUtils.hasError(error)}
-      value={input.value}
     />
   )
 }

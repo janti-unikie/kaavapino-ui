@@ -147,18 +147,18 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
     const attributes = getFieldsetAttributes(currentFieldset, sections)
     const currentObject = {}
 
-    if (attributes) {
+    if ( attributes ) {
       attributes.forEach(attribute => {
-        // use new value for this field
-        if (changedValues[attribute] || isBoolean(changedValues[attribute])) {
+        //use new value for this field
+        if (changedValues[attribute] || isBoolean(changedValues[attribute]) || changedValues[attribute] === '')  {
           currentObject[attribute] = changedValues[attribute]
-          // use initlavalue
+        // use initlavalue
         } else if (initialValues[attribute] || isBoolean(initialValues[attribute])) {
           currentObject[attribute] = initialValues[attribute]
         }
       })
+      returnValue[currentFieldset] = [currentObject]
     }
-    returnValue[currentFieldset] = [currentObject]
   })
   console.log( returnValue)
   return returnValue
@@ -243,9 +243,8 @@ const generateArrayOfYears = () => {
 
 const findValueFromObject = (object, key) => {
   let value
-
-  Object.keys(object).forEach((currentKey) =>  {
-     if (currentKey === key) {
+  Object.keys(object).some((currentKey) =>  {
+      if (currentKey === key) {
           value = object[currentKey]
           return true
       }
@@ -254,10 +253,9 @@ const findValueFromObject = (object, key) => {
           return value !== undefined
       }
       return false
-   })
+  })
   return value
   }
-
 export default {
   formatDate,
   formatTime,
@@ -276,5 +274,6 @@ export default {
   getParents,
   formatPayload,
   generateArrayOfYears,
-  getFieldsetAttributes
+  getFieldsetAttributes,
+  findValueFromObject
 }

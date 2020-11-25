@@ -275,7 +275,9 @@ class CustomField extends Component {
       syncronousErrors,
       handleSave,
       onRadioChange,
-      placeholder  } = this.props
+      placeholder,
+      formName,
+      updated  } = this.props
     return (
       <FieldSet
         sets={sets}
@@ -294,6 +296,9 @@ class CustomField extends Component {
         handleSave={handleSave}
         onRadioChange={onRadioChange}
         field={field}
+        formName={formName}
+        updated={updated}
+
       />
     )
   }
@@ -394,7 +399,9 @@ class CustomField extends Component {
       formName,
       formValues,
       error,
-      updated
+      updated,
+      defaultValue,
+      handleSave
     } = this.props
     const type = field.type
     if (type === 'file' || type === 'image') {
@@ -439,19 +446,8 @@ class CustomField extends Component {
         />
       )
     }
-    if (
-      field.autofill_rule &&
-      field.autofill_rule.length &&
-      !this.props.isFloorCalculation
-    ) {
-      return (
-        <AutofillInput
-          attributeData={ this.props.attributeData }
-          field={field}
-          fieldProps={fieldProps}
-          formName={formName}
-        />
-        )
+     if ( field.autofill_rule ) {
+      return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} saveAutofill={handleSave}/>
     }
 
     if (type === 'toggle') {
@@ -466,13 +462,14 @@ class CustomField extends Component {
 
     if (type === 'rich_text' || type === 'rich_text_short') {
       // Fieldsets have calculated defaultValues
-      let defaultValue = fieldProps.defaultValue
+      let currentDefaultValue = defaultValue
+
       // Non-fieldset fields get defaultValue from attributeData
-      if (!defaultValue) defaultValue = attributeData ? attributeData[field.name] : null
+      if (!defaultValue) currentDefaultValue = attributeData ? attributeData[field.name] : null
       return (
         <Field
           {...fieldProps}
-          defaultValue={defaultValue}
+          defaultValue={currentDefaultValue}
           formName={formName}
           className={`${this.props.className} ${error ? error : ''}`}
           maxSize={field.character_limit}
