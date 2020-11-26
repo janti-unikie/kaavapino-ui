@@ -17,6 +17,7 @@ class FormField extends Component {
       formName,
       formValues,
       isFloorCalculation,
+      className,
       ...rest
     } = this.props
 
@@ -38,6 +39,7 @@ class FormField extends Component {
             disabled={field.disabled}
             field={field}
             attributeData={attributeData}
+            className={className}
             fieldset={field.type === 'fieldset'}
             formName={formName}
             formValues={formValues}

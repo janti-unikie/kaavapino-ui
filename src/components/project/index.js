@@ -20,7 +20,6 @@ import Timeline from './Timeline'
 import ProjectEditPage from '../projectEdit'
 import ProjectCardPage from '../projectCard'
 import ProjectDocumentsPage from '../projectDocuments'
-import DeadlineModal from './DeadlineModal'
 import projectUtils from '../../utils/projectUtils'
 import NewProjectFormModal from './NewProjectFormModal'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
@@ -253,10 +252,6 @@ class ProjectPage extends Component {
           type={currentProject.type}
           disabled={!edit}
           switchDisplayedPhase={this.switchDisplayedPhase}
-        />
-        <DeadlineModal
-          open={this.state.showDeadlineModal}
-          handleClose={() => this.setState({ showDeadlineModal: false })}
         />
         <NewProjectFormModal
           currentProject={currentProject}

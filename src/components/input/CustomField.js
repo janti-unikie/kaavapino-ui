@@ -278,6 +278,7 @@ class CustomField extends Component {
       placeholder,
       formName,
       updated  } = this.props
+
     return (
       <FieldSet
         sets={sets}
@@ -401,7 +402,8 @@ class CustomField extends Component {
       error,
       updated,
       defaultValue,
-      handleSave
+      handleSave,
+      className
     } = this.props
     const type = field.type
     if (type === 'file' || type === 'image') {
@@ -427,7 +429,8 @@ class CustomField extends Component {
         field.generated || field.disabled || field.autofill_readonly ? true : false,
       component: this.getInput(field),
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
-      updated: { updated }
+      updated: { updated },
+      className: className
     }
     /* Some fields are autofilled to a value as per (autofill_rules)
      * Some fields have their value calculated based on other fields (calculations)

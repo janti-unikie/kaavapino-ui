@@ -5,14 +5,12 @@ import PropTypes from 'prop-types'
 import { Modal, Form, Button } from 'semantic-ui-react'
 import { reduxForm, getFormSubmitErrors, getFormValues } from 'redux-form'
 import { connect } from 'react-redux'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { EDIT_PROJECT_TIMETABLE_FORM } from '../../../constants'
 import FormField from '../../input/FormField'
 import Collapse from '../../common/collapse'
 import './styles.scss'
-// import { dea } from '../../../selectors/schemaSelector'
-// import { currentProjectSelector } from '../../../selectors/projectSelector'
-import { deadlines } from '../timetableEditMockData'
+import { deadlineSectionsSelector } from '../../../selectors/schemaSelector'
+// import { deadlines } from '../timetableEditMockData'
 
 class EditProjectTimeTableModal extends Component {
   constructor(props) {
@@ -21,6 +19,8 @@ class EditProjectTimeTableModal extends Component {
     this.state = {
       loading: false
     }
+    const { initialize, attributeData } = this.props
+    initialize(attributeData)
   }
 
   componentDidMount() {
@@ -90,7 +90,7 @@ class EditProjectTimeTableModal extends Component {
           className="modal-field"
        //   defaultValue={startDate}
     //      currentProject={currentProject}
-          isProjectTimetableEdit
+          isProjectTimetableEdit={true}
         />
       </div>
     )
@@ -111,20 +111,18 @@ class EditProjectTimeTableModal extends Component {
     return (
       <Collapse title={section.title} key={sectionIndex}>
         {this.getFormFields(sections, sectionIndex)}
-        <div className="section-deadline-info">
-          <div>
-            <FontAwesomeIcon className="deadline-info-icon" icon="clock" />
-            Määräaika 10.12.2010
-          </div>
-        </div>
       </Collapse>
     )
   }
 
   render() {
     const { loading } = this.state
-    const { open } = this.props
-    // const { timetableEditSections } = this.props
+    const { open, formValues } = this.props
+    const { deadlineSections } = this.props
+
+    if ( !formValues ) {
+      return null
+    }
 
     return (
       <Modal
@@ -137,8 +135,7 @@ class EditProjectTimeTableModal extends Component {
         <Modal.Header>Päivitä aikataulut</Modal.Header>
         <Modal.Content>
           <Form>
-            {deadlines &&
-              deadlines.deadline_sections.map((section, sectionIndex) =>
+            {deadlineSections.map((section, sectionIndex) =>
                 this.renderSection(section, sectionIndex)
               )}
           </Form>
@@ -169,9 +166,8 @@ EditProjectTimeTableModal.propTypes = {
 
 const mapStateToProps = state => ({
   formSubmitErrors: getFormSubmitErrors(EDIT_PROJECT_TIMETABLE_FORM)(state),
-  // floorAreaSections: floorAreaSectionsSelector(state),
+  deadlineSections: deadlineSectionsSelector(state),
   formValues: getFormValues(EDIT_PROJECT_TIMETABLE_FORM)(state)
- // currentProject: currentProjectSelector(state)
 })
 
 const decoratedForm = reduxForm({
