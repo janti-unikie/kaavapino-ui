@@ -4,7 +4,8 @@
   font-family: 'Helsinki Grotesk Medium';
   margin-left: 10px;
   margin-right: 10px;
-  margin-top: 20px;
+  padding-top: 20px;
+  overflow: hidden;
   position: relative;
 
   .timeline-error-message {
@@ -42,7 +43,7 @@
       .deadline-name-inside {
         position: absolute;
         left: 2px;
-        z-index: 1;
+        z-index: 3;
         font-size: 12px;
         width: 120px;
       }
@@ -74,7 +75,7 @@
           &.inner {
             top: 4px;
             height: 12px;
-            width: 16px;
+            width: 17px;
             &.start {
               border-bottom-left-radius: 5px;
               border-top-left-radius: 5px;

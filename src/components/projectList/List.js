@@ -102,7 +102,8 @@ class List extends Component {
           phase,
           onhold,
           archived,
-          pino_number
+          pino_number,
+          deadlines
         },
         i
       ) => {
@@ -111,6 +112,7 @@ class List extends Component {
           name,
           id,
           pino_number,
+          deadlines,
           modified_at: projectUtils.formatDate(modified_at),
           user: projectUtils.formatUsersName(users.find(u => u.id === user)),
           subtype: projectUtils.formatSubtype(subtype, projectSubtypes),

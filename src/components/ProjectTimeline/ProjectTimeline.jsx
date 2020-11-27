@@ -15,8 +15,8 @@ import { findInMonths, findWeek } from './helpers/helpers'
  */
 
 function ProjectTimeline(props) {
-  //const { deadlines } = props
-  const [showError /*, setShowError*/] = useState(false)
+  const { deadlines } = props
+  const [showError, setShowError] = useState(false)
   const [drawMonths, setDrawMonths] = useState([])
   const [drawItems, setDrawItems] = useState([])
   const monthDates = []
@@ -35,543 +35,16 @@ function ProjectTimeline(props) {
     10: 'Marras',
     11: 'Joulu'
   }
-  // mock data
-  const deadlines = [
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2020-12-21',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'K1',
-        identifier: 'K1',
-        editable: true,
-        deadline_types: ['phase_start'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Käynnistys',
-        phase_color: '#0fff00',
-        phase_color_code: '#0fff00',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-02-01',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'K2',
-        identifier: 'K1',
-        editable: true,
-        deadline_types: ['phase_end'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Käynnistys',
-        phase_color: '#0fff00',
-        phase_color_code: '#0fff00',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-02-01',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P1',
-        identifier: 'P1',
-        editable: true,
-        deadline_types: ['phase_start'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Periaatteet',
-        phase_color: '#35e9ff',
-        phase_color_code: '#35e9ff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-03-01',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P2',
-        identifier: 'P1',
-        editable: true,
-        deadline_types: ['milestone', 'dashed_start'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Periaatteet',
-        phase_color: '#35e9ff',
-        phase_color_code: '#35e9ff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-03-22',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P3',
-        identifier: 'P1',
-        editable: true,
-        deadline_types: ['dashed_end', 'inner_start'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Periaatteet',
-        phase_color: '#35e9ff',
-        phase_color_code: '#35e9ff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-04-13',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P4',
-        identifier: 'P1',
-        editable: true,
-        deadline_types: ['inner_end'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Periaatteet',
-        phase_color: '#35e9ff',
-        phase_color_code: '#35e9ff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-05-10',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P5',
-        identifier: 'P1',
-        editable: true,
-        deadline_types: ['milestone', 'dashed_start'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Periaatteet',
-        phase_color: '#35e9ff',
-        phase_color_code: '#35e9ff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-06-08',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: 'P1',
-        editable: true,
-        deadline_types: ['milestone', 'dashed_end'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Periaatteet',
-        phase_color: '#35e9ff',
-        phase_color_code: '#35e9ff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-06-08',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P7',
-        identifier: 'P1',
-        editable: true,
-        deadline_types: ['phase_end'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Periaatteet',
-        phase_color: '#35e9ff',
-        phase_color_code: '#35e9ff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-06-08',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: '01',
-        editable: true,
-        deadline_types: ['phase_start'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'OAS',
-        phase_color: '#ff9a00',
-        phase_color_code: '#ff9a00',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-08-02',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: '01',
-        editable: true,
-        deadline_types: ['milestone', 'dashed_start'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'OAS',
-        phase_color: '#ff9a00',
-        phase_color_code: '#ff9a00',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-08-23',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: '01',
-        editable: true,
-        deadline_types: ['dashed_end', 'inner_start'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'OAS',
-        phase_color: '#ff9a00',
-        phase_color_code: '#ff9a00',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-09-10',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: '01',
-        editable: true,
-        deadline_types: ['inner_end'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'OAS',
-        phase_color: '#ff9a00',
-        phase_color_code: '#ff9a00',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-09-10',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: '01',
-        editable: true,
-        deadline_types: ['phase_end'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'OAS',
-        phase_color: '#ff9a00',
-        phase_color_code: '#ff9a00',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-09-10',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: 'L1',
-        editable: true,
-        deadline_types: ['phase_start'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Luonnos',
-        phase_color: '#001fff',
-        phase_color_code: '#001fff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-10-04',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: 'L1',
-        editable: true,
-        deadline_types: ['milestone'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Luonnos',
-        phase_color: '#001fff',
-        phase_color_code: '#001fff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-10-25',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: 'L1',
-        editable: true,
-        deadline_types: ['milestone'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Luonnos',
-        phase_color: '#001fff',
-        phase_color_code: '#001fff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-11-12',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: 'L1',
-        editable: true,
-        deadline_types: ['milestone'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Luonnos',
-        phase_color: '#001fff',
-        phase_color_code: '#001fff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-11-12',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: 'L1',
-        editable: true,
-        deadline_types: ['milestone'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Luonnos',
-        phase_color: '#001fff',
-        phase_color_code: '#001fff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2021-11-29',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: 'L1',
-        editable: true,
-        deadline_types: ['milestone'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Luonnos',
-        phase_color: '#001fff',
-        phase_color_code: '#001fff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2022-01-11',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: 'L1',
-        editable: true,
-        deadline_types: ['milestone'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Luonnos',
-        phase_color: '#001fff',
-        phase_color_code: '#001fff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    },
-    {
-      past_due: false,
-      out_of_sync: false,
-      is_under_min_distance_previous: false,
-      is_under_min_distance_next: false,
-      date: '2022-01-11',
-      distance_reference_deadline_id: null,
-      deadline: {
-        abbreviation: 'P6',
-        identifier: 'L1',
-        editable: true,
-        deadline_types: ['phase_end'],
-        date_type_id: null,
-        error_past_due: '',
-        phase_id: 1,
-        phase_name: 'Luonnos',
-        phase_color: '#001fff',
-        phase_color_code: '#001fff',
-        index: 0,
-        min_distance: 0,
-        error_min_distance_previous: '',
-        warning_min_distance_next: ''
-      }
-    }
-  ]
-
   useEffect(() => {
     createTimelineItems()
   }, [])
   function createMonths() {
-    const date = new Date(deadlines[0].date)
+    let date = new Date()
+    if (!deadlines[0].date) {
+      setShowError(true)
+    } else {
+      date.setDate(deadlines[0].date)
+    }
     if (date.getMonth() === 0) {
       date.setMonth(11)
     } else {
@@ -609,10 +82,10 @@ function ProjectTimeline(props) {
     }
   }
   function fillGaps() {
-    let deadlineIdentifier = null
+    let deadlineAbbreviation = null
     let color_code = null
     let deadlineLength = 2
-    let deadlinePropIdentifier = null
+    let deadlinePropAbbreviation = null
     let monthDateIndex = null
     for (let i = 0; i < monthDates.length; i++) {
       for (const prop in monthDates[i]) {
@@ -620,25 +93,25 @@ function ProjectTimeline(props) {
           if (Object.keys(monthDates[i]).length < 4) {
             if (Array.isArray(monthDates[i][prop].deadline_type)) {
               if (monthDates[i][prop].deadline_type[0] === 'phase_start') {
-                deadlineIdentifier = monthDates[i][prop].identifier
+                deadlineAbbreviation = monthDates[i][prop].abbreviation
                 color_code = monthDates[i][prop].color_code
-                deadlinePropIdentifier = prop
+                deadlinePropAbbreviation = prop
                 monthDateIndex = i
               } else if (monthDates[i][prop].deadline_type[0] === 'phase_end') {
                 if (monthDates[monthDateIndex]) {
                   monthDates[monthDateIndex][
-                    deadlinePropIdentifier
+                    deadlinePropAbbreviation
                   ].deadline_length = deadlineLength
                 }
-                deadlineIdentifier = null
+                deadlineAbbreviation = null
                 color_code = null
                 deadlineLength = 2
                 monthDateIndex = null
               }
-            } else if (deadlineIdentifier && Object.keys(monthDates[i]).length < 3) {
+            } else if (deadlineAbbreviation && Object.keys(monthDates[i]).length < 3) {
               deadlineLength++
               monthDates[i].midpoint = {
-                identifier: deadlineIdentifier,
+                abbreviation: deadlineAbbreviation,
                 deadline_type: ['mid_point'],
                 color_code: color_code
               }
@@ -646,17 +119,17 @@ function ProjectTimeline(props) {
           } else {
             if (Array.isArray(monthDates[i][prop].deadline_type)) {
               if (monthDates[i][prop].deadline_type[0] === 'phase_start') {
-                deadlineIdentifier = monthDates[i][prop].identifier
+                deadlineAbbreviation = monthDates[i][prop].abbreviation
                 color_code = monthDates[i][prop].color_code
-                deadlinePropIdentifier = prop
+                deadlinePropAbbreviation = prop
                 monthDateIndex = i
               } else {
                 if (monthDates[monthDateIndex]) {
                   monthDates[monthDateIndex][
-                    deadlinePropIdentifier
+                    deadlinePropAbbreviation
                   ].deadline_length = deadlineLength
                 }
-                deadlineIdentifier = null
+                deadlineAbbreviation = null
                 color_code = null
                 monthDateIndex = null
                 deadlineLength = 2
@@ -667,7 +140,7 @@ function ProjectTimeline(props) {
           if (i >= 64) {
             if (monthDates[monthDateIndex]) {
               monthDates[monthDateIndex][
-                deadlinePropIdentifier
+                deadlinePropAbbreviation
               ].deadline_length = deadlineLength
             }
           }
@@ -758,7 +231,7 @@ function ProjectTimeline(props) {
                   if (monthDates[i][property].deadline_type[0] === 'phase_start') {
                     drawableItems.push(
                       <div
-                        key={`${monthDates[i][property].identifier}-${i}`}
+                        key={`${monthDates[i][property].abbreviation}-${i}`}
                         style={{
                           background: monthDates[i][property].color_code
                         }}
@@ -779,7 +252,7 @@ function ProjectTimeline(props) {
                   } else if (monthDates[i][property].deadline_type[0] === 'mid_point') {
                     drawableItems.push(
                       <div
-                        key={`${monthDates[i][property].identifier}-${i}`}
+                        key={`${monthDates[i][property].abbreviation}-${i}`}
                         style={{
                           background: monthDates[i][property].color_code
                         }}
@@ -791,7 +264,7 @@ function ProjectTimeline(props) {
                   } else if (monthDates[i][property].deadline_type[0] === 'phase_end') {
                     drawableItems.push(
                       <div
-                        key={`${monthDates[i][property].identifier}-${i}`}
+                        key={`${monthDates[i][property].abbreviation}-${i}`}
                         style={{
                           background: monthDates[i][property].color_code
                         }}
@@ -805,7 +278,7 @@ function ProjectTimeline(props) {
                   ) {
                     drawableItems.push(
                       <div
-                        key={`${monthDates[i][property].identifier}-${i}`}
+                        key={`${monthDates[i][property].abbreviation}-${i}`}
                         style={{
                           background: monthDates[i][property].color_code
                         }}
@@ -830,7 +303,7 @@ function ProjectTimeline(props) {
           }
         } else {
           drawableItems.push(
-            <div className="timeline-item" key={`${monthDates[i].identifier}-${i}`} /> // space
+            <div className="timeline-item" key={`${monthDates[i].abbreviation}-${i}`} /> // space
           )
         }
       }
@@ -935,14 +408,14 @@ function ProjectTimeline(props) {
         date = `${date.getFullYear()}-${date.getMonth() + 1}`
         const monthIndex = findInMonths(date, week, monthDates)
         if (monthIndex) {
-          if (monthDates[monthIndex][deadline.deadline.identifier]) {
+          if (monthDates[monthIndex][deadline.deadline.abbreviation]) {
             if (
-              monthDates[monthIndex][deadline.deadline.identifier].deadline_type[0] ===
+              monthDates[monthIndex][deadline.deadline.abbreviation].deadline_type[0] ===
               'phase_start'
             ) {
               if (deadline.deadline.deadline_types[0] === 'phase_end') {
-                monthDates[monthIndex][deadline.deadline.identifier] = {
-                  identifier: deadline.deadline.identifier,
+                monthDates[monthIndex][deadline.deadline.abbreviation] = {
+                  abbreviation: deadline.deadline.abbreviation,
                   deadline_type: ['start_end_point'],
                   phase_id: deadline.deadline.phase_id,
                   color_code: deadline.deadline.phase_color_code,
@@ -952,8 +425,8 @@ function ProjectTimeline(props) {
               }
             }
           } else {
-            monthDates[monthIndex][deadline.deadline.identifier] = {
-              identifier: deadline.deadline.identifier,
+            monthDates[monthIndex][deadline.deadline.abbreviation] = {
+              abbreviation: deadline.deadline.abbreviation,
               deadline_type: deadline.deadline.deadline_types,
               phase_id: deadline.deadline.phase_id,
               color_code: deadline.deadline.phase_color_code,
@@ -967,22 +440,24 @@ function ProjectTimeline(props) {
   }
   function createMilestones() {
     deadlines.forEach(deadline => {
-      const deadlineTypes = deadline.deadline.deadline_types[0]
-      if (
-        deadlineTypes === 'milestone' ||
-        deadlineTypes === 'dashed_start' ||
-        deadlineTypes === 'dashed_end' ||
-        deadlineTypes === 'inner_start' ||
-        deadlineTypes === 'inner_end'
-      ) {
-        let date = new Date(deadline.date)
-        const week = findWeek(date.getDate())
-        date = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-        const monthIndex = findInMonths(date, week, monthDates)
-        if (monthIndex) {
-          monthDates[monthIndex].milestone = true
-          monthDates[monthIndex].milestoneDate = date
-          monthDates[monthIndex].milestone_types = deadline.deadline.deadline_types
+      for (let deadlineTypeIndex in deadline.deadline.deadline_types) {
+        const deadlineTypes = deadline.deadline.deadline_types[deadlineTypeIndex]
+        if (
+          deadlineTypes === 'milestone' ||
+          deadlineTypes === 'dashed_start' ||
+          deadlineTypes === 'dashed_end' ||
+          deadlineTypes === 'inner_start' ||
+          deadlineTypes === 'inner_end'
+        ) {
+          let date = new Date(deadline.date)
+          const week = findWeek(date.getDate())
+          date = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+          const monthIndex = findInMonths(date, week, monthDates)
+          if (monthIndex) {
+            monthDates[monthIndex].milestone = true
+            monthDates[monthIndex].milestoneDate = date
+            monthDates[monthIndex].milestone_types = deadline.deadline.deadline_types
+          }
         }
       }
     })
