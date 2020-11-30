@@ -388,11 +388,7 @@ function* saveProjectTimetable() {
         })
       )
     } catch (e) {
-      if (e.response.status === 400) {
         yield put(stopSubmit(EDIT_PROJECT_TIMETABLE_FORM, e.response.data))
-      } else {
-        yield put(error(e))
-      }
     }
   }
 }

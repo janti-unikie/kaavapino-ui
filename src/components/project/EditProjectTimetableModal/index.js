@@ -64,6 +64,10 @@ class EditProjectTimeTableModal extends Component {
     const { handleSubmit } = this.props
 
     const errors = handleSubmit()
+
+    if ( errors ) {
+      this.setState({ loading: false })
+    }
     console.log(errors)
   }
 
@@ -117,8 +121,10 @@ class EditProjectTimeTableModal extends Component {
 
   render() {
     const { loading } = this.state
-    const { open, formValues } = this.props
+    const { open, formValues, formSubmitErrors } = this.props
     const { deadlineSections } = this.props
+
+    console.log( formSubmitErrors.detail)
 
     if ( !formValues ) {
       return null
@@ -139,6 +145,7 @@ class EditProjectTimeTableModal extends Component {
                 this.renderSection(section, sectionIndex)
               )}
           </Form>
+          <div className="error">{formSubmitErrors ? `Virhe: ${formSubmitErrors.detail}` : ''}</div>
         </Modal.Content>
         <Modal.Actions>
           <Button secondary disabled={loading} onClick={this.handleClose}>
