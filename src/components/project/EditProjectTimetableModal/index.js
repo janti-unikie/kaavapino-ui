@@ -28,26 +28,24 @@ class EditProjectTimeTableModal extends Component {
     initialize(attributeData)
   }
 
+  setLoadingFalse = () => {
+    this.setState({ loading: false })
+  }
+
  componentDidUpdate(prevProps) {
     const {
       saving,
       initialize,
       attributeData,
       submitSucceeded,
-      submitFailed,
-      loading
+      submitFailed
     } = this.props
-
-    function setLoadingFalse() {
-      this.setState({ loading: false })
-    }
-
     /* handle submit success / failure */
 
     if (prevProps.submitting && submitSucceeded) {
       this.handleClose()
-    } else if (prevProps.submitting && submitFailed && !submitSucceeded && loading) {
-      setLoadingFalse()
+    } else if (prevProps.submitting && submitFailed ) {
+      this.setLoadingFalse()
     }
     if (prevProps.saving && !saving) {
       initialize(attributeData)
@@ -64,11 +62,7 @@ class EditProjectTimeTableModal extends Component {
     const { handleSubmit } = this.props
 
     const errors = handleSubmit()
-
-    if ( errors ) {
-      this.setState({ loading: false })
-    }
-    console.log(errors)
+    console.log( errors)
   }
 
   handleClose = () => {
@@ -118,10 +112,13 @@ class EditProjectTimeTableModal extends Component {
       </Collapse>
     )
   }
+  setLoading = (loading) => {
+    this.setState( { loading })
+  }
 
   render() {
     const { loading } = this.state
-    const { open, formValues, formSubmitErrors, submitting, deadlineSections, t } = this.props
+    const { open, formValues, formSubmitErrors, deadlineSections, t } = this.props
 
     if ( !formValues ) {
       return null
@@ -152,7 +149,6 @@ class EditProjectTimeTableModal extends Component {
             primary
             disabled={loading}
             loading={loading}
-            submitting={submitting}
             type="submit"
             onClick={this.handleSubmit}
           >

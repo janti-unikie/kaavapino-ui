@@ -11,6 +11,13 @@
   .input-header {
     width: 250px;
   }
+  .input-container {
+    margin-top: 16px !important;
+  }
+  .ui.input {
+    margin: 0;
+    height: 40px;
+  }
   .section-deadline-info {
     margin-top: 10px;
     padding: 10px 10px 10px 0;
@@ -24,5 +31,8 @@
   .error {
     padding: 10px 24px;
     color: $color-error-text;
+  }
+  .collapse-content {
+    padding: 0 12px;
   }
 }
