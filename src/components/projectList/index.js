@@ -79,7 +79,7 @@ class ProjectListPage extends Component {
 
     const panes = [
       {
-        menuItem: `${screenWidth < 600 ? 'Omat' : 'Omat Projektit'} (${totalOwnProjects}${
+        menuItem: `${screenWidth < 600 ? 'Omat' : 'Omat Projektit'} (${totalOwnProjects ? totalOwnProjects : ''}${
           totalOwnProjects > 0 ? ' kpl' : ''
         })`,
         render: () => (
@@ -94,7 +94,7 @@ class ProjectListPage extends Component {
       {
         menuItem: `${
           screenWidth < 600 ? 'Kaikki' : 'Kaikki Projektit'
-        } (${totalProjects}${totalProjects > 0 ? ' kpl' : ''})`,
+        } (${totalProjects ? totalProjects : ''}${totalProjects > 0 ? ' kpl' : ''})`,
         render: () => (
           <List
             toggleSearch={this.toggleSearch}

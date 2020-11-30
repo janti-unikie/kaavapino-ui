@@ -25,7 +25,7 @@ const SelectInput = ({ input, meta: { error }, options, ...custom }) => {
         }
         input.onChange(returnValue)
         if ( custom.handleSave ) {
-          custom.handleSave(returnValue)
+          custom.handleSave()
         }
         }
       }

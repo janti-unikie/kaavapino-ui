@@ -138,7 +138,9 @@ function RichTextEditor(props) {
           onBlur={(_range, _source, quill) => {
             setToolbarVisible(false)
             setShowCounter(false)
-            inputProps.onBlur(quill.getContents())
+            if ( !inputProps.onBlur ) {
+              inputProps.onBlur(quill.getContents())
+            }
           }}
           onClick={() => setToolbarVisible(true)}
           {...rest}

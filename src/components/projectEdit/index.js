@@ -11,7 +11,7 @@ import {
   projectSetChecking,
   saveProjectBase
 } from '../../actions/projectActions'
-import { fetchSchemas, setAllEditFields } from '../../actions/schemaActions'
+import { fetchSchemas, setAllEditFields, setLatestEditField } from '../../actions/schemaActions'
 import {
   savingSelector,
   changingPhaseSelector,
@@ -43,15 +43,17 @@ class ProjectEditPage extends Component {
   changePhase = () => this.props.changeProjectPhase(this.props.project.phase + 1)
 
   handleSave = () => {
-      this.props.saveProject()
-      this.props.setAllEditFields()
+    this.props.saveProject()
+    this.props.setAllEditFields()
+    this.props.setLatestEditField()
   }
   handleAutoSave = () => {
     if ( this.props.syncErrors && !_.isEmpty( this.props.syncErrors )) {
       return
     }
-      this.props.saveProject()
-      this.props.setAllEditFields()
+    this.props.saveProject()
+    this.props.setAllEditFields()
+    this.props.setLatestEditField()
   }
 
   setSelectedRole = role => {
@@ -195,7 +197,8 @@ const mapDispatchToProps = {
   validateProjectFields,
   projectSetChecking,
   saveProjectBase,
-  setAllEditFields
+  setAllEditFields,
+  setLatestEditField
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)

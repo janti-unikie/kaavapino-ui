@@ -86,6 +86,13 @@ export const NavHeader = ({
     return parse(converter.convert())
   }
 
+  const isSameValue = ( oldValue, newValue ) => {
+    if ( oldValue && newValue && isArray( oldValue ) && isArray( newValue )) {
+      return oldValue.toString() === newValue.toString()
+    }
+    return oldValue === newValue
+  }
+
   return (
     <div className="nav-header-container">
       <div className="nav-header-inner-container">
@@ -111,6 +118,10 @@ export const NavHeader = ({
                 <Dropdown text={info} scrolling icon="angle down">
                   <Dropdown.Menu>
                     {infoOptions.map(option => {
+
+                      if ( isSameValue( option.oldValue, option.newValue )) {
+                        return null
+                      }
                       return (
                         <Popup
                           hideOnScroll={false}
