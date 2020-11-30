@@ -10,6 +10,7 @@ import FormField from '../../input/FormField'
 import Collapse from '../../common/collapse'
 import './styles.scss'
 import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
+import { withTranslation } from 'react-i18next'
 
 const FloorAreaTotals = ({ formValues, floorAreaSections }) => {
   // Would love a more rubust check than string includes if one becomes available
@@ -188,4 +189,4 @@ const decoratedForm = reduxForm({
   form: EDIT_FLOOR_AREA_FORM
 })(EditFloorAreaFormModal)
 
-export default connect(mapStateToProps, () => ({}))(decoratedForm)
+export default connect(mapStateToProps, () => ({}))(withTranslation()(decoratedForm))

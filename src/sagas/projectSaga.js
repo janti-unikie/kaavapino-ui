@@ -70,6 +70,7 @@ import projectUtils from '../utils/projectUtils'
 import { projectApi, projectDeadlinesApi } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
 import { NEW_PROJECT_FORM, EDIT_FLOOR_AREA_FORM, EDIT_PROJECT_FORM, EDIT_PROJECT_TIMETABLE_FORM } from '../constants'
+import i18 from 'i18next'
 
 export default function* projectSaga() {
   yield all([
@@ -384,7 +385,7 @@ function* saveProjectTimetable() {
       yield put(
         toastrActions.add({
           type: 'success',
-          title: 'Aikataulut tallennettu onnistuneesti'
+          title: i18.t('messages.deadlines-successfully-saved')
         })
       )
     } catch (e) {

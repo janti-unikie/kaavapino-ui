@@ -10,7 +10,7 @@ import FormField from '../../input/FormField'
 import Collapse from '../../common/collapse'
 import './styles.scss'
 import { deadlineSectionsSelector } from '../../../selectors/schemaSelector'
-// import { deadlines } from '../timetableEditMockData'
+import { withTranslation } from 'react-i18next'
 
 class EditProjectTimeTableModal extends Component {
   constructor(props) {
@@ -121,10 +121,7 @@ class EditProjectTimeTableModal extends Component {
 
   render() {
     const { loading } = this.state
-    const { open, formValues, formSubmitErrors } = this.props
-    const { deadlineSections } = this.props
-
-    console.log( formSubmitErrors.detail)
+    const { open, formValues, formSubmitErrors, submitting, deadlineSections, t } = this.props
 
     if ( !formValues ) {
       return null
@@ -138,27 +135,28 @@ class EditProjectTimeTableModal extends Component {
         open={open}
         closeIcon
       >
-        <Modal.Header>Päivitä aikataulut</Modal.Header>
+        <Modal.Header>{t('deadlines.title')}</Modal.Header>
         <Modal.Content>
           <Form>
             {deadlineSections.map((section, sectionIndex) =>
                 this.renderSection(section, sectionIndex)
               )}
           </Form>
-          <div className="error">{formSubmitErrors ? `Virhe: ${formSubmitErrors.detail}` : ''}</div>
+          <div className="error">{formSubmitErrors && formSubmitErrors.detail ? t('deadlines.error', { error: formSubmitErrors.detail }) : ''}</div>
         </Modal.Content>
         <Modal.Actions>
           <Button secondary disabled={loading} onClick={this.handleClose}>
-            Peruuta
+            {t('common.cancel')}
           </Button>
           <Button
             primary
             disabled={loading}
             loading={loading}
+            submitting={submitting}
             type="submit"
             onClick={this.handleSubmit}
           >
-            Tallenna
+            {t('common.save')}
           </Button>
         </Modal.Actions>
       </Modal>
@@ -179,6 +177,6 @@ const mapStateToProps = state => ({
 
 const decoratedForm = reduxForm({
   form: EDIT_PROJECT_TIMETABLE_FORM
-})(EditProjectTimeTableModal)
+})(withTranslation()(EditProjectTimeTableModal))
 
 export default connect(mapStateToProps, () => ({}))(decoratedForm)
