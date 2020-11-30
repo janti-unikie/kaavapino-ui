@@ -2,25 +2,14 @@ import React, { useState, useEffect } from 'react'
 import './ProjectTimeline.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
-import { findInMonths, findWeek } from './helpers/helpers'
-
-/*
-    TYPE_PHASE_START = "phase_start"
-    TYPE_PHASE_END = "phase_end"
-    TYPE_DASHED_START = "dashed_start"
-    TYPE_DASHED_END = "dashed_end"
-    TYPE_INNER_START = "inner_start"
-    TYPE_INNER_END = "inner_end"
-    TYPE_MILESTONE = "milestone"
- */
+import { createMonths } from './helpers/createMonths'
+import { createDeadlines } from './helpers/createDeadlines'
 
 function ProjectTimeline(props) {
   const { deadlines } = props
   const [showError, setShowError] = useState(false)
   const [drawMonths, setDrawMonths] = useState([])
   const [drawItems, setDrawItems] = useState([])
-  const monthDates = []
-  const months = []
   const monthNames = {
     0: 'Tammi',
     1: 'Helmi',
@@ -38,163 +27,7 @@ function ProjectTimeline(props) {
   useEffect(() => {
     createTimelineItems()
   }, [])
-  function createMonths() {
-    let date = new Date()
-    if (!deadlines[0].date) {
-      setShowError(true)
-    } else {
-      date.setDate(deadlines[0].date)
-    }
-    if (date.getMonth() === 0) {
-      date.setMonth(11)
-    } else {
-      date.setMonth(date.getMonth() - 1)
-    }
-    for (let i = 0; i < 13; i++) {
-      if (i > 0) {
-        date.setDate(1)
-        date.setMonth(date.getMonth() + 1)
-      }
-      months.push({ date: `${date.getFullYear()}-${date.getMonth() + 1}` })
-    }
-  }
-  function createTimelineMonths() {
-    const date = new Date(deadlines[0].date)
-    let week = 1
-    if (date.getMonth() === 0) {
-      date.setMonth(11)
-    } else {
-      date.setMonth(date.getMonth() - 1)
-    }
-    for (let i = 0; i < 65; i++) {
-      if (i > 0 && Number.isInteger(i / 5)) {
-        date.setDate(1)
-        date.setMonth(date.getMonth() + 1)
-      }
-      monthDates.push({
-        date: `${date.getFullYear()}-${date.getMonth() + 1}`,
-        week: week
-      })
-      week++
-      if (week > 5) {
-        week = 1
-      }
-    }
-  }
-  function fillGaps() {
-    let deadlineAbbreviation = null
-    let color_code = null
-    let deadlineLength = 2
-    let deadlinePropAbbreviation = null
-    let monthDateIndex = null
-    for (let i = 0; i < monthDates.length; i++) {
-      for (const prop in monthDates[i]) {
-        if (monthDates[i].hasOwnProperty(prop)) {
-          if (Object.keys(monthDates[i]).length < 4) {
-            if (Array.isArray(monthDates[i][prop].deadline_type)) {
-              if (monthDates[i][prop].deadline_type[0] === 'phase_start') {
-                deadlineAbbreviation = monthDates[i][prop].abbreviation
-                color_code = monthDates[i][prop].color_code
-                deadlinePropAbbreviation = prop
-                monthDateIndex = i
-              } else if (monthDates[i][prop].deadline_type[0] === 'phase_end') {
-                if (monthDates[monthDateIndex]) {
-                  monthDates[monthDateIndex][
-                    deadlinePropAbbreviation
-                  ].deadline_length = deadlineLength
-                }
-                deadlineAbbreviation = null
-                color_code = null
-                deadlineLength = 2
-                monthDateIndex = null
-              }
-            } else if (deadlineAbbreviation && Object.keys(monthDates[i]).length < 3) {
-              deadlineLength++
-              monthDates[i].midpoint = {
-                abbreviation: deadlineAbbreviation,
-                deadline_type: ['mid_point'],
-                color_code: color_code
-              }
-            }
-          } else {
-            if (Array.isArray(monthDates[i][prop].deadline_type)) {
-              if (monthDates[i][prop].deadline_type[0] === 'phase_start') {
-                deadlineAbbreviation = monthDates[i][prop].abbreviation
-                color_code = monthDates[i][prop].color_code
-                deadlinePropAbbreviation = prop
-                monthDateIndex = i
-              } else {
-                if (monthDates[monthDateIndex]) {
-                  monthDates[monthDateIndex][
-                    deadlinePropAbbreviation
-                  ].deadline_length = deadlineLength
-                }
-                deadlineAbbreviation = null
-                color_code = null
-                monthDateIndex = null
-                deadlineLength = 2
-              }
-            }
-          }
-          // Dont round out last milestone item
-          if (i >= 64) {
-            if (monthDates[monthDateIndex]) {
-              monthDates[monthDateIndex][
-                deadlinePropAbbreviation
-              ].deadline_length = deadlineLength
-            }
-          }
-        }
-      }
-    }
-  }
-  function fillMilestoneGaps() {
-    let milestoneType = null
-    let milestoneDate = null
-    let milestoneSpace = 0
-    for (let i = 0; i < monthDates.length; i++) {
-      if (monthDates[i].milestone) {
-        for (let milestone_type in monthDates[i].milestone_types) {
-          switch (monthDates[i].milestone_types[milestone_type]) {
-            case 'dashed_start':
-              milestoneType = 'dashed_mid'
-              milestoneDate = monthDates[i].milestoneDate
-              milestoneSpace = 1
-              break
-            case 'dashed_end':
-              monthDates[i].milestone_space = milestoneSpace
-              milestoneType = null
-              milestoneDate = null
-              milestoneSpace = 0
-              break
-            case 'inner_start':
-              milestoneType = 'inner_mid'
-              milestoneDate = monthDates[i].milestoneDate
-              milestoneSpace = 1
-              break
-            case 'inner_end':
-              monthDates[i].milestone_space = milestoneSpace
-              milestoneType = null
-              milestoneDate = null
-              milestoneSpace = 0
-              break
-            default:
-              milestoneType = null
-              milestoneDate = null
-              milestoneSpace = 0
-          }
-        }
-      } else if (milestoneType !== null) {
-        monthDates[i].milestone = true
-        monthDates[i].milestoneDate = milestoneDate
-        monthDates[i].milestone_types = [milestoneType]
-      }
-      if (milestoneSpace > 0) {
-        milestoneSpace++
-      }
-    }
-  }
-  function createDrawMonths() {
+  function createDrawMonths(months) {
     const drawableMonths = []
     for (let i = 0; i < months.length; i++) {
       const date = new Date(months[i].date)
@@ -217,14 +50,15 @@ function ProjectTimeline(props) {
     }
     setDrawMonths([...drawableMonths])
   }
-  function createDrawItems() {
+  function createDrawItems(monthDates) {
     const drawableItems = []
+    const has = Object.prototype.hasOwnProperty
     for (let i = 0; i < monthDates.length; i++) {
       if (Object.keys(monthDates[i]).length > 1) {
         if (Object.keys(monthDates[i]).length > 2) {
           let propI = 0
           for (const property in monthDates[i]) {
-            if (monthDates[i].hasOwnProperty(property)) {
+            if (has.call(monthDates[i], property)) {
               if (typeof monthDates[i][property] === 'object') {
                 if (Array.isArray(monthDates[i][property].deadline_type)) {
                   propI++
@@ -246,7 +80,9 @@ function ProjectTimeline(props) {
                         >
                           {monthDates[i][property].phase_name}
                         </span>
-                        {monthDates[i].milestone ? createMilestoneItem(i, propI) : ''}
+                        {monthDates[i].milestone
+                          ? createMilestoneItem(i, propI, monthDates)
+                          : ''}
                       </div>
                     )
                   } else if (monthDates[i][property].deadline_type[0] === 'mid_point') {
@@ -258,7 +94,9 @@ function ProjectTimeline(props) {
                         }}
                         className="timeline-item"
                       >
-                        {monthDates[i].milestone ? createMilestoneItem(i, propI) : ''}
+                        {monthDates[i].milestone
+                          ? createMilestoneItem(i, propI, monthDates)
+                          : ''}
                       </div>
                     )
                   } else if (monthDates[i][property].deadline_type[0] === 'phase_end') {
@@ -270,7 +108,9 @@ function ProjectTimeline(props) {
                         }}
                         className="timeline-item last"
                       >
-                        {monthDates[i].milestone ? createMilestoneItem(i, propI) : ''}
+                        {monthDates[i].milestone
+                          ? createMilestoneItem(i, propI, monthDates)
+                          : ''}
                       </div>
                     )
                   } else if (
@@ -310,7 +150,7 @@ function ProjectTimeline(props) {
     }
     setDrawItems([...drawableItems])
   }
-  function createMilestoneItem(index, propertyIndex) {
+  function createMilestoneItem(index, propertyIndex, monthDates) {
     const date = new Date(monthDates[index].milestoneDate)
     let showMessage = null
     let milestoneType = []
@@ -343,7 +183,9 @@ function ProjectTimeline(props) {
                   className={`milestone-message ${
                     monthDates[index].milestone_space < 6 ? 'under' : ''
                   }`}
-                >{`Kylk ${date.getDate()}.${date.getMonth() + 1}.`}</span>
+                >{`Kylk ${date.getDate()}.${date.getMonth() + 1}. ${
+                  monthDates[index].milestone_space
+                }`}</span>
               )
               milestoneType.push(
                 <div key={listKey++} className="milestone-icon sphere black" />
@@ -397,83 +239,12 @@ function ProjectTimeline(props) {
       return null
     }
   }
-  function createStartAndEndPoints() {
-    deadlines.forEach(deadline => {
-      if (
-        deadline.deadline.deadline_types[0] === 'phase_start' ||
-        deadline.deadline.deadline_types[0] === 'phase_end'
-      ) {
-        let date = new Date(deadline.date)
-        const week = findWeek(date.getDate())
-        date = `${date.getFullYear()}-${date.getMonth() + 1}`
-        const monthIndex = findInMonths(date, week, monthDates)
-        if (monthIndex) {
-          if (monthDates[monthIndex][deadline.deadline.abbreviation]) {
-            if (
-              monthDates[monthIndex][deadline.deadline.abbreviation].deadline_type[0] ===
-              'phase_start'
-            ) {
-              if (deadline.deadline.deadline_types[0] === 'phase_end') {
-                monthDates[monthIndex][deadline.deadline.abbreviation] = {
-                  abbreviation: deadline.deadline.abbreviation,
-                  deadline_type: ['start_end_point'],
-                  phase_id: deadline.deadline.phase_id,
-                  color_code: deadline.deadline.phase_color_code,
-                  phase_name: deadline.deadline.phase_name,
-                  deadline_length: 2
-                }
-              }
-            }
-          } else {
-            monthDates[monthIndex][deadline.deadline.abbreviation] = {
-              abbreviation: deadline.deadline.abbreviation,
-              deadline_type: deadline.deadline.deadline_types,
-              phase_id: deadline.deadline.phase_id,
-              color_code: deadline.deadline.phase_color_code,
-              phase_name: deadline.deadline.phase_name,
-              deadline_length: 2
-            }
-          }
-        }
-      }
-    })
-  }
-  function createMilestones() {
-    deadlines.forEach(deadline => {
-      for (let deadlineTypeIndex in deadline.deadline.deadline_types) {
-        const deadlineTypes = deadline.deadline.deadline_types[deadlineTypeIndex]
-        if (
-          deadlineTypes === 'milestone' ||
-          deadlineTypes === 'dashed_start' ||
-          deadlineTypes === 'dashed_end' ||
-          deadlineTypes === 'inner_start' ||
-          deadlineTypes === 'inner_end'
-        ) {
-          let date = new Date(deadline.date)
-          const week = findWeek(date.getDate())
-          date = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-          const monthIndex = findInMonths(date, week, monthDates)
-          if (monthIndex) {
-            monthDates[monthIndex].milestone = true
-            monthDates[monthIndex].milestoneDate = date
-            monthDates[monthIndex].milestone_types = deadline.deadline.deadline_types
-          }
-        }
-      }
-    })
-  }
   function createTimelineItems() {
-    createMonths()
-    createTimelineMonths()
-    createStartAndEndPoints()
-    // create deadlines between start and end points.
-    fillGaps()
-    // create any milestones.
-    createMilestones()
-    // fill in gaps between milestones
-    fillMilestoneGaps()
-    createDrawMonths()
-    createDrawItems()
+    const months = createMonths(deadlines)
+    const deadlineArray = createDeadlines(deadlines)
+    setShowError(months.error)
+    createDrawMonths(months.months)
+    createDrawItems(deadlineArray)
   }
   return (
     <div className="timeline-graph-container">
