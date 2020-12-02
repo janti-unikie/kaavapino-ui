@@ -30,7 +30,10 @@ const AutofillInput = ({
 
     if ( isBoolean( autoFillValue )) {
        dispatch(autofill(formName, name, autoFillValue))
-       saveAutofill()
+
+       if ( saveAutofill ) {
+        saveAutofill()
+       }
     }
   }, [formValues, dispatch, autoFillValue])
 
