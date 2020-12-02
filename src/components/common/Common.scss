@@ -266,11 +266,16 @@ h4 {
     }
   }
 }
-.show-value {
-  padding-bottom: 20px;
+.popup-logger {
+  .show-value {
+    padding-bottom: 20px;
+  }
+  .field-value {
+    border: 1px solid #a3a3a3;
+    padding: 2px;
+  }
 }
-.field-value {
-  border: 1px solid black;
-  padding: 2px;
+.changelog-item {
+  color: #a3a3a3 !important;
 }
 
