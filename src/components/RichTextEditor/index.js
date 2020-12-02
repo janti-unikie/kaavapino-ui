@@ -43,7 +43,6 @@ function RichTextEditor(props) {
   const {
     input: { value, ...inputProps },
     largeField,
-    onBlur,
     ...rest
   } = props
   const dispatch = useDispatch()
@@ -139,7 +138,9 @@ function RichTextEditor(props) {
           onBlur={(_range, _source, quill) => {
             setToolbarVisible(false)
             setShowCounter(false)
-            onBlur(quill.getContents())
+            if ( inputProps.onBlur ) {
+              inputProps.onBlur(quill.getContents())
+            }
           }}
           onClick={() => setToolbarVisible(true)}
           {...rest}

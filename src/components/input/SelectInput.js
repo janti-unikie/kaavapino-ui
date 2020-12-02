@@ -26,7 +26,7 @@ const SelectInput = ({ input, meta: { error }, options, onBlur, placeholder, ...
         }
         input.onChange(returnValue)
         if ( custom.handleSave ) {
-          custom.handleSave(returnValue)
+          custom.handleSave()
         }
         }
       }

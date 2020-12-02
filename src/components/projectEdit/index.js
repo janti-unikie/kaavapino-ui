@@ -13,7 +13,7 @@ import {
   saveProjectBase,
   fetchProjectDeadlines
 } from '../../actions/projectActions'
-import { fetchSchemas, setAllEditFields } from '../../actions/schemaActions'
+import { fetchSchemas, setAllEditFields, setLatestEditField } from '../../actions/schemaActions'
 import {
   savingSelector,
   changingPhaseSelector,
@@ -48,13 +48,16 @@ class ProjectEditPage extends Component {
 
   handleSave = () => {
     this.props.saveProject()
+    this.props.setLatestEditField()
     this.props.setAllEditFields()
+
   }
   handleAutoSave = () => {
     if (this.props.syncErrors && !_.isEmpty(this.props.syncErrors)) {
       return
     }
     this.props.saveProject()
+    this.props.setLatestEditField()
     this.props.setAllEditFields()
   }
 
@@ -213,7 +216,8 @@ const mapDispatchToProps = {
   projectSetChecking,
   saveProjectBase,
   fetchProjectDeadlines,
-  setAllEditFields
+  setAllEditFields,
+  setLatestEditField
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)
