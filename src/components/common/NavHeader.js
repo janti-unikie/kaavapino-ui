@@ -138,7 +138,8 @@ export const NavHeader = ({
                               value={option.value}
                             >
                               {option.text}
-                            </Dropdown.Item>)
+                            </Dropdown.Item>
+                            )
                           }
                         >
                           <div className="show-value">{option.text}</div>
