@@ -44,16 +44,17 @@ class ProjectEditPage extends Component {
 
   handleSave = () => {
     this.props.saveProject()
-    this.props.setAllEditFields()
     this.props.setLatestEditField()
+    this.props.setAllEditFields()
+
   }
   handleAutoSave = () => {
     if ( this.props.syncErrors && !_.isEmpty( this.props.syncErrors )) {
       return
     }
     this.props.saveProject()
-    this.props.setAllEditFields()
     this.props.setLatestEditField()
+    this.props.setAllEditFields()
   }
 
   setSelectedRole = role => {
