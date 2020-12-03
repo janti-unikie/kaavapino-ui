@@ -80,7 +80,6 @@ function createStartAndEndPoints(inputMonths, deadlines) {
 }
 /**
  * @desc fills gaps between start and end points with mid points with the same key
- * @return function
  * @param inputMonths - array that contains months
  * @param deadlines - deadlines returned from api
  * @return function
@@ -157,7 +156,6 @@ function fillGaps(inputMonths, deadlines) {
 }
 /**
  * @desc checks for milestones in deadlines adds them to the month object
- * @return function
  * @param inputMonths - array that contains months
  * @param deadlines - deadlines returned from api
  * @return function
@@ -190,9 +188,7 @@ function createMilestones(inputMonths, deadlines) {
 }
 /**
  * @desc fills gaps between different types of milestones
- * @return function
  * @param inputMonths - array that contains months
- * @param deadlines - deadlines returned from api
  * @return array
  */
 function fillMilestoneGaps(inputMonths) {
