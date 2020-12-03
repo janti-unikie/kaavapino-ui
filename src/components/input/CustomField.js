@@ -21,6 +21,7 @@ import { isEqual } from 'lodash'
 import projectUtils from '../../utils/projectUtils'
 import AutofillInput from './AutofillInput/AutofillInput'
 import _ from 'lodash'
+import DeadlineInfoText from './DeadlineInfoText'
 class CustomField extends Component {
   yearOptions = []
   shouldComponentUpdate(p) {
@@ -338,6 +339,15 @@ class CustomField extends Component {
       />
     )
   }
+  renderDeadlineInfo = props => {
+    const { attributeData, parentName, field } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName)
+
+    console.log( props )
+    return (
+      <DeadlineInfoText label={field.label} {...props } />
+    )
+  }
 
   getInput = field => {
 
@@ -387,6 +397,8 @@ class CustomField extends Component {
         return this.renderOnholdCheckbox
       case 'checkbox':
         return this.renderCheckbox
+      case 'readonly':
+        return this.renderDeadlineInfo
       default:
         return this.renderNumber
     }
@@ -422,15 +434,17 @@ class CustomField extends Component {
         />
       )
     }
+
+    const showFieldClass = field.display === 'hidden' ? 'hidden' : className
     let fieldProps = {
       name: field.name,
       placeholder: field.placeholder || field.label,
       disabled:
-        field.generated || field.disabled || field.autofill_readonly ? true : false,
+        field.generated || field.disabled || field.autofill_readonly,
       component: this.getInput(field),
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
       updated: { updated },
-      className: className
+      className: showFieldClass
     }
     /* Some fields are autofilled to a value as per (autofill_rules)
      * Some fields have their value calculated based on other fields (calculations)

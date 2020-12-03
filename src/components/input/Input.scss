@@ -54,11 +54,11 @@
     }
   }
 
-  .input-title {
-    &.highlight {
+  //.input-title {
+  //  &.highlight {
       // background-color: yellow;
-    }
-  }
+  //  }
+ // }
   .ui.checkbox.dropdown-checkbox label {
     align-items: center;
     display: flex;
@@ -572,4 +572,15 @@
   .error-text {
     color: $color-error-text;
   }
+  
+}
+.deadline-info-text {
+  margin-top: 10px;
+  padding: 10px 10px 10px 0;
+  background-color: $yellow; 
+  width: 100%;
+ 
+}
+.hidden {
+  display: none;
 }
