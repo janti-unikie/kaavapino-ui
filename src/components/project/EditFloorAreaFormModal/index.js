@@ -131,7 +131,7 @@ class EditFloorAreaFormModal extends Component {
 
   render() {
     const { loading } = this.state
-    const { floorAreaSections } = this.props
+    const { floorAreaSections, t } = this.props
 
     return (
       <Modal
@@ -141,7 +141,7 @@ class EditFloorAreaFormModal extends Component {
         open={this.props.open}
         closeIcon
       >
-        <Modal.Header>Päivitä kerrosalatiedot</Modal.Header>
+        <Modal.Header>{t('floor-areas.title')}</Modal.Header>
         <Modal.Content>
           {this.getFloorAreaTotalsComponent()}
           <Form>
@@ -154,7 +154,7 @@ class EditFloorAreaFormModal extends Component {
         </Modal.Content>
         <Modal.Actions>
           <Button secondary disabled={loading} onClick={this.handleClose}>
-            Peruuta
+            {t('common.cancel')}
           </Button>
           <Button
             primary
@@ -163,7 +163,7 @@ class EditFloorAreaFormModal extends Component {
             type="submit"
             onClick={this.handleSubmit}
           >
-            Tallenna
+            {t('common.save')}
           </Button>
         </Modal.Actions>
       </Modal>

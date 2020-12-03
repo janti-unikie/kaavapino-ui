@@ -21,5 +21,8 @@
     },
     "messages": {
         "deadlines-successfully-saved": "Aikataulut tallennettu onnistuneesti"
+    },
+    "floor-areas": {
+        "title": "Päivitä kerrosalatiedot"
     }
 }
