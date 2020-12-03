@@ -343,7 +343,6 @@ class CustomField extends Component {
     const { attributeData, parentName, field } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
 
-    console.log( props )
     return (
       <DeadlineInfoText label={field.label} {...props } />
     )
