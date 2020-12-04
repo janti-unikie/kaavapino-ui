@@ -139,7 +139,6 @@ class NewProjectFormModal extends Component {
                   name: SUB_TYPE,
                   label: 'Valitse prosessin koko',
                   type: 'radio',
-                  disabled: isEdit,
                   options: [
                     { value: 1, label: 'XS' },
                     { value: 2, label: 'S' },
