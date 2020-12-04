@@ -13,12 +13,15 @@ import RadioButton from './RadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
 import OnHoldCheckbox from './OnholdCheckbox'
+import CustomCheckbox from './CustomCheckbox'
+
 import AutofillInputCalculations from './AutofillInputCalculation/AutofillInputCalculations'
 
 import { isEqual } from 'lodash'
 import projectUtils from '../../utils/projectUtils'
 import AutofillInput from './AutofillInput/AutofillInput'
 import _ from 'lodash'
+import DeadlineInfoText from './DeadlineInfoText'
 class CustomField extends Component {
   yearOptions = []
   shouldComponentUpdate(p) {
@@ -95,13 +98,17 @@ class CustomField extends Component {
   }
 
   renderNumber = props => {
-    projectUtils.checkInputValue(props)
-    return <Input type="number" {...props} />
+    const { onBlur, attributeData, parentName } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName)
+
+    return <Input onBlur={onBlur} {...props} type="number" />
   }
 
   renderYearSelect = props => {
     const { multiple_choice } = this.props.field
-    projectUtils.checkInputValue(props)
+    const { onBlur, handleSave, attributeData, parentName } = this.props
+
+    projectUtils.checkInputValue(props, attributeData, parentName )
 
     if (this.yearOptions.length === 0) {
       this.yearOptions = projectUtils.generateArrayOfYears()
@@ -110,119 +117,234 @@ class CustomField extends Component {
       <SelectInput
         multiple={multiple_choice}
         options={this.formatOptions(this.yearOptions)}
+        onBlur={onBlur}
+        handleSave={handleSave}
         {...props}
       />
     )
   }
 
   renderString = props => {
-    if (props.defaultValue) {
-      props.input.defaultValue = props.defaultValue
-      delete props.input.value
-    }
-
-    return <Input type="text" {...props} />
+    const { onBlur, attributeData, parentName } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName )
+    return <Input onBlur={onBlur} type="text" {...props} />
   }
 
   renderTextArea = props => {
-    projectUtils.checkInputValue(props)
-    return <TextArea {...props} />
+    const { onBlur, attributeData, parentName } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName)
+    return (
+      <TextArea
+        onBlur={onBlur}
+        {...props}
+      />
+      )
   }
 
   renderRichText = props => {
-    projectUtils.checkInputValue(props)
-    return <RichTextEditor {...props} largeField />
+    const { onBlur, handleSave, attributeData, parentName, meta, defaultValue } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName)
+
+    return (
+      <RichTextEditor
+        onBlur={onBlur}
+        handleSave={handleSave}
+        meta={meta}
+        defaultValue={defaultValue}
+        {...props}
+        largeField />
+        )
   }
 
   renderRichTextShort = props => {
-    projectUtils.checkInputValue(props)
-    return <RichTextEditor {...props} />
+    const { onBlur, handleSave, attributeData, parentName, meta } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName)
+
+    return (
+    <RichTextEditor
+        onBlur={onBlur}
+        handleSave={handleSave}
+        meta={meta}
+        {...props}
+        />
+        )
   }
 
   renderDate = props => {
-    projectUtils.checkInputValue(props)
-    return <Input type="date" {...props} />
+    const { onBlur, attributeData, parentName  } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName)
+    return (
+    <Input
+      onBlur={onBlur}
+      type="date"
+      {...props} />
+)
   }
 
   renderGeometry = props => {
-    projectUtils.checkInputValue(props)
-    return <Geometry {...props} />
+    const { attributeData, parentName, onBlur } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName)
+    return (
+    <Geometry
+      onBlur={onBlur}
+      attributeData={attributeData}
+      {...props} />
+)
   }
 
   renderSelect = props => {
     const { choices, multiple_choice } = this.props.field
-    projectUtils.checkInputValue(props)
+    const { onBlur, handleSave, attributeData, parentName } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName)
     return (
       <SelectInput
         multiple={multiple_choice}
         options={this.formatOptions(choices)}
+        onBlur={onBlur}
+        handleSave={handleSave}
         {...props}
       />
     )
   }
 
   renderRadio = props => {
-    const { options } = this.props.field
-    projectUtils.checkInputValue(props)
-    return <RadioButton options={options} {...props} />
+    const { field, onRadioChange, onBlur, attributeData, parentName } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName)
+    return (
+      <RadioButton
+        onRadioChange={onRadioChange}
+        options={field.options}
+        onBlur={onBlur}
+        attributeData={attributeData}
+        {...props} />
+        )
   }
 
   renderBooleanRadio = props => {
-    projectUtils.checkInputValue(props)
-    return <BooleanRadio {...props} />
+    const { onBlur, input, onRadioChange, defaultValue, attributeData, parentName } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName)
+    return (
+      <BooleanRadio
+        onBlur={onBlur}
+        input={input}
+        onRadioChange={onRadioChange}
+        defaultValue={defaultValue}
+        {...props} />
+        )
   }
 
   renderToggle = props => {
-    projectUtils.checkInputValue(props)
-    return <ToggleButton {...props} />
+    const { onBlur, handleSave, attributeData, parentName } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName )
+    return (
+      <ToggleButton
+        onBlur={onBlur}
+        handleSave={handleSave}
+        {...props} />
+        )
   }
 
   renderLink = props => {
-    projectUtils.checkInputValue(props)
-    return <Link {...props} />
+    const { onBlur, attributeData, parentName } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName)
+
+    return (
+      <Link
+        onBlur={onBlur}
+        {...props} />
+        )
   }
 
   renderDateTime = props => {
-    projectUtils.checkInputValue(props)
-    return <DateTime {...props} />
+    const { onBlur, handleSave, attributeData, parentName } = this.props
+
+    projectUtils.checkInputValue(props, attributeData, parentName)
+    return (
+      <DateTime
+        onBlur={onBlur}
+        handleSave={handleSave}
+        {...props} />
+        )
   }
 
-  renderFieldset = ({ fields: sets, ...props }) => {
-    const { field } = this.props
+  renderFieldset = ({ fields: sets }) => {
+    const {
+      field: { fieldset_attributes, name, label, generated, disabled, autofill_readonly },
+      field,
+      attributeData,
+      formValues,
+      syncronousErrors,
+      handleSave,
+      onRadioChange,
+      placeholder,
+      formName,
+      updated  } = this.props
+
     return (
       <FieldSet
         sets={sets}
-        fields={this.props.field.fieldset_attributes}
-        attributeData={this.props.attributeData}
-        name={this.props.field.name}
-        placeholder={props.placeholder || this.props.field.label}
-        disabled={ field.generated || field.disabled || field.autofill_readonly }
-        formValues={this.props.formValues}
+        fields={fieldset_attributes}
+        attributeData={attributeData}
+        name={name}
+        placeholder={placeholder || label}
+        disabled={
+          generated ||
+          disabled ||
+          autofill_readonly ? true : false
+        }
+        formValues={formValues}
         validate={[this.validateFieldSize]}
-        syncronousErrors={this.props.syncronousErrors}
-        handleSave={this.props.handleSave}
-        onRadioChange={this.props.onRadioChange}
-        updated={this.props.updated}
+        syncronousErrors={syncronousErrors}
+        handleSave={handleSave}
+        onRadioChange={onRadioChange}
         field={field}
-        formName={this.props.formName}
+        formName={formName}
+        updated={updated}
+
       />
     )
   }
 
   renderDecimal = props => {
-    projectUtils.checkInputValue(props)
-    return <Input type="number" step="0.01" {...props} />
+    const { onBlur, attributeData, parentName } = this.props
+
+    projectUtils.checkInputValue(props, attributeData, parentName)
+    return (
+      <Input
+        type="number"
+        step="0.01"
+        onBlur={onBlur}
+        {...props} />
+        )
   }
 
   renderCheckbox = props => {
+    const { attributeData, parentName } = this.props
+
+    projectUtils.checkInputValue(props, attributeData, parentName)
+    return (
+      <CustomCheckbox {...props} />
+    )
+  }
+
+  renderOnholdCheckbox = props => {
     const { onhold, saveProjectBase, disabled } = this.props.field
     return (
       <OnHoldCheckbox
-        onhold={onhold}
+        projectOnhold={onhold}
         saveProjectBase={saveProjectBase}
         disabled={disabled}
+        attributeData={ this.props.attributeData }
         {...props}
       />
+    )
+  }
+  renderDeadlineInfo = props => {
+    const { attributeData, parentName, field } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName)
+
+    return (
+      <DeadlineInfoText label={field.label} {...props } />
     )
   }
 
@@ -270,8 +392,12 @@ class CustomField extends Component {
         return this.renderLink
       case 'decimal':
         return this.renderDecimal
+      case 'checkbox-onhold':
+        return this.renderOnholdCheckbox
       case 'checkbox':
         return this.renderCheckbox
+      case 'readonly':
+        return this.renderDeadlineInfo
       default:
         return this.renderNumber
     }
@@ -285,15 +411,17 @@ class CustomField extends Component {
       formName,
       formValues,
       error,
-      defaultValue,
       updated,
-      ...custom
+      defaultValue,
+      handleSave,
+      className
     } = this.props
     const type = field.type
     if (type === 'file' || type === 'image') {
       const file = attributeData[field.name]
       const src = file ? file.link : null
       const description = file ? file.description : null
+
       return (
         <File
           image={type === 'image'}
@@ -301,20 +429,21 @@ class CustomField extends Component {
           src={src}
           description={description}
           formValues={formValues}
+          attributeData={attributeData}
         />
       )
     }
 
+    const showFieldClass = field.display === 'hidden' ? 'hidden' : className
     let fieldProps = {
-      ...custom,
       name: field.name,
       placeholder: field.placeholder || field.label,
-      disabled: field.generated || field.disabled || field.autofill_readonly ,
-      attributeData,
-      defaultValue,
-      updated: { updated },
+      disabled:
+        field.generated || field.disabled || field.autofill_readonly,
       component: this.getInput(field),
-      ...(field.multiple_choice ? { type: 'select-multiple' } : {})
+      ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
+      updated: { updated },
+      className: showFieldClass
     }
     /* Some fields are autofilled to a value as per (autofill_rules)
      * Some fields have their value calculated based on other fields (calculations)
@@ -334,11 +463,17 @@ class CustomField extends Component {
       )
     }
      if ( field.autofill_rule ) {
-      return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} saveAutofill={custom.handleSave}/>
+      return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} saveAutofill={handleSave}/>
     }
 
     if (type === 'toggle') {
-      return <Field {...fieldProps} label={field.label} />
+      return (
+        <Field
+          {...fieldProps}
+          label={field.label}
+          attributeData={ this.props.attributeData }
+        />
+        )
     }
 
     if (type === 'rich_text' || type === 'rich_text_short') {
@@ -354,12 +489,13 @@ class CustomField extends Component {
           formName={formName}
           className={`${this.props.className} ${error ? error : ''}`}
           maxSize={field.character_limit}
+          attributeData={ this.props.attributeData }
         />
       )
     }
 
     if (fieldset) {
-      return <FieldArray {...fieldProps} />
+      return <FieldArray attributeData={ attributeData }  {...fieldProps} />
     }
 
     return (

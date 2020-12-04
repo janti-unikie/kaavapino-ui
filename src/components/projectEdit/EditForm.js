@@ -57,12 +57,9 @@ class EditForm extends Component {
       disabled,
       sections,
       title,
-      // saving,
-      // isCurrentPhase,
-      // isLastPhase,
-      // changingPhase,
       projectId,
       showEditFloorAreaForm,
+      showEditProjectTimetableForm,
       attributeData,
       syncronousErrors,
       submitErrors
@@ -75,7 +72,7 @@ class EditForm extends Component {
           <Button
             value="Päivitä aikataulu"
             secondary
-            help="feature not implemented yet"
+            onClick={showEditProjectTimetableForm}
           />
           <Button
             value="Päivitä kerrosalatiedot"

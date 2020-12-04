@@ -90,9 +90,9 @@ const formatFilterProject = (project, sort = false, phases, users) => {
     ? new Date(project.modified_at).getTime()
     : formatDate(project.modified_at)
   const phase = formatPhase(project.phase, phases).index
-  const subtype = project.subtype
-  const name = project.name
-  const projectId = project.attribute_data['hankenumero'] || '-'
+  const { subtype } = project
+  const { name } = project
+  const projectId = project.attribute_data.hankenumero || '-'
   const itemDeadline = project.deadlines.find(d => d.phase_id === project.phase).deadline
   const nextDeadline = sort ? new Date(itemDeadline).getTime() : formatDate(itemDeadline)
   return { name, user, modified_at, phase, subtype, projectId, nextDeadline }
@@ -114,15 +114,17 @@ const formatSubtype = (id, subtypes) => {
 }
 
 const formatPayload = (changedValues, sections, parentNames, initialValues) => {
+
   const keys = Object.keys(changedValues)
   const fieldsetList = keys.filter(key => key.indexOf('fieldset') !== -1)
+
   const fieldsetAttributes = flattenDeep(
-    fieldsetList.map(
-      currentFieldset => getFieldsetAttributes(currentFieldset, sections)
-    )
+    fieldsetList.map(currentFieldset => getFieldsetAttributes(currentFieldset, sections))
   )
+
   const allFieldsets = concat(fieldsetList, fieldsetAttributes)
   const nonFieldsets = difference(keys, allFieldsets)
+
   // Bug fix which caused saga crash
   if (!keys || keys.length === 0) return changedValues
 
@@ -130,15 +132,16 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
 
   // No fieldset values, fieldsets have attributes
   if (fieldsetAttributes.length === 0) {
-    nonFieldsets.forEach(key => returnValue[key] = changedValues[key])
+    nonFieldsets.forEach(key => (returnValue[key] = changedValues[key]))
     return returnValue
   }
 
   // Handle non fieldset values
-  if (nonFieldsets.length !== 0) nonFieldsets.forEach(key => returnValue[key] = changedValues[key])
+  if (nonFieldsets.length !== 0)
+    nonFieldsets.forEach(key => (returnValue[key] = changedValues[key]))
 
   fieldsetList.forEach(currentFieldset => {
-    const attributes= getFieldsetAttributes(currentFieldset, sections)
+    const attributes = getFieldsetAttributes(currentFieldset, sections)
     const currentObject = {}
 
     if ( attributes ) {
@@ -158,35 +161,36 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
 }
 // Returns parents from changed values.
 const getParents = changedValues => {
-
   const keysToSearch = Object.keys(changedValues)
 
-   // Bug fix which caused saga crash
-  if ( !keysToSearch || keysToSearch.length === 0) {
+  // Bug fix which caused saga crash
+  if (!keysToSearch || keysToSearch.length === 0) {
     return
   }
   const parentNames = []
 
   // Check if fieldset is in keysToSearch
   keysToSearch.forEach(key => {
-   if (key.indexOf('fieldset') !== -1) parentNames.push(key)
+    if (key.indexOf('fieldset') !== -1) parentNames.push(key)
   })
 
   return parentNames
 }
 
-const getFieldsetAttributes = (parent, sections) => {
+function getFieldsetAttributes(parent, sections) {
   let fieldsetAttributes
   sections.some(title => {
-    if (fieldsetAttributes) return fieldsetAttributes
+    if (fieldsetAttributes) {
+      return fieldsetAttributes ? true : false
+    }
     title.fields.some(fieldset => {
       if (fieldset.name === parent) {
         fieldsetAttributes = fieldset.fieldset_attributes.map(key => key.name)
-        return fieldsetAttributes
+        return fieldsetAttributes ? true : false
       }
-      return null
+      return false
     })
-    return null
+    return false
   })
   return fieldsetAttributes
 }
@@ -200,22 +204,26 @@ const getFieldValue = (data, fieldName) => {
   return value
 }
 
-const checkInputValue = props => {
+const checkInputValue = (props, attributeData, parentName)  => {
 
-  if (props.parentName && props.attributeData[props.parentName]) {
-    if ( !props.input.value || isBoolean( props.input.value ) ) {
-
-        const inputValue = getFieldValue(props.attributeData[props.parentName], props.input.name)
-        if ( inputValue || isBoolean( inputValue ) || !isNaN( inputValue )) props.input.value = inputValue
-      }
+  if (props && parentName && attributeData[parentName]) {
+    if (!props.input.value || isBoolean(props.input.value)) {
+      const inputValue = getFieldValue(
+        attributeData[parentName],
+        props.input.name
+      )
+      if (inputValue || isBoolean(inputValue) || !isNaN(inputValue))
+        props.input.value = inputValue
     }
+  }
 }
 const getDefaultValue = (parentName, attributeData, name) => {
   const fieldsetFields = attributeData[parentName]
 
   if (fieldsetFields && fieldsetFields.length > 0) {
     return fieldsetFields[0][name]
-  }}
+  }
+}
 
 const generateArrayOfYears = () => {
   const max = new Date().getFullYear()
@@ -223,8 +231,8 @@ const generateArrayOfYears = () => {
   const years = []
 
   // eslint-disable-next-line for-direction
-  for ( let year = max; year >= min ; year-- ) {
-    years.push( { key: year.toString(),  label: year.toString(), value: year } )
+  for (let year = max; year >= min; year--) {
+    years.push({ key: year.toString(), label: year.toString(), value: year })
   }
   return years
 }

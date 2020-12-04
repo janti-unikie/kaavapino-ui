@@ -131,13 +131,15 @@ export const NavHeader = ({
                           position="right center"
                           wide="very"
                           trigger={
-                            <Dropdown.Item
+                             (
+                             <Dropdown.Item
                               key={option.key}
                               className="changelog-item"
                               value={option.value}
                             >
                               {option.text}
                             </Dropdown.Item>
+                            )
                           }
                         >
                           <div className="show-value">{option.text}</div>

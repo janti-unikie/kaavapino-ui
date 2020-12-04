@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { OidcProvider, processSilentRenew } from 'redux-oidc'
@@ -11,6 +11,9 @@ import iconHandler from './utils/iconHandler'
 import apiUtils from './utils/apiUtils'
 import 'semantic-ui-css/semantic.min.css'
 import './index.css'
+import i18n from 'i18next'
+
+import './i18n'
 
 if (window.location.pathname === '/silent-renew') {
   processSilentRenew()
@@ -38,7 +41,9 @@ if (window.location.pathname === '/silent-renew') {
             transitionOut="fadeOut"
             closeOnToastrClick
           />
-          <App />
+          <Suspense fallback={i18n.t('loading')}>
+            <App />
+          </Suspense>
         </React.Fragment>
       </OidcProvider>
     </Provider>,

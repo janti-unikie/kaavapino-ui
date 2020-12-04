@@ -18,3 +18,8 @@ export const floorAreaSectionsSelector = createSelector(
   selectSchema,
   ({ schema }) => (schema && schema.floor_area_sections) || []
 )
+
+export const deadlineSectionsSelector = createSelector(
+  selectSchema,
+  ({ schema }) => (schema && schema.deadline_sections) || []
+)

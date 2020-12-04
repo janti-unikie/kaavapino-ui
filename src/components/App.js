@@ -29,6 +29,7 @@ import Footer from './common/Footer'
 import FakeLoginPage from './auth/FakeLogin'
 import Overview from './overview'
 import Terms from './common/Terms'
+import { withTranslation } from 'react-i18next'
 
 class App extends Component {
   componentDidUpdate(prevProps) {
@@ -44,12 +45,13 @@ class App extends Component {
   }
 
   render() {
+    const { t } = this.props
     if (
       this.props.loadingApiToken ||
       this.props.userLoading ||
       !this.props.apiInitialized
     ) {
-      return <p>Ladataan...</p>
+      return <p>{t('loading')}</p>
     }
 
     return (
@@ -121,4 +123,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default (connect(mapStateToProps, mapDispatchToProps)(withTranslation()(App)))

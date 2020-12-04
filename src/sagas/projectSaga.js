@@ -7,7 +7,8 @@ import {
   editFormSelector,
   deadlineModalSelector,
   newProjectFormSelector,
-  editFloorAreaFormSelector
+  editFloorAreaFormSelector,
+  editProjectTimetableFormSelector
 } from '../selectors/formSelector'
 import {
   currentProjectSelector,
@@ -43,6 +44,7 @@ import {
   initializeProjectSuccessful,
   SAVE_PROJECT_BASE,
   SAVE_PROJECT_FLOOR_AREA,
+  SAVE_PROJECT_TIMETABLE,
   SAVE_PROJECT,
   saveProjectSuccessful,
   CHANGE_PROJECT_PHASE,
@@ -57,23 +59,28 @@ import {
   saveProject as saveProjectAction,
   PROJECT_SET_DEADLINES,
   projectSetDeadlinesSuccessful,
-  initializeProject as initializeProjectAction
+  initializeProject as initializeProjectAction,
+  FETCH_PROJECT_DEADLINES,
+  fetchProjectDeadlinesSuccessful
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
 import { setLatestEditField, setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
-import { projectApi } from '../utils/api'
+import { projectApi, projectDeadlinesApi } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
-import { NEW_PROJECT_FORM, EDIT_FLOOR_AREA_FORM, EDIT_PROJECT_FORM } from '../constants'
+import { NEW_PROJECT_FORM, EDIT_FLOOR_AREA_FORM, EDIT_PROJECT_FORM, EDIT_PROJECT_TIMETABLE_FORM } from '../constants'
+import i18 from 'i18next'
 
 export default function* projectSaga() {
   yield all([
     takeLatest(FETCH_PROJECTS, fetchProjects),
+    takeLatest(FETCH_PROJECT_DEADLINES, fetchProjectDeadlines),
     takeLatest(INITIALIZE_PROJECT, initializeProject),
     takeLatest(CREATE_PROJECT, createProject),
     takeLatest(SAVE_PROJECT_BASE, saveProjectBase),
     takeLatest(SAVE_PROJECT_FLOOR_AREA, saveProjectFloorArea),
+    takeLatest(SAVE_PROJECT_TIMETABLE, saveProjectTimetable),
     takeLatest(SAVE_PROJECT, saveProject),
     takeLatest(CHANGE_PROJECT_PHASE, changeProjectPhase),
     takeLatest(VALIDATE_PROJECT_FIELDS, validateProjectFields),
@@ -145,6 +152,15 @@ function* fetchProjects({ page, own = true, all = true, payload: searchQuery }) 
     if (e.response && e.response.status !== 404) {
       yield put(error(e))
     }
+  }
+}
+
+function* fetchProjectDeadlines({ payload: projectId }) {
+  try {
+    const deadlines = yield call(projectDeadlinesApi.get, { path: { projectId } }, ':projectId/')
+    yield put(fetchProjectDeadlinesSuccessful(deadlines))
+  } catch (e) {
+    yield put(error(e))
   }
 }
 
@@ -254,6 +270,7 @@ function* createProject() {
 
 const getChangedAttributeData = (values, initial, sections) => {
   let attribute_data = {}
+
   Object.keys(values).forEach(key => {
     if (initial.hasOwnProperty(key) && isEqual(values[key], initial[key])) {
       return
@@ -267,11 +284,12 @@ const getChangedAttributeData = (values, initial, sections) => {
     let fieldSetName
 
     if ( sections ) {
-    // When editing a field inside fieldset, the fieldset is not included by default.
-    // This workaround adds fieldset if field is inside fieldset.
-    sections.some(title => {
+      // When editing a field inside fieldset, the fieldset is not included by default.
+      // This workaround adds fieldset if field is inside fieldset.
+      sections.some(title => {
         title.fields.some(fieldset => {
         const fieldsetAttributes = fieldset.fieldset_attributes
+
         fieldsetAttributes.forEach( value => {
           if ( value.name === key ) {
             fieldSetName = fieldset.name
@@ -279,8 +297,8 @@ const getChangedAttributeData = (values, initial, sections) => {
           }
         })
         return null
-        })
-        return null
+      })
+      return null
       })
     }
     const initialFieldSetValues = initial[fieldSetName]
@@ -348,6 +366,33 @@ function* saveProjectFloorArea() {
     }
   }
 }
+function* saveProjectTimetable() {
+  yield put(startSubmit(EDIT_PROJECT_TIMETABLE_FORM))
+  const { initial, values } = yield select(editProjectTimetableFormSelector)
+  const currentProjectId = yield select(currentProjectIdSelector)
+
+  if (values) {
+    const attribute_data = getChangedAttributeData(values, initial)
+    try {
+      const updatedProject = yield call(
+        projectApi.patch,
+        { attribute_data },
+        { path: { id: currentProjectId } },
+        ':id/'
+      )
+      yield put(updateProject(updatedProject))
+      yield put(setSubmitSucceeded(EDIT_PROJECT_TIMETABLE_FORM))
+      yield put(
+        toastrActions.add({
+          type: 'success',
+          title: i18.t('messages.deadlines-successfully-saved')
+        })
+      )
+    } catch (e) {
+        yield put(stopSubmit(EDIT_PROJECT_TIMETABLE_FORM, e.response.data))
+    }
+  }
+}
 
 function* saveProject() {
   const currentProjectId = yield select(currentProjectIdSelector)
@@ -359,10 +404,11 @@ function* saveProject() {
     const currentSchema = schema.phases.find(s => s.id === currentProject.phase)
     const { sections } = currentSchema
     const changedValues = getChangedAttributeData(values, initial, sections)
-    const parentNames = projectUtils.getParents(sections, changedValues)
+    const parentNames = projectUtils.getParents(changedValues)
     const formatedData = projectUtils.formatPayload(changedValues, sections, parentNames, initial)
 
     const attribute_data = formatedData
+
     try {
       const updatedProject = yield call(
         projectApi.patch,

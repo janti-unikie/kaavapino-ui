@@ -14,11 +14,11 @@ const OnHoldCheckbox = ({
     <div className={'onhold-checkbox-container'}>
       <Checkbox
         label={label}
-        {...custom}
+        placeholder={custom.placeholder}
         error={error}
         name={name}
         onChange={(e, data) => onChangeSave(data)}
-        defaultChecked={!!custom.onhold}
+        defaultChecked={!!custom.projectOnhold}
         disabled={custom.disabled}
       />
     </div>
