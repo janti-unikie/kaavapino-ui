@@ -53,11 +53,7 @@ class EditProjectTimeTableModal extends Component {
   }
 
   handleSubmit = () => {
-    /* The designs do not have a save-button.
-     * Thus we need to clarify: 1) do we save this with the rest of the edit form, and if so,
-     * 2) how do we show errors? */
-
-    this.setState({ loading: true })
+     this.setState({ loading: true })
 
     const { handleSubmit } = this.props
 
@@ -86,8 +82,6 @@ class EditProjectTimeTableModal extends Component {
           error={error}
           formValues={formValues}
           className="modal-field"
-       //   defaultValue={startDate}
-    //      currentProject={currentProject}
           isProjectTimetableEdit={true}
         />
       </div>
