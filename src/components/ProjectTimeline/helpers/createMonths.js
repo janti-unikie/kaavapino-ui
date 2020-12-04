@@ -20,7 +20,7 @@ export function createMonths(deadlines) {
   }
 
   // if date is not set will return Jan 01 1970 and will show error
-  if (date.getFullYear() < 1971) {
+  if (date.getFullYear() < 1980) {
     return { months: monthArray, error: true }
   } else {
     return { months: monthArray, error: false }

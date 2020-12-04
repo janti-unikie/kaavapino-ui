@@ -50,11 +50,86 @@ function ProjectTimeline(props) {
     }
     setDrawMonths([...drawableMonths])
   }
+  function checkDeadlineType(monthDates, property, propI, loopIndex) {
+    switch (monthDates[loopIndex][property].deadline_type[0]) {
+      case 'phase_start':
+        return (
+          <div
+            key={`${monthDates[loopIndex][property].abbreviation}-${loopIndex}`}
+            style={{
+              background: monthDates[loopIndex][property].color_code
+            }}
+            className="timeline-item first"
+          >
+            <span
+              className={`deadline-name-${
+                monthDates[loopIndex][property].deadline_length > 4 ? 'over' : 'inside'
+              }`}
+            >
+              {monthDates[loopIndex][property].phase_name}
+            </span>
+            {monthDates[loopIndex].milestone
+              ? createMilestoneItem(loopIndex, propI, monthDates)
+              : ''}
+          </div>
+        )
+      case 'mid_point':
+        return (
+          <div
+            key={`${monthDates[loopIndex][property].abbreviation}-${loopIndex}`}
+            style={{
+              background: monthDates[loopIndex][property].color_code
+            }}
+            className="timeline-item"
+          >
+            {monthDates[loopIndex].milestone
+              ? createMilestoneItem(loopIndex, propI, monthDates)
+              : ''}
+          </div>
+        )
+      case 'phase_end':
+        return (
+          <div
+            key={`${monthDates[loopIndex][property].abbreviation}-${loopIndex}`}
+            style={{
+              background: monthDates[loopIndex][property].color_code
+            }}
+            className="timeline-item last"
+          >
+            {monthDates[loopIndex].milestone
+              ? createMilestoneItem(loopIndex, propI, monthDates)
+              : ''}
+          </div>
+        )
+      case 'start_end_point':
+        return (
+          <div
+            key={`${monthDates[loopIndex][property].abbreviation}-${loopIndex}`}
+            style={{
+              background: monthDates[loopIndex][property].color_code
+            }}
+            className="timeline-item first last"
+          >
+            <span
+              className={`deadline-name-${
+                monthDates[loopIndex][property].deadline_length > 4 ? 'inside' : 'over'
+              }`}
+            >
+              {monthDates[loopIndex][property].phase_name}
+            </span>
+            {monthDates[loopIndex].milestone ? createMilestoneItem(loopIndex, propI) : ''}
+          </div>
+        )
+      default:
+        return null
+    }
+  }
   function createDrawItems(monthDates) {
     const drawableItems = []
     const has = Object.prototype.hasOwnProperty
-    for (let i = 0; i < monthDates.length; i++) {
-      if (Object.keys(monthDates[i]).length > 1) {
+    if (monthDates) {
+      for (let i = 0; i < monthDates.length; i++) {
+        // object has 2 keys by default (date, week), check if any additional keys have been added
         if (Object.keys(monthDates[i]).length > 2) {
           let propI = 0
           for (const property in monthDates[i]) {
@@ -62,81 +137,7 @@ function ProjectTimeline(props) {
               if (typeof monthDates[i][property] === 'object') {
                 if (Array.isArray(monthDates[i][property].deadline_type)) {
                   propI++
-                  if (monthDates[i][property].deadline_type[0] === 'phase_start') {
-                    drawableItems.push(
-                      <div
-                        key={`${monthDates[i][property].abbreviation}-${i}`}
-                        style={{
-                          background: monthDates[i][property].color_code
-                        }}
-                        className="timeline-item first"
-                      >
-                        <span
-                          className={`deadline-name-${
-                            monthDates[i][property].deadline_length > 4
-                              ? 'over'
-                              : 'inside'
-                          }`}
-                        >
-                          {monthDates[i][property].phase_name}
-                        </span>
-                        {monthDates[i].milestone
-                          ? createMilestoneItem(i, propI, monthDates)
-                          : ''}
-                      </div>
-                    )
-                  } else if (monthDates[i][property].deadline_type[0] === 'mid_point') {
-                    drawableItems.push(
-                      <div
-                        key={`${monthDates[i][property].abbreviation}-${i}`}
-                        style={{
-                          background: monthDates[i][property].color_code
-                        }}
-                        className="timeline-item"
-                      >
-                        {monthDates[i].milestone
-                          ? createMilestoneItem(i, propI, monthDates)
-                          : ''}
-                      </div>
-                    )
-                  } else if (monthDates[i][property].deadline_type[0] === 'phase_end') {
-                    drawableItems.push(
-                      <div
-                        key={`${monthDates[i][property].abbreviation}-${i}`}
-                        style={{
-                          background: monthDates[i][property].color_code
-                        }}
-                        className="timeline-item last"
-                      >
-                        {monthDates[i].milestone
-                          ? createMilestoneItem(i, propI, monthDates)
-                          : ''}
-                      </div>
-                    )
-                  } else if (
-                    monthDates[i][property].deadline_type[0] === 'start_end_point'
-                  ) {
-                    drawableItems.push(
-                      <div
-                        key={`${monthDates[i][property].abbreviation}-${i}`}
-                        style={{
-                          background: monthDates[i][property].color_code
-                        }}
-                        className="timeline-item first last"
-                      >
-                        <span
-                          className={`deadline-name-${
-                            monthDates[i][property].deadline_length > 4
-                              ? 'inside'
-                              : 'over'
-                          }`}
-                        >
-                          {monthDates[i][property].phase_name}
-                        </span>
-                        {monthDates[i].milestone ? createMilestoneItem(i, propI) : ''}
-                      </div>
-                    )
-                  }
+                  drawableItems.push(checkDeadlineType(monthDates, property, propI, i))
                 }
               }
             }
@@ -147,94 +148,102 @@ function ProjectTimeline(props) {
           )
         }
       }
+      setDrawItems([...drawableItems])
     }
-    setDrawItems([...drawableItems])
   }
   function createMilestoneItem(index, propertyIndex, monthDates) {
     const date = new Date(monthDates[index].milestoneDate)
     let showMessage = null
     let milestoneType = []
     let listKey = 0
-    if (propertyIndex <= 1) {
-      monthDates[index].milestone_types.forEach(milestone_type => {
-        switch (milestone_type) {
-          case 'dashed_start':
-            if (monthDates[index].milestone_types.includes('milestone')) {
-              showMessage = (
-                <span className="milestone-message">{`Määräaika ${date.getDate()}.${date.getMonth() +
-                  1} >`}</span>
-              )
+    if (monthDates) {
+      if (propertyIndex <= 1) {
+        if (monthDates[index]) {
+          monthDates[index].milestone_types.forEach(milestone_type => {
+            switch (milestone_type) {
+              case 'dashed_start':
+                if (monthDates[index].milestone_types.includes('milestone')) {
+                  showMessage = (
+                    <span className="milestone-message">{`Määräaika ${date.getDate()}.${date.getMonth() +
+                      1} >`}</span>
+                  )
+                }
+                milestoneType.push(
+                  <div key={listKey++} className="milestone-icon square white" />,
+                  <div key={listKey++} className="milestone-icon square second white" />
+                )
+                break
+              case 'dashed_mid':
+                milestoneType.push(
+                  <div key={listKey++} className="milestone-icon square white" />,
+                  <div key={listKey++} className="milestone-icon square second white" />
+                )
+                break
+              case 'dashed_end':
+                if (monthDates[index].milestone_types.includes('milestone')) {
+                  showMessage = (
+                    <span
+                      className={`milestone-message ${
+                        monthDates[index].milestone_space < 6 ? 'under' : ''
+                      }`}
+                    >{`Kylk ${date.getDate()}.${date.getMonth() + 1}. ${
+                      monthDates[index].milestone_space
+                    }`}</span>
+                  )
+                  milestoneType.push(
+                    <div key={listKey++} className="milestone-icon sphere black" />
+                  )
+                } else {
+                  showMessage = (
+                    <span
+                      className={`milestone-message ${
+                        monthDates[index].milestone_space < 6 ? 'under' : ''
+                      }`}
+                    >
+                      nähtävillä
+                    </span>
+                  )
+                  milestoneType.push(
+                    <div key={listKey++} className="milestone-icon square white" />
+                  )
+                }
+                break
+              case 'inner_start':
+                milestoneType.push(
+                  <div key={listKey++} className="milestone-icon inner start white" />
+                )
+                break
+              case 'inner_mid':
+                milestoneType.push(
+                  <div key={listKey++} className="milestone-icon inner white" />
+                )
+                break
+              case 'inner_end':
+                milestoneType.push(
+                  <div key={listKey++} className="milestone-icon inner end white" />
+                )
+                break
+              case 'milestone':
+                milestoneType.push(
+                  <div key={listKey++} className="milestone-icon sphere white" />
+                )
+                break
+              default:
+                break
             }
-            milestoneType.push(
-              <div key={listKey++} className="milestone-icon square white" />,
-              <div key={listKey++} className="milestone-icon square second white" />
-            )
-            break
-          case 'dashed_mid':
-            milestoneType.push(
-              <div key={listKey++} className="milestone-icon square white" />,
-              <div key={listKey++} className="milestone-icon square second white" />
-            )
-            break
-          case 'dashed_end':
-            if (monthDates[index].milestone_types.includes('milestone')) {
-              showMessage = (
-                <span
-                  className={`milestone-message ${
-                    monthDates[index].milestone_space < 6 ? 'under' : ''
-                  }`}
-                >{`Kylk ${date.getDate()}.${date.getMonth() + 1}. ${
-                  monthDates[index].milestone_space
-                }`}</span>
-              )
-              milestoneType.push(
-                <div key={listKey++} className="milestone-icon sphere black" />
-              )
-            } else {
-              showMessage = (
-                <span
-                  className={`milestone-message ${
-                    monthDates[index].milestone_space < 6 ? 'under' : ''
-                  }`}
-                >
-                  nähtävillä
-                </span>
-              )
-              milestoneType.push(
-                <div key={listKey++} className="milestone-icon square white" />
-              )
-            }
-            break
-          case 'inner_start':
-            milestoneType.push(
-              <div key={listKey++} className="milestone-icon inner start white" />
-            )
-            break
-          case 'inner_mid':
-            milestoneType.push(
-              <div key={listKey++} className="milestone-icon inner white" />
-            )
-            break
-          case 'inner_end':
-            milestoneType.push(
-              <div key={listKey++} className="milestone-icon inner end white" />
-            )
-            break
-          case 'milestone':
-            milestoneType.push(
-              <div key={listKey++} className="milestone-icon sphere white" />
-            )
-            break
-          default:
-            break
+          })
+          return (
+            <span className="deadline-milestone">
+              {milestoneType}
+              {showMessage}
+            </span>
+          )
+        } else {
+          return null
         }
-      })
-      return (
-        <span className="deadline-milestone">
-          {milestoneType}
-          {showMessage}
-        </span>
-      )
+      } else {
+        return null
+      }
     } else {
       return null
     }
@@ -242,15 +251,17 @@ function ProjectTimeline(props) {
   function createTimelineItems() {
     const months = createMonths(deadlines)
     const deadlineArray = createDeadlines(deadlines)
-    setShowError(months.error)
+    if (months.error || deadlineArray.error) {
+      setShowError(true)
+    }
     createDrawMonths(months.months)
-    createDrawItems(deadlineArray)
+    createDrawItems(deadlineArray.deadlines)
   }
   return (
     <div className="timeline-graph-container">
       {showError ? (
         <div className="timeline-error-message">
-          <FontAwesomeIcon icon={faExclamationTriangle} size="3x" />
+          <FontAwesomeIcon icon={faExclamationTriangle} size="2x" />
           <span>Projektin aikataulu ei ole ajan tasalla.</span>
         </div>
       ) : null}

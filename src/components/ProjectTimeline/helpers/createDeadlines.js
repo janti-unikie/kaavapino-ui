@@ -4,7 +4,10 @@ import { findInMonths, findWeek } from './helpers'
  * @param deadlines - deadlines from api
  * @return function
  */
-export function createDeadlines( deadlines) {
+export function createDeadlines(deadlines) {
+  if (!deadlines) {
+    return { deadlines: null, error: true }
+  }
   const date = new Date(deadlines[0].date)
   let monthDatesArray = []
   let week = 1
@@ -36,41 +39,47 @@ export function createDeadlines( deadlines) {
  * @return function
  */
 function createStartAndEndPoints(inputMonths, deadlines) {
+  if (!inputMonths || !deadlines) {
+    return { deadlines: null, error: true }
+  }
   let monthDates = inputMonths
   deadlines.forEach(deadline => {
-    if (
-      deadline.deadline.deadline_types[0] === 'phase_start' ||
-      deadline.deadline.deadline_types[0] === 'phase_end'
-    ) {
-      let date = new Date(deadline.date)
-      const week = findWeek(date.getDate())
-      date = `${date.getFullYear()}-${date.getMonth() + 1}`
-      const monthIndex = findInMonths(date, week, monthDates)
-      if (monthIndex) {
-        if (monthDates[monthIndex][deadline.deadline.abbreviation]) {
-          if (
-            monthDates[monthIndex][deadline.deadline.abbreviation].deadline_type[0] ===
-            'phase_start'
-          ) {
-            if (deadline.deadline.deadline_types[0] === 'phase_end') {
-              monthDates[monthIndex][deadline.deadline.abbreviation] = {
-                abbreviation: deadline.deadline.abbreviation,
-                deadline_type: ['start_end_point'],
-                phase_id: deadline.deadline.phase_id,
-                color_code: deadline.deadline.phase_color_code,
-                phase_name: deadline.deadline.phase_name,
-                deadline_length: 2
+    if (deadline.deadline) {
+      if (
+        deadline.deadline.deadline_types[0] === 'phase_start' ||
+        deadline.deadline.deadline_types[0] === 'phase_end'
+      ) {
+        let date = new Date(deadline.date)
+        const week = findWeek(date.getDate())
+        date = `${date.getFullYear()}-${date.getMonth() + 1}`
+        const monthIndex = findInMonths(date, week, monthDates)
+        if (monthIndex) {
+          console.debug(monthDates[monthIndex][deadline.deadline.abbreviation])
+          if (monthDates[monthIndex][deadline.deadline.abbreviation]) {
+            if (
+              monthDates[monthIndex][deadline.deadline.abbreviation].deadline_type[0] ===
+              'phase_start'
+            ) {
+              if (deadline.deadline.deadline_types[0] === 'phase_end') {
+                monthDates[monthIndex][deadline.deadline.abbreviation] = {
+                  abbreviation: deadline.deadline.abbreviation,
+                  deadline_type: ['start_end_point'],
+                  phase_id: deadline.deadline.phase_id,
+                  color_code: deadline.deadline.phase_color_code,
+                  phase_name: deadline.deadline.phase_name,
+                  deadline_length: 2
+                }
               }
             }
-          }
-        } else {
-          monthDates[monthIndex][deadline.deadline.abbreviation] = {
-            abbreviation: deadline.deadline.abbreviation,
-            deadline_type: deadline.deadline.deadline_types,
-            phase_id: deadline.deadline.phase_id,
-            color_code: deadline.deadline.phase_color_code,
-            phase_name: deadline.deadline.phase_name,
-            deadline_length: 2
+          } else {
+            monthDates[monthIndex][deadline.deadline.abbreviation] = {
+              abbreviation: deadline.deadline.abbreviation,
+              deadline_type: deadline.deadline.deadline_types,
+              phase_id: deadline.deadline.phase_id,
+              color_code: deadline.deadline.phase_color_code,
+              phase_name: deadline.deadline.phase_name,
+              deadline_length: 2
+            }
           }
         }
       }
@@ -85,6 +94,9 @@ function createStartAndEndPoints(inputMonths, deadlines) {
  * @return function
  */
 function fillGaps(inputMonths, deadlines) {
+  if (!inputMonths || !deadlines) {
+    return { deadlines: null, error: true }
+  }
   let monthDates = inputMonths
   let deadlineAbbreviation = null
   let color_code = null
@@ -161,6 +173,9 @@ function fillGaps(inputMonths, deadlines) {
  * @return function
  */
 function createMilestones(inputMonths, deadlines) {
+  if (!inputMonths || !deadlines) {
+    return { deadlines: null, error: true }
+  }
   let monthDates = inputMonths
   deadlines.forEach(deadline => {
     for (let deadlineTypeIndex in deadline.deadline.deadline_types) {
@@ -192,6 +207,9 @@ function createMilestones(inputMonths, deadlines) {
  * @return array
  */
 function fillMilestoneGaps(inputMonths) {
+  if (!inputMonths) {
+    return { deadlines: null, error: true }
+  }
   let monthDates = inputMonths
   let milestoneType = null
   let milestoneDate = null
@@ -235,5 +253,5 @@ function fillMilestoneGaps(inputMonths) {
       milestoneSpace++
     }
   }
-  return monthDates
+  return { deadlines: monthDates, error: false }
 }

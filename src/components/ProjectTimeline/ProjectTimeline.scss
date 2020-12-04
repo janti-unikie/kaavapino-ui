@@ -18,6 +18,16 @@
     border-left: 4px solid #d8000c;
     background-color: #ff8179;
     text-align: center;
+    svg {
+      position: absolute;
+      top: 10px !important;
+      left: 26px !important;
+    }
+    span {
+      position: absolute;
+      top: 18px;
+      left: 68px;
+    }
   }
 
   .timeline-item-container {
