@@ -3,10 +3,11 @@ import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { checkingSelector } from '../../selectors/projectSelector'
 import CustomField from './CustomField'
-import { Form, Button, Label } from 'semantic-ui-react'
+import { Form, Button, Label, Popup } from 'semantic-ui-react'
 import projectUtils from '../../utils/projectUtils'
 import Info from './Info'
 import { showField } from '../../utils/projectVisibilityUtils'
+import { has } from 'lodash'
 
 const FieldSet = ({
   sets,
@@ -20,7 +21,8 @@ const FieldSet = ({
   validate,
   syncronousErrors,
   handleSave,
-  onRadioChange  }) => {
+  onRadioChange,
+  updated  }) => {
   let numberOfSets = 1
   if (attributeData[sets.name]) {
     if (sets.length !== attributeData[sets.name].length) {
@@ -33,7 +35,6 @@ const FieldSet = ({
       handleSave()
     }, 500)
   }
-
   return (
     <React.Fragment>
       {sets.map((set, i) => {
@@ -57,6 +58,8 @@ const FieldSet = ({
                   }
 
                   let required = false
+
+                  const isReadOnly = field && field.autofill_readonly
 
                   if (checking && !(!attributeData[name] || !attributeData[name][i])) {
                     if (
@@ -84,6 +87,9 @@ const FieldSet = ({
                   * Redux form gives error information to the Field component, but that's further down the line, and we need that information
                   * here to modify the input header accordingly. */
                   const showError = required ? 'pakollinen kenttä' :  error
+
+                  const fieldUpdated = updated && updated.new_value && has(updated.new_value[0], field.name )
+
                   return (
                     <div className={`input-container ${showError ? 'error' : ''}`} key={j}>
                       <Form.Field required={required}>
@@ -92,6 +98,26 @@ const FieldSet = ({
                             {title}
                           </Label>
                           <div className="input-header-icons">
+                          {fieldUpdated && !isReadOnly && (
+                            <Popup
+                              trigger={<FontAwesomeIcon icon="clock" />}
+                              inverted
+                              on="hover"
+                              position="top center"
+                              hideOnScroll
+                              content={
+                                (
+                                  <span className="input-history">
+                                  <span>{`${projectUtils.formatDate(
+                                    updated.timestamp
+                                  )} ${projectUtils.formatTime(updated.timestamp)} ${
+                                    updated.user_name
+                                  }`}</span>
+                                </span>
+                                )
+                              }
+                            />
+                            )}
                             {field.help_text && (
                               <Info content={field.help_text} link={field.help_link} />
                             )}

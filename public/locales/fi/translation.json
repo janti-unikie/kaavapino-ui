@@ -1,0 +1,28 @@
+{ 
+    "title": "Kaavapino",
+    "loading": "Ladataan....",
+    "projects": {
+        "own-short": "Omat",
+        "all-short": "Kaikki",
+        "own-long": "Omat projektit",
+        "all-long": "Kaikki projektit",
+        "amount": "{{pieces}} kpl",
+        "title": "Kaavaprojektit",
+        "createNewProject": "Luo uusi projekti",
+        "createReports": "Luo raportteja" 
+    },
+    "deadlines": {
+        "title": "Päivitä aikataulut",
+        "error": "Virhe: {{error}}"
+    },
+    "common": {
+        "cancel": "Peruuta",
+        "save": "Tallenna"
+    },
+    "messages": {
+        "deadlines-successfully-saved": "Aikataulut tallennettu onnistuneesti"
+    },
+    "floor-areas": {
+        "title": "Päivitä kerrosalatiedot"
+    }
+}

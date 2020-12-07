@@ -54,7 +54,6 @@ function createStartAndEndPoints(inputMonths, deadlines) {
         date = `${date.getFullYear()}-${date.getMonth() + 1}`
         const monthIndex = findInMonths(date, week, monthDates)
         if (monthIndex) {
-          console.debug(monthDates[monthIndex][deadline.deadline.abbreviation])
           if (monthDates[monthIndex][deadline.deadline.abbreviation]) {
             if (
               monthDates[monthIndex][deadline.deadline.abbreviation].deadline_type[0] ===

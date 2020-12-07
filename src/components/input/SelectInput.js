@@ -4,29 +4,33 @@ import { Dropdown } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
 import DropdownMultiselect from './DropdownMultiselect'
 
-const SelectInput = ({ input, meta: { error }, options, ...custom }) => {
+const SelectInput = ({ input, meta: { error }, options, onBlur, placeholder, ...custom }) => {
   if (custom.multiple) {
     return (
       <DropdownMultiselect
         input={input}
         error={error}
         options={options}
-        custom={custom}
+        onBlur={onBlur}
+        placeholder={placeholder}
       />
     )
   }
-
   return (
     <Dropdown
-      {...input}
-      {...custom}
       onChange={(param, data) => {
-        input.onChange(data.value)
-        if ( data.value && custom.handleSave) {
-          custom.handleSave(data.value)
+
+        let returnValue = data.value
+        if ( returnValue === '' ) {
+          returnValue = null
+        }
+        input.onChange(returnValue)
+        if ( custom.handleSave ) {
+          custom.handleSave()
         }
         }
       }
+      name={input.name}
       fluid
       search
       selection
@@ -34,8 +38,8 @@ const SelectInput = ({ input, meta: { error }, options, ...custom }) => {
       placeholder=""
       noResultsMessage="Ei tuloksia"
       options={options}
+      defaultValue={input.value}
       error={inputUtils.hasError(error)}
-      value={input.value}
     />
   )
 }

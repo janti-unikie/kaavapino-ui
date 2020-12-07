@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { NEW_PROJECT_FORM, EDIT_PROJECT_FORM, EDIT_FLOOR_AREA_FORM } from '../constants'
+import { NEW_PROJECT_FORM, EDIT_PROJECT_FORM, EDIT_FLOOR_AREA_FORM, EDIT_PROJECT_TIMETABLE_FORM } from '../constants'
 
 const selectForm = state => state.form
 
@@ -22,6 +22,11 @@ export const editFormSelector = createSelector(
 export const editFloorAreaFormSelector = createSelector(
   selectForm,
   form => form[EDIT_FLOOR_AREA_FORM]
+)
+
+export const editProjectTimetableFormSelector = createSelector(
+  selectForm,
+  form => form[EDIT_PROJECT_TIMETABLE_FORM]
 )
 
 export const reportFormSelector = createSelector(selectForm, form => form.reportForm)

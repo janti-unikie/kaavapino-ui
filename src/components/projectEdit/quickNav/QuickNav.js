@@ -118,7 +118,7 @@ class QuickNav extends Component {
   tryToEndPhase = () => this.props.validateProjectFields()
 
   getFormField = fieldProps => {
-    const { formSubmitErrors, formValues } = this.props
+    const { formSubmitErrors, formValues, onhold, saveProjectBase } = this.props
 
     const error =
       formSubmitErrors &&
@@ -131,6 +131,8 @@ class QuickNav extends Component {
         {...fieldProps}
         error={error}
         formValues={formValues}
+        onhold={onhold}
+        saveProjectBase={saveProjectBase}
       />
     )
   }
@@ -219,11 +221,11 @@ class QuickNav extends Component {
             field: {
               name: ONHOLD,
               label: 'Projekti on toistaiseksi keskeytynyt',
-              type: 'checkbox',
-              onhold: currentProject.onhold,
-              saveProjectBase: saveProjectBase,
+              type: 'checkbox-onhold',
               disabled: saving
-            }
+              },
+            onhold: currentProject.onhold,
+            saveProjectBase: saveProjectBase
           })}
         </Form>
       </div>

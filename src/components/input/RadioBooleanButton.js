@@ -6,12 +6,13 @@ const RadioBooleanButton = ({
   meta: { error },
   inverted,
   double,
+  onRadioChange,
   ...custom
 }) => {
   const handleOnChange = value => {
     rest.onChange(value)
-    if (custom.onRadioChange) {
-      custom.onRadioChange()
+    if (onRadioChange) {
+      onRadioChange()
     }
   }
   return (

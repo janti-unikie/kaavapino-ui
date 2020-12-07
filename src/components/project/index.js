@@ -24,9 +24,9 @@ import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
 import ProjectEditPage from '../projectEdit'
 import ProjectCardPage from '../projectCard'
 import ProjectDocumentsPage from '../projectDocuments'
-import DeadlineModal from './DeadlineModal'
 import projectUtils from '../../utils/projectUtils'
 import NewProjectFormModal from './NewProjectFormModal'
+import EditProjectTimetableModal from './EditProjectTimetableModal/index'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
 
 class ProjectPage extends Component {
@@ -195,10 +195,17 @@ class ProjectPage extends Component {
 
   getAllChanges = () => {
     const { allEditFields, edit } = this.props
+
     if (!edit) return []
     return allEditFields.map((f, i) => {
       const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.name} ${f.user_name}`
-      return { text: value, value: `${value}-${i}`, key: `${value}-${i}`, disabled: true }
+      return {
+        text: value,
+        value: `${value}-${i}`,
+        key: `${value}-${i}`,
+        oldValue: f.old_value,
+        newValue: f.new_value
+      }
     })
   }
 
@@ -246,7 +253,7 @@ class ProjectPage extends Component {
           infoOptions={this.getAllChanges()}
         />
         <ProjectTimeline deadlines={deadlines} />
-        <DeadlineModal
+        <EditProjectTimetableModal
           open={this.state.showDeadlineModal}
           handleClose={() => this.setState({ showDeadlineModal: false })}
         />

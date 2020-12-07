@@ -22,9 +22,11 @@ class SearchBar extends Component {
                 fluid
                 placeholder="Hae"
                 action={
+                  (
                   <Button onClick={buttonAction} primary>
                     Hae
                   </Button>
+                  )
                 }
               />
             </Form>

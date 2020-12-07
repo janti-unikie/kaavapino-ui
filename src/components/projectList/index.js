@@ -19,6 +19,7 @@ import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import NewProjectFormModal from '../project/NewProjectFormModal'
 import List from './List'
 import SearchBar from '../SearchBar'
+import { withTranslation } from 'react-i18next'
 
 class ProjectListPage extends Component {
   constructor(props) {
@@ -34,7 +35,9 @@ class ProjectListPage extends Component {
   }
 
   componentDidMount() {
-    document.title = 'Kaavapino'
+    const { t } = this.props
+
+    document.title = t('title')
     this.props.fetchProjects()
     this.props.fetchUsers()
     this.props.fetchProjectSubtypes()
@@ -77,9 +80,11 @@ class ProjectListPage extends Component {
 
     const { searchOpen, activeIndex, screenWidth } = this.state
 
+    const { t } = this.props
+
     const panes = [
       {
-        menuItem: `${screenWidth < 600 ? 'Omat' : 'Omat Projektit'} (${totalOwnProjects}${
+        menuItem: `${screenWidth < 600 ? t('projects.own-short') : t('projects.own-long')} (${totalOwnProjects}${
           totalOwnProjects > 0 ? ' kpl' : ''
         })`,
         render: () => (
@@ -93,8 +98,8 @@ class ProjectListPage extends Component {
       },
       {
         menuItem: `${
-          screenWidth < 600 ? 'Kaikki' : 'Kaikki Projektit'
-        } (${totalProjects}${totalProjects > 0 ? ' kpl' : ''})`,
+          screenWidth < 600 ? t('projects.all-short') : t('projects.all-long')
+        } (${totalProjects > 0 ? t('projects.amount', { pieces: totalProjects }) : ''})`,
         render: () => (
           <List
             toggleSearch={this.toggleSearch}
@@ -115,9 +120,9 @@ class ProjectListPage extends Component {
           <>
             <NavAction onClick={() => this.toggleForm(true)}>
               <FontAwesomeIcon icon="plus" />
-              Luo uusi projekti
+              {t('projects.createNewProject')}
             </NavAction>
-            <NavAction to={'/reports'}>Tee raportteja</NavAction>
+            <NavAction to={'/reports'}>{t('projects.createReports')}</NavAction>
           </>
         )}
         <Responsive
@@ -134,8 +139,8 @@ class ProjectListPage extends Component {
     return (
       <div className="project-list-page">
         <NavHeader
-          routeItems={[{ value: 'Kaavaprojektit', path: '/' }]}
-          title="Kaavaprojektit"
+          routeItems={[{ value: t('projects.title'), path: '/' }]}
+          title={t('projects.title')}
           actions={headerActions}
         />
         <NewProjectFormModal
@@ -176,4 +181,4 @@ const mapDispatchToProps = {
   fetchProjectSubtypes
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectListPage)
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProjectListPage))

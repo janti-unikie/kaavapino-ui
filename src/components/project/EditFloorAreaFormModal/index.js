@@ -10,6 +10,7 @@ import FormField from '../../input/FormField'
 import Collapse from '../../common/collapse'
 import './styles.scss'
 import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
+import { withTranslation } from 'react-i18next'
 
 const FloorAreaTotals = ({ formValues, floorAreaSections }) => {
   // Would love a more rubust check than string includes if one becomes available
@@ -76,9 +77,6 @@ class EditFloorAreaFormModal extends Component {
   }
 
   handleSubmit = () => {
-    /* The designs do not have a save-button.
-     * Thus we need to clarify: 1) do we save this with the rest of the edit form, and if so,
-     * 2) how do we show errors? */
 
     this.setState({ loading: true })
     const errors = this.props.handleSubmit()
@@ -109,7 +107,9 @@ class EditFloorAreaFormModal extends Component {
           attributeData={{}}
           error={error}
           formValues={formValues}
-          isFloorCalculation={true}/>
+          isFloorCalculation={true}
+          className='modal-field'
+          />
       </div>
     )
   }
@@ -131,7 +131,7 @@ class EditFloorAreaFormModal extends Component {
 
   render() {
     const { loading } = this.state
-    const { floorAreaSections } = this.props
+    const { floorAreaSections, t } = this.props
 
     return (
       <Modal
@@ -141,7 +141,7 @@ class EditFloorAreaFormModal extends Component {
         open={this.props.open}
         closeIcon
       >
-        <Modal.Header>Päivitä kerrosalatiedot</Modal.Header>
+        <Modal.Header>{t('floor-areas.title')}</Modal.Header>
         <Modal.Content>
           {this.getFloorAreaTotalsComponent()}
           <Form>
@@ -154,7 +154,7 @@ class EditFloorAreaFormModal extends Component {
         </Modal.Content>
         <Modal.Actions>
           <Button secondary disabled={loading} onClick={this.handleClose}>
-            Peruuta
+            {t('common.cancel')}
           </Button>
           <Button
             primary
@@ -163,7 +163,7 @@ class EditFloorAreaFormModal extends Component {
             type="submit"
             onClick={this.handleSubmit}
           >
-            Tallenna
+            {t('common.save')}
           </Button>
         </Modal.Actions>
       </Modal>
@@ -186,4 +186,4 @@ const decoratedForm = reduxForm({
   form: EDIT_FLOOR_AREA_FORM
 })(EditFloorAreaFormModal)
 
-export default connect(mapStateToProps, () => ({}))(decoratedForm)
+export default connect(mapStateToProps, () => ({}))(withTranslation()(decoratedForm))

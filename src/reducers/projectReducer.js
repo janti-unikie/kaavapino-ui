@@ -27,7 +27,8 @@ import {
   PROJECT_FILE_UPLOAD_SUCCESSFUL,
   PROJECT_FILE_REMOVE_SUCCESSFUL,
   PROJECT_SET_CHECKING,
-  PROJECT_SET_DEADLINES_SUCCESSFUL
+  PROJECT_SET_DEADLINES_SUCCESSFUL,
+  FETCH_PROJECT_DEADLINES_SUCCESSFUL
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -168,6 +169,13 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         currentProject: action.payload,
+        saving: false
+      }
+    }
+    case FETCH_PROJECT_DEADLINES_SUCCESSFUL: {
+      return {
+        ...state,
+        projectDeadlines: action.payload,
         saving: false
       }
     }

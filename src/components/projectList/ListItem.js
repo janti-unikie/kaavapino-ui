@@ -38,11 +38,11 @@ const ListItem = ({
         <span>{projectId}</span>
         <span className="project-list-item-name field-ellipsis">
           <Popup
-            trigger={
+            trigger={(
               <Link className="project-name" to={`/${id}`}>
                 {name}
               </Link>
-            }
+            )}
             on="hover"
             content={name}
           />
@@ -62,9 +62,7 @@ const ListItem = ({
         </Link>
       </div>
       <div className="project-list-item-graph">
-        {showGraph && (
-          <ProjectTimeline deadlines={deadlines}/>
-        )}
+        {showGraph && <ProjectTimeline deadlines={deadlines} />}
       </div>
       <Link to={`/${id}`} className="project-card-mb">
         Projektikortti, {name}

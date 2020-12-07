@@ -6,12 +6,14 @@ import { isDirty } from 'redux-form/immutable'
 import {
   saveProject,
   saveProjectFloorArea,
+  saveProjectTimetable,
   changeProjectPhase,
   validateProjectFields,
   projectSetChecking,
-  saveProjectBase
+  saveProjectBase,
+  fetchProjectDeadlines
 } from '../../actions/projectActions'
-import { fetchSchemas } from '../../actions/schemaActions'
+import { fetchSchemas, setAllEditFields, setLatestEditField } from '../../actions/schemaActions'
 import {
   savingSelector,
   changingPhaseSelector,
@@ -28,10 +30,12 @@ import QuickNav from './quickNav/QuickNav'
 import EditFloorAreaFormModal from '../project/EditFloorAreaFormModal'
 import { EDIT_PROJECT_FORM } from '../../constants'
 import _ from 'lodash'
+import EditProjectTimetableModal from '../project/EditProjectTimetableModal'
 
 class ProjectEditPage extends Component {
   state = {
     showEditFloorAreaForm: false,
+    showEditProjectTimetableForm: false,
     highlightGroup: ''
   }
 
@@ -43,17 +47,22 @@ class ProjectEditPage extends Component {
   changePhase = () => this.props.changeProjectPhase(this.props.project.phase + 1)
 
   handleSave = () => {
-      this.props.saveProject()
+    this.props.saveProject()
+    this.props.setLatestEditField()
+    this.props.setAllEditFields()
+
   }
   handleAutoSave = () => {
-    if ( this.props.syncErrors && !_.isEmpty( this.props.syncErrors )) {
+    if (this.props.syncErrors && !_.isEmpty(this.props.syncErrors)) {
       return
     }
-      this.props.saveProject()
+    this.props.saveProject()
+    this.props.setLatestEditField()
+    this.props.setAllEditFields()
   }
 
   setSelectedRole = role => {
-    switch(role) {
+    switch (role) {
       case 0:
         this.setState({ highlightGroup: 'hightlight-pääkäyttäjä' })
         break
@@ -71,6 +80,7 @@ class ProjectEditPage extends Component {
       schema,
       selectedPhase,
       saveProjectFloorArea,
+      saveProjectTimetable,
       project: { name, attribute_data, phase, id },
       saving,
       changingPhase,
@@ -156,6 +166,9 @@ class ProjectEditPage extends Component {
           submitErrors={submitErrors}
           title={`${currentSchema.list_prefix}. ${currentSchema.title}`}
           showEditFloorAreaForm={() => this.setState({ showEditFloorAreaForm: true })}
+          showEditProjectTimetableForm={() =>
+            this.setState({ showEditProjectTimetableForm: true })
+          }
         />
         {this.state.showEditFloorAreaForm && (
           <EditFloorAreaFormModal
@@ -163,6 +176,14 @@ class ProjectEditPage extends Component {
             open
             handleSubmit={saveProjectFloorArea}
             handleClose={() => this.setState({ showEditFloorAreaForm: false })}
+          />
+        )}
+        {this.state.showEditProjectTimetableForm && (
+          <EditProjectTimetableModal
+            attributeData={attribute_data}
+            open
+            handleSubmit={saveProjectTimetable}
+            handleClose={() => this.setState({ showEditProjectTimetableForm: false })}
           />
         )}
       </div>
@@ -189,10 +210,14 @@ const mapDispatchToProps = {
   fetchSchemas,
   saveProject,
   saveProjectFloorArea,
+  saveProjectTimetable,
   changeProjectPhase,
   validateProjectFields,
   projectSetChecking,
-  saveProjectBase
+  saveProjectBase,
+  fetchProjectDeadlines,
+  setAllEditFields,
+  setLatestEditField
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)

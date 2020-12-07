@@ -23,10 +23,10 @@ const Collapse = props => {
 
   return (
     <div className={`collapse ${open ? 'open' : ''}`} {...rest}>
-      <h2 className="collapse-header" onClick={handleClick}>
+      <h3 className="collapse-header" onClick={handleClick}>
         <div>{title}</div>
         <FontAwesomeIcon icon={open ? faChevronUp : faChevronDown} />
-      </h2>
+      </h3>
       <div ref={contentRef} className="collapse-content">
         {children}
         <div className="bottom-padding-included-in-animation" />
