@@ -1,0 +1,149 @@
+@import '../common/colors';
+
+.timeline-graph-container {
+  font-family: 'Helsinki Grotesk Medium';
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-top: 20px;
+  overflow: hidden;
+  position: relative;
+
+  .timeline-error-message {
+    position: absolute;
+    z-index: 1;
+    margin-left: -160px;
+    left: 50%;
+    width: 320px;
+    height: 56px;
+    border-left: 4px solid #d8000c;
+    background-color: #ff8179;
+    text-align: center;
+    svg {
+      position: absolute;
+      top: 10px !important;
+      left: 26px !important;
+    }
+    span {
+      position: absolute;
+      top: 18px;
+      left: 68px;
+    }
+  }
+
+  .timeline-item-container {
+    display: grid;
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 46px;
+      height: 20px;
+      &.first {
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+      }
+      &.last {
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+      }
+      .deadline-name-over {
+        position: absolute;
+        bottom: 20px;
+        font-size: 12px;
+        width: 118px;
+      }
+      .deadline-name-inside {
+        position: absolute;
+        left: 2px;
+        z-index: 3;
+        font-size: 12px;
+        width: 120px;
+      }
+      .deadline-milestone {
+        .milestone-message {
+          position: absolute;
+          top: 20px;
+          width: 100px;
+          font-size: 12px;
+          &.under {
+            top: 32px;
+          }
+        }
+        .milestone-icon {
+          position: absolute;
+          z-index: 2;
+          width: 15px;
+          height: 15px;
+          top: 2px;
+          &.square {
+            top: 7px;
+            left: 2px;
+            width: 5px;
+            height: 5px;
+            &.second {
+              left: 10px;
+            }
+          }
+          &.inner {
+            top: 4px;
+            height: 12px;
+            width: 17px;
+            &.start {
+              border-bottom-left-radius: 5px;
+              border-top-left-radius: 5px;
+            }
+            &.end {
+              right: 2px;
+              border-bottom-right-radius: 5px;
+              border-top-right-radius: 5px;
+            }
+          }
+          &.sphere {
+            border-radius: 15px;
+            right: 2px;
+          }
+          &.white {
+            background-color: $white;
+          }
+          &.black {
+            background-color: $black;
+            border: 2px solid $white;
+          }
+        }
+      }
+    }
+  }
+  .timeline-months {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+
+    .timeline-month {
+      border-bottom: 2px solid $gray;
+      border-left: 2px solid $gray;
+      color: $gray;
+      text-align: center;
+      position: relative;
+      height: 10px;
+      margin-bottom: 30px;
+      font-size: 12px;
+      span {
+        position: absolute;
+        left: 8px;
+        top: 10px;
+      }
+      .now-marker {
+        color: $black;
+        position: absolute;
+        width: 1px;
+        height: 60px;
+        border: 1px solid blue;
+        bottom: 0;
+        span {
+          margin-top: 16px;
+        }
+      }
+    }
+  }
+}
+.timeline-error {
+  filter: opacity(0.2);
+}

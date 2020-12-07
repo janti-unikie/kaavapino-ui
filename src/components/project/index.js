@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Loader } from 'semantic-ui-react'
-import { initializeProject, saveProjectBase, changeProjectPhase } from '../../actions/projectActions'
+import {
+  initializeProject,
+  saveProjectBase,
+  changeProjectPhase
+} from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
 import {
   currentProjectSelector,
@@ -16,7 +20,7 @@ import {
 } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
-import Timeline from './Timeline'
+import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
 import ProjectEditPage from '../projectEdit'
 import ProjectCardPage from '../projectCard'
 import ProjectDocumentsPage from '../projectDocuments'
@@ -38,7 +42,8 @@ class ProjectPage extends Component {
     this.state = {
       selectedPhase: selectedPhase,
       showDeadlineModal: false,
-      showBaseInformationForm: false
+      showBaseInformationForm: false,
+      deadlines: null
     }
   }
 
@@ -47,7 +52,7 @@ class ProjectPage extends Component {
     if (!currentProjectLoaded) {
       this.props.initializeProject(this.props.id)
     }
-    if ( !users || users.length === 0) {
+    if (!users || users.length === 0) {
       this.props.fetchUsers()
     }
   }
@@ -59,6 +64,7 @@ class ProjectPage extends Component {
       (prevProps.changingPhase && !changingPhase)
     ) {
       this.setState({ selectedPhase: currentProject.phase })
+      this.setState({ deadlines: currentProject.deadlines })
       document.title = currentProject.name
     }
 
@@ -66,8 +72,8 @@ class ProjectPage extends Component {
   }
 
   switchDisplayedPhase = phase => {
-    if ( this.props.edit ) {
-      this.props.changeProjectPhase( phase )
+    if (this.props.edit) {
+      this.props.changeProjectPhase(phase)
       this.setState({ selectedPhase: phase })
     }
   }
@@ -192,7 +198,13 @@ class ProjectPage extends Component {
     if (!edit) return []
     return allEditFields.map((f, i) => {
       const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.name} ${f.user_name}`
-      return { text: value, value: `${value}-${i}`, key: `${value}-${i}`, oldValue: f.old_value, newValue: f.new_value }
+      return {
+        text: value,
+        value: `${value}-${i}`,
+        key: `${value}-${i}`,
+        oldValue: f.old_value,
+        newValue: f.new_value
+      }
     })
   }
 
@@ -217,7 +229,6 @@ class ProjectPage extends Component {
 
   render() {
     const {
-      edit,
       currentProject,
       phases,
       currentProjectLoaded,
@@ -225,17 +236,12 @@ class ProjectPage extends Component {
       projectSubtypes
     } = this.props
     const loading = !currentProjectLoaded || !phases
+    const { deadlines } = this.state
     if (loading) {
       return this.renderLoading()
     }
-    const { phase } = currentProject
-    const currentPhases = this.getCurrentPhases()
-    const projectPhase = currentPhases.find(p => p.id === phase)
-    const selectedPhase = currentPhases.find(
-      phase => phase.id === this.state.selectedPhase
-    )
 
-  return (
+    return (
       <div className="project-container">
         <NavHeader
           routeItems={this.getRouteItems()}
@@ -245,14 +251,7 @@ class ProjectPage extends Component {
           info={this.getLatestChange()}
           infoOptions={this.getAllChanges()}
         />
-        <Timeline
-          phase={selectedPhase}
-          projectPhase={projectPhase}
-          items={currentPhases}
-          type={currentProject.type}
-          disabled={!edit}
-          switchDisplayedPhase={this.switchDisplayedPhase}
-        />
+        <ProjectTimeline deadlines={deadlines} />
         <NewProjectFormModal
           currentProject={currentProject}
           open={this.state.showBaseInformationForm}
