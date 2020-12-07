@@ -5,7 +5,6 @@ import { projectTypesSelector } from '../../selectors/projectTypeSelector'
 import { usersSelector } from '../../selectors/projectSelector'
 import Summary from './Summary'
 import Image from './Image'
-import Graph from '../common/Graph'
 import projectUtils from '../../utils/projectUtils'
 
 class ProjectCardPage extends Component {
@@ -72,8 +71,7 @@ class ProjectCardPage extends Component {
 
   render() {
     const { metadata, extended, imageLink } = this.state
-    const { deadlines, name, phases, subtype, users } = this.props
-    const graphData = [projectUtils.formatDeadlines({ name, deadlines, subtype }, phases)]
+    const { users } = this.props
 
     if (!metadata) {
       return (
@@ -96,9 +94,6 @@ class ProjectCardPage extends Component {
             label="Laajennettu"
             checked={extended}
           />
-        </div>
-        <div className="project-card-graph-container">
-          <Graph data={graphData} height={140} />
         </div>
       </div>
     )
