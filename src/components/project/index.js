@@ -26,7 +26,6 @@ import ProjectCardPage from '../projectCard'
 import ProjectDocumentsPage from '../projectDocuments'
 import projectUtils from '../../utils/projectUtils'
 import NewProjectFormModal from './NewProjectFormModal'
-import EditProjectTimetableModal from './EditProjectTimetableModal/index'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
 
 class ProjectPage extends Component {
@@ -253,10 +252,6 @@ class ProjectPage extends Component {
           infoOptions={this.getAllChanges()}
         />
         <ProjectTimeline deadlines={deadlines} />
-        <EditProjectTimetableModal
-          open={this.state.showDeadlineModal}
-          handleClose={() => this.setState({ showDeadlineModal: false })}
-        />
         <NewProjectFormModal
           currentProject={currentProject}
           open={this.state.showBaseInformationForm}
