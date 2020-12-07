@@ -5,7 +5,12 @@
  */
 export function createMonths(deadlines) {
   let date = new Date(deadlines[0].date)
+  let error = false
   let monthArray = []
+  if(date.getFullYear() < 1980) {
+    date = new Date()
+    error = true
+  }
   if (date.getMonth() === 0) {
     date.setMonth(11)
   } else {
@@ -20,7 +25,7 @@ export function createMonths(deadlines) {
   }
 
   // if date is not set will return Jan 01 1970 and will show error
-  if (date.getFullYear() < 1980) {
+  if (error) {
     return { months: monthArray, error: true }
   } else {
     return { months: monthArray, error: false }
