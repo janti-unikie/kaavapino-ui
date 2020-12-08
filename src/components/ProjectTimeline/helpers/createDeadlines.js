@@ -8,6 +8,12 @@ export function createDeadlines(deadlines) {
   if (!deadlines) {
     return { deadlines: null, error: true }
   }
+  if (!deadlines[0]) {
+    return { deadlines: null, error: true }
+  }
+  if (!deadlines[0].date) {
+    return { deadlines: null, error: true }
+  }
   const date = new Date(deadlines[0].date)
   let monthDatesArray = []
   let week = 1
