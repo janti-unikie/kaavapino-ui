@@ -105,7 +105,7 @@ class CustomField extends Component {
   }
 
   renderYearSelect = props => {
-    const { multiple_choice } = this.props.field
+    const { multiple_choice, placeholder_text } = this.props.field
     const { onBlur, handleSave, attributeData, parentName } = this.props
 
     projectUtils.checkInputValue(props, attributeData, parentName )
@@ -119,6 +119,7 @@ class CustomField extends Component {
         options={this.formatOptions(this.yearOptions)}
         onBlur={onBlur}
         handleSave={handleSave}
+        placeholder={placeholder_text}
         {...props}
       />
     )
@@ -193,15 +194,17 @@ class CustomField extends Component {
   }
 
   renderSelect = props => {
-    const { choices, multiple_choice } = this.props.field
+    const { choices, multiple_choice, placeholder_text } = this.props.field
     const { onBlur, handleSave, attributeData, parentName } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
+
     return (
       <SelectInput
         multiple={multiple_choice}
         options={this.formatOptions(choices)}
         onBlur={onBlur}
         handleSave={handleSave}
+        placeholder={placeholder_text}
         {...props}
       />
     )
@@ -246,11 +249,13 @@ class CustomField extends Component {
 
   renderLink = props => {
     const { onBlur, attributeData, parentName } = this.props
+    const { placeholder_text } = this.props.field
     projectUtils.checkInputValue(props, attributeData, parentName)
 
     return (
       <Link
         onBlur={onBlur}
+        placeholder={placeholder_text}
         {...props} />
         )
   }
@@ -437,7 +442,7 @@ class CustomField extends Component {
     const showFieldClass = field.display === 'hidden' ? 'hidden' : className
     let fieldProps = {
       name: field.name,
-      placeholder: field.placeholder || field.label,
+      placeholder: field.placeholder_text || field.label,
       disabled:
         field.generated || field.disabled || field.autofill_readonly,
       component: this.getInput(field),
@@ -445,6 +450,7 @@ class CustomField extends Component {
       updated: { updated },
       className: showFieldClass
     }
+
     /* Some fields are autofilled to a value as per (autofill_rules)
      * Some fields have their value calculated based on other fields (calculations)
      * Some autofill fields are readonly, some are not (autofill_readonly) */

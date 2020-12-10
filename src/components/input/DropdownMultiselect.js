@@ -3,19 +3,19 @@ import PropTypes from 'prop-types'
 import { Checkbox, Dropdown } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
 
-const DropdownMultiselect = ({ input, error, options, onBlur, placeHolder }) => {
+const DropdownMultiselect = ({ input, error, options, onBlur, placeholder }) => {
   return (
     <Dropdown
       className="selection"
       fluid
       search
       clearable
-      placeholder=""
+      placeholder={placeholder}
       multiple
       noResultsMessage="Ei tuloksia"
       error={inputUtils.hasError(error)}
       onBlur={onBlur}
-      trigger={trigger(input.value, placeHolder)}
+      trigger={trigger(input.value, placeholder)}
     >
       <Dropdown.Menu>
         {options.map(({ key, text, value }) => {

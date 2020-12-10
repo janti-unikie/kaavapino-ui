@@ -13,7 +13,7 @@ class Link extends PureComponent {
     const valid = isUrl(value) || ipRegex({ exact: true }).test(value)
     return (
       <div className="link-container">
-        <Input type="text" {...this.props} placeholder="http(s)://..." />
+        <Input type="text" {...this.props}  />
         <Button
           className="link-button"
           labelPosition="right"
