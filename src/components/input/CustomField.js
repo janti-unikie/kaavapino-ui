@@ -208,14 +208,12 @@ class CustomField extends Component {
   }
 
   renderRadio = props => {
-    const { field, onRadioChange, onBlur, attributeData, parentName } = this.props
+    const { field, onBlur, attributeData, parentName } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
     return (
       <RadioButton
-        onRadioChange={onRadioChange}
         options={field.options}
         onBlur={onBlur}
-        attributeData={attributeData}
         {...props} />
         )
   }
@@ -234,12 +232,11 @@ class CustomField extends Component {
   }
 
   renderToggle = props => {
-    const { onBlur, handleSave, attributeData, parentName } = this.props
+    const { onBlur, attributeData, parentName } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName )
     return (
       <ToggleButton
         onBlur={onBlur}
-        handleSave={handleSave}
         {...props} />
         )
   }
