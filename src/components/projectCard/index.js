@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Loader, Radio } from 'semantic-ui-react'
+import { Loader } from 'semantic-ui-react'
 import { projectTypesSelector } from '../../selectors/projectTypeSelector'
 import { usersSelector } from '../../selectors/projectSelector'
-import Summary from './Summary'
-import Image from './Image'
-import projectUtils from '../../utils/projectUtils'
+import { Grid, Segment } from 'semantic-ui-react'
+import BasicInformation from './BasicInformation'
+import Contract from './Contract'
+import Description from './Description'
+import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
+import TimeTable from './Timetable'
+import Contacts from './Contacts'
+import FloorAreaInformation from './FloorAreaInformation'
+import StrategyConnection from './StrategyConnection'
+import Photo from './Photo'
+import Documents from './Documents'
 
 class ProjectCardPage extends Component {
   constructor(props) {
@@ -44,35 +52,71 @@ class ProjectCardPage extends Component {
     this.setState({ metadata })
   }
 
-  filterAttributeData = () => {
-    const { metadata, extended } = this.state
-    const { attributeData } = this.props
-    const currentMetadata = extended
-      ? metadata.extended_project_card_attributes
-      : metadata.normal_project_card_attributes
-    let result = []
-    currentMetadata.forEach(({ label, name, type, fieldset_attributes, choices }) => {
-      const data = { label, type }
-      if (!projectUtils.isFieldMissing(name, true, attributeData)) {
-        data['value'] = attributeData[name]
-        data['choices'] = choices || null
-        data['fieldset_attributes'] = fieldset_attributes
-      } else {
-        data['empty'] = true
-      }
-      result.push(data)
-    })
-    return result
-  }
-
   handleExtendedChange = () => {
     this.setState(prevState => ({ extended: !prevState.extended }))
   }
+  renderFirstRow = () => (
+    <Grid stackable columns='equal'>
+        <Grid.Column width={5}>
+          <Segment><Description /></Segment>
+        </Grid.Column>
+        <Grid.Column>
+          <Segment><Photo src={'/hankekuva.png'}/></Segment>
+        </Grid.Column>
+    </Grid>
+  )
+  renderTimeLineRow = () => {
+    const { deadlines } = this.props
+
+    return (
+      <Grid stackable columns='equal'>
+        <Grid.Column>
+          <Segment><ProjectTimeline deadlines={deadlines} /></Segment>
+        </Grid.Column>
+      </Grid>
+    )
+  }
+  renderSecondRow = () => (
+    <Grid stackable columns='equal'>
+        <Grid.Column width={5}>
+          <Segment>
+            <Contacts />
+          </Segment>
+          <Segment>
+            <StrategyConnection />
+        </Segment>
+          <Segment>
+              <TimeTable />
+          </Segment>
+        </Grid.Column>
+        <Grid.Column>
+          <Segment>
+            <FloorAreaInformation />
+          </Segment>
+          <Grid columns='equal'>
+            <Grid.Column className="inner-column">
+              <Segment >
+                <BasicInformation />
+              </Segment>
+            </Grid.Column>
+            <Grid.Column className="inner-column">
+              <Segment>
+                <Contract />
+              </Segment>
+            </Grid.Column>
+          </Grid>
+          <Segment>
+            <Photo src={'/kartta.png'} />
+          </Segment>
+          <Segment>
+            <Documents />
+          </Segment>
+        </Grid.Column>
+    </Grid>
+    )
 
   render() {
-    const { metadata, extended, imageLink } = this.state
-    const { users } = this.props
-
+    const { metadata } = this.state
     if (!metadata) {
       return (
         <Loader inline={'centered'} active>
@@ -80,21 +124,16 @@ class ProjectCardPage extends Component {
         </Loader>
       )
     }
-    const attributeData = this.filterAttributeData()
+
+    const firstRow = this.renderFirstRow()
+    const secondRow = this.renderSecondRow()
+    const timelineRow = this.renderTimeLineRow()
+
     return (
-      <div>
-        <div className="project-card-container">
-          <Summary attributeData={attributeData} users={users} />
-          <Image src={imageLink} />
-        </div>
-        <div className="project-card-extend">
-          <Radio
-            onChange={this.handleExtendedChange}
-            toggle
-            label="Laajennettu"
-            checked={extended}
-          />
-        </div>
+      <div className="project-card">
+          {firstRow}
+          {timelineRow}
+          {secondRow}
       </div>
     )
   }

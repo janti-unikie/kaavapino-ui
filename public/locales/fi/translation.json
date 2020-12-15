@@ -24,5 +24,14 @@
     },
     "floor-areas": {
         "title": "Päivitä kerrosalatiedot"
-    }
+    },
+    "project": {
+        "modify": "Muokkaa",
+        "create-documents": "Luo dokumentteja",
+        "print-project-card": "Tulosta projektikortti",
+        "deadlines": "Määräajat",
+        "modify-project": "Muokkaa luontitietoja",
+        "check-project-card": "Katso projektikortti",
+        "last-edit": "Viimeisin muokkaus: {{fieldName}} {{date}} {{userName}}"
+    }    
 }

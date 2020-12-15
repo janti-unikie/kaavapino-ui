@@ -27,6 +27,7 @@ import ProjectDocumentsPage from '../projectDocuments'
 import projectUtils from '../../utils/projectUtils'
 import NewProjectFormModal from './NewProjectFormModal'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
+import { withTranslation } from 'react-i18next'
 
 class ProjectPage extends Component {
   constructor(props) {
@@ -130,7 +131,8 @@ class ProjectPage extends Component {
           project={currentProject}
         />
       )
-    } else if (documents) {
+    }
+    if (documents) {
       return <ProjectDocumentsPage />
     }
     return (
@@ -149,47 +151,51 @@ class ProjectPage extends Component {
     const {
       edit,
       documents,
-      currentProject: { id }
+      currentProject: { id },
+      t
     } = this.props
     return !(edit || documents) ? (
       <NavActions>
         <NavAction to={`/${id}/edit`}>
           <FontAwesomeIcon icon="pen" />
-          Muokkaa
+          {t('project.modify')}
         </NavAction>
         <NavAction to={`/${id}/documents`}>
           <FontAwesomeIcon icon="file" />
-          Luo dokumentteja
+          {t('project.create-documents')}
         </NavAction>
         <NavAction onClick={() => window.print()}>
           <FontAwesomeIcon icon="print" />
-          Tulosta projektikortti
+          {t('project.print-project-card')}
         </NavAction>
         <NavAction onClick={() => this.setState({ showDeadlineModal: true })}>
           <FontAwesomeIcon icon="cog" />
-          Määräajat
+          {t('project.deadlines')}
         </NavAction>
       </NavActions>
     ) : (
       <NavActions>
         <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
-          Muokkaa luontitietoja
+        {t('project.modify-project')}
         </NavAction>
         <NavAction to={`/${id}`} primary>
-          Katso projektikortti
+        {t('project.check-project-card')}
         </NavAction>
       </NavActions>
     )
   }
 
   getLatestChange = () => {
-    const { edit, latestEditField } = this.props
+    const { edit, latestEditField, t } = this.props
     if (!edit || !latestEditField || !latestEditField.name) {
       return null
     }
-    return `Viimeisin muokkaus: ${latestEditField.name} ${projectUtils.formatDateTime(
-      latestEditField.timestamp
-    )} ${latestEditField.user_name}`
+    return t('last-edit',
+    {
+      fieldName: latestEditField.name,
+      date: projectUtils.formatDateTime(latestEditField.timestamp),
+      userName: latestEditField.user_name
+    })
   }
 
   getAllChanges = () => {
@@ -208,24 +214,26 @@ class ProjectPage extends Component {
     })
   }
 
-  toggleBaseInformationForm = opened => this.setState({ showBaseInformationForm: opened })
+  renderLoading = () => {
+    const { t } = this.props
 
-  renderLoading = () => (
+    return (
     <div className="project-container">
       <NavHeader
         routeItems={[
           { value: 'Kaavaprojektit', path: '/' },
           { value: 'Ladataan...', path: '/' }
         ]}
-        title={'Ladataan...'}
+        title={t('loading')}
       />
       <div className="project-page-content">
         <Loader inline={'centered'} active>
-          Ladataan
+          {t('loading')}
         </Loader>
       </div>
     </div>
-  )
+   )
+  }
 
   render() {
     const {
@@ -235,33 +243,38 @@ class ProjectPage extends Component {
       users,
       projectSubtypes
     } = this.props
+
     const loading = !currentProjectLoaded || !phases
-    const { deadlines } = this.state
+
     if (loading) {
       return this.renderLoading()
     }
+
+    const { deadlines } = this.state
+
+    const { name, edit, subtype, user, create_principles, create_draft } = currentProject
 
     return (
       <div className="project-container">
         <NavHeader
           routeItems={this.getRouteItems()}
-          title={currentProject.name}
+          title={name}
           subTitle={this.getSubTitle()}
           actions={this.getNavActions()}
           info={this.getLatestChange()}
           infoOptions={this.getAllChanges()}
         />
-        <ProjectTimeline deadlines={deadlines} />
+        {edit && <ProjectTimeline deadlines={deadlines} />}
         <NewProjectFormModal
           currentProject={currentProject}
           open={this.state.showBaseInformationForm}
           initialValues={{
-            name: currentProject.name,
+            name,
             public: currentProject.public,
-            subtype: currentProject.subtype,
-            user: currentProject.user,
-            create_principles: currentProject.create_principles,
-            create_draft: currentProject.create_draft
+            subtype,
+            user,
+            create_principles,
+            create_draft
           }}
           handleSubmit={this.props.saveProjectBase}
           handleClose={() => this.toggleBaseInformationForm(false)}
@@ -294,4 +307,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectPage)
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProjectPage))
