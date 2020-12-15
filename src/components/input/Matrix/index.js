@@ -6,7 +6,13 @@ import projectUtils from '../../../utils/projectUtils'
 import './styles.scss'
 import Info from '../../../components/input/Info'
 
-const Matrix = ({ field: { matrix }, checking, attributeData, formName, isFloorCalculation }) => {
+const Matrix = ({
+  field: { matrix },
+  checking,
+  attributeData,
+  formName,
+  isFloorCalculation
+}) => {
   const { rows, columns, fields } = matrix
 
   const columnCount = columns.length
@@ -35,44 +41,46 @@ const Matrix = ({ field: { matrix }, checking, attributeData, formName, isFloorC
         {fieldMatrix.map((row, y) => {
           return (
             <React.Fragment key={`${rows[y]}-${y}`}>
-            {rows[y] && (
-              <span className="row-header" style={{ gridColumn: '1 / -1' }}>
-                {rows[y]}
-              </span>
+              {rows[y] && (
+                <span className="row-header" style={{ gridColumn: '1 / -1' }}>
+                  {rows[y]}
+                </span>
               )}
               {row.map((field, x) => {
                 const highlighted =
                   field !== 0 &&
                   checking &&
                   projectUtils.isFieldMissing(field.name, field.required, attributeData)
-                return (
-                  <React.Fragment key={`${field.name}-${y}-${x}-total`}>
-                    <span style={{ display: 'contents' }}>
-                      {field === 0 ? (
-                        <span />
-                      ) : (
-                        <span
-                          className={`${highlighted ? 'highlighted' : ''}`}
-                          key={`${field.name}-${y}-${x}`}
-                        >
-                          <div className="input-header">
-                            <div className="input-title" >{columns[x]}</div>
-                            <div className="input-header-icons">
-                              {renderInfo(field)}
+                if (field !== 0) {
+                  return (
+                    <React.Fragment key={`${field.name}-${y}-${x}-total`}>
+                      <span style={{ display: 'contents' }}>
+                        {field === 0 ? (
+                          <span />
+                        ) : (
+                          <span
+                            className={`${highlighted ? 'highlighted' : ''}`}
+                            key={`${field.name}-${y}-${x}`}
+                          >
+                            <div className="input-header">
+                              <div className="input-title">{columns[x]}</div>
+                              <div className="input-header-icons">
+                                {renderInfo(field)}
+                              </div>
                             </div>
-                          </div>
-                          <CustomField
-                            attributeData={attributeData}
-                            field={field}
-                            fieldset={field.type === 'fieldset'}
-                            formName={formName}
-                            isFloorCalculation={isFloorCalculation}
-                          />
-                        </span>
-                      )}
-                    </span>
-                  </React.Fragment>
-                )
+                            <CustomField
+                              attributeData={attributeData}
+                              field={field}
+                              fieldset={field.type === 'fieldset'}
+                              formName={formName}
+                              isFloorCalculation={isFloorCalculation}
+                            />
+                          </span>
+                        )}
+                      </span>
+                    </React.Fragment>
+                  )
+                }
               })}
             </React.Fragment>
           )
