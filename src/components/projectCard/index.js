@@ -48,15 +48,22 @@ class ProjectCardPage extends Component {
         this.basicInformationFields.push( newField )
       }
       if ( field.display === 'description') {
-        console.log( value )
         if (  value || isBoolean(value) || isArray( value )) {
           newField = {
             ...field,
             value
           }
-          console.log( newField )
         }
         this.descriptionFields.push( newField )
+      }
+      if ( field.display === 'strategy') {
+        if (  value || isBoolean(value) || isArray( value )) {
+          newField = {
+            ...field,
+            value
+          }
+        }
+        this.strategyConnectionFields.push( newField )
       }
     })
 
@@ -105,7 +112,7 @@ class ProjectCardPage extends Component {
           <Segment>
             <Contacts fields={this.contactsFields}/>
           </Segment>
-          <Segment>
+          <Segment key="basic-information">
             <StrategyConnection  fields={this.strategyConnectionFields}/>
         </Segment>
           <Segment>
@@ -118,7 +125,7 @@ class ProjectCardPage extends Component {
           </Segment>
           <Grid columns='equal'>
             <Grid.Column className="inner-column">
-              <Segment >
+              <Segment key="basic-information">
                 <BasicInformation fields={this.basicInformationFields} />
               </Segment>
             </Grid.Column>

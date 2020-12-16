@@ -18,12 +18,12 @@ function BasicInformation({ fields }) {
     }
     const renderFields = () => {
         return (
-            <div>
-            <h3>Perustiedot</h3>
-                { fields && fields.map( (field, index)  => {
-                    return renderField(field, index )
-                } )
-                }
+            <div key="basic-information">
+                <h3>Perustiedot</h3>
+                    { fields && fields.map( (field, index)  => {
+                        return renderField(field, index )
+                    } )
+                    }
 
             </div>
             )

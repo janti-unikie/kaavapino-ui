@@ -21,14 +21,13 @@ const AutofillInput = ({
     if (!formValues) {
       return
     }
-
     setAutofillValue(getFieldAutofillValue( autofill_rule, formValues ))
 
     if ( formValues[name] === autoFillValue ) {
       return
     }
 
-    if ( isBoolean( autoFillValue )) {
+    if ( autoFillValue || isBoolean( autoFillValue )) {
        dispatch(autofill(formName, name, autoFillValue))
 
        if ( saveAutofill ) {

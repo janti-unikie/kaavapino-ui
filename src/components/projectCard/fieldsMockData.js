@@ -82,6 +82,73 @@ export const fieldsMockData = [
         name: 'kaavan_hyvaksyjataho',
         display: 'basic'
     },
+    {
+        label: 'Strategiakytkentä',
+        name: 'strategiset_tavoitteet_17_21',
+        display: 'strategy',
+        choices: [
+            {
+              label: '1.1 Asuntotuotannon edistäminen',
+              value: '11_asuntotuotannon_edistaminen'
+            },
+            {
+              label: '1.2 Liikkumisen sujuvuus ja kestävät kulkumuodot',
+              value: '12_liikkumisen_sujuvuus_ja_kestavat_kulkumuodot'
+            },
+            {
+              label: '1.3 Keskustan elinvoimaisuuden kehittäminen',
+              value: '13_keskustan_elinvoimaisuuden_kehittaminen'
+            },
+            {
+              label: '1.4 Moderni ilmastovastuu',
+              value: '14_moderni_ilmastovastuu'
+            },
+            {
+              label: '1.5 Elävät, omaleimaiset ja turvalliset kaupunginosat',
+              value: '15_elavat_omaleimaiset_ja_turvalliset_kaupungi8b14'
+            },
+            {
+              label: '1.6 Segregaation ehkäisy',
+              value: '16_segregaation_ehkaisy'
+            },
+            {
+              label: '2.1 Monipuoliset sijaintipaikat yrityksille',
+              value: '21_monipuoliset_sijaintipaikat_yrityksille'
+            },
+            {
+              label: '2.2 Kumppanuus ja osallisuus toimintatapana vahvistuvat',
+              value: '22_kumppanuus_ja_osallisuus_toimintatapana_vah0cb8'
+            },
+            {
+              label: '2.3 Hallitusti nopeampaan ja ketterämpään toimintakulttuuriin',
+              value: '23_hallitusti_nopeampaan_ja_ketterampaan_toimib9d7'
+            },
+            {
+              label: '2.5 Palveluita uudistetaan asukaslähtöisesti',
+              value: '25_palveluita_uudistetaan_asukaslahtoisesti'
+            },
+            {
+              label: '3.1 Omaisuudenhallintaa toteutetaan elinkaaritaloudellisesti',
+              value: '31_omaisuudenhallintaa_toteutetaan_elinkaarita50a6'
+            },
+            {
+              label: '3.2 Investointien vaikuttavuus ja oikea-aikaisuus',
+              value: '32_investointien_vaikuttavuus_ja_oikea_aikaisuus'
+            },
+            {
+              label: '3.3 Tuottavuuden parantaminen',
+              value: '33_tuottavuuden_parantaminen'
+            },
+            {
+              label: '3.4 Kiinteistökannan laadun parantaminen',
+              value: '34_kiinteistokannan_laadun_parantaminen'
+            },
+            {
+              label: '4.1 Vahvistetaan kaupungin asemaa metropolialueena',
+              value: '41_vahvistetaan_kaupungin_asemaa_metropolialueena'
+            }
+          ]
+    },
 
     {
         label: 'Suunnittelualueen kuvaus',
