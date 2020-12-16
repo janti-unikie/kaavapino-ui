@@ -28,7 +28,7 @@ const AutofillInput = ({
       return
     }
 
-    if ( isBoolean( autoFillValue )) {
+    if ( autoFillValue ||  isBoolean( autoFillValue )) {
        dispatch(autofill(formName, name, autoFillValue))
 
        if ( saveAutofill ) {
