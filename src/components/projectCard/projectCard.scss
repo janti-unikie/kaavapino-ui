@@ -35,11 +35,10 @@
   margin-top: 10px;
 }
 .project-card .basic-information {
-  height: 200px;
+  height: 250px;
 }
 .project-card .contract {
-  height: 200px;
-  background-color: green;
+  height: 250px;
 }
 .project-card .description {
   height: 300px;
@@ -47,7 +46,6 @@
 }
 .project-card .floor-area-information {
   height: 100px;
-  background-color: blue;
 }
 .project-card .strategy-connection {
   min-height: 200px;
@@ -61,7 +59,7 @@
   background-color: yellow;
 }
 .project-card .contacts {
-  height: 300px;
+  height: 350px;
   background-color: yellowgreen;
 }
 .project-card .photo {
@@ -83,7 +81,13 @@
 .project-card .ui.grid {
   margin: 0;
 }
-.project-card .inner-column {
+.project-card .inner-left-column {
   margin: 0;
   padding: 0 !important;
+  padding-right: 7px !important;
+}
+.project-card .inner-right-column {
+  margin: 0;
+  padding: 0 !important;
+  padding-left: 7px !important;
 }

@@ -53,12 +53,29 @@ const AutofillInputCalculations = ({
       dispatch(change(formName, name, calculatedTotal))
     }
   }, [related_fields, formValues])
-  return (
+
+  const renderKm2UnitComponent = () => (
     <div className="autofill-input">
       {autofill_readonly ? (
         <div className="autofill-readonly-input">
           <div className="autofill-readonly-input-value">
-            {`${value || 0}${value && unit ? ` ${unit}` : ''}`}
+            {`${value || 0}`} k-m&sup2;
+          </div>
+        </div>
+      ) : (
+        <Field {...fieldProps} />
+      )}
+      </div>
+  )
+
+  const renderOriginalComponent = () => (
+    <div className="autofill-input">
+      {autofill_readonly ? (
+        <div className="autofill-readonly-input">
+          <div className="autofill-readonly-input-value">
+
+          {`${value || 0}${value && unit ? ` ${unit}` : ''}`}
+
           </div>
         </div>
       ) : (
@@ -66,6 +83,10 @@ const AutofillInputCalculations = ({
       )}
     </div>
   )
+  const km2UnitComponent = renderKm2UnitComponent()
+  const originalComponent = renderOriginalComponent()
+
+  return unit === 'k-m2' ? km2UnitComponent : originalComponent
 }
 
 export default AutofillInputCalculations

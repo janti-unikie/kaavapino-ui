@@ -14,7 +14,7 @@ import StrategyConnection from './StrategyConnection'
 import Photo from './Photo'
 import Documents from './Documents'
 import { fieldsMockData } from './fieldsMockData'
-import { isBoolean, isArray } from 'lodash'
+import { isBoolean } from 'lodash'
 
 class ProjectCardPage extends Component {
 
@@ -48,23 +48,33 @@ class ProjectCardPage extends Component {
         this.basicInformationFields.push( newField )
       }
       if ( field.display === 'description') {
-        if (  value || isBoolean(value) || isArray( value )) {
           newField = {
             ...field,
             value
           }
-        }
         this.descriptionFields.push( newField )
       }
       if ( field.display === 'strategy') {
-        if (  value || isBoolean(value) || isArray( value )) {
           newField = {
             ...field,
             value
-          }
         }
         this.strategyConnectionFields.push( newField )
       }
+      if ( field.display === 'contract') {
+          newField = {
+            ...field,
+            value: value === undefined ? null : value
+        }
+        this.contractFields.push( newField )
+      }
+      if ( field.display === 'floor-area-information') {
+        newField = {
+          ...field,
+          value: value === undefined ? null : value
+      }
+      this.floorAreaFields.push( newField )
+    }
     })
 
   }
@@ -124,12 +134,12 @@ class ProjectCardPage extends Component {
             <FloorAreaInformation fields={this.floorAreaFields} />
           </Segment>
           <Grid columns='equal'>
-            <Grid.Column className="inner-column">
+            <Grid.Column className="inner-left-column">
               <Segment key="basic-information">
                 <BasicInformation fields={this.basicInformationFields} />
               </Segment>
             </Grid.Column>
-            <Grid.Column className="inner-column">
+            <Grid.Column className="inner-right-column">
               <Segment>
                 <Contract fields={this.contractFields} />
               </Segment>

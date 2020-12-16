@@ -81,6 +81,104 @@ export const fieldsMockData = [
         label: 'Kaavan hyväksyjätaho',
         name: 'kaavan_hyvaksyjataho',
         display: 'basic'
+    }, {
+        label: 'Onko kiinteistön maanomistajana Helsingin kaupunki',
+        name: 'maanomistus_kaupunki',
+        display: 'contract',
+        choices: [
+            {
+                value: true,
+                label: 'Kyllä'
+            },
+            {
+                value: false,
+                label: 'Ei'
+            },
+            {
+                value: null,
+                label: 'Ei tietoa'
+            }
+        ]
+    },
+    {
+        label: 'Onko kiinteistön maanomistajana valtio',
+        name: 'maanomistus_valtio',
+        display: 'contract',
+        choices: [
+            {
+                value: true,
+                label: 'Kyllä'
+            },
+            {
+                value: false,
+                label: 'Ei'
+            },
+            {
+                value: null,
+                label: 'Ei tietoa'
+            }
+        ]
+    },
+    {
+        label: 'Onko kiinteistön maanomistajana yksityinen',
+        name: 'maanomistus_yksityinen',
+        display: 'contract',
+        choices: [
+            {
+                value: true,
+                label: 'Kyllä'
+            },
+            {
+                value: false,
+                label: 'Ei'
+            },
+            {
+                value: null,
+                label: 'Ei tietoa'
+            }
+        ]
+    },
+    {
+        label: 'Maankäyttösopimuksen tarve on arvioitava',
+        name: 'maankayttosopimus_tarve',
+        display: 'contract',
+        choices: [
+            {
+                value: true,
+                label: 'Kyllä'
+            },
+            {
+                value: false,
+                label: 'Ei'
+            },
+            {
+                value: null,
+                label: 'Ei tietoa'
+            }
+        ]
+    },
+    {
+        label: 'Maankäyttösopimusmenettely',
+        name: 'maankayttosopimus_menettely',
+        display: 'contract',
+        choices: [
+            {
+              label: 'Ei tarvita',
+              value: 'ei_tarvita'
+            },
+            {
+              label: 'Tarvitaan (ei valmis)',
+              value: 'tarvitaan_ei_valmis'
+            },
+            {
+              label: 'Tarvitaan (esisopimus tehty)',
+              value: 'tarvitaan_esisopimus_tehty'
+            },
+            {
+              label: 'Tarvitaan (sopimus allekirjoitettu)',
+              value: 'tarvitaan_sopimus_allekirjoitettu'
+            }
+          ]
     },
     {
         label: 'Strategiakytkentä',
@@ -148,6 +246,30 @@ export const fieldsMockData = [
               value: '41_vahvistetaan_kaupungin_asemaa_metropolialueena'
             }
           ]
+    },
+    {
+        label: 'Asuminen, yhteensä',
+        name: 'asuminen_yhteensa',
+        display: 'floor-area-information',
+        unit: 'k-m2'
+    },
+    {
+        label: 'Toimitila, yhteensä',
+        name: 'toimitila_yhteensa',
+        display: 'floor-area-information',
+        unit: 'k-m2'
+    },
+    {
+        label: 'Julkiset, yhteensä',
+        name: 'julkiset_yhteensa',
+        display: 'floor-area-information',
+        unit: 'k-m2'
+    },
+    {
+        label: 'Muut, yhteensä',
+        name: 'muut_yhteensa',
+        display: 'floor-area-information',
+        unit: 'k-m2'
     },
 
     {

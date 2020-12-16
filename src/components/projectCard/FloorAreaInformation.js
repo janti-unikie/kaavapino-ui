@@ -3,17 +3,23 @@ import PropTypes from 'prop-types'
 
 function FloorAreaInformation({ fields }) {
 
-    const renderField = ( field ) => {
-        return (
-            <div>{field.label} {field.value} </div>
-        )
+    const renderField = ( field, index ) => {
+        if ( field.unit === 'k-m2') {
+            return (
+                <div key={field.label + index}>{field.label} {field.value} k-m&sup2;</div>
+            )
+        } else {
+            return (
+                <div key={field.label + index}>{field.label} {field.value} {field.unit}</div>
+            )
+        }
     }
     const renderFields = () => {
         return (
             <div>
-            FloorAreaInformation
-                { fields && fields.map( field => {
-                    return renderField(field )
+            <h3>Kerrosalatiedot</h3>
+                { fields && fields.map( (field, index) => {
+                    return renderField(field, index )
                 } )
                 }
             </div>
