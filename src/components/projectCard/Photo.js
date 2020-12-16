@@ -5,7 +5,6 @@ function Photo({ src }) {
 
     return (
         <div className="photo">
-        Photo
             <div>
                 <div className="project-image-container">
                     <img className="project-image" src={src} alt="img" />

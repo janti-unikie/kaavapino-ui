@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Loader } from 'semantic-ui-react'
 import { projectTypesSelector } from '../../selectors/projectTypeSelector'
 import { usersSelector } from '../../selectors/projectSelector'
 import { Grid, Segment } from 'semantic-ui-react'
@@ -14,29 +13,53 @@ import FloorAreaInformation from './FloorAreaInformation'
 import StrategyConnection from './StrategyConnection'
 import Photo from './Photo'
 import Documents from './Documents'
+import { fieldsMockData } from './fieldsMockData'
+import { isBoolean, isArray } from 'lodash'
 
 class ProjectCardPage extends Component {
-  constructor(props) {
-    super(props)
 
-    let imageSrc = null
-    if (props.attributeData.hankekortin_kuva) {
-      imageSrc = props.attributeData.hankekortin_kuva
-    }
-    const imageLink = imageSrc ? imageSrc.link : null
-
-    this.state = {
-      metadata: null,
-      extended: false,
-      imageLink
-    }
-  }
+  descriptionFields = []
+  basicInformationFields = []
+  contactsFields = []
+  photoFields = []
+  strategyConnectionFields = []
+  timeTableFields = []
+  floorAreaFields = []
+  contractFields = []
 
   componentDidMount() {
-    const { projectTypes } = this.props
+    const { projectTypes, attributeData } = this.props
     if (projectTypes) {
       this.updateMetadata()
     }
+
+    fieldsMockData.forEach( field => {
+      const value = attributeData[field.name]
+      let newField = field
+
+      if ( field.display === 'basic') {
+
+        if (  value || isBoolean(value)) {
+          newField = {
+            ...field,
+            value
+          }
+        }
+        this.basicInformationFields.push( newField )
+      }
+      if ( field.display === 'description') {
+        console.log( value )
+        if (  value || isBoolean(value) || isArray( value )) {
+          newField = {
+            ...field,
+            value
+          }
+          console.log( newField )
+        }
+        this.descriptionFields.push( newField )
+      }
+    })
+
   }
 
   componentDidUpdate(prevProps) {
@@ -57,11 +80,11 @@ class ProjectCardPage extends Component {
   }
   renderFirstRow = () => (
     <Grid stackable columns='equal'>
-        <Grid.Column width={5}>
-          <Segment><Description /></Segment>
+        <Grid.Column width={8}>
+          <Segment><Description fields={this.descriptionFields}/></Segment>
         </Grid.Column>
         <Grid.Column>
-          <Segment><Photo src={'/hankekuva.png'}/></Segment>
+          <Segment><Photo fields={this.photoFields} src={'/hankekuva.png'}/></Segment>
         </Grid.Column>
     </Grid>
   )
@@ -80,28 +103,28 @@ class ProjectCardPage extends Component {
     <Grid stackable columns='equal'>
         <Grid.Column width={5}>
           <Segment>
-            <Contacts />
+            <Contacts fields={this.contactsFields}/>
           </Segment>
           <Segment>
-            <StrategyConnection />
+            <StrategyConnection  fields={this.strategyConnectionFields}/>
         </Segment>
           <Segment>
-              <TimeTable />
+              <TimeTable fields={this.timeTableFields}/>
           </Segment>
         </Grid.Column>
         <Grid.Column>
           <Segment>
-            <FloorAreaInformation />
+            <FloorAreaInformation fields={this.floorAreaFields} />
           </Segment>
           <Grid columns='equal'>
             <Grid.Column className="inner-column">
               <Segment >
-                <BasicInformation />
+                <BasicInformation fields={this.basicInformationFields} />
               </Segment>
             </Grid.Column>
             <Grid.Column className="inner-column">
               <Segment>
-                <Contract />
+                <Contract fields={this.contractFields} />
               </Segment>
             </Grid.Column>
           </Grid>
@@ -116,14 +139,6 @@ class ProjectCardPage extends Component {
     )
 
   render() {
-    const { metadata } = this.state
-    if (!metadata) {
-      return (
-        <Loader inline={'centered'} active>
-          Ladataan
-        </Loader>
-      )
-    }
 
     const firstRow = this.renderFirstRow()
     const secondRow = this.renderSecondRow()

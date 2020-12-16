@@ -36,7 +36,6 @@
 }
 .project-card .basic-information {
   height: 200px;
-  background-color: red;
 }
 .project-card .contract {
   height: 200px;
@@ -44,36 +43,37 @@
 }
 .project-card .description {
   height: 300px;
-  background-color: grey;
+  
 }
 .project-card .floor-area-information {
   height: 100px;
   background-color: blue;
 }
 .project-card .strategy-connection {
-  height: 100px;
+  height: 300px;
   background-color: blue;
 }
 .project-card .documents {
-  height: 100px;
+  height: 200px;
   background-color: pink;
 }
 .project-card .timetable {
-  height: 100px;
+  height: 300px;
   background-color: yellow;
 }
 .project-card .contacts {
-  height: 100px;
+  height: 300px;
   background-color: yellowgreen;
 }
 .project-card .photo {
   height: 300px;
+  text-align: center;
 }
 .project-card .project-image-container {
   flex: 0.5;
   .project-image {
     max-width: 100%;
-    max-height: 250px;
+    max-height: 300px;
     width: auto;
     height: auto;
   }

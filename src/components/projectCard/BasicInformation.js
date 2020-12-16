@@ -3,17 +3,25 @@ import PropTypes from 'prop-types'
 
 function BasicInformation({ fields }) {
 
-    const renderField = ( field ) => {
+    const renderField = ( field, index ) => {
+        let value = field.value
+        if ( field.choices ) {
+            const choice = field.choices.find( choice => choice.value === field.value)
+
+            if ( choice ) {
+                value = choice.label
+            }
+        }
         return (
-            <div>{field.label} {field.value} </div>
+            <div key={field.label + index}>{field.label}: <b>{value}</b> </div>
         )
     }
     const renderFields = () => {
         return (
             <div>
-            Basic information
-                { fields && fields.map( field => {
-                    return renderField(field )
+            <h3>Perustiedot</h3>
+                { fields && fields.map( (field, index)  => {
+                    return renderField(field, index )
                 } )
                 }
 
