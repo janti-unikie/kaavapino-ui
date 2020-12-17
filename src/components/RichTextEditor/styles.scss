@@ -31,6 +31,11 @@
         }
       }
     }
+    .ql-editor.ql-blank::before {
+      color: $gray;
+      font-style: normal;
+      font-size: 18px;
+    }
 
     .ql-container {
       border: 1px solid $gray2;

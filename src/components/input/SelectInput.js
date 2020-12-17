@@ -35,7 +35,7 @@ const SelectInput = ({ input, meta: { error }, options, onBlur, placeholder, ...
       search
       selection
       clearable
-      placeholder=""
+      placeholder={placeholder}
       noResultsMessage="Ei tuloksia"
       options={options}
       defaultValue={input.value}
