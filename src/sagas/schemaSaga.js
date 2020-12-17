@@ -21,9 +21,12 @@ export default function* schemaSaga() {
   ])
 }
 
-function* fetchSchemas({ payload: subtype }) {
+function* fetchSchemas({ payload: {
+  project,
+  subtype
+   } }) {
   try {
-    const [{ subtypes }] = yield call(schemaApi.get, { query: { subtypes: subtype } })
+    const [{ subtypes }] = yield call(schemaApi.get, { query: { project: project, subtypes: subtype } })
     yield put(fetchSchemasSuccessful(subtypes[0]))
     yield call(latestEditedFieldSaga)
     yield call(allEditedFieldsSaga)
