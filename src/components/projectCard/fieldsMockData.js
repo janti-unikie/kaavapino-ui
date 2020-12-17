@@ -271,11 +271,95 @@ export const fieldsMockData = [
         display: 'floor-area-information',
         unit: 'k-m2'
     },
-
     {
         label: 'Suunnittelualueen kuvaus',
         name: 'suunnittelualueen_kuvaus',
         display: 'description'
-    }
+    },
+    {
+        label: 'Aloituskokous',
+        name: 'aloituskokous',
+        display: 'timetable'
+    },
+    {
 
-]
+        label: 'Milloin periaatteet-vaiheen esilläolo alkaa',
+        name: 'milloin_periaatteet_esillaolo_alkaa',
+        display: 'timetable',
+        type: 'date'
+
+    },
+    {
+        label: 'OAS Esilläoloaineiston määräaika',
+        name: 'oas_esillaolo_aineiston_maaraaika',
+        display: 'timetable',
+        type: 'date'
+    },
+    {
+        label: 'Ehdotuksen nähtävilläolo alkaa',
+        name: 'milloin_ehdotuksen_nahtavilla_alkaa_pieni',
+        display: 'timetable',
+        type: 'date'
+    },
+    {
+        label: 'Muutoksenhakutilanne hallinto-oikeudessa',
+        name: 'muutoksenhakutilanne_hallinto_oikeus',
+        type: 'choice',
+        display: 'timetable',
+        choices: [
+            {
+              label: 'Ei tarkistettu',
+              value: 'ei_tarkistettu'
+            },
+            {
+              label: 'Valitus hallinto-oikeudessa',
+              value: 'valitus_hallinto_oikeudessa'
+            },
+            {
+              label: 'Ei valitusta hallinto-oikeudessa',
+              value: 'ei_valitusta_hallinto_oikeudessa'
+            },
+            {
+              label: 'Valitus ratkaistu hallinto-oikeudessa',
+              value: 'valitus_ratkaistu_hallinto_oikeudessa'
+            }
+          ]
+
+    },
+    {
+        label: 'Muutoksenhakutilanne korkeimmassa hallinto-oikeudessa',
+        name: 'muutoksenhakutilanne_kho',
+        type: 'choice',
+        display: 'timetable',
+        choices: [
+            {
+              label: 'Ei tarkistettu',
+              value: 'ei_tarkistettu'
+            },
+            {
+              label: 'Haettu valituslupaa korkeimmasta hallinto-oikeudesta',
+              value: 'haettu_valituslupaa_korkeimmasta_hallinto_oikeb7fd'
+            },
+            {
+              label: 'Valitus korkeimmassa hallinto-oikeudessa',
+              value: 'valitus_korkeimmassa_hallinto_oikeudessa'
+            },
+            {
+              label: 'Ei valitusta korkeimmassa hallinto-oikeudessa',
+              value: 'ei_valitusta_korkeimmassa_hallinto_oikeudessa'
+            },
+            {
+              label: 'Valitus ratkaistu korkeimmassa hallinto-oikeudessa',
+              value: 'valitus_ratkaistu_korkeimmassa_hallinto_oikeudessa'
+            }
+          ]
+
+        },
+        {
+        label: 'Kaava on tullut voimaan',
+        name: 'voimaantulo_pvm',
+        display: 'timetable',
+        type: 'date'
+        }
+
+    ]

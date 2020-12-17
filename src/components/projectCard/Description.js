@@ -3,8 +3,11 @@ import PropTypes from 'prop-types'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import parse from 'html-react-parser'
 import { isObject } from 'lodash'
+import { useTranslation } from 'react-i18next'
 
 function Description({ fields }) {
+
+    const { t } = useTranslation()
 
     const renderField = ( field, index ) => {
         const key = field.label + index
@@ -14,7 +17,6 @@ function Description({ fields }) {
         }
         return (
             <div key={key}>
-                <h3>{field.label}</h3>
                 <div>{value} </div>
             </div>
         )
@@ -26,8 +28,8 @@ function Description({ fields }) {
       }
     const renderFields = () => {
         return (
-
             <div>
+                <h3>{t('project.description-title')}</h3>
                 { fields && fields.map( (field, index) => {
                     return renderField(field, index )
                 } )

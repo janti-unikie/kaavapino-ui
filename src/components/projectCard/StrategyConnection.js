@@ -1,8 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { split } from 'lodash'
+import { useTranslation } from 'react-i18next'
 
 function StrategyConnection({ fields }) {
+
+    const { t } = useTranslation()
 
     const renderField = ( field ) => {
         let value = field.value
@@ -28,7 +31,6 @@ function StrategyConnection({ fields }) {
 
         return (
             <div key="strategy-connection">
-                <h3>{field.label} </h3>
                 {elements}
             </div>
         )
@@ -36,6 +38,7 @@ function StrategyConnection({ fields }) {
     const renderFields = () => {
         return (
             <div>
+                <h3>{t('project.strategy-connection-title')}</h3>
                 { fields && fields.map( field => {
                     return renderField(field )
                 } )

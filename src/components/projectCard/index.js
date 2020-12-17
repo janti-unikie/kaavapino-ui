@@ -73,8 +73,15 @@ class ProjectCardPage extends Component {
           ...field,
           value: value === undefined ? null : value
       }
-      this.floorAreaFields.push( newField )
-    }
+       this.floorAreaFields.push( newField )
+      }
+      if ( field.display === 'timetable') {
+        newField = {
+          ...field,
+          value: value === undefined ? null : value
+      }
+       this.timeTableFields.push( newField )
+      }
     })
 
   }
@@ -116,44 +123,47 @@ class ProjectCardPage extends Component {
       </Grid>
     )
   }
-  renderSecondRow = () => (
-    <Grid stackable columns='equal'>
-        <Grid.Column width={5}>
-          <Segment>
-            <Contacts fields={this.contactsFields}/>
+  renderSecondRow = () => {
+
+    return (
+      <Grid stackable columns='equal'>
+          <Grid.Column width={5}>
+            <Segment>
+              <Contacts fields={this.contactsFields}/>
+            </Segment>
+            <Segment key="basic-information">
+              <StrategyConnection fields={this.strategyConnectionFields}/>
           </Segment>
-          <Segment key="basic-information">
-            <StrategyConnection  fields={this.strategyConnectionFields}/>
-        </Segment>
-          <Segment>
-              <TimeTable fields={this.timeTableFields}/>
-          </Segment>
-        </Grid.Column>
-        <Grid.Column>
-          <Segment>
-            <FloorAreaInformation fields={this.floorAreaFields} />
-          </Segment>
-          <Grid columns='equal'>
-            <Grid.Column className="inner-left-column">
-              <Segment key="basic-information">
-                <BasicInformation fields={this.basicInformationFields} />
-              </Segment>
-            </Grid.Column>
-            <Grid.Column className="inner-right-column">
-              <Segment>
-                <Contract fields={this.contractFields} />
-              </Segment>
-            </Grid.Column>
-          </Grid>
-          <Segment>
-            <Photo src={'/kartta.png'} />
-          </Segment>
-          <Segment>
-            <Documents />
-          </Segment>
-        </Grid.Column>
-    </Grid>
+            <Segment>
+                <TimeTable fields={this.timeTableFields}/>
+            </Segment>
+          </Grid.Column>
+          <Grid.Column>
+            <Segment>
+              <FloorAreaInformation fields={this.floorAreaFields} />
+            </Segment>
+            <Grid columns='equal'>
+              <Grid.Column className="inner-left-column">
+                <Segment key="basic-information">
+                  <BasicInformation fields={this.basicInformationFields} />
+                </Segment>
+              </Grid.Column>
+              <Grid.Column className="inner-right-column">
+                <Segment>
+                  <Contract fields={this.contractFields} />
+                </Segment>
+              </Grid.Column>
+            </Grid>
+            <Segment>
+              <Photo src={'/kartta.png'} />
+            </Segment>
+            <Segment>
+              <Documents />
+            </Segment>
+          </Grid.Column>
+      </Grid>
     )
+  }
 
   render() {
 

@@ -1,7 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 
 function Contract({ fields }) {
+
+    const { t } = useTranslation()
 
     const renderField = ( field, index ) => {
         let value = field.value
@@ -26,7 +29,7 @@ function Contract({ fields }) {
     const renderFields = () => {
         return (
             <div>
-                <h3>Maanomistus ja maankäyttösopimus</h3>
+                <h3>{t('project.contract-title')}</h3>
                 { fields && fields.map( (field, index) => {
                     return renderField(field, index )
                 } )
