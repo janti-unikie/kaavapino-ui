@@ -24,5 +24,8 @@
     },
     "floor-areas": {
         "title": "Päivitä kerrosalatiedot"
+    },
+    "nav-header": {
+        "latest-update": "Viimeisin muokkaus: {{latestUpdate}}"
     }
 }
