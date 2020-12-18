@@ -177,7 +177,7 @@ export const NavHeader = ({
           </div>
          {renderDropdown}
         </div>
-        {actions}
+        {actions && actions}
       </div>
     </div>
   )
