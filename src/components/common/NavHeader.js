@@ -5,8 +5,10 @@ import { Dropdown, Popup } from 'semantic-ui-react'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import parse from 'html-react-parser'
 import { isObject, isBoolean, isArray, isString, isNumber } from 'lodash'
+import { useTranslation } from 'react-i18next'
 
 export const NavAction = ({ children, to, primary, ...rest }) => {
+
   const buttonClassname = primary ? 'primary' : 'secondary'
   return to ? (
     <Link className={`action-item ui button large ${buttonClassname}`} to={to}>
@@ -29,11 +31,13 @@ export const NavHeader = ({
   routeItems,
   actions,
   title,
-  info,
   infoOptions,
   subTitle
 }) => {
+  const { t } = useTranslation()
+
   const getFormattedValue = value => {
+
     if (value && value.ops) {
       return getRichTextContent(value.ops)
     }
@@ -93,6 +97,64 @@ export const NavHeader = ({
     }
     return oldValue === newValue
   }
+  const latestUpdate = infoOptions &&
+    infoOptions[0] &&
+    t('nav-header.latest-update', { latestUpdate:infoOptions[0].text })
+
+  const renderDropdown = infoOptions && infoOptions[0] && (
+     <div className="nav-header-info">
+      <div>
+        <Dropdown text={latestUpdate}  scrolling icon="angle down">
+          <Dropdown.Menu>
+            {infoOptions && infoOptions.map(option => {
+              if (isSameValue(option.oldValue, option.newValue)) {
+                return null
+              }
+              return (
+                <Popup
+                  hideOnScroll={false}
+                  offset={[50, 50]}
+                  key={option.key}
+                  className="popup-logger"
+                  position="right center"
+                  wide="very"
+                  trigger={
+                    (
+                    <Dropdown.Item
+                      key={option.key}
+                      className="changelog-item"
+                      value={option.value}
+                    >
+                      {option.text}
+                    </Dropdown.Item>
+                    )
+                  }
+                >
+                  <div className="show-value">{option.text}</div>
+                  <div className="show-value">
+                    <div>
+                      <b>Uusi arvo</b>
+                    </div>
+                    <div className="field-value">
+                      {getFormattedValue(option.newValue)}
+                    </div>
+                  </div>
+                  <div>
+                    <div>
+                      <b>Vanha arvo</b>
+                    </div>
+                    <div className="field-value">
+                      {getFormattedValue(option.oldValue)}
+                    </div>
+                  </div>
+                </Popup>
+              )
+            })}
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+    </div>
+      )
 
   return (
     <div className="nav-header-container">
@@ -113,62 +175,9 @@ export const NavHeader = ({
             <h1 className="nav-header-title">{title}</h1>
             {subTitle && <h3 className="nav-header-subtitle">{subTitle}</h3>}
           </div>
-          <div className="nav-header-info">
-            {info && (
-              <div>
-                <Dropdown text={info} scrolling icon="angle down">
-                  <Dropdown.Menu>
-                    {infoOptions.map(option => {
-                      if (isSameValue(option.oldValue, option.newValue)) {
-                        return null
-                      }
-                      return (
-                        <Popup
-                          hideOnScroll={false}
-                          offset={[50, 50]}
-                          key={option.key}
-                          className="popup-logger"
-                          position="right center"
-                          wide="very"
-                          trigger={
-                             (
-                             <Dropdown.Item
-                              key={option.key}
-                              className="changelog-item"
-                              value={option.value}
-                            >
-                              {option.text}
-                            </Dropdown.Item>
-                            )
-                          }
-                        >
-                          <div className="show-value">{option.text}</div>
-                          <div className="show-value">
-                            <div>
-                              <b>Uusi arvo</b>
-                            </div>
-                            <div className="field-value">
-                              {getFormattedValue(option.newValue)}
-                            </div>
-                          </div>
-                          <div>
-                            <div>
-                              <b>Vanha arvo</b>
-                            </div>
-                            <div className="field-value">
-                              {getFormattedValue(option.oldValue)}
-                            </div>
-                          </div>
-                        </Popup>
-                      )
-                    })}
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            )}
-          </div>
+         {renderDropdown}
         </div>
-        {actions && actions}
+        {actions}
       </div>
     </div>
   )

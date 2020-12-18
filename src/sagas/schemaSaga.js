@@ -2,12 +2,10 @@ import { takeLatest, put, all, call, select } from 'redux-saga/effects'
 import {
   FETCH_SCHEMAS,
   fetchSchemasSuccessful,
-  SET_LATEST_EDIT_FIELD,
-  setLatestEditFieldSuccessful,
   SET_ALL_EDIT_FIELDS,
   setAllEditFieldsSuccessful
 } from '../actions/schemaActions'
-import { latestUpdateSelector, updatesSelector } from '../selectors/projectSelector'
+import { updatesSelector } from '../selectors/projectSelector'
 import { schemaSelector } from '../selectors/schemaSelector'
 import { error } from '../actions/apiActions'
 import { schemaApi } from '../utils/api'
@@ -16,7 +14,6 @@ import projectUtils from '../utils/projectUtils'
 export default function* schemaSaga() {
   yield all([
     takeLatest(FETCH_SCHEMAS, fetchSchemas),
-    takeLatest(SET_LATEST_EDIT_FIELD, latestEditedFieldSaga),
     takeLatest(SET_ALL_EDIT_FIELDS, allEditedFieldsSaga)
   ])
 }
@@ -28,26 +25,10 @@ function* fetchSchemas({ payload: {
   try {
     const [{ subtypes }] = yield call(schemaApi.get, { query: { project: project, subtypes: subtype } })
     yield put(fetchSchemasSuccessful(subtypes[0]))
-    yield call(latestEditedFieldSaga)
     yield call(allEditedFieldsSaga)
   } catch (e) {
     yield put(error(e))
   }
-}
-
-function* latestEditedFieldSaga() {
-  const schema = yield select(schemaSelector)
-  const latestUpdate = yield select(latestUpdateSelector)
-  const latestUpdateName = latestUpdate.field
-  let fieldLabel = ''
-  schema.phases.forEach(({ sections }) =>
-    sections.forEach(({ fields }) =>
-      fields.forEach(({ name, label }) =>
-        name === latestUpdateName ? (fieldLabel = label) : ''
-      )
-    )
-  )
-  yield put(setLatestEditFieldSuccessful({ name: fieldLabel, ...latestUpdate.latest }))
 }
 
 function* allEditedFieldsSaga() {
