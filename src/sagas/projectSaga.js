@@ -65,7 +65,7 @@ import {
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
-import { setLatestEditField, setAllEditFields } from '../actions/schemaActions'
+import { setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
 import { projectApi, projectDeadlinesApi } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
@@ -405,9 +405,9 @@ function* saveProject() {
     const { sections } = currentSchema
     const changedValues = getChangedAttributeData(values, initial, sections)
     const parentNames = projectUtils.getParents(changedValues)
-    const formatedData = projectUtils.formatPayload(changedValues, sections, parentNames, initial)
+    const formattedData = projectUtils.formatPayload(changedValues, sections, parentNames, initial)
 
-    const attribute_data = formatedData
+    const attribute_data = formattedData
 
     try {
       const updatedProject = yield call(
@@ -427,7 +427,6 @@ function* saveProject() {
   }
   yield put(saveProjectSuccessful())
   yield put(setAllEditFields())
-  yield put(setLatestEditField())
 }
 
 function* validateProjectFields() {
@@ -444,7 +443,7 @@ function* validateProjectFields() {
     sections.forEach(({ fields }) => {
       fields.forEach(field => {
         // Matrices can contain any kinds of fields, so
-        // we must go through them seperately
+        // we must go through them separately
         if (field.type === 'matrix') {
           const { matrix } = field
           matrix.fields.forEach(({ required, name }) => {

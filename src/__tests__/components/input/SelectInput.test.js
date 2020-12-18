@@ -13,6 +13,7 @@ describe('<SelectInput />', () => {
         input={{ name: 'test', onChange: value => (change = value) }}
         meta={{}}
         options={options.map(option => ({ key: option, value: option, text: option }))}
+        placeholder="placeholder"
       />
     )
   })
@@ -20,7 +21,7 @@ describe('<SelectInput />', () => {
   it('is initialized correctly', () => {
     const dropwDownComponent = selectInputComponent.find('Dropdown')
     expect(dropwDownComponent.props().name).toBe('test')
-    expect(dropwDownComponent.props().placeholder).toBe('')
+    expect(dropwDownComponent.props().placeholder).toBe('placeholder')
     expect(dropwDownComponent.props().noResultsMessage).toBe('Ei tuloksia')
     expect(change).toBeNull()
   })

@@ -15,7 +15,6 @@ import {
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
 import {
-  latestEditFieldSelector,
   allEditFieldsSelector
 } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
@@ -180,20 +179,6 @@ class ProjectPage extends Component {
       </NavActions>
     )
   }
-
-  getLatestChange = () => {
-    const { edit, latestEditField, t } = this.props
-    if (!edit || !latestEditField || !latestEditField.name) {
-      return null
-    }
-    return t('last-edit',
-    {
-      fieldName: latestEditField.name,
-      date: projectUtils.formatDateTime(latestEditField.timestamp),
-      userName: latestEditField.user_name
-    })
-  }
-
   getAllChanges = () => {
     const { allEditFields, edit } = this.props
 
@@ -257,7 +242,6 @@ class ProjectPage extends Component {
           title={name}
           subTitle={this.getSubTitle()}
           actions={this.getNavActions()}
-          info={this.getLatestChange()}
           infoOptions={this.getAllChanges()}
         />
         {edit && <ProjectTimeline deadlines={deadlines} />}
@@ -298,7 +282,6 @@ const mapStateToProps = state => {
     projectSubtypes: projectSubtypesSelector(state),
     currentProjectLoaded: currentProjectLoadedSelector(state),
     changingPhase: changingPhaseSelector(state),
-    latestEditField: latestEditFieldSelector(state),
     allEditFields: allEditFieldsSelector(state)
   }
 }
