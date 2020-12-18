@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 
 function Documents({ fields }) {
 
+    const { t } = useTranslation()
     const renderField = ( field ) => {
         return (
             <div>{field.label} {field.value} </div>
@@ -11,7 +13,7 @@ function Documents({ fields }) {
     const renderFields = () => {
         return (
             <div>
-            Documents
+                <h3>{t('project.documents-title')}</h3>
                 { fields && fields.map( field => {
                    return renderField(field )
                 } )

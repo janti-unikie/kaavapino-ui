@@ -51,15 +51,13 @@
   min-height: 200px;
 }
 .project-card .documents {
-  height: 200px;
-  background-color: pink;
+  min-height: 200px;
 }
 .project-card .timetable {
-  height: 300px;
+  min-height: 200px;
 }
 .project-card .contacts {
-  height: 350px;
-  background-color: yellowgreen;
+  min-height: 200px;
 }
 .project-card .photo {
   height: 300px;
@@ -96,4 +94,9 @@
 }
 .project-card .floor-area-information .column:first-of-type {
   border-right: 1px solid black;
+}
+.project-card .geometry-input-container {
+  .geometry-input {
+    height: 300px;
+  }
 }

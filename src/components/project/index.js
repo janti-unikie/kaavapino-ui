@@ -168,10 +168,6 @@ class ProjectPage extends Component {
           <FontAwesomeIcon icon="print" />
           {t('project.print-project-card')}
         </NavAction>
-        <NavAction onClick={() => this.setState({ showDeadlineModal: true })}>
-          <FontAwesomeIcon icon="cog" />
-          {t('project.deadlines')}
-        </NavAction>
       </NavActions>
     ) : (
       <NavActions>

@@ -15,17 +15,21 @@ import Photo from './Photo'
 import Documents from './Documents'
 import { fieldsMockData } from './fieldsMockData'
 import { isBoolean } from 'lodash'
+import projectUtils from '../../utils/projectUtils'
+import GeometryInformation from './GeometryInformation'
 
 class ProjectCardPage extends Component {
 
   descriptionFields = []
   basicInformationFields = []
   contactsFields = []
-  photoFields = []
+  photoField = null
   strategyConnectionFields = []
   timeTableFields = []
   floorAreaFields = []
   contractFields = []
+  documentFields = []
+  planningRestriction = null
 
   componentDidMount() {
     const { projectTypes, attributeData } = this.props
@@ -34,7 +38,8 @@ class ProjectCardPage extends Component {
     }
 
     fieldsMockData.forEach( field => {
-      const value = attributeData[field.name]
+      const value = projectUtils.findValueFromObject( attributeData, field.name )
+
       let newField = field
 
       if ( field.display === 'basic') {
@@ -82,6 +87,36 @@ class ProjectCardPage extends Component {
       }
        this.timeTableFields.push( newField )
       }
+      if ( field.display === 'contact') {
+        newField = {
+          ...field,
+          value: value === undefined ? null : value
+      }
+       this.contactsFields.push( newField )
+      }
+      if ( field.display === 'documents') {
+        newField = {
+          ...field,
+          value: value === undefined ? null : value
+      }
+       this.documentFields.push( newField )
+      }
+      if ( field.display === 'photo') {
+        newField = {
+          ...field,
+          link: value === undefined ? null :  value.link,
+          description: value === undefined ? null :  value.description
+
+      }
+       this.photoField = newField
+      }
+      if ( field.display === 'geometry') {
+        newField = {
+          ...field,
+          value: value === undefined ? null : value
+      }
+      this.planningRestriction = newField
+      }
     })
 
   }
@@ -108,7 +143,7 @@ class ProjectCardPage extends Component {
           <Segment><Description fields={this.descriptionFields}/></Segment>
         </Grid.Column>
         <Grid.Column>
-          <Segment><Photo fields={this.photoFields} src={'/hankekuva.png'}/></Segment>
+          <Segment><Photo field={this.photoField} /></Segment>
         </Grid.Column>
     </Grid>
   )
@@ -155,10 +190,10 @@ class ProjectCardPage extends Component {
               </Grid.Column>
             </Grid>
             <Segment>
-              <Photo src={'/kartta.png'} />
+              <GeometryInformation field={this.planningRestriction} />
             </Segment>
             <Segment>
-              <Documents />
+              <Documents fields={this.documentFields} />
             </Segment>
           </Grid.Column>
       </Grid>

@@ -277,9 +277,15 @@ export const fieldsMockData = [
         display: 'description'
     },
     {
-        label: 'Aloituskokous',
-        name: 'aloituskokous',
-        display: 'timetable'
+        label: 'Aloituskokouksen päivämäärä',
+        name: 'aloituskokous_suunniteltu_pvm',
+        display: 'timetable',
+        type: 'date'
+    },
+    {
+        label: 'Projektikortin kuva',
+        name: 'projektikortin_kuva',
+        display: 'photo'
     },
     {
 
@@ -354,6 +360,102 @@ export const fieldsMockData = [
             }
           ]
 
+        },
+        {
+            label: 'Vastuuhenkilö',
+            name: 'vastuuhenkilo',
+            type: 'string',
+            display: 'contact'
+        },
+        {
+            label: 'Vastuuyksikkö tai -tiimi',
+            name: 'vastuuyksikko',
+            display: 'contact',
+            type: 'choice',
+            choices: [
+                {
+                  label: 'Asemakaavakoordinointiyksikkö ',
+                  value: 'asemakaavakoordinointiyksikko'
+                },
+                {
+                  label: 'Asemakaavaprosessitiimi',
+                  value: 'asemakaavaprosessitiimi'
+                },
+                {
+                  label: 'Eteläinen alueyksikkö',
+                  value: 'etelainen_alueyksikko'
+                },
+                {
+                  label: 'Itäinen alueyksikkö',
+                  value: 'itainen_alueyksikko'
+                },
+                {
+                  label: 'Itäinen täydennysrakentaminen',
+                  value: 'itainen_taydennysrakentaminen'
+                },
+                {
+                  label: 'Kaarela-Vihdintie -tiimi',
+                  value: 'kaarela_vihdintie_tiimi'
+                },
+                {
+                  label: 'Kalasatama-Malmi tiimi',
+                  value: 'kalasatama_malmi_tiimi'
+                },
+                {
+                  label: 'Kantakaupunkitiimi',
+                  value: 'kantakaupunkitiimi'
+                },
+                {
+                  label: 'Kaupunkiuudistustiimi',
+                  value: 'kaupunkiuudistustiimi'
+                },
+                {
+                  label: 'Keskustatiimi',
+                  value: 'keskustatiimi'
+                },
+                {
+                  label: 'Koivusaari-Lauttasaari -tiimi',
+                  value: 'koivusaari_lauttasaari_tiimi'
+                },
+                {
+                  label: 'Kruunuvuorenranta-Vartiosaari -tiimi',
+                  value: 'kruunuvuorenranta_vartiosaari_tiimi'
+                },
+                {
+                  label: 'Länsisatamatiimi',
+                  value: 'lansisatamatiimi'
+                },
+                {
+                  label: 'Läntinen alueyksikkö',
+                  value: 'lantinen_alueyksikko'
+                },
+                {
+                  label: 'Läntinen täydennysrakentaminen',
+                  value: 'lantinen_taydennysrakentaminen'
+                },
+                {
+                  label: 'Pasila-tiimi',
+                  value: 'pasila_tiimi'
+                },
+                {
+                  label: 'Pohjoinen alueyksikkö',
+                  value: 'pohjoinen_alueyksikko'
+                },
+                {
+                  label: 'Pohjoinen täydennysrakentaminen',
+                  value: 'pohjoinen_taydennysrakentaminen'
+                },
+                {
+                  label: 'Vuosaari-Vartiokylänlahti -tiimi',
+                  value: 'vuosaari_vartiokylanlahti_tiimi'
+                }
+              ]
+
+        },
+        {
+            label: 'Suunnittelualueen rajaus',
+            value: 'suunnittelualueen_rajaus',
+            display: 'geometry'
         },
         {
         label: 'Kaava on tullut voimaan',
