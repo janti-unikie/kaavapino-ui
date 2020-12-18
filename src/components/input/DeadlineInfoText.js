@@ -9,7 +9,7 @@ const DeadlineInfoText = props => {
     let value = inputValue && moment( inputValue ).format('DD.MM.YYYY')
 
     if ( value === 'Invalid date') {
-        value = inputValue
+        value = inputValue ? inputValue : ''
     }
     return (
     <div className="deadline-info-text">
