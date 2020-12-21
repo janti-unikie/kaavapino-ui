@@ -19,8 +19,6 @@ class EditProjectTimeTableModal extends Component {
     this.state = {
       loading: false
     }
-    const { initialize, attributeData } = this.props
-    initialize(attributeData)
   }
 
   componentDidMount() {
@@ -169,4 +167,4 @@ const decoratedForm = reduxForm({
   form: EDIT_PROJECT_TIMETABLE_FORM
 })(withTranslation()(EditProjectTimeTableModal))
 
-export default connect(mapStateToProps, () => ({}))(decoratedForm)
+export default connect(mapStateToProps)(decoratedForm)
