@@ -11,7 +11,8 @@ import {
   validateProjectFields,
   projectSetChecking,
   saveProjectBase,
-  fetchProjectDeadlines
+  fetchProjectDeadlines,
+  initializeProject
 } from '../../actions/projectActions'
 import { fetchSchemas, setAllEditFields } from '../../actions/schemaActions'
 import {
@@ -55,6 +56,13 @@ class ProjectEditPage extends Component {
       return
     }
     this.props.saveProject()
+
+  }
+  handleTimelineClose = () => {
+    const { project } = this.props
+
+    this.setState({ showEditProjectTimetableForm: false })
+    this.props.initializeProject( project.id )
 
   }
 
@@ -180,7 +188,7 @@ class ProjectEditPage extends Component {
             attributeData={attribute_data}
             open
             handleSubmit={saveProjectTimetable}
-            handleClose={() => this.setState({ showEditProjectTimetableForm: false })}
+            handleClose={this.handleTimelineClose}
           />
         )}
       </div>
@@ -213,7 +221,8 @@ const mapDispatchToProps = {
   projectSetChecking,
   saveProjectBase,
   fetchProjectDeadlines,
-  setAllEditFields
+  setAllEditFields,
+  initializeProject
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)

@@ -52,4 +52,10 @@
   .collapse-content {
     padding: 0 12px;
   }
+  .field, .ui.form .field {
+    margin-top: 0;
+  }
+  .collapse-content {
+    overflow-y: auto
+  }
 }
