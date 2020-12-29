@@ -69,7 +69,7 @@ class EditProjectTimeTableModal extends Component {
   getFormField(fieldProps, key) {
     const { formSubmitErrors, formValues } = this.props
     const error =
-      formSubmitErrors && fieldProps.field && formSubmitErrors[fieldProps.field.name]
+      formSubmitErrors && fieldProps && formSubmitErrors.deadlines && formSubmitErrors.deadlines[fieldProps.field.name]
 
     return (
       <div key={key}>
@@ -79,9 +79,11 @@ class EditProjectTimeTableModal extends Component {
           attributeData={{}}
           error={error}
           formValues={formValues}
-          className="modal-field"
+          className={ error ? 'modal-field error-border' : 'modal-field'}
           isProjectTimetableEdit={true}
         />
+        {error && <div className="field-error">{error}</div>}
+
       </div>
     )
   }

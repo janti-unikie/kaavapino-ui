@@ -174,6 +174,7 @@ class CustomField extends Component {
   renderDate = props => {
     const { onBlur, attributeData, parentName  } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
+
     return (
     <Input
       onBlur={onBlur}
@@ -445,7 +446,7 @@ class CustomField extends Component {
       component: this.getInput(field),
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
       updated: { updated },
-      className: showFieldClass
+      className: `${className} ${showFieldClass}`
     }
 
     /* Some fields are autofilled to a value as per (autofill_rules)

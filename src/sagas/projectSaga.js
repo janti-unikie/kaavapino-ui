@@ -388,6 +388,7 @@ function* saveProjectTimetable() {
           title: i18.t('messages.deadlines-successfully-saved')
         })
       )
+      yield put( initializeProjectAction( currentProjectId ))
     } catch (e) {
         yield put(stopSubmit(EDIT_PROJECT_TIMETABLE_FORM, e.response.data))
     }
