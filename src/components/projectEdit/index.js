@@ -58,7 +58,7 @@ class ProjectEditPage extends Component {
     this.props.saveProject()
 
   }
-  handleTimetableClose = async () => {
+  handleTimetableClose = () => {
     this.props.saveProjectTimetable()
   }
 
