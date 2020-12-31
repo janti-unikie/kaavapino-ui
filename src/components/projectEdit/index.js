@@ -126,6 +126,7 @@ class ProjectEditPage extends Component {
             changingPhase={changingPhase}
             handleSave={this.handleSave}
             handleCheck={() => this.props.projectSetChecking(!this.props.checking)}
+            setChecking={this.props.projectSetChecking}
             projectName={name}
             sections={currentSchema.sections}
             phaseTitle={currentSchema.title}
@@ -138,6 +139,10 @@ class ProjectEditPage extends Component {
             saveProjectBase={saveProjectBase}
             currentProject={currentProject}
             setHighlightRole={this.setSelectedRole}
+            hasErrors={hasErrors}
+            changePhase={this.changePhase}
+            isCurrentPhase={selectedPhase === phase}
+            isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
           />
           <NavigationPrompt when={this.props.isDirty}>
             {({ onConfirm, onCancel }) => (
@@ -150,10 +155,7 @@ class ProjectEditPage extends Component {
           </NavigationPrompt>
         </div>
         <EditForm
-          isCurrentPhase={selectedPhase === phase}
-          isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
           handleSave={this.handleAutoSave}
-          changePhase={this.changePhase}
           sections={currentSchema.sections}
           attributeData={attribute_data}
           saving={saving}
@@ -161,10 +163,7 @@ class ProjectEditPage extends Component {
           initialValues={attribute_data}
           phase={phase}
           selectedPhase={selectedPhase}
-          setChecking={this.props.projectSetChecking}
           validateProjectFields={validateProjectFields}
-          validating={validating}
-          hasErrors={hasErrors}
           disabled={formDisabled}
           projectId={id}
           syncronousErrors={syncErrors}

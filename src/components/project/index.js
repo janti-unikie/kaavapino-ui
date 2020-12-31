@@ -4,8 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Loader } from 'semantic-ui-react'
 import {
   initializeProject,
-  saveProjectBase,
-  changeProjectPhase
+  saveProjectBase
 } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
 import {
@@ -72,7 +71,7 @@ class ProjectPage extends Component {
 
   switchDisplayedPhase = phase => {
     if (this.props.edit) {
-      this.props.changeProjectPhase(phase)
+      //this.props.changeProjectPhase(phase)
       this.setState({ selectedPhase: phase })
     }
   }
@@ -264,8 +263,7 @@ class ProjectPage extends Component {
 const mapDispatchToProps = {
   initializeProject,
   saveProjectBase,
-  fetchUsers,
-  changeProjectPhase
+  fetchUsers
 }
 
 const mapStateToProps = state => {

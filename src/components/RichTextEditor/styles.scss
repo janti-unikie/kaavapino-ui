@@ -102,6 +102,10 @@
     }
   }
 }
+.rich-text-disabled {
+  pointer-events: none;
+  opacity: .35;
+}
 .quill-warning {
   color: red;
 }
