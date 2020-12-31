@@ -43,6 +43,7 @@ function RichTextEditor(props) {
   const {
     input: { value, ...inputProps },
     largeField,
+    disabled,
     ...rest
   } = props
   const dispatch = useDispatch()
@@ -85,7 +86,7 @@ function RichTextEditor(props) {
     toolbar: `#${toolbarName}`
   }
   return (
-    <div className="rich-text-editor-wrapper">
+    <div className={`rich-text-editor-wrapper ${disabled ? 'rich-text-disabled' : ''}`}>
       <div
         className={`rich-text-editor ${
           toolbarVisible || showComments ? 'toolbar-visible' : ''

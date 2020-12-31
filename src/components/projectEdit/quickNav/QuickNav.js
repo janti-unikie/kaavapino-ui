@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Button from '../../common/Button'
-import { Accordion, Form } from 'semantic-ui-react'
+import { Accordion, Form, Message } from 'semantic-ui-react'
 import AccordionTitle from './AccordionTitle'
 import './styles.scss'
 import RoleHighlightPicker from './roleHighlightPicker'
@@ -8,6 +8,7 @@ import _ from 'lodash'
 import FormField from '../../input/FormField'
 import { reduxForm } from 'redux-form'
 import { NEW_PROJECT_FORM } from '../../../constants'
+import ConfirmModal from '../ConfirmModal'
 
 const ONHOLD = 'onhold'
 
@@ -19,7 +20,9 @@ class QuickNav extends Component {
       sectionHeights: [],
       active: 0,
       activePhase: 0,
-      selected: 0
+      selected: 0,
+      endPhaseError: false,
+      verifying: false
     }
   }
 
@@ -44,7 +47,19 @@ class QuickNav extends Component {
   }
 
   componentDidUpdate = prevProps => {
-    const { phaseTitle, currentPhases, sections } = this.props
+    const { setChecking, phaseTitle, currentPhases, sections, hasErrors } = this.props
+
+    if (prevProps.validating && !this.props.validating) {
+      if (!hasErrors) {
+        this.setState({ verifying: true, endPhaseError: false })
+        setChecking(false)
+      } else {
+        this.setState({ endPhaseError: true })
+        clearTimeout(this.timeout)
+        this.timeout = setTimeout(() => this.setState({ endPhaseError: false }), 5000)
+        setChecking(true)
+      }
+    }
 
     if (phaseTitle !== prevProps.phaseTitle) {
       this.setState({ sectionHeights: this.initSections(sections) })
@@ -115,7 +130,16 @@ class QuickNav extends Component {
     }
   }
 
-  tryToEndPhase = () => this.props.validateProjectFields()
+  phaseCallback = changePhase => {
+    if (changePhase) {
+      this.props.changePhase()
+    }
+    this.setState({ verifying: false })
+  }
+
+  changePhase = () =>  {
+    this.props.validateProjectFields()
+  }
 
   getFormField = fieldProps => {
     const { formSubmitErrors, formValues, onhold, saveProjectBase } = this.props
@@ -148,7 +172,8 @@ class QuickNav extends Component {
       handleCheck,
       syncronousErrors,
       currentProject,
-      saveProjectBase
+      saveProjectBase,
+      isCurrentPhase
     } = this.props
 
    const errors = syncronousErrors && !_.isEmpty(syncronousErrors) ? true : false
@@ -208,9 +233,10 @@ class QuickNav extends Component {
             help="Tallentaa projektin"
           />
           <Button
-            handleClick={this.tryToEndPhase}
+            handleClick={this.changePhase}
             value="Lopeta vaihe"
             loading={changingPhase || validating}
+            disabled={!isCurrentPhase}
             secondary
             fluid
             help="Yrittää lopettaa vaiheen"
@@ -228,6 +254,14 @@ class QuickNav extends Component {
             saveProjectBase: saveProjectBase
           })}
         </Form>
+        <ConfirmModal callback={this.phaseCallback} open={this.state.verifying} />
+        {this.state.endPhaseError && (
+          <Message
+            header="Vaihetta ei voida vielä lopettaa"
+            content="Täytä puuttuvat kentät"
+            color="yellow"
+          />
+        )}
       </div>
     )
   }
