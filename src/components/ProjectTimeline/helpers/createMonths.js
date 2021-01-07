@@ -7,11 +7,13 @@ export function createMonths(deadlines) {
   let date = new Date()
   let error = false
   let monthArray = []
-  if (deadlines[0]) {
-    date = new Date(deadlines[0].date)
-  } else {
-    date = new Date()
-    error = true
+  if (deadlines) {
+    if (deadlines[0]) {
+      date = new Date(deadlines[0].date)
+    } else {
+      date = new Date()
+      error = true
+    }
   }
   if (date.getFullYear() < 1980) {
     date = new Date()

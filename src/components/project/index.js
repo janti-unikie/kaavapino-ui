@@ -238,7 +238,7 @@ class ProjectPage extends Component {
           actions={this.getNavActions()}
           infoOptions={this.getAllChanges()}
         />
-        <ProjectTimeline deadlines={deadlines} />
+        <ProjectTimeline deadlines={deadlines} projectView={true} />
         <NewProjectFormModal
           currentProject={currentProject}
           open={this.state.showBaseInformationForm}

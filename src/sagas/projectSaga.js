@@ -61,7 +61,9 @@ import {
   projectSetDeadlinesSuccessful,
   initializeProject as initializeProjectAction,
   FETCH_PROJECT_DEADLINES,
-  fetchProjectDeadlinesSuccessful
+  fetchProjectDeadlinesSuccessful,
+  GET_PROJECT,
+  getProjectSuccessful
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
@@ -89,8 +91,18 @@ export default function* projectSaga() {
     takeLatest(PROJECT_SET_DEADLINES, projectSetDeadlinesSaga),
     takeLatest(INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW, increaseAmountOfProjectsToShowSaga),
     takeLatest(SORT_PROJECTS, sortProjectsSaga),
-    takeLatest(SET_AMOUNT_OF_PROJECTS_TO_INCREASE, setAmountOfProjectsToIncreaseSaga)
+    takeLatest(SET_AMOUNT_OF_PROJECTS_TO_INCREASE, setAmountOfProjectsToIncreaseSaga),
+    takeLatest(GET_PROJECT, getProject)
   ])
+}
+
+function* getProject({ payload: projectId }) {
+  try {
+    const timelineProject = yield call(projectApi.get, { path: { projectId } }, ':projectId/')
+    yield put(getProjectSuccessful(timelineProject))
+  } catch (e) {
+    yield put(error(e))
+  }
 }
 
 function* fetchProjects({ page, own = true, all = true, payload: searchQuery }) {
