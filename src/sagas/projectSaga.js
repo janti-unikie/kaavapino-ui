@@ -63,7 +63,8 @@ import {
   FETCH_PROJECT_DEADLINES,
   fetchProjectDeadlinesSuccessful,
   GET_PROJECT,
-  getProjectSuccessful
+  getProjectSuccessful,
+  RESET_PROJECT_DEADLINES
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
@@ -92,8 +93,17 @@ export default function* projectSaga() {
     takeLatest(INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW, increaseAmountOfProjectsToShowSaga),
     takeLatest(SORT_PROJECTS, sortProjectsSaga),
     takeLatest(SET_AMOUNT_OF_PROJECTS_TO_INCREASE, setAmountOfProjectsToIncreaseSaga),
-    takeLatest(GET_PROJECT, getProject)
+    takeLatest(GET_PROJECT, getProject),
+    takeLatest(RESET_PROJECT_DEADLINES, resetProjectDeadlines)
   ])
+}
+
+function* resetProjectDeadlines({ payload: projectId }) {
+  try {
+    yield call(projectApi.get, { path: { projectId } }, ':projectId/?generate_schedule=true')
+  } catch (e) {
+    yield put(error(e))
+  }
 }
 
 function* getProject({ payload: projectId }) {

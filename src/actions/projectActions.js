@@ -40,6 +40,7 @@ export const FETCH_PROJECT_DEADLINES = 'Fetch project deadlines'
 export const FETCH_PROJECT_DEADLINES_SUCCESSFUL = 'Fetch project deadlines successful'
 export const GET_PROJECT = 'Get project'
 export const GET_PROJECT_SUCCESSFUL = 'Get project successful'
+export const RESET_PROJECT_DEADLINES = 'Reset project deadlines'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -170,3 +171,5 @@ export const getProjectSuccessful = project => ({
   type: GET_PROJECT_SUCCESSFUL,
   payload: project
 })
+
+export const resetProjectDeadlines = id => ({ type: RESET_PROJECT_DEADLINES, payload: id })

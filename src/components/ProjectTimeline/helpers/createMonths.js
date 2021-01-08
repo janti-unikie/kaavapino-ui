@@ -19,11 +19,7 @@ export function createMonths(deadlines) {
     date = new Date()
     error = true
   }
-  if (date.getMonth() === 0) {
-    date.setMonth(11)
-  } else {
-    date.setMonth(date.getMonth() - 1)
-  }
+  date.setMonth(date.getMonth() - 1)
   for (let i = 0; i < 13; i++) {
     if (i > 0) {
       date.setDate(1)

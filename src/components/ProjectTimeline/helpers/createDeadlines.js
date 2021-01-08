@@ -1,4 +1,4 @@
-import { findInMonths, findWeek } from './helpers'
+import { findInMonths, findWeek, cleanDeadlines } from './helpers'
 /**
  * @desc creates array of deadlines with milestones that should be rendered, from deadline
  * @param deadlines - deadlines from api
@@ -14,14 +14,11 @@ export function createDeadlines(deadlines) {
   if (!deadlines[0].date) {
     return { deadlines: null, error: true }
   }
+
   const date = new Date(deadlines[0].date)
   let monthDatesArray = []
   let week = 1
-  if (date.getMonth() === 0) {
-    date.setMonth(11)
-  } else {
-    date.setMonth(date.getMonth() - 1)
-  }
+  date.setMonth(date.getMonth() - 1)
   for (let i = 0; i < 65; i++) {
     if (i > 0 && Number.isInteger(i / 5)) {
       date.setDate(1)
@@ -36,7 +33,7 @@ export function createDeadlines(deadlines) {
       week = 1
     }
   }
-  return createStartAndEndPoints(monthDatesArray, deadlines)
+  return createStartAndEndPoints(monthDatesArray, cleanDeadlines(deadlines))
 }
 /**
  * @desc checks deadlines for start and end points and adds them to the month object

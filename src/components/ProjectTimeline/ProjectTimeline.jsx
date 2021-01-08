@@ -14,6 +14,7 @@ function ProjectTimeline(props) {
   const [drawMonths, setDrawMonths] = useState([])
   const [drawItems, setDrawItems] = useState([])
   const [showLoadProject, setShowLoadProject] = useState(false)
+  const [loadingProject, setLoadingProject] = useState(false)
   const [timelineLoaded, setTimelineLoaded] = useState(false)
   const monthNames = {
     0: 'Tammi',
@@ -41,8 +42,10 @@ function ProjectTimeline(props) {
     }
   }, [])
   useEffect(() => {
-    if (props.timelineProject && !showLoadProject) {
+    if (props.timelineProject && loadingProject) {
       if (props.timelineProject.id === props.id) {
+        setLoadingProject(false)
+        setShowLoadProject(false)
         createTimelineItems(props.timelineProject.deadlines)
       }
     }
@@ -271,7 +274,7 @@ function ProjectTimeline(props) {
   }
   function loadProject() {
     props.getProject(props.id)
-    setShowLoadProject(false)
+    setLoadingProject(true)
   }
   function createTimelineItems(timelineDeadlines) {
     const months = createMonths(timelineDeadlines)
@@ -294,7 +297,7 @@ function ProjectTimeline(props) {
       {showLoadProject ? (
         <FontAwesomeIcon
           onClick={() => loadProject()}
-          className="timeline-load-project-message"
+          className={`timeline-load-project-message ${loadingProject ? 'fa-spin' : null}`}
           icon={faSync}
           size="2x"
         />
