@@ -30,6 +30,13 @@
       left: 68px;
     }
   }
+  .timeline-load-project-message {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 10px;
+    text-align: center;
+  }
 
   .timeline-item-container {
     display: grid;

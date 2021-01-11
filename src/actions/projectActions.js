@@ -38,6 +38,9 @@ export const PROJECT_SET_DEADLINES = 'Project set deadlines'
 export const PROJECT_SET_DEADLINES_SUCCESSFUL = 'Project set deadlines successful'
 export const FETCH_PROJECT_DEADLINES = 'Fetch project deadlines'
 export const FETCH_PROJECT_DEADLINES_SUCCESSFUL = 'Fetch project deadlines successful'
+export const GET_PROJECT = 'Get project'
+export const GET_PROJECT_SUCCESSFUL = 'Get project successful'
+export const RESET_PROJECT_DEADLINES = 'Reset project deadlines'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -53,7 +56,6 @@ export const fetchProjectsSuccessful = projects => ({
 })
 export const setProjects = projects => ({ type: SET_PROJECTS, payload: projects })
 export const setOwnProjects = projects => ({ type: SET_OWN_PROJECTS, payload: projects })
-
 export const initializeProject = id => ({ type: INITIALIZE_PROJECT, payload: id })
 export const initializeProjectSuccessful = () => ({ type: INITIALIZE_PROJECT_SUCCESSFUL })
 
@@ -163,3 +165,11 @@ export const projectSetDeadlinesSuccessful = deadlines => ({
   type: PROJECT_SET_DEADLINES_SUCCESSFUL,
   payload: deadlines
 })
+
+export const getProject = projectId => ({ type: GET_PROJECT, payload: projectId })
+export const getProjectSuccessful = project => ({
+  type: GET_PROJECT_SUCCESSFUL,
+  payload: project
+})
+
+export const resetProjectDeadlines = id => ({ type: RESET_PROJECT_DEADLINES, payload: id })

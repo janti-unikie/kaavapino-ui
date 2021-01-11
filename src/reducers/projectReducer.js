@@ -28,7 +28,8 @@ import {
   PROJECT_FILE_REMOVE_SUCCESSFUL,
   PROJECT_SET_CHECKING,
   PROJECT_SET_DEADLINES_SUCCESSFUL,
-  FETCH_PROJECT_DEADLINES_SUCCESSFUL
+  FETCH_PROJECT_DEADLINES_SUCCESSFUL,
+  GET_PROJECT_SUCCESSFUL
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -69,6 +70,13 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         ownProjects: state.ownProjects.concat(action.payload)
+      }
+    }
+
+    case GET_PROJECT_SUCCESSFUL: {
+      return {
+        ...state,
+        timelineProject: action.payload
       }
     }
 

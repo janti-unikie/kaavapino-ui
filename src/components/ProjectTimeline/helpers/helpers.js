@@ -19,3 +19,26 @@ export function findWeek(date) {
     return Math.round(date / 5)
   }
 }
+export function cleanDeadlines(deadlines) {
+  let cleanedDeadlines = deadlines
+  let deadlineType = null
+  deadlines.forEach( function(deadline, index, object) {
+    if (deadline.deadline){
+      if (deadline.deadline.deadline_types[0]) {
+        if (deadline.deadline.deadline_types[0] === 'phase_start' || deadline.deadline.deadline_types[0] === 'phase_end') {
+          if (!deadlineType) {
+            deadlineType = deadline.deadline.deadline_types[0]
+          } else if (deadlineType === deadline.deadline.deadline_types[0]) {
+            object.splice(index-1, 1)
+            deadlineType = null
+          } else {
+            deadlineType = deadline.deadline.deadline_types[0]
+          }
+        } else {
+          deadlineType = null
+        }
+      }
+    }
+  })
+  return cleanedDeadlines
+}
