@@ -7,6 +7,7 @@ import { createDeadlines } from './helpers/createDeadlines'
 import { connect } from 'react-redux'
 import { getProject, getProjectSuccessful } from '../../actions/projectActions'
 import { timelineProjectSelector } from '../../selectors/projectSelector'
+import { findWeek } from './helpers/helpers'
 
 function ProjectTimeline(props) {
   const { deadlines, projectView } = props
@@ -50,15 +51,32 @@ function ProjectTimeline(props) {
       }
     }
   }, [props.timelineProject])
+  function createNowMarker(week) {
+    let nowMarker = []
+    for (let i = 1; i < 5; i++) {
+      if (i === week) {
+        nowMarker.push(
+          <div key={i} className="now-marker">
+            <span>Nyt</span>
+          </div>
+        )
+      } else {
+        nowMarker.push(<div key={i} className="now-marker-filler" />)
+      }
+    }
+    return nowMarker
+  }
   function createDrawMonths(months) {
     const drawableMonths = []
+    const nowDate = new Date()
     for (let i = 0; i < months.length; i++) {
       const date = new Date(months[i].date)
       if (i === 1) {
+        console.debug(findWeek(nowDate.getDate()))
         drawableMonths.push(
           <div key={i} className="timeline-month">
-            <div className="now-marker">
-              <span>Nyt</span>
+            <div className="timeline-now-month">
+              {createNowMarker(findWeek(nowDate.getDate()))}
             </div>
             <span>{`${monthNames[date.getMonth()]} ${date.getFullYear()}`}</span>
           </div>
