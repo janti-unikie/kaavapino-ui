@@ -22,14 +22,17 @@ export function findWeek(date) {
 export function cleanDeadlines(deadlines) {
   let cleanedDeadlines = deadlines
   let deadlineType = null
-  deadlines.forEach( function(deadline, index, object) {
-    if (deadline.deadline){
+  deadlines.forEach(function (deadline, index, object) {
+    if (deadline.deadline) {
       if (deadline.deadline.deadline_types[0]) {
-        if (deadline.deadline.deadline_types[0] === 'phase_start' || deadline.deadline.deadline_types[0] === 'phase_end') {
+        if (
+          deadline.deadline.deadline_types[0] === 'phase_start' ||
+          deadline.deadline.deadline_types[0] === 'phase_end'
+        ) {
           if (!deadlineType) {
             deadlineType = deadline.deadline.deadline_types[0]
           } else if (deadlineType === deadline.deadline.deadline_types[0]) {
-            object.splice(index-1, 1)
+            object.splice(index - 1, 1)
             deadlineType = null
           } else {
             deadlineType = deadline.deadline.deadline_types[0]
@@ -41,4 +44,31 @@ export function cleanDeadlines(deadlines) {
     }
   })
   return cleanedDeadlines
+}
+export function checkDeadlines(deadlines) {
+  if (!deadlines) {
+    return true
+  }
+  if (!deadlines[0]) {
+    return true
+  }
+  if (!deadlines[0].date) {
+    return true
+  }
+  deadlines.forEach(deadline => {
+    if (deadline) {
+      if (deadline.is_under_min_distance_next) {
+        return true
+      }
+      if (deadline.is_under_min_distance_previous) {
+        return true
+      }
+      if (deadline.out_of_sync) {
+        return true
+      }
+    } else {
+      return true
+    }
+  })
+  return false
 }
