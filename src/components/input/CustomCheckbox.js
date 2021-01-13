@@ -2,7 +2,7 @@ import React from 'react'
 import { Checkbox } from 'semantic-ui-react'
 
 const CustomCheckbox = ({
-  input: { name, label, onChange, className, disabled },
+  input: { name, value, label, onChange, className, disabled },
   meta: { error },
   ...custom
 }) => {
@@ -12,6 +12,7 @@ const CustomCheckbox = ({
         custom.handleSave(data.checked)
       }
     }
+    console.log( value )
   return (
       <Checkbox
        {...custom}
@@ -21,7 +22,7 @@ const CustomCheckbox = ({
         name={name}
         className={className}
         onChange={(e, data) => onChangeSave(data)}
-        defaultChecked={false}
+        defaultChecked={value}
       />
   )
 }
