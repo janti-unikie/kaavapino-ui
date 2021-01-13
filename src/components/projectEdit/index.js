@@ -58,12 +58,8 @@ class ProjectEditPage extends Component {
     this.props.saveProject()
 
   }
-  handleTimelineClose = () => {
-    const { project } = this.props
-
-    this.setState({ showEditProjectTimetableForm: false })
-    this.props.initializeProject( project.id )
-
+  handleTimetableClose = () => {
+    this.props.saveProjectTimetable()
   }
 
   setSelectedRole = role => {
@@ -85,7 +81,6 @@ class ProjectEditPage extends Component {
       schema,
       selectedPhase,
       saveProjectFloorArea,
-      saveProjectTimetable,
       project: { name, attribute_data, phase, id },
       saving,
       changingPhase,
@@ -187,8 +182,8 @@ class ProjectEditPage extends Component {
           <EditProjectTimetableModal
             attributeData={attribute_data}
             open
-            handleSubmit={saveProjectTimetable}
-            handleClose={this.handleTimelineClose}
+            handleSubmit={this.handleTimetableClose}
+            handleClose={ () => this.setState({ showEditProjectTimetableForm: false })}
           />
         )}
       </div>
