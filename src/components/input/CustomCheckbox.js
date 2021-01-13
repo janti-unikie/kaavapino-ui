@@ -12,6 +12,8 @@ const CustomCheckbox = ({
       custom.handleSave(data.checked)
     }
   }
+
+  const currentValue = !value ? false : true
   return (
     <Checkbox
       {...custom}
@@ -21,7 +23,7 @@ const CustomCheckbox = ({
       name={name}
       className={className}
       onChange={(e, data) => onChangeSave(data)}
-      defaultChecked={value}
+      defaultChecked={currentValue}
     />
   )
 }

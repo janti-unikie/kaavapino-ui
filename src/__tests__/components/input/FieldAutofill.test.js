@@ -823,4 +823,22 @@ describe('Autofill tests', () => {
     }
     expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
   })
+  it('Autofill rule list 7 variables', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'aloituskokous_suunniteltu_pvm'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const condition = { condition: conditionObject1, then_branch : '', variables: ['aloituskokous_suunniteltu_pvm'] }
+    field.autofill_rule =[condition]
+
+    const formValues = {
+      testfieldset: {
+        aloituskokous_suunniteltu_pvm: '12.12.2012'
+        }
+      }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('12.12.2012')
+  })
 })
