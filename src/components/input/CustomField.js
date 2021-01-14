@@ -438,9 +438,13 @@ class CustomField extends Component {
     }
 
     const showFieldClass = field.display === 'hidden' ? 'hidden' : className
+
+    const placeHolderText = field.placeholder_text ?
+      field.placeholder_text.trim()
+    : field.label
     let fieldProps = {
       name: field.name,
-      placeholder: field.placeholder_text || field.label,
+      placeholder: placeHolderText,
       disabled:
         field.generated || field.disabled || field.autofill_readonly,
       component: this.getInput(field),
