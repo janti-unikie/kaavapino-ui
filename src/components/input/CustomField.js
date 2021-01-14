@@ -347,7 +347,7 @@ class CustomField extends Component {
     projectUtils.checkInputValue(props, attributeData, parentName)
 
     return (
-      <DeadlineInfoText label={field.label} {...props } />
+      <DeadlineInfoText label={field.label} autofillRule={field.autofill_rule} {...props } />
     )
   }
 
@@ -466,7 +466,7 @@ class CustomField extends Component {
         />
       )
     }
-     if ( field.autofill_rule ) {
+     if ( field.autofill_rule && field.display !== 'readonly' ) {
       return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} saveAutofill={handleSave}/>
     }
 
