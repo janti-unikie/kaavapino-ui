@@ -1,21 +1,15 @@
-import { findInMonths, findWeek, cleanDeadlines } from './helpers'
+import { findInMonths, findWeek, cleanDeadlines, checkDeadlines } from './helpers'
 /**
  * @desc creates array of deadlines with milestones that should be rendered, from deadline
  * @param deadlines - deadlines from api
  * @return function
  */
 export function createDeadlines(deadlines) {
-  if (!deadlines) {
+  // check deadline errors
+  if (checkDeadlines(deadlines)) {
     return { deadlines: null, error: true }
   }
-  if (!deadlines[0]) {
-    return { deadlines: null, error: true }
-  }
-  if (!deadlines[0].date) {
-    return { deadlines: null, error: true }
-  }
-
-  const date = new Date(deadlines[0].date)
+  const date = new Date()
   let monthDatesArray = []
   let week = 1
   date.setMonth(date.getMonth() - 1)
@@ -46,6 +40,7 @@ function createStartAndEndPoints(inputMonths, deadlines) {
     return { deadlines: null, error: true }
   }
   let monthDates = inputMonths
+  let firstDeadline = false
   deadlines.forEach(deadline => {
     if (deadline.deadline) {
       if (
@@ -63,6 +58,19 @@ function createStartAndEndPoints(inputMonths, deadlines) {
               'phase_start'
             ) {
               if (deadline.deadline.deadline_types[0] === 'phase_end') {
+                if (!firstDeadline) {
+                  if (deadline.deadline.deadline_types[0] === 'phase_end') {
+                    monthDates[0][deadline.deadline.abbreviation] = {
+                      abbreviation: deadline.deadline.abbreviation,
+                      deadline_type: ['past_start_point'],
+                      phase_id: deadline.deadline.phase_id,
+                      color_code: deadline.deadline.phase_color_code,
+                      phase_name: deadline.deadline.phase_name,
+                      deadline_length: 2
+                    }
+                  }
+                  firstDeadline = true
+                }
                 monthDates[monthIndex][deadline.deadline.abbreviation] = {
                   abbreviation: deadline.deadline.abbreviation,
                   deadline_type: ['start_end_point'],
@@ -74,6 +82,19 @@ function createStartAndEndPoints(inputMonths, deadlines) {
               }
             }
           } else {
+            if (!firstDeadline) {
+              if (deadline.deadline.deadline_types[0] === 'phase_end') {
+                monthDates[0][deadline.deadline.abbreviation] = {
+                  abbreviation: deadline.deadline.abbreviation,
+                  deadline_type: ['past_start_point'],
+                  phase_id: deadline.deadline.phase_id,
+                  color_code: deadline.deadline.phase_color_code,
+                  phase_name: deadline.deadline.phase_name,
+                  deadline_length: 2
+                }
+              }
+              firstDeadline = true
+            }
             monthDates[monthIndex][deadline.deadline.abbreviation] = {
               abbreviation: deadline.deadline.abbreviation,
               deadline_type: deadline.deadline.deadline_types,
@@ -111,7 +132,7 @@ function fillGaps(inputMonths, deadlines) {
       if (has.call(monthDates[i], prop)) {
         if (Object.keys(monthDates[i]).length < 4) {
           if (Array.isArray(monthDates[i][prop].deadline_type)) {
-            if (monthDates[i][prop].deadline_type[0] === 'phase_start') {
+            if (monthDates[i][prop].deadline_type[0] === 'phase_start' || monthDates[i][prop].deadline_type[0] === 'past_start_point') {
               deadlineAbbreviation = monthDates[i][prop].abbreviation
               color_code = monthDates[i][prop].color_code
               deadlinePropAbbreviation = prop
@@ -137,7 +158,7 @@ function fillGaps(inputMonths, deadlines) {
           }
         } else {
           if (Array.isArray(monthDates[i][prop].deadline_type)) {
-            if (monthDates[i][prop].deadline_type[0] === 'phase_start') {
+            if (monthDates[i][prop].deadline_type[0] === 'phase_start' || monthDates[i][prop].deadline_type[0] === 'past_start_point') {
               deadlineAbbreviation = monthDates[i][prop].abbreviation
               color_code = monthDates[i][prop].color_code
               deadlinePropAbbreviation = prop

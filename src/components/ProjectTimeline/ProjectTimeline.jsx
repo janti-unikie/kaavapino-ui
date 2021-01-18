@@ -7,6 +7,7 @@ import { createDeadlines } from './helpers/createDeadlines'
 import { connect } from 'react-redux'
 import { getProject, getProjectSuccessful } from '../../actions/projectActions'
 import { timelineProjectSelector } from '../../selectors/projectSelector'
+import { findWeek } from './helpers/helpers'
 
 function ProjectTimeline(props) {
   const { deadlines, projectView } = props
@@ -50,15 +51,32 @@ function ProjectTimeline(props) {
       }
     }
   }, [props.timelineProject])
+  function createNowMarker(week) {
+    let nowMarker = []
+    for (let i = 1; i < 5; i++) {
+      if (i === week) {
+        nowMarker.push(
+          <div key={i} className="now-marker">
+            <span>Nyt</span>
+          </div>
+        )
+      } else {
+        nowMarker.push(<div key={i} className="now-marker-filler" />)
+      }
+    }
+    return nowMarker
+  }
   function createDrawMonths(months) {
     const drawableMonths = []
+    const nowDate = new Date()
     for (let i = 0; i < months.length; i++) {
       const date = new Date(months[i].date)
       if (i === 1) {
+        console.debug(findWeek(nowDate.getDate()))
         drawableMonths.push(
           <div key={i} className="timeline-month">
-            <div className="now-marker">
-              <span>Nyt</span>
+            <div className="timeline-now-month">
+              {createNowMarker(findWeek(nowDate.getDate()))}
             </div>
             <span>{`${monthNames[date.getMonth()]} ${date.getFullYear()}`}</span>
           </div>
@@ -143,6 +161,27 @@ function ProjectTimeline(props) {
             {monthDates[loopIndex].milestone ? createMilestoneItem(loopIndex, propI) : ''}
           </div>
         )
+      case 'past_start_point':
+        return (
+          <div
+            key={`${monthDates[loopIndex][property].abbreviation}-${loopIndex}`}
+            style={{
+              background: monthDates[loopIndex][property].color_code
+            }}
+            className="timeline-item"
+          >
+            <span
+              className={`deadline-name-${
+                monthDates[loopIndex][property].deadline_length > 4 ? 'over' : 'inside'
+              }`}
+            >
+              {monthDates[loopIndex][property].phase_name}
+            </span>
+            {monthDates[loopIndex].milestone
+              ? createMilestoneItem(loopIndex, propI, monthDates)
+              : ''}
+          </div>
+        )
       default:
         return null
     }
@@ -210,9 +249,7 @@ function ProjectTimeline(props) {
                       className={`milestone-message ${
                         monthDates[index].milestone_space < 6 ? 'under' : ''
                       }`}
-                    >{`Kylk ${date.getDate()}.${date.getMonth() + 1}. ${
-                      monthDates[index].milestone_space
-                    }`}</span>
+                    >{`Kylk ${date.getDate()}.${date.getMonth() + 1}.`}</span>
                   )
                   milestoneType.push(
                     <div key={listKey++} className="milestone-icon sphere black" />
