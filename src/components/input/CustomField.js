@@ -174,6 +174,7 @@ class CustomField extends Component {
   renderDate = props => {
     const { onBlur, attributeData, parentName  } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
+
     return (
     <Input
       onBlur={onBlur}
@@ -346,7 +347,7 @@ class CustomField extends Component {
     projectUtils.checkInputValue(props, attributeData, parentName)
 
     return (
-      <DeadlineInfoText label={field.label} {...props } />
+      <DeadlineInfoText label={field.label} autofillRule={field.autofill_rule} {...props } />
     )
   }
 
@@ -437,15 +438,19 @@ class CustomField extends Component {
     }
 
     const showFieldClass = field.display === 'hidden' ? 'hidden' : className
+
+    const placeHolderText = field.placeholder_text ?
+      field.placeholder_text.trim()
+    : field.label
     let fieldProps = {
       name: field.name,
-      placeholder: field.placeholder_text || field.label,
+      placeholder: placeHolderText,
       disabled:
         field.generated || field.disabled || field.autofill_readonly,
       component: this.getInput(field),
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
       updated: { updated },
-      className: showFieldClass
+      className: `${className} ${showFieldClass}`
     }
 
     /* Some fields are autofilled to a value as per (autofill_rules)
@@ -465,7 +470,7 @@ class CustomField extends Component {
         />
       )
     }
-     if ( field.autofill_rule ) {
+     if ( field.autofill_rule && field.display !== 'readonly' ) {
       return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} saveAutofill={handleSave}/>
     }
 
