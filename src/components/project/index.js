@@ -5,7 +5,8 @@ import { Loader } from 'semantic-ui-react'
 import {
   initializeProject,
   saveProjectBase,
-  changeProjectPhase
+  changeProjectPhase,
+  getProjectSnapshot
 } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
 import {
@@ -14,9 +15,7 @@ import {
   changingPhaseSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
-import {
-  allEditFieldsSelector
-} from '../../selectors/schemaSelector'
+import { allEditFieldsSelector } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
@@ -26,6 +25,10 @@ import ProjectDocumentsPage from '../projectDocuments'
 import projectUtils from '../../utils/projectUtils'
 import NewProjectFormModal from './NewProjectFormModal'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
+import DownloadProjectDataModal from './DownloadProjectDataModal'
+import { DOWNLOAD_PROJECT_DATA_FORM } from '../../constants'
+import { getFormValues } from 'redux-form'
+import moment from 'moment'
 
 class ProjectPage extends Component {
   constructor(props) {
@@ -42,6 +45,7 @@ class ProjectPage extends Component {
       selectedPhase: selectedPhase,
       showDeadlineModal: false,
       showBaseInformationForm: false,
+      showPrintProjectDataModal: false,
       deadlines: null
     }
   }
@@ -156,6 +160,10 @@ class ProjectPage extends Component {
           <FontAwesomeIcon icon="pen" />
           Muokkaa
         </NavAction>
+        <NavAction to={`/${id}/edit`}>
+          <FontAwesomeIcon icon="pen" />
+          Muokkaa
+        </NavAction>
         <NavAction to={`/${id}/documents`}>
           <FontAwesomeIcon icon="file" />
           Luo dokumentteja
@@ -171,6 +179,10 @@ class ProjectPage extends Component {
       </NavActions>
     ) : (
       <NavActions>
+        <NavAction onClick={this.openProjectDataModal}>
+          <FontAwesomeIcon icon="file-csv" />
+          Tulosta projektin tiedot
+        </NavAction>
         <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
           Muokkaa luontitietoja
         </NavAction>
@@ -180,6 +192,8 @@ class ProjectPage extends Component {
       </NavActions>
     )
   }
+  openProjectDataModal = () => this.togglePrintProjectDataModal(true)
+
   getAllChanges = () => {
     const { allEditFields, edit } = this.props
 
@@ -198,6 +212,10 @@ class ProjectPage extends Component {
 
   toggleBaseInformationForm = opened => this.setState({ showBaseInformationForm: opened })
 
+  togglePrintProjectDataModal = opened =>
+    this.setState({ showPrintProjectDataModal: opened })
+
+  showPrintProjectModal
   renderLoading = () => (
     <div className="project-container">
       <NavHeader
@@ -214,6 +232,16 @@ class ProjectPage extends Component {
       </div>
     </div>
   )
+
+  downloadProjectData = () => {
+    const { currentProject, getProjectSnapshot, formValues } = this.props
+    this.togglePrintProjectDataModal(false)
+
+    const phase = formValues['phase']
+    const date = formValues['date']
+
+    getProjectSnapshot(currentProject.id, moment(date).format(), phase)
+  }
 
   render() {
     const {
@@ -255,6 +283,13 @@ class ProjectPage extends Component {
           users={users}
           projectSubtypes={projectSubtypes}
         />
+        <DownloadProjectDataModal
+          currentProject={currentProject}
+          open={this.state.showPrintProjectDataModal}
+          handleSubmit={this.downloadProjectData}
+          initialValues={{}}
+          handleClose={() => this.togglePrintProjectDataModal(false)}
+        />
         <div className="project-page-content">{this.getProjectPageContent()}</div>
       </div>
     )
@@ -265,7 +300,8 @@ const mapDispatchToProps = {
   initializeProject,
   saveProjectBase,
   fetchUsers,
-  changeProjectPhase
+  changeProjectPhase,
+  getProjectSnapshot
 }
 
 const mapStateToProps = state => {
@@ -276,7 +312,8 @@ const mapStateToProps = state => {
     projectSubtypes: projectSubtypesSelector(state),
     currentProjectLoaded: currentProjectLoadedSelector(state),
     changingPhase: changingPhaseSelector(state),
-    allEditFields: allEditFieldsSelector(state)
+    allEditFields: allEditFieldsSelector(state),
+    formValues: getFormValues(DOWNLOAD_PROJECT_DATA_FORM)(state)
   }
 }
 

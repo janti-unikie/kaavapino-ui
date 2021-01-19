@@ -12,12 +12,13 @@ const CustomDateTime = ({ input, ...custom }) => {
   return (
     <DateTime
       dateFormat="DD.MM.YYYY"
-      timeFormat={false}
+      timeFormat="HH:mm"
+      value={formatDate(input.value)}
       {...input}
       {...custom}
-      value={formatDate(input.value)}
       locale="fi"
-      inputProps={{ readOnly: true }}
+      closeOnSelect={true}
+      placeHolder="jee"
     />
   )
 }
