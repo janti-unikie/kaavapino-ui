@@ -75,7 +75,7 @@ class DownloadProjectDataModal extends Component {
 
     for (const [key, value] of entries) {
       let currentValue = value
-      if ( isObject( value )) {
+      if ( value && isObject( value )) {
         if ( value.ops ) {
           currentValue = toPlaintext(value.ops)
           currentValue = currentValue.trim()

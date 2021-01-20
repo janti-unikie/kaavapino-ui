@@ -29,7 +29,7 @@ import DownloadProjectDataModal from './DownloadProjectDataModal'
 import { DOWNLOAD_PROJECT_DATA_FORM } from '../../constants'
 import { getFormValues } from 'redux-form'
 import moment from 'moment'
-
+import { userIdSelector } from '../../selectors/authSelector'
 class ProjectPage extends Component {
   constructor(props) {
     super(props)
@@ -152,8 +152,30 @@ class ProjectPage extends Component {
     const {
       edit,
       documents,
+      users,
       currentProject: { id }
     } = this.props
+
+    const getUserRole = () => {
+      let privilege
+      console.log( users )
+      if (users) {
+        users.forEach(user => {
+          if (user.id === this.props.currentUserId) {
+            privilege = user.privilege
+            return
+          }
+        })
+      }
+      return privilege
+    }
+
+    const userRole = getUserRole()
+
+    const showCreate = userRole === 'admin' || userRole === 'create'
+
+    console.log( userRole)
+
     return !(edit || documents) ? (
       <NavActions>
         <NavAction to={`/${id}/edit`}>
@@ -179,10 +201,12 @@ class ProjectPage extends Component {
       </NavActions>
     ) : (
       <NavActions>
-        <NavAction onClick={this.openProjectDataModal}>
-          <FontAwesomeIcon icon="file-csv" />
-          Tulosta projektin tiedot
-        </NavAction>
+        {showCreate && (
+          <NavAction onClick={this.openProjectDataModal}>
+            <FontAwesomeIcon icon="file-csv" />
+            Tulosta projektin tiedot
+          </NavAction>
+        )}
         <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
           Muokkaa luontitietoja
         </NavAction>
@@ -215,7 +239,6 @@ class ProjectPage extends Component {
   togglePrintProjectDataModal = opened =>
     this.setState({ showPrintProjectDataModal: opened })
 
-  showPrintProjectModal
   renderLoading = () => (
     <div className="project-container">
       <NavHeader
@@ -252,6 +275,7 @@ class ProjectPage extends Component {
     } = this.props
     const loading = !currentProjectLoaded || !phases
     const { deadlines } = this.state
+
     if (loading) {
       return this.renderLoading()
     }
@@ -310,7 +334,8 @@ const mapStateToProps = state => {
     currentProjectLoaded: currentProjectLoadedSelector(state),
     changingPhase: changingPhaseSelector(state),
     allEditFields: allEditFieldsSelector(state),
-    formValues: getFormValues(DOWNLOAD_PROJECT_DATA_FORM)(state)
+    formValues: getFormValues(DOWNLOAD_PROJECT_DATA_FORM)(state),
+    currentUserId: userIdSelector(state)
   }
 }
 
