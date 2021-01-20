@@ -30,7 +30,8 @@ import {
   PROJECT_SET_DEADLINES_SUCCESSFUL,
   FETCH_PROJECT_DEADLINES_SUCCESSFUL,
   GET_PROJECT_SUCCESSFUL,
-  GET_PROJECT_SNAPSHOT_SUCCESSFUL
+  GET_PROJECT_SNAPSHOT_SUCCESSFUL,
+  RESET_PROJECT_SNAPSHOT
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -284,12 +285,20 @@ export const reducer = (state = initialState, action) => {
       }
     }
     case GET_PROJECT_SNAPSHOT_SUCCESSFUL: {
-      console.log( action.payload )
       return {
         ...state,
         currentProject: {
           ...state.currentProject,
           projectSnapshot: action.payload
+        }
+      }
+    }
+    case RESET_PROJECT_SNAPSHOT: {
+      return {
+        ...state,
+        currentProject: {
+          ...state.currentProject,
+          projectSnapshot: null
         }
       }
     }

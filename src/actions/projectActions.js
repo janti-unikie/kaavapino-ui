@@ -43,6 +43,7 @@ export const GET_PROJECT_SUCCESSFUL = 'Get project successful'
 export const RESET_PROJECT_DEADLINES = 'Reset project deadlines'
 export const GET_PROJECT_SNAPSHOT = 'Get project snapshot'
 export const GET_PROJECT_SNAPSHOT_SUCCESSFUL = 'Get project snapshot succesful'
+export const RESET_PROJECT_SNAPSHOT = 'Reset project snapshot'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -190,3 +191,7 @@ export const getProjectSnapshotSuccessful = project => ({
   type: GET_PROJECT_SNAPSHOT_SUCCESSFUL,
   payload: project
 })
+export const resetProjectSnapshot = () => ({
+  type: RESET_PROJECT_SNAPSHOT
+})
+

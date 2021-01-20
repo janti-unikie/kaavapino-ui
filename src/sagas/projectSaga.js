@@ -296,12 +296,12 @@ function* getProjectSnapshot({ payload }) {
     } else if ( payload.date ) {
       query = { snapshot: payload.date }
     }
-    const project = yield call(
+    const project = yield call (
       projectApi.get,
       { path: { projectId: payload.projectId }, query: query },
       ':projectId/'
     )
-    console.log( project )
+
     yield put(getProjectSnapshotSuccessful(project))
   } catch (e) {
     yield put(error(e))

@@ -6,17 +6,29 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { phasesSelector } from '../../../selectors/phaseSelector'
 import { Button, Modal, Form } from 'semantic-ui-react'
+import { getProjectSnapshot, resetProjectSnapshot } from '../../../actions/projectActions'
+import { getFormValues } from 'redux-form'
+import { currentProjectSelector } from '../../../selectors/projectSelector'
+import moment from 'moment'
+import { CSVLink } from 'react-csv'
 
 import './styles.scss'
 
 class DownloadProjectDataModal extends Component {
-
-  getFormField = ( fieldProps )  => {
-    return <FormField {...fieldProps}  />
+  getFormField = fieldProps => {
+    return <FormField {...fieldProps} onChange={this.onChange} />
   }
+
+  onChange = () => {
+    const { resetProjectSnapshot } = this.props
+    resetProjectSnapshot()
+  }
+
   handleClose = () => {
-    this.props.reset()
-    this.props.handleClose()
+    const { reset, handleClose, resetProjectSnapshot } = this.props
+    reset()
+    resetProjectSnapshot()
+    handleClose()
   }
   getPhases = () => {
     const currentProject = this.props.currentProject
@@ -24,33 +36,60 @@ class DownloadProjectDataModal extends Component {
 
     const phaseList = []
 
-    phases.forEach( phase => {
-      if ( phase.project_subtype === currentProject.subtype) {
-        phaseList.push( {
-          label:  phase.name,
+    phases.forEach(phase => {
+      if (phase.project_subtype === currentProject.subtype) {
+        phaseList.push({
+          label: phase.name,
           value: phase.id,
           text: phase.name
         })
       }
     })
-    console.log( phaseList )
     return phaseList
+  }
+  loadClicked = async () => {
+    const { currentProject, getProjectSnapshot, formValues } = this.props
 
+    const phase = formValues['phase']
+    const date = formValues['date']
+
+    await getProjectSnapshot(currentProject.id, moment(date).format(), phase)
+  }
+  getPhaseFileName = phaseId => {
+    const { phases } = this.props
+    let phaseFileName
+    phases.forEach(phase => {
+      if (phase.id === phaseId) {
+        phaseFileName = phase.name
+      }
+    })
+    return phaseFileName
   }
 
   render() {
+    const { currentProject, formValues } = this.props
+    const phaseId = formValues && formValues['phase']
+    const date = formValues && formValues['date']
 
-    console.log(this.props.phases)
+    const phaseFileName = this.getPhaseFileName(phaseId)
+
+    const fileName = phaseFileName
+      ? `${currentProject.name}_${phaseFileName}.csv`
+      : date
+      ? `${currentProject.name}_${moment(date).format('YYYYMMDD_HHmmSS')}.csv`
+      : null
+
     return (
-    <Modal
-      className="form-modal"
-      size={'tiny'}
-      onClose={this.props.handleClose}
-      open={this.props.open}
-      closeIcon
-    >
-       <Modal.Header>Tulosta projektin tiedot</Modal.Header>
+      <Modal
+        className="form-modal"
+        size={'tiny'}
+        onClose={this.handleClose}
+        open={this.props.open}
+        closeIcon
+      >
+        <Modal.Header>Tulosta projektin tiedot</Modal.Header>
         <Modal.Content>
+          Valitse toinen seuraavista:
           <Form>
             <Form.Group widths="equal">
               {this.getFormField({
@@ -66,26 +105,38 @@ class DownloadProjectDataModal extends Component {
                 field: {
                   name: 'date',
                   label: 'Päivämäärä',
-                  type: 'datetime'
+                  type: 'datetime',
+                  placeHolder: 'Päivämäärä'
                 }
               })}
             </Form.Group>
           </Form>
+          <Button primary onClick={this.loadClicked}>
+            Lataa projektin tiedot
+          </Button>
+          <div className="download-csv">
+            {currentProject.projectSnapshot && fileName && (
+              <div>
+                Tiedot ladattu. Paina oheista linkkiä lataaksesi .csv tiedoston
+                <div>
+                  <CSVLink
+                    data={[currentProject.projectSnapshot.attribute_data]}
+                    separator=";"
+                    filename={fileName}
+                  >
+                    Lataa csv ({fileName})
+                  </CSVLink>
+                </div>
+              </div>
+            )}
+          </div>
         </Modal.Content>
         <Modal.Actions>
           <Button secondary onClick={this.handleClose}>
-            Peruuta
-          </Button>
-          <Button
-            primary
-            type="submit"
-            onClick={this.props.handleSubmit}
-          >
-            Lataa
+            Sulje
           </Button>
         </Modal.Actions>
-
-    </Modal>
+      </Modal>
     )
   }
 }
@@ -96,8 +147,14 @@ DownloadProjectDataModal.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    phases: phasesSelector(state)
+    phases: phasesSelector(state),
+    currentProject: currentProjectSelector(state),
+    formValues: getFormValues(DOWNLOAD_PROJECT_DATA_FORM)(state)
   }
+}
+const mapDispatchToProps = {
+  getProjectSnapshot,
+  resetProjectSnapshot
 }
 
 const decoratedForm = reduxForm({
@@ -105,4 +162,4 @@ const decoratedForm = reduxForm({
   initialValues: {}
 })(DownloadProjectDataModal)
 
-export default connect(mapStateToProps, () => ({}))(decoratedForm)
+export default connect(mapStateToProps, mapDispatchToProps)(decoratedForm)

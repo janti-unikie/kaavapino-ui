@@ -233,9 +233,8 @@ class ProjectPage extends Component {
     </div>
   )
 
-  downloadProjectData = () => {
+  downloadProjectData = async () => {
     const { currentProject, getProjectSnapshot, formValues } = this.props
-    this.togglePrintProjectDataModal(false)
 
     const phase = formValues['phase']
     const date = formValues['date']
@@ -256,7 +255,6 @@ class ProjectPage extends Component {
     if (loading) {
       return this.renderLoading()
     }
-
     return (
       <div className="project-container">
         <NavHeader
@@ -286,7 +284,6 @@ class ProjectPage extends Component {
         <DownloadProjectDataModal
           currentProject={currentProject}
           open={this.state.showPrintProjectDataModal}
-          handleSubmit={this.downloadProjectData}
           initialValues={{}}
           handleClose={() => this.togglePrintProjectDataModal(false)}
         />
