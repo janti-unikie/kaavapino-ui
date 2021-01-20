@@ -158,7 +158,6 @@ class ProjectPage extends Component {
 
     const getUserRole = () => {
       let privilege
-      console.log( users )
       if (users) {
         users.forEach(user => {
           if (user.id === this.props.currentUserId) {
@@ -173,8 +172,6 @@ class ProjectPage extends Component {
     const userRole = getUserRole()
 
     const showCreate = userRole === 'admin' || userRole === 'create'
-
-    console.log( userRole)
 
     return !(edit || documents) ? (
       <NavActions>
