@@ -485,4 +485,253 @@ describe('VisibilityCondition tests', () => {
     }
     expect(showField(field, formValues)).toBe(false)
   })
+  it('Shows field with == rule multiple values (boolean) hide_conditions 1', () => {
+    const field = {}
+    field.hide_conditions = [{
+        variable: 'a',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'b',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'c',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+      a: true,
+      b: true,
+      c: true
+    }
+    expect(showField(field, formValues)).toBe(false)
+  })
+  it('Shows field with == rule multiple values (boolean) hide_conditions 2', () => {
+    const field = {}
+    field.hide_conditions = [{
+        variable: 'a',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'b',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'c',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+      a: false,
+      b: true,
+      c: false
+    }
+    expect(showField(field, formValues)).toBe(false)
+  })
+  it('Shows field with == rule multiple values (boolean) hide_conditions 3', () => {
+    const field = {}
+    field.hide_conditions = [{
+        variable: 'a',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'b',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'c',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+      a: false,
+      b: false,
+      c: false
+    }
+    expect(showField(field, formValues)).toBe(true)
+  })
+  it('Shows field with == rule multiple values (boolean) hide_conditions 4', () => {
+    const field = {}
+    field.hide_conditions = [{
+        variable: 'yleiskaavan_2016_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'yleiskaava_2002_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'osayleiskaavan_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+      yleiskaavan_2016_mukainen: false,
+      yleiskaavan_2002_mukainen: false,
+      osayleiskaavan_mukainen: false
+    }
+    expect(showField(field, formValues)).toBe(true)
+  })
+  it('Shows field with == rule multiple values (boolean) hide_conditions 5', () => {
+    const field = {}
+    field.hide_conditions = [{
+        variable: 'yleiskaavan_2016_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'yleiskaava_2002_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'osayleiskaavan_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+      yleiskaavan_2016_mukainen: true,
+      yleiskaavan_2002_mukainen: true,
+      osayleiskaavan_mukainen: true
+    }
+    expect(showField(field, formValues)).toBe(false)
+  })
+  it('Shows field with == rule multiple values (boolean) hide_conditions 6', () => {
+    const field = {}
+    field.hide_conditions = [{
+        variable: 'yleiskaavan_2016_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'yleiskaava_2002_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'osayleiskaavan_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+      yleiskaavan_2016_mukainen: false,
+      yleiskaavan_2002_mukainen: false,
+      osayleiskaavan_mukainen: true
+    }
+    expect(showField(field, formValues)).toBe(false)
+  })
+  it('Shows field with == rule multiple values (boolean) hide_conditions 7', () => {
+    const field = {}
+    field.hide_conditions = [{
+        variable: 'yleiskaavan_2016_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'yleiskaava_2002_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'osayleiskaavan_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+      yleiskaavan_2016_mukainen: false,
+      yleiskaavan_2002_mukainen: false,
+      osayleiskaavan_mukainen: undefined
+    }
+    expect(showField(field, formValues)).toBe(true)
+  })
+  it('Shows field with == rule multiple values (boolean) hide_conditions 8', () => {
+    const field = {}
+    field.hide_conditions = [{
+        variable: 'yleiskaavan_2016_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'yleiskaava_2002_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'osayleiskaavan_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+      yleiskaavan_2016_mukainen: false,
+      osayleiskaavan_mukainen: undefined
+    }
+    expect(showField(field, formValues)).toBe(true)
+  })
+  it('Shows field with == rule multiple values (boolean) hide_conditions 9', () => {
+    const field = {}
+    field.hide_conditions = [{
+        variable: 'yleiskaavan_2016_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'yleiskaava_2002_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      },
+      {
+        variable: 'osayleiskaavan_mukainen',
+        operator: '==',
+        comparison_value: true,
+        comparison_value_type: 'boolean'
+      }]
+
+    const formValues = {
+
+    }
+    expect(showField(field, formValues)).toBe(true)
+  })
 })
