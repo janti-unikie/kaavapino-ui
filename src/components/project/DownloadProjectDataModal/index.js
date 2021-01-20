@@ -11,6 +11,9 @@ import { getFormValues } from 'redux-form'
 import { currentProjectSelector } from '../../../selectors/projectSelector'
 import moment from 'moment'
 import { CSVLink } from 'react-csv'
+import { withTranslation } from 'react-i18next'
+import { isObject } from 'lodash'
+import toPlaintext from 'quill-delta-to-plaintext'
 
 import './styles.scss'
 
@@ -65,12 +68,37 @@ class DownloadProjectDataModal extends Component {
     })
     return phaseFileName
   }
+  getModifiedData = originalData => {
+
+    const modifiedData = {}
+    const entries = Object.entries( originalData )
+
+    for (const [key, value] of entries) {
+      let currentValue = value
+      if ( isObject( value )) {
+        if ( value.ops ) {
+          currentValue = toPlaintext(value.ops)
+          currentValue = currentValue.trim()
+        }
+        if ( value.link ) {
+          currentValue = `${value.description} ${value.link}`
+        }
+        if ( value.coordinates ) {
+          currentValue = value.coordinates
+        }
+      }
+      modifiedData[key] = currentValue
+
+    }
+    return modifiedData
+  }
 
   render() {
-    const { currentProject, formValues } = this.props
+    const { currentProject, formValues, t } = this.props
     const phaseId = formValues && formValues['phase']
     const date = formValues && formValues['date']
 
+   const modifiedData = this.getModifiedData(currentProject.projectSnapshot ? currentProject.projectSnapshot.attribute_data : [])
     const phaseFileName = this.getPhaseFileName(phaseId)
 
     const fileName = phaseFileName
@@ -87,15 +115,15 @@ class DownloadProjectDataModal extends Component {
         open={this.props.open}
         closeIcon
       >
-        <Modal.Header>Tulosta projektin tiedot</Modal.Header>
+        <Modal.Header>{t('print-project-data.title')}</Modal.Header>
         <Modal.Content>
-          Valitse toinen seuraavista:
+          {t('print-project-data.info')}
           <Form>
             <Form.Group widths="equal">
               {this.getFormField({
                 field: {
                   name: 'phase',
-                  label: 'Vaiheet',
+                  label: t('print-project-data.phase-label'),
                   type: 'select',
                   choices: this.getPhases()
                 }
@@ -104,27 +132,27 @@ class DownloadProjectDataModal extends Component {
                 className: 'ui fluid input',
                 field: {
                   name: 'date',
-                  label: 'Päivämäärä',
+                  label: t('print-project-data.date-label'),
                   type: 'datetime',
-                  placeHolder: 'Päivämäärä'
+                  placeHolder: t('print-project-data.date-label')
                 }
               })}
             </Form.Group>
           </Form>
           <Button primary onClick={this.loadClicked}>
-            Lataa projektin tiedot
+            {t('print-project-data.load-project-data')}
           </Button>
           <div className="download-csv">
             {currentProject.projectSnapshot && fileName && (
               <div>
-                Tiedot ladattu. Paina oheista linkkiä lataaksesi .csv tiedoston
+                {t('print-project-data.project-data-loaded')}
                 <div>
                   <CSVLink
-                    data={[currentProject.projectSnapshot.attribute_data]}
+                    data={[modifiedData]}
                     separator=";"
                     filename={fileName}
                   >
-                    Lataa csv ({fileName})
+                    {t('print-project-data.load-csv')} ({fileName})
                   </CSVLink>
                 </div>
               </div>
@@ -133,7 +161,7 @@ class DownloadProjectDataModal extends Component {
         </Modal.Content>
         <Modal.Actions>
           <Button secondary onClick={this.handleClose}>
-            Sulje
+            {t('print-project-data.button-close')}
           </Button>
         </Modal.Actions>
       </Modal>
@@ -160,6 +188,6 @@ const mapDispatchToProps = {
 const decoratedForm = reduxForm({
   form: DOWNLOAD_PROJECT_DATA_FORM,
   initialValues: {}
-})(DownloadProjectDataModal)
+})(withTranslation()(DownloadProjectDataModal))
 
 export default connect(mapStateToProps, mapDispatchToProps)(decoratedForm)
