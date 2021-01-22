@@ -12,7 +12,8 @@ import {
   projectSetChecking,
   saveProjectBase,
   fetchProjectDeadlines,
-  initializeProject
+  initializeProject,
+  getProjectSnapshot
 } from '../../actions/projectActions'
 import { fetchSchemas, setAllEditFields } from '../../actions/schemaActions'
 import {
@@ -43,6 +44,9 @@ class ProjectEditPage extends Component {
   componentDidMount() {
     const { project } = this.props
     this.props.fetchSchemas(project.id, project.subtype)
+
+    //const snapshot = moment.utc( new Date() ).format('YY-mm-ddTHH:MM:SS.ffZZz')
+    //this.props.getProjectSnapshot( project.id, snapshot)
   }
 
   changePhase = () => this.props.changeProjectPhase(this.props.project.phase + 1)
@@ -217,7 +221,8 @@ const mapDispatchToProps = {
   saveProjectBase,
   fetchProjectDeadlines,
   setAllEditFields,
-  initializeProject
+  initializeProject,
+  getProjectSnapshot
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)

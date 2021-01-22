@@ -41,6 +41,9 @@ export const FETCH_PROJECT_DEADLINES_SUCCESSFUL = 'Fetch project deadlines succe
 export const GET_PROJECT = 'Get project'
 export const GET_PROJECT_SUCCESSFUL = 'Get project successful'
 export const RESET_PROJECT_DEADLINES = 'Reset project deadlines'
+export const GET_PROJECT_SNAPSHOT = 'Get project snapshot'
+export const GET_PROJECT_SNAPSHOT_SUCCESSFUL = 'Get project snapshot succesful'
+export const RESET_PROJECT_SNAPSHOT = 'Reset project snapshot'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -85,7 +88,10 @@ export const fetchProjectSuccessful = project => ({
   payload: project
 })
 
-export const fetchProjectDeadlines = subtype => ({ type: FETCH_PROJECT_DEADLINES, payload: subtype })
+export const fetchProjectDeadlines = subtype => ({
+  type: FETCH_PROJECT_DEADLINES,
+  payload: subtype
+})
 export const fetchProjectDeadlinesSuccessful = deadlines => ({
   type: FETCH_PROJECT_DEADLINES_SUCCESSFUL,
   payload: deadlines
@@ -172,4 +178,20 @@ export const getProjectSuccessful = project => ({
   payload: project
 })
 
-export const resetProjectDeadlines = id => ({ type: RESET_PROJECT_DEADLINES, payload: id })
+export const resetProjectDeadlines = id => ({
+  type: RESET_PROJECT_DEADLINES,
+  payload: id
+})
+
+export const getProjectSnapshot = (projectId, snapshot, phase) => ({
+  type: GET_PROJECT_SNAPSHOT,
+  payload: { projectId, snapshot, phase }
+})
+export const getProjectSnapshotSuccessful = project => ({
+  type: GET_PROJECT_SNAPSHOT_SUCCESSFUL,
+  payload: project
+})
+export const resetProjectSnapshot = () => ({
+  type: RESET_PROJECT_SNAPSHOT
+})
+

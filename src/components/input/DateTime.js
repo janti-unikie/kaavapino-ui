@@ -1,7 +1,7 @@
 import React from 'react'
 import DateTime from 'react-datetime'
 
-const CustomDateTime = ({ input, ...custom }) => {
+const CustomDateTime = ({ input, placeholder, ...custom }) => {
   const formatDate = value => {
     if (!isNaN(new Date(value))) {
       return new Date(value)
@@ -12,12 +12,14 @@ const CustomDateTime = ({ input, ...custom }) => {
   return (
     <DateTime
       dateFormat="DD.MM.YYYY"
-      timeFormat={false}
+      timeFormat="HH:mm"
+      value={formatDate(input.value)}
       {...input}
       {...custom}
-      value={formatDate(input.value)}
       locale="fi"
-      inputProps={{ readOnly: true }}
+      closeOnSelect={true}
+      inputProps={{ placeholder }}
+      clearable
     />
   )
 }
