@@ -34,7 +34,7 @@
         "phase-label": "Vaihe",
         "date-label": "Päivämäärä",
         "load-project-data": "Lataa projektin tiedot",
-        "project-data-loaded": "Tiedot ladattu. Paina oheista linkkiä lataaksesi .csv tiedoston",
+        "project-data-loaded": "Tiedot ladattu. Paina oheista linkkiä lataaksesi CSV-tiedoston",
         "load-csv": "Lataa tiedosto",
         "button-close": "Sulje"
     }
