@@ -299,6 +299,7 @@ class CustomField extends Component {
         } else if (field.required) {
           requiredError = true
         }
+        return field
       })
     }
     return (
