@@ -129,7 +129,7 @@
   line-height: 32px;
   padding: 12px 32px 12px 8px;
   margin-top: 4px;
-
+  
   &.multiple > .label {
     margin-top: 8px;
   }
@@ -178,7 +178,7 @@
 .ui.form textarea {
   border-radius: 2px;
   border: 1px solid $border-gray;
-  font-size: 18px;
+  font-size: 16px;
   color: $black1;
   line-height: 24px;
   transition: border 0.2s ease;
@@ -574,9 +574,9 @@
 }
 .deadline-info-text {
   margin-top: 10px;
-  padding: 10px 10px 10px 0;
+  padding: 8px 8px 8px 16px;
   background-color: $yellow; 
-  width: 100%;
+  width: 80%;
  
 }
 .hidden {

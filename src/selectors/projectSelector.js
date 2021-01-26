@@ -44,6 +44,11 @@ export const currentProjectSelector = createSelector(
   project => project.currentProject || null
 )
 
+export const timelineProjectSelector = createSelector(
+  selectProject,
+  ({ timelineProject }) => timelineProject
+)
+
 export const attributeDataSelector = createSelector(
   currentProjectSelector,
   ({ attribute_data }) => attribute_data

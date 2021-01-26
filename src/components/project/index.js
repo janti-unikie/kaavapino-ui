@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Loader } from 'semantic-ui-react'
 import {
   initializeProject,
-  saveProjectBase
+  saveProjectBase,
+  changeProjectPhase
 } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
 import {
@@ -71,7 +72,6 @@ class ProjectPage extends Component {
 
   switchDisplayedPhase = phase => {
     if (this.props.edit) {
-      //this.props.changeProjectPhase(phase)
       this.setState({ selectedPhase: phase })
     }
   }
@@ -237,7 +237,7 @@ class ProjectPage extends Component {
           actions={this.getNavActions()}
           infoOptions={this.getAllChanges()}
         />
-        <ProjectTimeline deadlines={deadlines} />
+        <ProjectTimeline deadlines={deadlines} projectView={true} />
         <NewProjectFormModal
           currentProject={currentProject}
           open={this.state.showBaseInformationForm}
@@ -263,7 +263,8 @@ class ProjectPage extends Component {
 const mapDispatchToProps = {
   initializeProject,
   saveProjectBase,
-  fetchUsers
+  fetchUsers,
+  changeProjectPhase
 }
 
 const mapStateToProps = state => {

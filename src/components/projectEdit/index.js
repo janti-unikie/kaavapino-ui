@@ -12,7 +12,8 @@ import {
   projectSetChecking,
   saveProjectBase,
   fetchProjectDeadlines,
-  initializeProject
+  initializeProject,
+  getProjectSnapshot
 } from '../../actions/projectActions'
 import { fetchSchemas, setAllEditFields } from '../../actions/schemaActions'
 import {
@@ -43,6 +44,9 @@ class ProjectEditPage extends Component {
   componentDidMount() {
     const { project } = this.props
     this.props.fetchSchemas(project.id, project.subtype)
+
+    //const snapshot = moment.utc( new Date() ).format('YY-mm-ddTHH:MM:SS.ffZZz')
+    //this.props.getProjectSnapshot( project.id, snapshot)
   }
 
   changePhase = () => this.props.changeProjectPhase(this.props.project.phase + 1)
@@ -58,12 +62,8 @@ class ProjectEditPage extends Component {
     this.props.saveProject()
 
   }
-  handleTimelineClose = () => {
-    const { project } = this.props
-
-    this.setState({ showEditProjectTimetableForm: false })
-    this.props.initializeProject( project.id )
-
+  handleTimetableClose = () => {
+    this.props.saveProjectTimetable()
   }
 
   setSelectedRole = role => {
@@ -85,7 +85,6 @@ class ProjectEditPage extends Component {
       schema,
       selectedPhase,
       saveProjectFloorArea,
-      saveProjectTimetable,
       project: { name, attribute_data, phase, id },
       saving,
       changingPhase,
@@ -155,7 +154,10 @@ class ProjectEditPage extends Component {
           </NavigationPrompt>
         </div>
         <EditForm
+          isCurrentPhase={selectedPhase === phase}
+          isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
           handleSave={this.handleAutoSave}
+          changePhase={this.changePhase}
           sections={currentSchema.sections}
           attributeData={attribute_data}
           saving={saving}
@@ -163,7 +165,10 @@ class ProjectEditPage extends Component {
           initialValues={attribute_data}
           phase={phase}
           selectedPhase={selectedPhase}
+          setChecking={this.props.projectSetChecking}
           validateProjectFields={validateProjectFields}
+          validating={validating}
+          hasErrors={hasErrors}
           disabled={formDisabled}
           projectId={id}
           syncronousErrors={syncErrors}
@@ -186,8 +191,8 @@ class ProjectEditPage extends Component {
           <EditProjectTimetableModal
             attributeData={attribute_data}
             open
-            handleSubmit={saveProjectTimetable}
-            handleClose={this.handleTimelineClose}
+            handleSubmit={this.handleTimetableClose}
+            handleClose={ () => this.setState({ showEditProjectTimetableForm: false })}
           />
         )}
       </div>
@@ -221,7 +226,8 @@ const mapDispatchToProps = {
   saveProjectBase,
   fetchProjectDeadlines,
   setAllEditFields,
-  initializeProject
+  initializeProject,
+  getProjectSnapshot
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)

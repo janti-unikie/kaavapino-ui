@@ -89,7 +89,6 @@ class List extends Component {
     let abortedProjects = []
     let archivedProjects = []
     let projects = []
-
     items.map(
       (
         {
@@ -102,8 +101,7 @@ class List extends Component {
           phase,
           onhold,
           archived,
-          pino_number,
-          deadlines
+          pino_number
         },
         i
       ) => {
@@ -112,7 +110,6 @@ class List extends Component {
           name,
           id,
           pino_number,
-          deadlines,
           modified_at: projectUtils.formatDate(modified_at),
           user: projectUtils.formatUsersName(users.find(u => u.id === user)),
           subtype: projectUtils.formatSubtype(subtype, projectSubtypes),
