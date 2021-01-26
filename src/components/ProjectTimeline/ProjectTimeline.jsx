@@ -72,7 +72,6 @@ function ProjectTimeline(props) {
     for (let i = 0; i < months.length; i++) {
       const date = new Date(months[i].date)
       if (i === 1) {
-        console.debug(findWeek(nowDate.getDate()))
         drawableMonths.push(
           <div key={i} className="timeline-month">
             <div className="timeline-now-month">
