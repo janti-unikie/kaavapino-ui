@@ -154,10 +154,7 @@ class ProjectEditPage extends Component {
           </NavigationPrompt>
         </div>
         <EditForm
-          isCurrentPhase={selectedPhase === phase}
-          isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
           handleSave={this.handleAutoSave}
-          changePhase={this.changePhase}
           sections={currentSchema.sections}
           attributeData={attribute_data}
           saving={saving}
@@ -165,10 +162,7 @@ class ProjectEditPage extends Component {
           initialValues={attribute_data}
           phase={phase}
           selectedPhase={selectedPhase}
-          setChecking={this.props.projectSetChecking}
           validateProjectFields={validateProjectFields}
-          validating={validating}
-          hasErrors={hasErrors}
           disabled={formDisabled}
           projectId={id}
           syncronousErrors={syncErrors}

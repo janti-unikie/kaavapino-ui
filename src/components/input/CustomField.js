@@ -174,6 +174,7 @@ class CustomField extends Component {
   renderDate = props => {
     const { onBlur, attributeData, parentName  } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
+
     return (
     <Input
       onBlur={onBlur}
