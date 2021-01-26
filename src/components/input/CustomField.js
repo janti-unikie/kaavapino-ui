@@ -13,7 +13,7 @@ import RadioButton from './RadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
 import OnHoldCheckbox from './OnholdCheckbox'
-import CustomCheckbox from './CustomCheckbox'
+import DeadlineCheckbox from './DeadlineCheckbox'
 
 import AutofillInputCalculations from './AutofillInputCalculation/AutofillInputCalculations'
 
@@ -321,12 +321,11 @@ class CustomField extends Component {
         )
   }
 
-  renderCheckbox = props => {
-    const { attributeData, parentName } = this.props
-
+  renderDeadlineCheckbox = props => {
+    const { attributeData, parentName, field } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
     return (
-      <CustomCheckbox {...props} />
+      <DeadlineCheckbox {...props}  label={field.label} autofillRule={field.autofill_rule} {...props }/>
     )
   }
 
@@ -398,7 +397,7 @@ class CustomField extends Component {
       case 'checkbox-onhold':
         return this.renderOnholdCheckbox
       case 'checkbox':
-        return this.renderCheckbox
+        return this.renderDeadlineCheckbox
       case 'readonly':
         return this.renderDeadlineInfo
       default:
