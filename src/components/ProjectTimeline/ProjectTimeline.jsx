@@ -53,7 +53,7 @@ function ProjectTimeline(props) {
   }, [props.timelineProject])
   function createNowMarker(week) {
     let nowMarker = []
-    for (let i = 1; i < 5; i++) {
+    for (let i = 1; i <= 5; i++) {
       if (i === week) {
         nowMarker.push(
           <div key={i} className="now-marker">
