@@ -22,23 +22,29 @@ export function findWeek(date) {
 export function cleanDeadlines(deadlines) {
   let cleanedDeadlines = deadlines
   let deadlineType = null
-  deadlines.forEach(function (deadline, index, object) {
+  const has = Object.prototype.hasOwnProperty
+  // cleanup deadline start and end points
+  cleanedDeadlines.forEach(function (deadline, index, object) {
     if (deadline.deadline) {
-      if (deadline.deadline.deadline_types[0]) {
-        if (
-          deadline.deadline.deadline_types[0] === 'phase_start' ||
-          deadline.deadline.deadline_types[0] === 'phase_end'
-        ) {
-          if (!deadlineType) {
-            deadlineType = deadline.deadline.deadline_types[0]
-          } else if (deadlineType === deadline.deadline.deadline_types[0]) {
-            object.splice(index - 1, 1)
-            deadlineType = null
-          } else {
-            deadlineType = deadline.deadline.deadline_types[0]
+      if (deadline.deadline.deadline_types) {
+        for (const prop in deadline.deadline.deadline_types) {
+          if (has.call(deadline.deadline.deadline_types, prop)) {
+            if (
+              deadline.deadline.deadline_types[prop] === 'phase_start' ||
+              deadline.deadline.deadline_types[prop] === 'phase_end'
+            ) {
+              if (!deadlineType) {
+                deadlineType = deadline.deadline.deadline_types[prop]
+              } else if (deadlineType === deadline.deadline.deadline_types[prop]) {
+                object.splice(index - 1, 1)
+                deadlineType = null
+              } else {
+                deadlineType = deadline.deadline.deadline_types[prop]
+              }
+            } else {
+              deadlineType = null
+            }
           }
-        } else {
-          deadlineType = null
         }
       }
     }
@@ -55,20 +61,42 @@ export function checkDeadlines(deadlines) {
   if (!deadlines[0].date) {
     return true
   }
+  const has = Object.prototype.hasOwnProperty
+  let deadlineAbbreviation = null
+  let deadlineError = false
   deadlines.forEach(deadline => {
+    if (deadline.deadline) {
+      if (deadline.deadline.deadline_types) {
+        for (const prop in deadline.deadline.deadline_types) {
+          if (has.call(deadline.deadline.deadline_types, prop)) {
+            if (deadline.deadline.deadline_types[prop] === 'phase_start') {
+              deadlineAbbreviation = deadline.deadline.abbreviation.charAt(0)
+            }
+            if (deadlineAbbreviation) {
+              if (deadlineAbbreviation !== deadline.deadline.abbreviation.charAt(0)) {
+                deadlineError = true
+              }
+            }
+          }
+        }
+      }
+    }
     if (deadline) {
       if (deadline.is_under_min_distance_next) {
-        return true
+        deadlineError = true
       }
       if (deadline.is_under_min_distance_previous) {
-        return true
+        deadlineError = true
       }
       if (deadline.out_of_sync) {
-        return true
+        deadlineError = true
       }
     } else {
-      return true
+      deadlineError = true
     }
   })
+  if (deadlineError) {
+    return true
+  }
   return false
 }
