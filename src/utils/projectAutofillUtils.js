@@ -1,6 +1,4 @@
 import projectUtils from './projectUtils'
-//import { isArray } from 'lodash'
-//import toPlaintext from 'quill-delta-to-plaintext'
 
 /* Field returns info whether field given as a parameter should be shown or not.
  *
@@ -65,13 +63,7 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
 
         const realValue = formValue ? formValue === true : false
 
-      /*  const richTextValue = formValue && formValue.ops ? toPlaintext( formValue.ops ) : undefined
-
-        const richTextHasValue = richTextValue && richTextValue.trim() !== '' ? true : false
-
-        const realValue = formValue && !formValue.ops || richTextHasValue ? true : false
-*/
-        if (operator === EQUAL && comparisonValue === realValue) {
+         if (operator === EQUAL && comparisonValue === realValue) {
           if (thenBranch === TRUE_STRING) {
             returnValue = true
             return
