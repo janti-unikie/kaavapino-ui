@@ -5,7 +5,8 @@ import { Loader } from 'semantic-ui-react'
 import {
   initializeProject,
   saveProjectBase,
-  changeProjectPhase
+  changeProjectPhase,
+  getProjectSnapshot
 } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
 import {
@@ -14,9 +15,7 @@ import {
   changingPhaseSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
-import {
-  allEditFieldsSelector
-} from '../../selectors/schemaSelector'
+import { allEditFieldsSelector } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
@@ -26,7 +25,11 @@ import ProjectDocumentsPage from '../projectDocuments'
 import projectUtils from '../../utils/projectUtils'
 import NewProjectFormModal from './NewProjectFormModal'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
-
+import DownloadProjectDataModal from './DownloadProjectDataModal'
+import { DOWNLOAD_PROJECT_DATA_FORM } from '../../constants'
+import { getFormValues } from 'redux-form'
+import moment from 'moment'
+import { userIdSelector } from '../../selectors/authSelector'
 class ProjectPage extends Component {
   constructor(props) {
     super(props)
@@ -42,6 +45,7 @@ class ProjectPage extends Component {
       selectedPhase: selectedPhase,
       showDeadlineModal: false,
       showBaseInformationForm: false,
+      showPrintProjectDataModal: false,
       deadlines: null
     }
   }
@@ -147,10 +151,33 @@ class ProjectPage extends Component {
     const {
       edit,
       documents,
+      users,
       currentProject: { id }
     } = this.props
+
+    const getUserRole = () => {
+      let privilege
+      if (users) {
+        users.forEach(user => {
+          if (user.id === this.props.currentUserId) {
+            privilege = user.privilege
+            return
+          }
+        })
+      }
+      return privilege
+    }
+
+    const userRole = getUserRole()
+
+    const showCreate = userRole === 'admin' || userRole === 'create'
+
     return !(edit || documents) ? (
       <NavActions>
+        <NavAction to={`/${id}/edit`}>
+          <FontAwesomeIcon icon="pen" />
+          Muokkaa
+        </NavAction>
         <NavAction to={`/${id}/edit`}>
           <FontAwesomeIcon icon="pen" />
           Muokkaa
@@ -170,6 +197,12 @@ class ProjectPage extends Component {
       </NavActions>
     ) : (
       <NavActions>
+        {showCreate && (
+          <NavAction onClick={this.openProjectDataModal}>
+            <FontAwesomeIcon icon="file-csv" />
+            Tulosta projektin tiedot
+          </NavAction>
+        )}
         <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
           Muokkaa luontitietoja
         </NavAction>
@@ -179,6 +212,8 @@ class ProjectPage extends Component {
       </NavActions>
     )
   }
+  openProjectDataModal = () => this.togglePrintProjectDataModal(true)
+
   getAllChanges = () => {
     const { allEditFields, edit } = this.props
 
@@ -197,6 +232,9 @@ class ProjectPage extends Component {
 
   toggleBaseInformationForm = opened => this.setState({ showBaseInformationForm: opened })
 
+  togglePrintProjectDataModal = opened =>
+    this.setState({ showPrintProjectDataModal: opened })
+
   renderLoading = () => (
     <div className="project-container">
       <NavHeader
@@ -214,6 +252,15 @@ class ProjectPage extends Component {
     </div>
   )
 
+  downloadProjectData = async () => {
+    const { currentProject, getProjectSnapshot, formValues } = this.props
+
+    const phase = formValues['phase']
+    const date = formValues['date']
+
+    getProjectSnapshot(currentProject.id, moment(date).format(), phase)
+  }
+
   render() {
     const {
       currentProject,
@@ -224,10 +271,10 @@ class ProjectPage extends Component {
     } = this.props
     const loading = !currentProjectLoaded || !phases
     const { deadlines } = this.state
+
     if (loading) {
       return this.renderLoading()
     }
-
     return (
       <div className="project-container">
         <NavHeader
@@ -254,6 +301,12 @@ class ProjectPage extends Component {
           users={users}
           projectSubtypes={projectSubtypes}
         />
+        <DownloadProjectDataModal
+          currentProject={currentProject}
+          open={this.state.showPrintProjectDataModal}
+          initialValues={{}}
+          handleClose={() => this.togglePrintProjectDataModal(false)}
+        />
         <div className="project-page-content">{this.getProjectPageContent()}</div>
       </div>
     )
@@ -264,7 +317,8 @@ const mapDispatchToProps = {
   initializeProject,
   saveProjectBase,
   fetchUsers,
-  changeProjectPhase
+  changeProjectPhase,
+  getProjectSnapshot
 }
 
 const mapStateToProps = state => {
@@ -275,7 +329,9 @@ const mapStateToProps = state => {
     projectSubtypes: projectSubtypesSelector(state),
     currentProjectLoaded: currentProjectLoadedSelector(state),
     changingPhase: changingPhaseSelector(state),
-    allEditFields: allEditFieldsSelector(state)
+    allEditFields: allEditFieldsSelector(state),
+    formValues: getFormValues(DOWNLOAD_PROJECT_DATA_FORM)(state),
+    currentUserId: userIdSelector(state)
   }
 }
 
