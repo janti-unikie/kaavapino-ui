@@ -27,8 +27,7 @@ const ListItem = ({
     modified_at,
     user,
     projectId,
-    pino_number,
-    deadlines
+    pino_number
   }
 }) => {
   return (
@@ -62,7 +61,7 @@ const ListItem = ({
         </Link>
       </div>
       <div className="project-list-item-graph">
-        {showGraph && <ProjectTimeline deadlines={deadlines} />}
+        {showGraph && <ProjectTimeline id={id} />}
       </div>
       <Link to={`/${id}`} className="project-card-mb">
         Projektikortti, {name}

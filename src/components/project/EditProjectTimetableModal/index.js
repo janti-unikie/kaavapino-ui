@@ -19,8 +19,6 @@ class EditProjectTimeTableModal extends Component {
     this.state = {
       loading: false
     }
-    const { initialize, attributeData } = this.props
-    initialize(attributeData)
   }
 
   componentDidMount() {
@@ -71,7 +69,7 @@ class EditProjectTimeTableModal extends Component {
   getFormField(fieldProps, key) {
     const { formSubmitErrors, formValues } = this.props
     const error =
-      formSubmitErrors && fieldProps.field && formSubmitErrors[fieldProps.field.name]
+      formSubmitErrors && fieldProps && formSubmitErrors && formSubmitErrors[fieldProps.field.name]
 
     return (
       <div key={key}>
@@ -81,9 +79,11 @@ class EditProjectTimeTableModal extends Component {
           attributeData={{}}
           error={error}
           formValues={formValues}
-          className="modal-field"
+          className={ error ? 'modal-field error-border' : 'modal-field'}
           isProjectTimetableEdit={true}
         />
+        {error && <div className="field-error">{error}</div>}
+
       </div>
     )
   }
@@ -112,7 +112,7 @@ class EditProjectTimeTableModal extends Component {
 
   render() {
     const { loading } = this.state
-    const { open, formValues, formSubmitErrors, deadlineSections, t } = this.props
+    const { open, formValues, deadlineSections, t } = this.props
 
     if ( !formValues ) {
       return null
@@ -133,7 +133,6 @@ class EditProjectTimeTableModal extends Component {
                 this.renderSection(section, sectionIndex)
               )}
           </Form>
-          <div className="error">{formSubmitErrors && formSubmitErrors.detail ? t('deadlines.error', { error: formSubmitErrors.detail }) : ''}</div>
         </Modal.Content>
         <Modal.Actions>
           <Button secondary disabled={loading} onClick={this.handleClose}>
@@ -169,4 +168,4 @@ const decoratedForm = reduxForm({
   form: EDIT_PROJECT_TIMETABLE_FORM
 })(withTranslation()(EditProjectTimeTableModal))
 
-export default connect(mapStateToProps, () => ({}))(decoratedForm)
+export default connect(mapStateToProps)(decoratedForm)

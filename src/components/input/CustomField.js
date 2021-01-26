@@ -134,18 +134,16 @@ class CustomField extends Component {
   renderTextArea = props => {
     const { onBlur, attributeData, parentName } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
-    return <TextArea onBlur={onBlur} {...props} />
+    return (
+      <TextArea
+        onBlur={onBlur}
+        {...props}
+      />
+      )
   }
 
   renderRichText = props => {
-    const {
-      onBlur,
-      handleSave,
-      attributeData,
-      parentName,
-      meta,
-      defaultValue
-    } = this.props
+    const { onBlur, handleSave, attributeData, parentName, meta, defaultValue } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
 
     return (
@@ -155,9 +153,8 @@ class CustomField extends Component {
         meta={meta}
         defaultValue={defaultValue}
         {...props}
-        largeField
-      />
-    )
+        largeField />
+        )
   }
 
   renderRichTextShort = props => {
@@ -165,20 +162,36 @@ class CustomField extends Component {
     projectUtils.checkInputValue(props, attributeData, parentName)
 
     return (
-      <RichTextEditor onBlur={onBlur} handleSave={handleSave} meta={meta} {...props} />
-    )
+    <RichTextEditor
+        onBlur={onBlur}
+        handleSave={handleSave}
+        meta={meta}
+        {...props}
+        />
+        )
   }
 
   renderDate = props => {
-    const { onBlur, attributeData, parentName } = this.props
+    const { onBlur, attributeData, parentName  } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
-    return <Input onBlur={onBlur} type="date" {...props} />
+
+    return (
+    <Input
+      onBlur={onBlur}
+      type="date"
+      {...props} />
+)
   }
 
   renderGeometry = props => {
     const { attributeData, parentName, onBlur } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
-    return <Geometry onBlur={onBlur} attributeData={attributeData} {...props} />
+    return (
+    <Geometry
+      onBlur={onBlur}
+      attributeData={attributeData}
+      {...props} />
+)
   }
 
   renderSelect = props => {
@@ -199,28 +212,18 @@ class CustomField extends Component {
   }
 
   renderRadio = props => {
-    const { field, onRadioChange, onBlur, attributeData, parentName } = this.props
+    const { field, onBlur, attributeData, parentName } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
     return (
       <RadioButton
-        onRadioChange={onRadioChange}
         options={field.options}
         onBlur={onBlur}
-        attributeData={attributeData}
-        {...props}
-      />
-    )
+        {...props} />
+        )
   }
 
   renderBooleanRadio = props => {
-    const {
-      onBlur,
-      input,
-      onRadioChange,
-      defaultValue,
-      attributeData,
-      parentName
-    } = this.props
+    const { onBlur, input, onRadioChange, defaultValue, attributeData, parentName } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
     return (
       <BooleanRadio
@@ -228,15 +231,18 @@ class CustomField extends Component {
         input={input}
         onRadioChange={onRadioChange}
         defaultValue={defaultValue}
-        {...props}
-      />
-    )
+        {...props} />
+        )
   }
 
   renderToggle = props => {
-    const { onBlur, handleSave, attributeData, parentName } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName)
-    return <ToggleButton onBlur={onBlur} handleSave={handleSave} {...props} />
+    const { onBlur, attributeData, parentName } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName )
+    return (
+      <ToggleButton
+        onBlur={onBlur}
+        {...props} />
+        )
   }
 
   renderLink = props => {
@@ -244,14 +250,24 @@ class CustomField extends Component {
     const { placeholder_text } = this.props.field
     projectUtils.checkInputValue(props, attributeData, parentName)
 
-    return <Link onBlur={onBlur} placeholder={placeholder_text} {...props} />
+    return (
+      <Link
+        onBlur={onBlur}
+        placeholder={placeholder_text}
+        {...props} />
+        )
   }
 
   renderDateTime = props => {
     const { onBlur, handleSave, attributeData, parentName } = this.props
 
     projectUtils.checkInputValue(props, attributeData, parentName)
-    return <DateTime onBlur={onBlur} handleSave={handleSave} {...props} />
+    return (
+      <DateTime
+        onBlur={onBlur}
+        handleSave={handleSave}
+        {...props} />
+        )
   }
 
   renderFieldset = ({ fields: sets }) => {
@@ -310,14 +326,22 @@ class CustomField extends Component {
     const { onBlur, attributeData, parentName } = this.props
 
     projectUtils.checkInputValue(props, attributeData, parentName)
-    return <Input type="number" step="0.01" onBlur={onBlur} {...props} />
+    return (
+      <Input
+        type="number"
+        step="0.01"
+        onBlur={onBlur}
+        {...props} />
+        )
   }
 
   renderCheckbox = props => {
     const { attributeData, parentName } = this.props
 
     projectUtils.checkInputValue(props, attributeData, parentName)
-    return <CustomCheckbox {...props} />
+    return (
+      <CustomCheckbox {...props} />
+    )
   }
 
   renderOnholdCheckbox = props => {
@@ -327,7 +351,7 @@ class CustomField extends Component {
         projectOnhold={onhold}
         saveProjectBase={saveProjectBase}
         disabled={disabled}
-        attributeData={this.props.attributeData}
+        attributeData={ this.props.attributeData }
         {...props}
       />
     )
@@ -336,10 +360,13 @@ class CustomField extends Component {
     const { attributeData, parentName, field } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
 
-    return <DeadlineInfoText label={field.label} {...props} />
+    return (
+      <DeadlineInfoText label={field.label} autofillRule={field.autofill_rule} {...props } />
+    )
   }
 
   getInput = field => {
+
     // Since there might be rules which has boolean type and choices, avoid selecting select and select
     // boolean radiobutton intead
     if (field.choices && field.type !== 'boolean') {
@@ -425,14 +452,19 @@ class CustomField extends Component {
     }
 
     const showFieldClass = field.display === 'hidden' ? 'hidden' : className
+
+    const placeHolderText = field.placeholder_text ?
+      field.placeholder_text.trim()
+    : field.label
     let fieldProps = {
       name: field.name,
-      placeholder: field.placeholder_text || field.label,
-      disabled: field.generated || field.disabled || field.autofill_readonly,
+      placeholder: placeHolderText,
+      disabled:
+        field.generated || field.disabled || field.autofill_readonly,
       component: this.getInput(field),
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
       updated: { updated },
-      className: showFieldClass
+      className: `${className} ${showFieldClass}`
     }
 
     /* Some fields are autofilled to a value as per (autofill_rules)
@@ -452,15 +484,8 @@ class CustomField extends Component {
         />
       )
     }
-    if (field.autofill_rule) {
-      return (
-        <AutofillInput
-          field={field}
-          fieldProps={fieldProps}
-          formName={formName}
-          saveAutofill={handleSave}
-        />
-      )
+     if ( field.autofill_rule && field.display !== 'readonly' ) {
+      return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} saveAutofill={handleSave}/>
     }
 
     if (type === 'toggle') {
@@ -468,9 +493,9 @@ class CustomField extends Component {
         <Field
           {...fieldProps}
           label={field.label}
-          attributeData={this.props.attributeData}
+          attributeData={ this.props.attributeData }
         />
-      )
+        )
     }
 
     if (type === 'rich_text' || type === 'rich_text_short') {
@@ -478,8 +503,7 @@ class CustomField extends Component {
       let currentDefaultValue = defaultValue
 
       // Non-fieldset fields get defaultValue from attributeData
-      if (!defaultValue)
-        currentDefaultValue = attributeData ? attributeData[field.name] : null
+      if (!defaultValue) currentDefaultValue = attributeData ? attributeData[field.name] : null
       return (
         <Field
           {...fieldProps}
@@ -487,13 +511,13 @@ class CustomField extends Component {
           formName={formName}
           className={`${this.props.className} ${error ? error : ''}`}
           maxSize={field.character_limit}
-          attributeData={this.props.attributeData}
+          attributeData={ this.props.attributeData }
         />
       )
     }
 
     if (fieldset) {
-      return <FieldArray attributeData={attributeData} {...fieldProps} />
+      return <FieldArray attributeData={ attributeData }  {...fieldProps} />
     }
 
     return (

@@ -44,6 +44,11 @@ export const currentProjectSelector = createSelector(
   project => project.currentProject || null
 )
 
+export const timelineProjectSelector = createSelector(
+  selectProject,
+  ({ timelineProject }) => timelineProject
+)
+
 export const attributeDataSelector = createSelector(
   currentProjectSelector,
   ({ attribute_data }) => attribute_data
@@ -95,18 +100,6 @@ export const usersSelector = createSelector(
   (currentProject = {}) =>
     currentProject && currentProject._metadata ? currentProject._metadata.users : []
 )
-
-export const latestUpdateSelector = createSelector(updatesSelector, updates => {
-  let latest = null
-  let field = null
-  Object.keys(updates).forEach(key => {
-    if (!latest || new Date(updates[key].timestamp) - new Date(latest.timestamp) > 0) {
-      latest = updates[key]
-      field = key
-    }
-  })
-  return { latest, field }
-})
 
 export const deadlinesSelector = createSelector(
   currentProjectSelector,

@@ -1,11 +1,11 @@
 import projectUtils from './projectUtils'
 
 /* Field returns info whether field given as a parameter should be shown or not.
-*
-*  Autofill_rule has variables property which is meant to add a value from form to
-*  rule. Now it is only implemented if type is boolean and expected return value is string.
-*  Eq. "Kaavan nimi"-rule which has project name at the beginning and "asemakaava" or "asemakaava ja asemakaavan muuttaminen"
-*/
+ *
+ *  Autofill_rule has variables property which is meant to add a value from form to
+ *  rule. Now it is only implemented if type is boolean and expected return value is string.
+ *  Eq. "Kaavan nimi"-rule which has project name at the beginning and "asemakaava" or "asemakaava ja asemakaavan muuttaminen"
+ */
 export const getFieldAutofillValue = (autofill_rule, formValues) => {
   let returnValue
   let projectNameAdded = false
@@ -16,10 +16,11 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
 
   if (autofill_rule && autofill_rule.length > 0) {
     autofill_rule.forEach(autofill => {
+
       const condition = autofill.condition
       const thenBranch = autofill.then_branch
 
-      if (!condition || !thenBranch) {
+      if (!condition || ( !thenBranch && thenBranch !== '')) {
         return ''
       }
       const variable = condition.variable
@@ -28,33 +29,34 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
       const comparisonValueType = condition.comparison_value_type
       const extraVariables = autofill.variables
 
-      let formValue = formValues[variable] !== undefined ?
-        formValues[variable] :
-        projectUtils.findValueFromObject( formValues, variable)
+      let formValue =
+        formValues[variable] !== undefined
+          ? formValues[variable]
+          : projectUtils.findValueFromObject(formValues, variable)
 
-       // Now only one variable is expected
-      let formExtraValue = extraVariables ? formValues[extraVariables[0]] : ''
+      // Now only one variable is expected
+      let formExtraValue = extraVariables
+        ? projectUtils.findValueFromObject(formValues, extraVariables[0])
+        : ''
 
-      if ( !formExtraValue ) {
+      if (!formExtraValue) {
         formExtraValue = ''
       }
 
-       // List rule
+      // List rule
       if (comparisonValueType === 'list<string>') {
-
         if (comparisonValue.includes(formValue)) {
-
-          if ( thenBranch === TRUE_STRING ) {
+          if (thenBranch === TRUE_STRING) {
             returnValue = true
             return
           }
-          if ( thenBranch === FALSE_STRING ) {
+          if (thenBranch === FALSE_STRING) {
             returnValue = false
             return
           }
           returnValue = thenBranch
           return
-         }
+        }
       }
       // String
       if (comparisonValueType === 'string') {
@@ -70,8 +72,8 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
       // Boolean type
       if (comparisonValueType === 'boolean') {
         const realValue = formValue ? formValue === true : false
-        if (operator === EQUAL && comparisonValue === realValue ) {
-          if ( thenBranch === TRUE_STRING ) {
+        if (operator === EQUAL && comparisonValue === realValue) {
+          if (thenBranch === TRUE_STRING) {
             returnValue = true
             return
           } else if (thenBranch === 'False ') {
@@ -79,14 +81,15 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
             return
           } else {
             if (returnValue) {
-              if ( formExtraValue && !projectNameAdded ) {
-               returnValue = `${formExtraValue} ${returnValue} ${thenBranch}`
-               projectNameAdded = true
+              if (formExtraValue && !projectNameAdded) {
+
+                returnValue = `${formExtraValue} ${returnValue} ${thenBranch}`
+                projectNameAdded = true
               } else {
                 returnValue = `${returnValue} ${thenBranch}`
               }
             } else {
-              if ( !projectNameAdded ) {
+              if (!projectNameAdded) {
                 returnValue = `${formExtraValue} ${thenBranch}`
                 projectNameAdded = true
               } else {
@@ -95,18 +98,18 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
             }
           }
         } else {
-          if ( extraVariables && !projectNameAdded ) {
+          if (extraVariables && !projectNameAdded) {
             returnValue = formExtraValue
             projectNameAdded = true
           }
         }
         if (operator === NOT_EQUAL && comparisonValue !== realValue) {
-          if ( thenBranch === TRUE_STRING) {
+          if (thenBranch === TRUE_STRING) {
             returnValue = true
             return
-           } else if (thenBranch === FALSE_STRING) {
-              returnValue = false
-              return
+          } else if (thenBranch === FALSE_STRING) {
+            returnValue = false
+            return
           } else {
             if (returnValue) {
               returnValue = `${returnValue} ${thenBranch}`
@@ -126,8 +129,8 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
           return
         }
       }
-
     })
   }
+
   return returnValue
 }

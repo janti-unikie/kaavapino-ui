@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Loader } from 'semantic-ui-react'
 import {
   initializeProject,
-  saveProjectBase
+  saveProjectBase,
+  changeProjectPhase
 } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
 import {
@@ -14,7 +15,6 @@ import {
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
 import {
-  latestEditFieldSelector,
   allEditFieldsSelector
 } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
@@ -72,7 +72,6 @@ class ProjectPage extends Component {
 
   switchDisplayedPhase = phase => {
     if (this.props.edit) {
-      //this.props.changeProjectPhase(phase)
       this.setState({ selectedPhase: phase })
     }
   }
@@ -180,17 +179,6 @@ class ProjectPage extends Component {
       </NavActions>
     )
   }
-
-  getLatestChange = () => {
-    const { edit, latestEditField } = this.props
-    if (!edit || !latestEditField || !latestEditField.name) {
-      return null
-    }
-    return `Viimeisin muokkaus: ${latestEditField.name} ${projectUtils.formatDateTime(
-      latestEditField.timestamp
-    )} ${latestEditField.user_name}`
-  }
-
   getAllChanges = () => {
     const { allEditFields, edit } = this.props
 
@@ -247,10 +235,9 @@ class ProjectPage extends Component {
           title={currentProject.name}
           subTitle={this.getSubTitle()}
           actions={this.getNavActions()}
-          info={this.getLatestChange()}
           infoOptions={this.getAllChanges()}
         />
-        <ProjectTimeline deadlines={deadlines} />
+        <ProjectTimeline deadlines={deadlines} projectView={true} />
         <NewProjectFormModal
           currentProject={currentProject}
           open={this.state.showBaseInformationForm}
@@ -276,7 +263,8 @@ class ProjectPage extends Component {
 const mapDispatchToProps = {
   initializeProject,
   saveProjectBase,
-  fetchUsers
+  fetchUsers,
+  changeProjectPhase
 }
 
 const mapStateToProps = state => {
@@ -287,7 +275,6 @@ const mapStateToProps = state => {
     projectSubtypes: projectSubtypesSelector(state),
     currentProjectLoaded: currentProjectLoadedSelector(state),
     changingPhase: changingPhaseSelector(state),
-    latestEditField: latestEditFieldSelector(state),
     allEditFields: allEditFieldsSelector(state)
   }
 }
