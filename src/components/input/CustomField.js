@@ -108,7 +108,7 @@ class CustomField extends Component {
     const { multiple_choice, placeholder_text } = this.props.field
     const { onBlur, handleSave, attributeData, parentName } = this.props
 
-    projectUtils.checkInputValue(props, attributeData, parentName )
+    projectUtils.checkInputValue(props, attributeData, parentName)
 
     if (this.yearOptions.length === 0) {
       this.yearOptions = projectUtils.generateArrayOfYears()
@@ -127,7 +127,7 @@ class CustomField extends Component {
 
   renderString = props => {
     const { onBlur, attributeData, parentName } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName )
+    projectUtils.checkInputValue(props, attributeData, parentName)
     return <Input onBlur={onBlur} type="text" {...props} />
   }
 
@@ -172,7 +172,7 @@ class CustomField extends Component {
   }
 
   renderDate = props => {
-    const { onBlur, attributeData, parentName  } = this.props
+    const { onBlur, attributeData, parentName } = this.props
     projectUtils.checkInputValue(props, attributeData, parentName)
     return (
     <Input
@@ -280,8 +280,26 @@ class CustomField extends Component {
       onRadioChange,
       placeholder,
       formName,
-      updated  } = this.props
-
+      updated
+    } = this.props
+    let requiredError = false
+    if (fieldset_attributes) {
+      fieldset_attributes.map((field) => {
+        if (attributeData[name]) {
+          if (
+            projectUtils.isFieldMissing(
+              field.name,
+              field.required,
+              attributeData[name][0]
+            )
+          ) {
+            requiredError = true
+          }
+        } else if (field.required) {
+          requiredError = true
+        }
+      })
+    }
     return (
       <FieldSet
         sets={sets}
@@ -289,11 +307,7 @@ class CustomField extends Component {
         attributeData={attributeData}
         name={name}
         placeholder={placeholder || label}
-        disabled={
-          generated ||
-          disabled ||
-          autofill_readonly ? true : false
-        }
+        disabled={generated || disabled || autofill_readonly ? true : false}
         formValues={formValues}
         validate={[this.validateFieldSize]}
         syncronousErrors={syncronousErrors}
@@ -302,7 +316,7 @@ class CustomField extends Component {
         field={field}
         formName={formName}
         updated={updated}
-
+        requiredError={requiredError}
       />
     )
   }
