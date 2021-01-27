@@ -24,7 +24,7 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
       const condition = autofill.condition
       const thenBranch = autofill.then_branch
 
-      if (!condition ) {
+      if (!condition) {
         continue
       }
       const variable = condition.variable
@@ -64,18 +64,12 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
       }
       // Boolean type
       if (comparisonValueType === 'boolean') {
-
         let realValue = false
 
         // First check if formValue is quill delta format or normal value
-        if ( formValue && formValue.ops) {
+        if (formValue && formValue.ops) {
           const richTextValue = formValue && formValue.ops ? toPlaintext(formValue.ops).trim() : undefined
-
-          const richTextHasValue = richTextValue && richTextValue.trim() !== '' ? true : false
-
-          if (richTextHasValue && richTextValue && richTextValue.trim() !== '') {
-            realValue = richTextHasValue === true
-          }
+          realValue = richTextValue && richTextValue.trim() !== '' ? true : false
         } else {
           if (!isBoolean(formValue)) {
             realValue = !formValue ? false : true
@@ -91,7 +85,7 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
           } else if (thenBranch === FALSE_STRING) {
             returnValue = false
             continue
-          }  else if ( thenBranch === '' && !formExtraValue) {
+          } else if (thenBranch === '' && !formExtraValue) {
             returnValue = true
             break
           } else {
@@ -104,8 +98,8 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
               }
             } else {
               if (!projectNameAdded) {
-                if ( thenBranch && thenBranch !== '') {
-                returnValue = `${formExtraValue} ${thenBranch}`
+                if (thenBranch && thenBranch !== '') {
+                  returnValue = `${formExtraValue} ${thenBranch}`
                 } else {
                   returnValue = formExtraValue
                 }
@@ -120,10 +114,9 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
             returnValue = formExtraValue
             projectNameAdded = true
           }
-          if ( thenBranch === '' && !extraVariables) {
+          if (thenBranch === '' && !extraVariables) {
             returnValue = false
           }
-
         }
         if (operator === NOT_EQUAL && comparisonValue !== realValue) {
           if (thenBranch === TRUE_STRING) {
