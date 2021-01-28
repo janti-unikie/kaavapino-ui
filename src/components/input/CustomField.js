@@ -172,8 +172,8 @@ class CustomField extends Component {
   }
 
   renderDate = props => {
-    const { onBlur, attributeData, parentName  } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName)
+    const { onBlur, attributeData, parentName, deadlines  } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName, deadlines)
 
     return (
     <Input
@@ -342,8 +342,8 @@ class CustomField extends Component {
     )
   }
   renderDeadlineInfo = props => {
-    const { attributeData, parentName, field } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName)
+    const { attributeData, parentName, field, deadlines } = this.props
+    projectUtils.checkInputValue(props, attributeData, parentName, deadlines)
 
     return (
       <DeadlineInfoText label={field.label} autofillRule={field.autofill_rule} {...props } />
