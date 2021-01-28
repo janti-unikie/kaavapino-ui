@@ -77,9 +77,22 @@ export const showField = (field, formValues) => {
           returnValue = true
           return
         }
-        if (operator === '!=' && comparisonValue !== formValues[variable]) {
-          returnValue = true
+        if ( comparisonValueType === 'number' ) {
+
+          let value = formValues[variable]
+          if ( !value ) {
+            value = 0
+          }
+
+          if (operator === '!='  && comparisonValue !== +value ) {
+            returnValue = true
+          }
+        } else {
+          if (operator === '!='  && comparisonValue !== formValues[variable]) {
+            returnValue = true
+          }
         }
+
       }
     })
   } else {

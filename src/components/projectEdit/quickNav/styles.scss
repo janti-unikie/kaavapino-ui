@@ -78,6 +78,10 @@
     }
   }
 
+.secondary .ui.active.inline.loader:before {
+  border-color: $dark-blue-color;
+}
+
   @media screen and (max-width: 545px) {
     border: 1px solid gainsboro;
   }
@@ -95,9 +99,6 @@
         border-radius: 0 !important;
         }
       }
-    }
-    label {
-
     }
   }
 }

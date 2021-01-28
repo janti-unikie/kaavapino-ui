@@ -968,10 +968,10 @@ describe('Autofill tests', () => {
     conditionObject1.comparison_value_type = 'number'
 
     const conditionObject2 = {}
-    conditionObject1.variable = 'vaarien_mielipiteiden_maara'
-    conditionObject1.operator = '>'
-    conditionObject1.comparison_value = 0
-    conditionObject1.comparison_value_type = 'number'
+    conditionObject2.variable = 'vaarien_mielipiteiden_maara'
+    conditionObject2.operator = '>'
+    conditionObject2.comparison_value = 0
+    conditionObject2.comparison_value_type = 'number'
 
     const condition = { condition: conditionObject1, then_branch: true }
     const condition2 = { condition: conditionObject2, then_branch: true }
@@ -979,7 +979,7 @@ describe('Autofill tests', () => {
     field.autofill_rule = [condition, condition2]
 
     const formValues = {
-      mielipiteiden_maara: 0,
+      mielipiteiden_maara: null,
       vaarien_mielipiteiden_maara: 1
     }
     expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
@@ -993,10 +993,10 @@ describe('Autofill tests', () => {
     conditionObject1.comparison_value_type = 'number'
 
     const conditionObject2 = {}
-    conditionObject1.variable = 'vaarien_mielipiteiden_maara'
-    conditionObject1.operator = '>'
-    conditionObject1.comparison_value = 0
-    conditionObject1.comparison_value_type = 'number'
+    conditionObject2.variable = 'vaarien_mielipiteiden_maara'
+    conditionObject2.operator = '>'
+    conditionObject2.comparison_value = 0
+    conditionObject2.comparison_value_type = 'number'
 
     const condition = { condition: conditionObject1, then_branch: true }
     const condition2 = { condition: conditionObject2, then_branch: true }
@@ -1017,10 +1017,10 @@ describe('Autofill tests', () => {
     conditionObject1.comparison_value_type = 'number'
 
     const conditionObject2 = {}
-    conditionObject1.variable = 'vaarien_mielipiteiden_maara'
-    conditionObject1.operator = '>'
-    conditionObject1.comparison_value = 0
-    conditionObject1.comparison_value_type = 'number'
+    conditionObject2.variable = 'vaarien_mielipiteiden_maara'
+    conditionObject2.operator = '>'
+    conditionObject2.comparison_value = 0
+    conditionObject2.comparison_value_type = 'number'
 
     const condition = { condition: conditionObject1, then_branch: true }
     const condition2 = { condition: conditionObject2, then_branch: true }
@@ -1041,19 +1041,17 @@ describe('Autofill tests', () => {
     conditionObject1.comparison_value_type = 'number'
 
     const conditionObject2 = {}
-    conditionObject1.variable = 'vaarien_mielipiteiden_maara'
-    conditionObject1.operator = '>'
-    conditionObject1.comparison_value = 0
-    conditionObject1.comparison_value_type = 'number'
+    conditionObject2.variable = 'vaarien_mielipiteiden_maara'
+    conditionObject2.operator = '>'
+    conditionObject2.comparison_value = 0
+    conditionObject2.comparison_value_type = 'number'
 
     const condition = { condition: conditionObject1, then_branch: true }
     const condition2 = { condition: conditionObject2, then_branch: true }
 
     field.autofill_rule = [condition, condition2]
 
-    const formValues = {
-
-    }
+    const formValues = {}
     expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
   })
   it('Autofill rule succeeds string with formvalue', () => {
@@ -1106,5 +1104,231 @@ describe('Autofill tests', () => {
       yksikon_johtaja: 'Jaska'
     }
     expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(undefined)
+  })
+  it('New autofill radiobutton rule', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'tehty_muutos_lausuntojen_johdosta'
+    conditionObject2.operator = '=='
+    conditionObject2.comparison_value = true
+    conditionObject2.comparison_value_type = 'boolean'
+
+    const conditionObject3 = {}
+    conditionObject3.variable = 'ehty_muutos_muistutusten_johdosta'
+    conditionObject3.operator = '!='
+    conditionObject3.comparison_value = true
+    conditionObject3.comparison_value_type = 'boolean'
+
+    const condition = { condition: conditionObject1, then_branch: 'True' }
+    const condition2 = { condition: conditionObject2, then_branch: 'True' }
+    const condition3 = { condition: conditionObject3, then_branch: 'True' }
+
+    field.autofill_rule = [condition, condition2, condition3]
+
+    const formValues = {
+      tehty_muutos_muistutusten_johdosta: 'joo, muutos tehty',
+      tehty_muutos_lausuntojen_johdosta: 'joo'
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+  })
+  it('New autofill radiobutton rule 2', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'tehty_muutos_lausuntojen_johdosta'
+    conditionObject2.operator = '=='
+    conditionObject2.comparison_value = true
+    conditionObject2.comparison_value_type = 'boolean'
+
+    const conditionObject3 = {}
+    conditionObject3.variable = 'ehty_muutos_muistutusten_johdosta'
+    conditionObject3.operator = '!='
+    conditionObject3.comparison_value = true
+    conditionObject3.comparison_value_type = 'boolean'
+
+    const condition = { condition: conditionObject1, then_branch: 'True' }
+    const condition2 = { condition: conditionObject2, then_branch: 'True' }
+    const condition3 = { condition: conditionObject3, then_branch: 'True' }
+
+    field.autofill_rule = [condition, condition2, condition3]
+
+    const formValues = {
+      tehty_muutos_lausuntojen_johdosta: 'joo, muutos tehty'
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+  })
+  it('New autofill radiobutton rule 3', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'tehty_muutos_lausuntojen_johdosta'
+    conditionObject2.operator = '=='
+    conditionObject2.comparison_value = true
+    conditionObject2.comparison_value_type = 'boolean'
+
+    const conditionObject3 = {}
+    conditionObject3.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject3.operator = '!='
+    conditionObject3.comparison_value = true
+    conditionObject3.comparison_value_type = 'boolean'
+
+    const condition = { condition: conditionObject1, then_branch: 'True' }
+    const condition2 = { condition: conditionObject2, then_branch: 'True' }
+    const condition3 = { condition: conditionObject3, then_branch: 'False' }
+
+    field.autofill_rule = [condition, condition2, condition3]
+
+    const formValues = {}
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+  })
+  it('New autofill radiobutton rule 4', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'tehty_muutos_lausuntojen_johdosta'
+    conditionObject2.operator = '=='
+    conditionObject2.comparison_value = true
+    conditionObject2.comparison_value_type = 'boolean'
+
+    const conditionObject3 = {}
+    conditionObject3.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject3.operator = '!='
+    conditionObject3.comparison_value = true
+    conditionObject3.comparison_value_type = 'boolean'
+
+    const condition = { condition: conditionObject1, then_branch: 'True' }
+    const condition2 = { condition: conditionObject2, then_branch: 'True' }
+    const condition3 = { condition: conditionObject3, then_branch: 'False' }
+
+    field.autofill_rule = [condition, condition2, condition3]
+
+    const formValues = {
+      tehty_muutos_muistutusten_johdosta: '',
+      tehty_muutos_lausuntojen_johdosta: 'jee'
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+  })
+  it('New autofill radiobutton rule 5', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'tehty_muutos_lausuntojen_johdosta'
+    conditionObject2.operator = '=='
+    conditionObject2.comparison_value = true
+    conditionObject2.comparison_value_type = 'boolean'
+
+    const conditionObject3 = {}
+    conditionObject3.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject3.operator = '!='
+    conditionObject3.comparison_value = true
+    conditionObject3.comparison_value_type = 'boolean'
+
+    const condition = { condition: conditionObject1, then_branch: 'True' }
+    const condition2 = { condition: conditionObject2, then_branch: 'True' }
+    const condition3 = { condition: conditionObject3, then_branch: 'False' }
+
+    field.autofill_rule = [condition, condition2, condition3]
+
+    const formValues = {
+      tehty_muutos_muistutusten_johdosta: null,
+      tehty_muutos_lausuntojen_johdosta: 'jee'
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+  })
+  it('New autofill radiobutton rule 6', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'tehty_muutos_lausuntojen_johdosta'
+    conditionObject2.operator = '=='
+    conditionObject2.comparison_value = true
+    conditionObject2.comparison_value_type = 'boolean'
+
+    const conditionObject3 = {}
+    conditionObject3.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject3.operator = '!='
+    conditionObject3.comparison_value = true
+    conditionObject3.comparison_value_type = 'boolean'
+
+    const condition = { condition: conditionObject1, then_branch: 'True' }
+    const condition2 = { condition: conditionObject2, then_branch: 'True' }
+    const condition3 = { condition: conditionObject3, then_branch: 'False' }
+
+    field.autofill_rule = [condition, condition2, condition3]
+
+    const formValues = {
+      tehty_muutos_muistutusten_johdosta: null,
+      tehty_muutos_lausuntojen_johdosta: null
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+  })
+  it('New autofill radiobutton rule 7', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'tehty_muutos_lausuntojen_johdosta'
+    conditionObject2.operator = '=='
+    conditionObject2.comparison_value = true
+    conditionObject2.comparison_value_type = 'boolean'
+
+    const conditionObject3 = {}
+    conditionObject3.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject3.operator = '!='
+    conditionObject3.comparison_value = true
+    conditionObject3.comparison_value_type = 'boolean'
+
+    const conditionObject4 = {}
+    conditionObject3.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject3.operator = '!='
+    conditionObject3.comparison_value = true
+    conditionObject3.comparison_value_type = 'boolean'
+
+    const condition = { condition: conditionObject1, then_branch: 'True' }
+    const condition2 = { condition: conditionObject2, then_branch: 'True' }
+    const condition3 = { condition: conditionObject3, then_branch: 'False' }
+    const condition4 = { condition: conditionObject4, then_branch: 'False' }
+
+    field.autofill_rule = [condition, condition2, condition3, condition4]
+
+    const formValues = {
+      tehty_muutos_muistutusten_johdosta: undefined
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
   })
 })
