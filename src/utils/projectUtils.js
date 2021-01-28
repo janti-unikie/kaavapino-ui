@@ -214,7 +214,7 @@ const checkInputValue = (props, attributeData, parentName, deadlines) => {
     )
 
     if (current) {
-      props.input.value = current.date
+      props.input.defaultValue = current.date
     }
     return
   }
