@@ -11,6 +11,7 @@ import Collapse from '../../common/collapse'
 import './styles.scss'
 import { deadlineSectionsSelector } from '../../../selectors/schemaSelector'
 import { withTranslation } from 'react-i18next'
+import { deadlinesSelector } from '../../../selectors/projectSelector'
 
 class EditProjectTimeTableModal extends Component {
   constructor(props) {
@@ -67,7 +68,7 @@ class EditProjectTimeTableModal extends Component {
   }
 
   getFormField(fieldProps, key) {
-    const { formSubmitErrors, formValues } = this.props
+    const { formSubmitErrors, formValues, deadlines } = this.props
     const error =
       formSubmitErrors && fieldProps && formSubmitErrors && formSubmitErrors[fieldProps.field.name]
 
@@ -77,6 +78,7 @@ class EditProjectTimeTableModal extends Component {
           {...fieldProps}
           formName={EDIT_PROJECT_TIMETABLE_FORM}
           attributeData={{}}
+          deadlines={deadlines}
           error={error}
           formValues={formValues}
           className={ error ? 'modal-field error-border' : 'modal-field'}
@@ -161,7 +163,8 @@ EditProjectTimeTableModal.propTypes = {
 const mapStateToProps = state => ({
   formSubmitErrors: getFormSubmitErrors(EDIT_PROJECT_TIMETABLE_FORM)(state),
   deadlineSections: deadlineSectionsSelector(state),
-  formValues: getFormValues(EDIT_PROJECT_TIMETABLE_FORM)(state)
+  formValues: getFormValues(EDIT_PROJECT_TIMETABLE_FORM)(state),
+  deadlines: deadlinesSelector(state)
 })
 
 const decoratedForm = reduxForm({

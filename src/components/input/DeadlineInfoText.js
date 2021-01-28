@@ -9,7 +9,7 @@ const DeadlineInfoText = props => {
   const formValues = useSelector(getFormValues(EDIT_PROJECT_TIMETABLE_FORM))
   let inputValue = props.input && props.input.value
 
-  if (props.autofillRule) {
+  if (props.autofillRule && props.autofillRule.length > 0) {
     inputValue = getFieldAutofillValue(props.autofillRule, formValues)
   }
 
