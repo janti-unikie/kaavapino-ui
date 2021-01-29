@@ -28,10 +28,12 @@ class EditProjectTimeTableModal extends Component {
   }
 
   setLoadingFalse = () => {
-    this.setState({ loading: false })
+    if (this.state.loading) {
+      this.setState({ loading: false })
+    }
   }
 
- componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps) {
     const {
       saving,
       initialize,
@@ -39,11 +41,12 @@ class EditProjectTimeTableModal extends Component {
       submitSucceeded,
       submitFailed
     } = this.props
+
     /* handle submit success / failure */
 
     if (prevProps.submitting && submitSucceeded) {
       this.handleClose()
-    } else if (prevProps.submitting && submitFailed ) {
+    } else if (prevProps.submitting && submitFailed) {
       this.setLoadingFalse()
     }
     if (prevProps.saving && !saving) {
@@ -52,25 +55,27 @@ class EditProjectTimeTableModal extends Component {
   }
 
   handleSubmit = () => {
-     this.setState({ loading: true })
+    this.setState({ loading: true })
+    const errors = this.props.handleSubmit()
 
-    const { handleSubmit } = this.props
-
-    const errors = handleSubmit()
-    console.log( errors)
+    if (errors) {
+      this.setState({ loading: false })
+    }
+    console.log(errors)
   }
 
   handleClose = () => {
-    const { reset, handleClose } = this.props
-    reset()
-    handleClose()
-    this.setState({ loading: false })
+    this.props.reset()
+    this.props.handleClose()
   }
 
   getFormField(fieldProps, key) {
     const { formSubmitErrors, formValues, deadlines } = this.props
     const error =
-      formSubmitErrors && fieldProps && formSubmitErrors && formSubmitErrors[fieldProps.field.name]
+      formSubmitErrors &&
+      fieldProps &&
+      formSubmitErrors &&
+      formSubmitErrors[fieldProps.field.name]
 
     return (
       <div key={key}>
@@ -81,22 +86,20 @@ class EditProjectTimeTableModal extends Component {
           deadlines={deadlines}
           error={error}
           formValues={formValues}
-          className={ error ? 'modal-field error-border' : 'modal-field'}
+          className={error ? 'modal-field error-border' : 'modal-field'}
           isProjectTimetableEdit={true}
         />
         {error && <div className="field-error">{error}</div>}
-
       </div>
     )
   }
   getFormFields = (sections, sectionIndex) => {
     const formFields = []
-    sections.forEach((subsection) => {
-      subsection.attributes.forEach(( field, fieldIndex ) => {
-          formFields.push( this.getFormField( { field }, `${sectionIndex} - ${fieldIndex}` ))
-        })
-    }
-    )
+    sections.forEach(subsection => {
+      subsection.attributes.forEach((field, fieldIndex) => {
+        formFields.push(this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`))
+      })
+    })
     return formFields
   }
 
@@ -108,15 +111,15 @@ class EditProjectTimeTableModal extends Component {
       </Collapse>
     )
   }
-  setLoading = (loading) => {
-    this.setState( { loading })
+  setLoading = loading => {
+    this.setState({ loading })
   }
 
   render() {
     const { loading } = this.state
     const { open, formValues, deadlineSections, t } = this.props
 
-    if ( !formValues ) {
+    if (!formValues) {
       return null
     }
 
@@ -132,8 +135,8 @@ class EditProjectTimeTableModal extends Component {
         <Modal.Content>
           <Form>
             {deadlineSections.map((section, sectionIndex) =>
-                this.renderSection(section, sectionIndex)
-              )}
+              this.renderSection(section, sectionIndex)
+            )}
           </Form>
         </Modal.Content>
         <Modal.Actions>

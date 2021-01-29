@@ -64,15 +64,18 @@
   }
   .ui.input.error>input {
     background-color: #fff6f6;
-    border-color: #e0b4b4;
+    border: 1px solid #e0b4b4;
     color: $color-error-text;
-    box-shadow: none;
   }
   .ui.input.error>input:focus {
-
-    border-color:0;
-    border-radius: 0;
-    box-shadow: 0;
+    border: 1px solid $color-error-text;
+    background-color: #fff6f6;
+    box-shadow: 1px solid $color-error-text;
+  }
+  .ui.input.error>input:hover {
+    border: 1px solid $color-error-text;
+    box-shadow: inset 0px 0px 0px 1px $color-error-text;
+  
   }
   .error {
     color: $color-error-text !important;
