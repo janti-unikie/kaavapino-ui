@@ -114,7 +114,6 @@ const formatSubtype = (id, subtypes) => {
 }
 
 const formatPayload = (changedValues, sections, parentNames, initialValues) => {
-
   const keys = Object.keys(changedValues)
   const fieldsetList = keys.filter(key => key.indexOf('fieldset') !== -1)
 
@@ -144,12 +143,16 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
     const attributes = getFieldsetAttributes(currentFieldset, sections)
     const currentObject = {}
 
-    if ( attributes ) {
+    if (attributes) {
       attributes.forEach(attribute => {
         //use new value for this field
-        if (changedValues[attribute] || isBoolean(changedValues[attribute]) || changedValues[attribute] === '')  {
+        if (
+          changedValues[attribute] ||
+          isBoolean(changedValues[attribute]) ||
+          changedValues[attribute] === ''
+        ) {
           currentObject[attribute] = changedValues[attribute]
-        // use initlavalue
+          // use initlavalue
         } else if (initialValues[attribute] || isBoolean(initialValues[attribute])) {
           currentObject[attribute] = initialValues[attribute]
         }
@@ -204,14 +207,16 @@ const getFieldValue = (data, fieldName) => {
   return value
 }
 
-const checkInputValue = (props, attributeData, parentName)  => {
+const checkInputValue = (props, attributeData, parentName, currentDeadline) => {
+
+    if (currentDeadline) {
+      props.input.defaultValue = currentDeadline.date
+      return
+    }
 
   if (props && parentName && attributeData[parentName]) {
     if (!props.input.value || isBoolean(props.input.value)) {
-      const inputValue = getFieldValue(
-        attributeData[parentName],
-        props.input.name
-      )
+      const inputValue = getFieldValue(attributeData[parentName], props.input.name)
       if (inputValue || isBoolean(inputValue) || !isNaN(inputValue))
         props.input.value = inputValue
     }
@@ -239,19 +244,19 @@ const generateArrayOfYears = () => {
 
 const findValueFromObject = (object, key) => {
   let value
-  Object.keys(object).some((currentKey) =>  {
-      if (currentKey === key) {
-          value = object[currentKey]
-          return true
-      }
-      if (object[currentKey] && typeof object[currentKey] === 'object') {
-          value = findValueFromObject(object[currentKey], key)
-          return value !== undefined
-      }
-      return false
+  Object.keys(object).some(currentKey => {
+    if (currentKey === key) {
+      value = object[currentKey]
+      return true
+    }
+    if (object[currentKey] && typeof object[currentKey] === 'object') {
+      value = findValueFromObject(object[currentKey], key)
+      return value !== undefined
+    }
+    return false
   })
   return value
-  }
+}
 export default {
   formatDate,
   formatTime,

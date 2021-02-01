@@ -1,4 +1,6 @@
 import projectUtils from './projectUtils'
+import { isBoolean } from 'lodash'
+import toPlaintext from 'quill-delta-to-plaintext'
 
 /* Field returns info whether field given as a parameter should be shown or not.
  *
@@ -9,19 +11,21 @@ import projectUtils from './projectUtils'
 export const getFieldAutofillValue = (autofill_rule, formValues) => {
   let returnValue
   let projectNameAdded = false
+
   const EQUAL = '=='
   const NOT_EQUAL = '!='
   const TRUE_STRING = 'True'
   const FALSE_STRING = 'False'
+  const BIGGER_THAN = '>'
 
   if (autofill_rule && autofill_rule.length > 0) {
-    autofill_rule.forEach(autofill => {
-
+    for (let index in autofill_rule) {
+      const autofill = autofill_rule[index]
       const condition = autofill.condition
       const thenBranch = autofill.then_branch
 
-      if (!condition || ( !thenBranch && thenBranch !== '')) {
-        return ''
+      if (!condition) {
+        continue
       }
       const variable = condition.variable
       const operator = condition.operator
@@ -30,9 +34,9 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
       const extraVariables = autofill.variables
 
       let formValue =
-        formValues[variable] !== undefined
-          ? formValues[variable]
-          : projectUtils.findValueFromObject(formValues, variable)
+        formValues[variable] === undefined
+          ? projectUtils.findValueFromObject(formValues, variable)
+          : formValues[variable]
 
       // Now only one variable is expected
       let formExtraValue = extraVariables
@@ -48,41 +52,45 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
         if (comparisonValue.includes(formValue)) {
           if (thenBranch === TRUE_STRING) {
             returnValue = true
-            return
+            continue
           }
           if (thenBranch === FALSE_STRING) {
             returnValue = false
-            return
+            continue
           }
           returnValue = thenBranch
-          return
-        }
-      }
-      // String
-      if (comparisonValueType === 'string') {
-        if (operator === EQUAL && comparisonValue === formValue) {
-          returnValue = thenBranch
-          return
-        }
-        if (operator === NOT_EQUAL && comparisonValue !== formValue) {
-          returnValue = thenBranch
-          return
+          continue
         }
       }
       // Boolean type
       if (comparisonValueType === 'boolean') {
-        const realValue = formValue ? formValue === true : false
+        let realValue = false
+
+        // First check if formValue is quill delta format or normal value
+        if (formValue && formValue.ops) {
+          const richTextValue = formValue && formValue.ops ? toPlaintext(formValue.ops).trim() : undefined
+          realValue = richTextValue && richTextValue.trim() !== '' ? true : false
+        } else {
+          if (!isBoolean(formValue)) {
+            realValue = !formValue ? false : true
+          } else {
+            realValue = formValue ? formValue === true : false
+          }
+        }
+
         if (operator === EQUAL && comparisonValue === realValue) {
           if (thenBranch === TRUE_STRING) {
             returnValue = true
-            return
-          } else if (thenBranch === 'False ') {
+            break
+          } else if (thenBranch === FALSE_STRING) {
             returnValue = false
-            return
+            continue
+          } else if (thenBranch === '' && !formExtraValue) {
+            returnValue = true
+            break
           } else {
             if (returnValue) {
               if (formExtraValue && !projectNameAdded) {
-
                 returnValue = `${formExtraValue} ${returnValue} ${thenBranch}`
                 projectNameAdded = true
               } else {
@@ -90,7 +98,11 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
               }
             } else {
               if (!projectNameAdded) {
-                returnValue = `${formExtraValue} ${thenBranch}`
+                if (thenBranch && thenBranch !== '') {
+                  returnValue = `${formExtraValue} ${thenBranch}`
+                } else {
+                  returnValue = formExtraValue
+                }
                 projectNameAdded = true
               } else {
                 returnValue = thenBranch
@@ -102,14 +114,17 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
             returnValue = formExtraValue
             projectNameAdded = true
           }
+          if (thenBranch === '' && !extraVariables) {
+            returnValue = false
+          }
         }
         if (operator === NOT_EQUAL && comparisonValue !== realValue) {
           if (thenBranch === TRUE_STRING) {
             returnValue = true
-            return
+            continue
           } else if (thenBranch === FALSE_STRING) {
             returnValue = false
-            return
+            continue
           } else {
             if (returnValue) {
               returnValue = `${returnValue} ${thenBranch}`
@@ -120,17 +135,37 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
         }
       }
       if (comparisonValueType === 'number' || comparisonValueType === 'string') {
+        const thenFormValue =
+          formValues[thenBranch] === undefined
+            ? projectUtils.findValueFromObject(formValues, thenBranch)
+            : formValues[thenBranch]
+
+        if (!formValue && formValue !== false && formValue !== '') {
+          returnValue = false
+          continue
+        }
         if (operator === EQUAL && comparisonValue === formValue) {
-          returnValue = thenBranch
-          return
+          returnValue = thenFormValue || thenBranch
+          continue
         }
         if (operator === NOT_EQUAL && comparisonValue !== formValue) {
-          returnValue = thenBranch
-          return
+          returnValue = thenFormValue || thenBranch
+          continue
+        }
+        if (operator === BIGGER_THAN && formValue > comparisonValue) {
+          if (thenBranch === 'True') {
+            returnValue = true
+          } else {
+            returnValue = thenFormValue || thenBranch
+          }
+          continue
+        }
+        if (operator === BIGGER_THAN && formValue <= comparisonValue) {
+          returnValue = false
+          continue
         }
       }
-    })
+    }
   }
-
   return returnValue
 }
