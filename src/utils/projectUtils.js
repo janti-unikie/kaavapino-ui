@@ -207,17 +207,12 @@ const getFieldValue = (data, fieldName) => {
   return value
 }
 
-const checkInputValue = (props, attributeData, parentName, deadlines) => {
-  if (deadlines && deadlines.length > 0) {
-    const current = deadlines.find(
-      deadline => deadline.deadline.attribute === props.input.name
-    )
+const checkInputValue = (props, attributeData, parentName, currentDeadline) => {
 
-    if (current) {
-      props.input.defaultValue = current.date
+    if (currentDeadline) {
+      props.input.defaultValue = currentDeadline.date
+      return
     }
-    return
-  }
 
   if (props && parentName && attributeData[parentName]) {
     if (!props.input.value || isBoolean(props.input.value)) {

@@ -13,14 +13,17 @@
     },
     "deadlines": {
         "title": "Päivitä aikataulut",
-        "error": "Virhe: {{error}}"
+        "error": "Virhe: {{error}}",
+        "warning": "Päivitettyjen aikataulutietojen tallentaminen saattaa kestää hieman pidempään kun Kaavapino tekee laskutoimituksia."
     },
     "common": {
         "cancel": "Peruuta",
         "save": "Tallenna"
     },
     "messages": {
-        "deadlines-successfully-saved": "Aikataulut tallennettu onnistuneesti"
+        "deadlines-successfully-saved": "Aikataulut tallennettu onnistuneesti",
+        "min-distance": "Valitse myöhempi päivä, koska tämä on liian lähellä edellistä etappia.",
+        "max-distance": "Valitse aikaisempi päivä, koska tämä on liian lähellä seuraavaa etappia."
     },
     "floor-areas": {
         "title": "Päivitä kerrosalatiedot"
