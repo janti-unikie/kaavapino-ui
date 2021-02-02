@@ -575,6 +575,13 @@
   width: 80%;
  
 }
+.deadline-estimated {
+  color: $color-info !important;
+
+  input {
+    color: $color-info !important;
+  }
+}
 .hidden {
   display: none;
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Input } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
@@ -8,6 +8,9 @@ const DeadLineInput = ({ input, meta: { error }, currentDeadline, ...custom }) =
   const { t } = useTranslation()
 
   let currentError
+  const generated = currentDeadline && currentDeadline.generated
+
+  const [valueGenerated, setValueGenerated] = useState(generated)
 
   if (currentDeadline && currentDeadline.is_under_min_distance_previous) {
     currentError = t('messages.min-distance')
@@ -20,7 +23,25 @@ const DeadLineInput = ({ input, meta: { error }, currentDeadline, ...custom }) =
 
   return (
     <div>
-      <Input error={hasError} {...input} {...custom} fluid />
+      <Input
+        error={hasError}
+        {...input}
+        {...custom}
+        className={
+          generated && valueGenerated
+            ? `${custom.className} deadline-estimated`
+            : custom.className
+        }
+        onBlur={() => {
+          setValueGenerated(false)
+        }}
+        fluid
+      />
+      {valueGenerated ? (
+        <span className="deadline-estimated">{t('deadlines.estimated')}</span>
+      ) : (
+        ''
+      )}
       {currentError && <div className="error-text">{currentError} </div>}
     </div>
   )
