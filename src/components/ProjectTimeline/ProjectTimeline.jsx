@@ -311,8 +311,10 @@ function ProjectTimeline(props) {
     }
   }
   function loadProject() {
-    props.getProject(props.id)
-    setLoadingProject(true)
+    if (!loadingProject) {
+      props.getProject(props.id)
+      setLoadingProject(true)
+    }
   }
   function createTimelineItems(timelineDeadlines) {
     const months = createMonths(timelineDeadlines)
