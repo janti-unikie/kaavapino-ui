@@ -49,8 +49,7 @@ class ProjectEditPage extends Component {
   changePhase = () => {
     const { schema, selectedPhase } = this.props
     const currentSchemaIndex = schema.phases.findIndex(s => s.id === selectedPhase)
-    console.debug(schema.phases.length, currentSchemaIndex + 1)
-    if (currentSchemaIndex + 1 <= schema.phases.length) {
+    if (currentSchemaIndex + 1 < schema.phases.length) {
       this.props.changeProjectPhase(schema.phases[currentSchemaIndex + 1].id)
     } else {
       // do something with last phase
