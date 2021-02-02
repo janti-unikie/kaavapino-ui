@@ -22,8 +22,7 @@ const FieldSet = ({
   syncronousErrors,
   handleSave,
   onRadioChange,
-  updated,
-  requiredError
+  updated
 }) => {
   let numberOfSets = 1
   if (attributeData[sets.name]) {
@@ -35,6 +34,28 @@ const FieldSet = ({
     setTimeout(function () {
       handleSave()
     }, 500)
+  }
+  let requiredError = false
+  if (fields) {
+    fields.forEach(field => {
+      if (attributeData[name]) {
+        attributeData[name].forEach(attribute => {
+          if (
+            checking &&
+            projectUtils.isFieldMissing(field.name, field.required, attribute)
+          ) {
+            requiredError = true
+          }
+        })
+      } else {
+        if (
+          checking &&
+          projectUtils.isFieldMissing(field.name, field.required, attributeData)
+        ) {
+          requiredError = true
+        }
+      }
+    })
   }
   return (
     <React.Fragment>

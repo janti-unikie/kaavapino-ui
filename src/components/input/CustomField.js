@@ -273,25 +273,6 @@ class CustomField extends Component {
       formName,
       updated
     } = this.props
-    let requiredError = false
-    if (fieldset_attributes) {
-      fieldset_attributes.map((field) => {
-        if (attributeData[name]) {
-          if (
-            projectUtils.isFieldMissing(
-              field.name,
-              field.required,
-              attributeData[name][0]
-            )
-          ) {
-            requiredError = true
-          }
-        } else if (field.required) {
-          requiredError = true
-        }
-        return field
-      })
-    }
     return (
       <FieldSet
         sets={sets}
@@ -308,7 +289,6 @@ class CustomField extends Component {
         field={field}
         formName={formName}
         updated={updated}
-        requiredError={requiredError}
       />
     )
   }

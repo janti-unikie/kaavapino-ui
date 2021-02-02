@@ -128,7 +128,10 @@ export const saveProjectTimetableSuccessful = () => ({
 export const saveProject = () => ({ type: SAVE_PROJECT })
 export const saveProjectSuccessful = () => ({ type: SAVE_PROJECT_SUCCESSFUL })
 
-export const validateProjectFields = () => ({ type: VALIDATE_PROJECT_FIELDS })
+export const validateProjectFields = formValues => ({
+  type: VALIDATE_PROJECT_FIELDS,
+  payload: formValues
+})
 export const validateProjectFieldsSuccessful = result => ({
   type: VALIDATE_PROJECT_FIELDS_SUCCESSFUL,
   payload: result
@@ -194,4 +197,3 @@ export const getProjectSnapshotSuccessful = project => ({
 export const resetProjectSnapshot = () => ({
   type: RESET_PROJECT_SNAPSHOT
 })
-

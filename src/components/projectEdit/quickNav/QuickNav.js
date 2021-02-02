@@ -137,8 +137,8 @@ class QuickNav extends Component {
     this.setState({ verifying: false })
   }
 
-  changePhase = () =>  {
-    this.props.validateProjectFields()
+  changePhase = () => {
+    this.props.validateProjectFields(this.props.formValues)
   }
 
   getFormField = fieldProps => {
@@ -176,7 +176,7 @@ class QuickNav extends Component {
       isCurrentPhase
     } = this.props
 
-   const errors = syncronousErrors && !_.isEmpty(syncronousErrors) ? true : false
+    const errors = syncronousErrors && !_.isEmpty(syncronousErrors) ? true : false
     return (
       <div className="quicknav-container">
         <div className="quicknav-navigation-section">
@@ -217,7 +217,7 @@ class QuickNav extends Component {
             </Accordion>
           </div>
         </div>
-        <RoleHighlightPicker onRoleUpdate={this.props.setHighlightRole}/>
+        <RoleHighlightPicker onRoleUpdate={this.props.setHighlightRole} />
         <div className="quicknav-buttons">
           <Button
             handleClick={handleCheck}
@@ -228,7 +228,7 @@ class QuickNav extends Component {
           <Button
             handleClick={handleSave}
             value="Tallenna"
-            loading={saving || errors }
+            loading={saving || errors}
             secondary
             help="Tallentaa projektin"
           />
@@ -242,14 +242,14 @@ class QuickNav extends Component {
             help="Yrittää lopettaa vaiheen"
           />
         </div>
-        <Form className='quicknav-onhold-form'>
+        <Form className="quicknav-onhold-form">
           {this.getFormField({
             field: {
               name: ONHOLD,
               label: 'Projekti on toistaiseksi keskeytynyt',
               type: 'checkbox-onhold',
               disabled: saving
-              },
+            },
             onhold: currentProject.onhold,
             saveProjectBase: saveProjectBase
           })}

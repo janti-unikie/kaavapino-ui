@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getFormSyncErrors, getFormSubmitErrors } from 'redux-form'
+import { getFormSyncErrors, getFormSubmitErrors, getFormValues } from 'redux-form'
 import { Loader } from 'semantic-ui-react'
 import { isDirty } from 'redux-form/immutable'
 import {
@@ -46,18 +46,25 @@ class ProjectEditPage extends Component {
     this.props.fetchSchemas(project.id, project.subtype)
   }
 
-  changePhase = () => this.props.changeProjectPhase(this.props.project.phase + 1)
+  changePhase = () => {
+    const { schema, selectedPhase } = this.props
+    const currentSchemaIndex = schema.phases.findIndex(s => s.id === selectedPhase)
+    console.debug(schema.phases.length, currentSchemaIndex + 1)
+    if (currentSchemaIndex + 1 <= schema.phases.length) {
+      this.props.changeProjectPhase(schema.phases[currentSchemaIndex + 1].id)
+    } else {
+      // do something with last phase
+    }
+  }
 
   handleSave = () => {
     this.props.saveProject()
-
   }
   handleAutoSave = () => {
     if (this.props.syncErrors && !_.isEmpty(this.props.syncErrors)) {
       return
     }
     this.props.saveProject()
-
   }
   handleTimetableClose = () => {
     this.props.saveProjectTimetable()
@@ -139,6 +146,7 @@ class ProjectEditPage extends Component {
             changePhase={this.changePhase}
             isCurrentPhase={selectedPhase === phase}
             isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
+            formValues={this.props.formValues}
           />
           <NavigationPrompt when={this.props.isDirty}>
             {({ onConfirm, onCancel }) => (
@@ -159,7 +167,6 @@ class ProjectEditPage extends Component {
           initialValues={attribute_data}
           phase={phase}
           selectedPhase={selectedPhase}
-          validateProjectFields={validateProjectFields}
           disabled={formDisabled}
           projectId={id}
           syncronousErrors={syncErrors}
@@ -183,7 +190,7 @@ class ProjectEditPage extends Component {
             attributeData={attribute_data}
             open
             handleSubmit={this.handleTimetableClose}
-            handleClose={ () => this.setState({ showEditProjectTimetableForm: false })}
+            handleClose={() => this.setState({ showEditProjectTimetableForm: false })}
           />
         )}
       </div>
@@ -202,7 +209,8 @@ const mapStateToProps = state => {
     isDirty: isDirty(EDIT_PROJECT_FORM)(state),
     syncErrors: getFormSyncErrors(EDIT_PROJECT_FORM)(state),
     currentProject: currentProjectSelector(state),
-    submitErrors: getFormSubmitErrors(EDIT_PROJECT_FORM)(state)
+    submitErrors: getFormSubmitErrors(EDIT_PROJECT_FORM)(state),
+    formValues: getFormValues(EDIT_PROJECT_FORM)(state)
   }
 }
 
