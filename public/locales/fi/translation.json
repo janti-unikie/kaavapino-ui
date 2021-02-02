@@ -14,7 +14,8 @@
     "deadlines": {
         "title": "Päivitä aikataulut",
         "error": "Virhe: {{error}}",
-        "warning": "Päivitettyjen aikataulutietojen tallentaminen saattaa kestää hieman pidempään kun Kaavapino tekee laskutoimituksia."
+        "warning": "Päivitettyjen aikataulutietojen tallentaminen saattaa kestää hieman pidempään kun Kaavapino tekee laskutoimituksia.",
+        "estimated": "Kaavapinon arvio"
     },
     "common": {
         "cancel": "Peruuta",
