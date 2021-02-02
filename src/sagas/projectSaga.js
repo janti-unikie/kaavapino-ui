@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { takeLatest, put, all, call, select } from 'redux-saga/effects'
+import { takeLatest, takeEvery, put, all, call, select } from 'redux-saga/effects'
 import { isEqual } from 'lodash'
 import { push } from 'connected-react-router'
 import { actions as toastrActions } from 'react-redux-toastr'
@@ -61,7 +61,12 @@ import {
   projectSetDeadlinesSuccessful,
   initializeProject as initializeProjectAction,
   FETCH_PROJECT_DEADLINES,
-  fetchProjectDeadlinesSuccessful
+  fetchProjectDeadlinesSuccessful,
+  GET_PROJECT,
+  getProjectSuccessful,
+  RESET_PROJECT_DEADLINES,
+  getProjectSnapshotSuccessful,
+  GET_PROJECT_SNAPSHOT
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
@@ -69,7 +74,12 @@ import { setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
 import { projectApi, projectDeadlinesApi } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
-import { NEW_PROJECT_FORM, EDIT_FLOOR_AREA_FORM, EDIT_PROJECT_FORM, EDIT_PROJECT_TIMETABLE_FORM } from '../constants'
+import {
+  NEW_PROJECT_FORM,
+  EDIT_FLOOR_AREA_FORM,
+  EDIT_PROJECT_FORM,
+  EDIT_PROJECT_TIMETABLE_FORM
+} from '../constants'
 import i18 from 'i18next'
 
 export default function* projectSaga() {
@@ -89,8 +99,36 @@ export default function* projectSaga() {
     takeLatest(PROJECT_SET_DEADLINES, projectSetDeadlinesSaga),
     takeLatest(INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW, increaseAmountOfProjectsToShowSaga),
     takeLatest(SORT_PROJECTS, sortProjectsSaga),
-    takeLatest(SET_AMOUNT_OF_PROJECTS_TO_INCREASE, setAmountOfProjectsToIncreaseSaga)
+    takeLatest(SET_AMOUNT_OF_PROJECTS_TO_INCREASE, setAmountOfProjectsToIncreaseSaga),
+    takeEvery(GET_PROJECT, getProject),
+    takeLatest(RESET_PROJECT_DEADLINES, resetProjectDeadlines),
+    takeLatest(GET_PROJECT_SNAPSHOT, getProjectSnapshot)
   ])
+}
+
+function* resetProjectDeadlines({ payload: projectId }) {
+  try {
+    yield call(
+      projectApi.get,
+      { path: { projectId } },
+      ':projectId/?generate_schedule=true'
+    )
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+function* getProject({ payload: projectId }) {
+  try {
+    const timelineProject = yield call(
+      projectApi.get,
+      { path: { projectId } },
+      ':projectId/'
+    )
+    yield put(getProjectSuccessful(timelineProject))
+  } catch (e) {
+    yield put(error(e))
+  }
 }
 
 function* fetchProjects({ page, own = true, all = true, payload: searchQuery }) {
@@ -157,7 +195,11 @@ function* fetchProjects({ page, own = true, all = true, payload: searchQuery }) 
 
 function* fetchProjectDeadlines({ payload: projectId }) {
   try {
-    const deadlines = yield call(projectDeadlinesApi.get, { path: { projectId } }, ':projectId/')
+    const deadlines = yield call(
+      projectDeadlinesApi.get,
+      { path: { projectId } },
+      ':projectId/'
+    )
     yield put(fetchProjectDeadlinesSuccessful(deadlines))
   } catch (e) {
     yield put(error(e))
@@ -245,6 +287,27 @@ function* initializeProject({ payload: projectId }) {
   }
 }
 
+function* getProjectSnapshot({ payload }) {
+  try {
+    let query = {}
+
+    if ( payload.phase ) {
+      query = { phase: payload.phase }
+    } else if ( payload.date ) {
+      query = { snapshot: payload.date }
+    }
+    const project = yield call (
+      projectApi.get,
+      { path: { projectId: payload.projectId }, query: query },
+      ':projectId/'
+    )
+
+    yield put(getProjectSnapshotSuccessful(project))
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
 function* createProject() {
   yield put(startSubmit(NEW_PROJECT_FORM))
   const { values } = yield select(newProjectFormSelector)
@@ -283,26 +346,26 @@ const getChangedAttributeData = (values, initial, sections) => {
     }
     let fieldSetName
 
-    if ( sections ) {
+    if (sections) {
       // When editing a field inside fieldset, the fieldset is not included by default.
       // This workaround adds fieldset if field is inside fieldset.
       sections.some(title => {
         title.fields.some(fieldset => {
-        const fieldsetAttributes = fieldset.fieldset_attributes
+          const fieldsetAttributes = fieldset.fieldset_attributes
 
-        fieldsetAttributes.forEach( value => {
-          if ( value.name === key ) {
-            fieldSetName = fieldset.name
-            attribute_data[fieldset.name] = fieldset.name
-          }
+          fieldsetAttributes.forEach(value => {
+            if (value.name === key) {
+              fieldSetName = fieldset.name
+              attribute_data[fieldset.name] = fieldset.name
+            }
+          })
+          return null
         })
         return null
       })
-      return null
-      })
     }
     const initialFieldSetValues = initial[fieldSetName]
-    if ( initialFieldSetValues ) {
+    if (initialFieldSetValues) {
       attribute_data = Object.assign({}, initialFieldSetValues[0], attribute_data)
     }
   })
@@ -388,8 +451,9 @@ function* saveProjectTimetable() {
           title: i18.t('messages.deadlines-successfully-saved')
         })
       )
+      yield put(initializeProjectAction(currentProjectId))
     } catch (e) {
-        yield put(stopSubmit(EDIT_PROJECT_TIMETABLE_FORM, e.response.data))
+      yield put(stopSubmit(EDIT_PROJECT_TIMETABLE_FORM, e.response.data))
     }
   }
 }
@@ -405,7 +469,12 @@ function* saveProject() {
     const { sections } = currentSchema
     const changedValues = getChangedAttributeData(values, initial, sections)
     const parentNames = projectUtils.getParents(changedValues)
-    const formattedData = projectUtils.formatPayload(changedValues, sections, parentNames, initial)
+    const formattedData = projectUtils.formatPayload(
+      changedValues,
+      sections,
+      parentNames,
+      initial
+    )
 
     const attribute_data = formattedData
 

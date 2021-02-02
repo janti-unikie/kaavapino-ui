@@ -28,7 +28,10 @@ import {
   PROJECT_FILE_REMOVE_SUCCESSFUL,
   PROJECT_SET_CHECKING,
   PROJECT_SET_DEADLINES_SUCCESSFUL,
-  FETCH_PROJECT_DEADLINES_SUCCESSFUL
+  FETCH_PROJECT_DEADLINES_SUCCESSFUL,
+  GET_PROJECT_SUCCESSFUL,
+  GET_PROJECT_SNAPSHOT_SUCCESSFUL,
+  RESET_PROJECT_SNAPSHOT
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -47,7 +50,8 @@ export const initialState = {
   validating: false,
   hasErrors: false,
   checking: false,
-  pollingProjects: false
+  pollingProjects: false,
+  timelineProject: []
 }
 
 export const reducer = (state = initialState, action) => {
@@ -69,6 +73,13 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         ownProjects: state.ownProjects.concat(action.payload)
+      }
+    }
+
+    case GET_PROJECT_SUCCESSFUL: {
+      return {
+        ...state,
+        timelineProject: state.timelineProject.concat(action.payload)
       }
     }
 
@@ -271,6 +282,24 @@ export const reducer = (state = initialState, action) => {
         currentProject: {
           ...state.currentProject,
           deadlines: [...action.payload]
+        }
+      }
+    }
+    case GET_PROJECT_SNAPSHOT_SUCCESSFUL: {
+      return {
+        ...state,
+        currentProject: {
+          ...state.currentProject,
+          projectSnapshot: action.payload
+        }
+      }
+    }
+    case RESET_PROJECT_SNAPSHOT: {
+      return {
+        ...state,
+        currentProject: {
+          ...state.currentProject,
+          projectSnapshot: null
         }
       }
     }

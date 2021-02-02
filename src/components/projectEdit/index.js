@@ -11,7 +11,9 @@ import {
   validateProjectFields,
   projectSetChecking,
   saveProjectBase,
-  fetchProjectDeadlines
+  fetchProjectDeadlines,
+  initializeProject,
+  getProjectSnapshot
 } from '../../actions/projectActions'
 import { fetchSchemas, setAllEditFields } from '../../actions/schemaActions'
 import {
@@ -57,6 +59,9 @@ class ProjectEditPage extends Component {
     this.props.saveProject()
 
   }
+  handleTimetableClose = () => {
+    this.props.saveProjectTimetable()
+  }
 
   setSelectedRole = role => {
     switch (role) {
@@ -77,7 +82,6 @@ class ProjectEditPage extends Component {
       schema,
       selectedPhase,
       saveProjectFloorArea,
-      saveProjectTimetable,
       project: { name, attribute_data, phase, id },
       saving,
       changingPhase,
@@ -179,8 +183,8 @@ class ProjectEditPage extends Component {
           <EditProjectTimetableModal
             attributeData={attribute_data}
             open
-            handleSubmit={saveProjectTimetable}
-            handleClose={() => this.setState({ showEditProjectTimetableForm: false })}
+            handleSubmit={this.handleTimetableClose}
+            handleClose={ () => this.setState({ showEditProjectTimetableForm: false })}
           />
         )}
       </div>
@@ -213,7 +217,9 @@ const mapDispatchToProps = {
   projectSetChecking,
   saveProjectBase,
   fetchProjectDeadlines,
-  setAllEditFields
+  setAllEditFields,
+  initializeProject,
+  getProjectSnapshot
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)
