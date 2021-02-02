@@ -50,7 +50,8 @@ export const initialState = {
   validating: false,
   hasErrors: false,
   checking: false,
-  pollingProjects: false
+  pollingProjects: false,
+  timelineProject: []
 }
 
 export const reducer = (state = initialState, action) => {
@@ -78,7 +79,7 @@ export const reducer = (state = initialState, action) => {
     case GET_PROJECT_SUCCESSFUL: {
       return {
         ...state,
-        timelineProject: action.payload
+        timelineProject: state.timelineProject.concat(action.payload)
       }
     }
 
