@@ -11,9 +11,11 @@ import {
   validateProjectFields,
   projectSetChecking,
   saveProjectBase,
-  fetchProjectDeadlines
+  fetchProjectDeadlines,
+  initializeProject,
+  getProjectSnapshot
 } from '../../actions/projectActions'
-import { fetchSchemas, setAllEditFields, setLatestEditField } from '../../actions/schemaActions'
+import { fetchSchemas, setAllEditFields } from '../../actions/schemaActions'
 import {
   savingSelector,
   changingPhaseSelector,
@@ -41,15 +43,13 @@ class ProjectEditPage extends Component {
 
   componentDidMount() {
     const { project } = this.props
-    this.props.fetchSchemas(project.subtype)
+    this.props.fetchSchemas(project.id, project.subtype)
   }
 
   changePhase = () => this.props.changeProjectPhase(this.props.project.phase + 1)
 
   handleSave = () => {
     this.props.saveProject()
-    this.props.setLatestEditField()
-    this.props.setAllEditFields()
 
   }
   handleAutoSave = () => {
@@ -57,8 +57,10 @@ class ProjectEditPage extends Component {
       return
     }
     this.props.saveProject()
-    this.props.setLatestEditField()
-    this.props.setAllEditFields()
+
+  }
+  handleTimetableClose = () => {
+    this.props.saveProjectTimetable()
   }
 
   setSelectedRole = role => {
@@ -80,7 +82,6 @@ class ProjectEditPage extends Component {
       schema,
       selectedPhase,
       saveProjectFloorArea,
-      saveProjectTimetable,
       project: { name, attribute_data, phase, id },
       saving,
       changingPhase,
@@ -182,8 +183,8 @@ class ProjectEditPage extends Component {
           <EditProjectTimetableModal
             attributeData={attribute_data}
             open
-            handleSubmit={saveProjectTimetable}
-            handleClose={() => this.setState({ showEditProjectTimetableForm: false })}
+            handleSubmit={this.handleTimetableClose}
+            handleClose={ () => this.setState({ showEditProjectTimetableForm: false })}
           />
         )}
       </div>
@@ -217,7 +218,8 @@ const mapDispatchToProps = {
   saveProjectBase,
   fetchProjectDeadlines,
   setAllEditFields,
-  setLatestEditField
+  initializeProject,
+  getProjectSnapshot
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)

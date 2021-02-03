@@ -20,6 +20,7 @@ import NewProjectFormModal from '../project/NewProjectFormModal'
 import List from './List'
 import SearchBar from '../SearchBar'
 import { withTranslation } from 'react-i18next'
+import { userIdSelector } from '../../selectors/authSelector'
 
 class ProjectListPage extends Component {
   constructor(props) {
@@ -113,15 +114,33 @@ class ProjectListPage extends Component {
         )
       }
     ]
+    const getUserRole = ()  => {
+      let privilege
+      if ( users ) {
+        users.forEach(user => {
+            if ( user.id === this.props.currentUserId) {
+              privilege = user.privilege
+              return
+            }
+        })
+      }
+      return privilege
+    }
+
+    const userRole = getUserRole()
+
+    const showCreate = userRole === 'admin' || userRole === 'create'
 
     let headerActions = (
       <NavActions>
         {!searchOpen && (
           <>
-            <NavAction onClick={() => this.toggleForm(true)}>
+        {showCreate && (
+              <NavAction onClick={() => this.toggleForm(true)}>
               <FontAwesomeIcon icon="plus" />
               {t('projects.createNewProject')}
             </NavAction>
+            )}
             <NavAction to={'/reports'}>{t('projects.createReports')}</NavAction>
           </>
         )}
@@ -170,7 +189,8 @@ const mapStateToProps = state => {
     projectSubtypes: projectSubtypesSelector(state),
     amountOfProjectsToShow: amountOfProjectsToShowSelector(state),
     totalOwnProjects: totalOwnProjectsSelector(state),
-    totalProjects: totalProjectsSelector(state)
+    totalProjects: totalProjectsSelector(state),
+    currentUserId: userIdSelector(state)
   }
 }
 

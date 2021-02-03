@@ -13,6 +13,7 @@
     z-index: 1;
     margin-left: -160px;
     left: 50%;
+    top: 10px;
     width: 320px;
     height: 56px;
     border-left: 4px solid #d8000c;
@@ -28,6 +29,13 @@
       top: 18px;
       left: 68px;
     }
+  }
+  .timeline-load-project-message {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 10px;
+    text-align: center;
   }
 
   .timeline-item-container {
@@ -130,15 +138,18 @@
         left: 8px;
         top: 10px;
       }
-      .now-marker {
-        color: $black;
-        position: absolute;
-        width: 1px;
-        height: 60px;
-        border: 1px solid blue;
-        bottom: 0;
-        span {
-          margin-top: 16px;
+      .timeline-now-month {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        .now-marker {
+          color: $black;
+          width: 1px;
+          height: 60px;
+          border: 1px solid blue;
+          margin-top: -50px;
+          span {
+            margin-top: -34px;
+          }
         }
       }
     }

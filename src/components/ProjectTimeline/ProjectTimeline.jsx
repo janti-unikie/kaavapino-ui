@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import './ProjectTimeline.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import { faExclamationTriangle, faSync } from '@fortawesome/free-solid-svg-icons'
 import { createMonths } from './helpers/createMonths'
 import { createDeadlines } from './helpers/createDeadlines'
+import { connect } from 'react-redux'
+import { getProject, getProjectSuccessful } from '../../actions/projectActions'
+import { timelineProjectSelector } from '../../selectors/projectSelector'
+import { findWeek } from './helpers/helpers'
 
 function ProjectTimeline(props) {
-  const { deadlines } = props
+  const { deadlines, projectView } = props
   const [showError, setShowError] = useState(false)
   const [drawMonths, setDrawMonths] = useState([])
   const [drawItems, setDrawItems] = useState([])
+  const [showLoadProject, setShowLoadProject] = useState(false)
+  const [loadingProject, setLoadingProject] = useState(false)
+  const [timelineLoaded, setTimelineLoaded] = useState(false)
   const monthNames = {
     0: 'Tammi',
     1: 'Helmi',
@@ -25,17 +32,52 @@ function ProjectTimeline(props) {
     11: 'Joulu'
   }
   useEffect(() => {
-    createTimelineItems()
+    if (!projectView) {
+      if (!timelineLoaded) {
+        setShowLoadProject(true)
+      }
+      const months = createMonths(deadlines)
+      createDrawMonths(months.months)
+    } else {
+      createTimelineItems(deadlines)
+    }
   }, [])
+  useEffect(() => {
+    if (props.timelineProject && loadingProject) {
+      props.timelineProject.forEach(timelineProject => {
+        if (timelineProject.id === props.id) {
+          setLoadingProject(false)
+          setShowLoadProject(false)
+          createTimelineItems(timelineProject.deadlines)
+        }
+      })
+    }
+  }, [props.timelineProject])
+  function createNowMarker(week) {
+    let nowMarker = []
+    for (let i = 1; i <= 5; i++) {
+      if (i === week) {
+        nowMarker.push(
+          <div key={i} className="now-marker">
+            <span>Nyt</span>
+          </div>
+        )
+      } else {
+        nowMarker.push(<div key={i} className="now-marker-filler" />)
+      }
+    }
+    return nowMarker
+  }
   function createDrawMonths(months) {
     const drawableMonths = []
+    const nowDate = new Date()
     for (let i = 0; i < months.length; i++) {
       const date = new Date(months[i].date)
       if (i === 1) {
         drawableMonths.push(
           <div key={i} className="timeline-month">
-            <div className="now-marker">
-              <span>Nyt</span>
+            <div className="timeline-now-month">
+              {createNowMarker(findWeek(nowDate.getDate()))}
             </div>
             <span>{`${monthNames[date.getMonth()]} ${date.getFullYear()}`}</span>
           </div>
@@ -120,6 +162,27 @@ function ProjectTimeline(props) {
             {monthDates[loopIndex].milestone ? createMilestoneItem(loopIndex, propI) : ''}
           </div>
         )
+      case 'past_start_point':
+        return (
+          <div
+            key={`${monthDates[loopIndex][property].abbreviation}-${loopIndex}`}
+            style={{
+              background: monthDates[loopIndex][property].color_code
+            }}
+            className="timeline-item"
+          >
+            <span
+              className={`deadline-name-${
+                monthDates[loopIndex][property].deadline_length > 4 ? 'over' : 'inside'
+              }`}
+            >
+              {monthDates[loopIndex][property].phase_name}
+            </span>
+            {monthDates[loopIndex].milestone
+              ? createMilestoneItem(loopIndex, propI, monthDates)
+              : ''}
+          </div>
+        )
       default:
         return null
     }
@@ -164,8 +227,9 @@ function ProjectTimeline(props) {
               case 'dashed_start':
                 if (monthDates[index].milestone_types.includes('milestone')) {
                   showMessage = (
-                    <span className="milestone-message">{`Määräaika ${date.getDate()}.${date.getMonth() +
-                      1} >`}</span>
+                    <span className="milestone-message">{`Määräaika ${date.getDate()}.${
+                      date.getMonth() + 1
+                    } >`}</span>
                   )
                 }
                 milestoneType.push(
@@ -186,9 +250,7 @@ function ProjectTimeline(props) {
                       className={`milestone-message ${
                         monthDates[index].milestone_space < 6 ? 'under' : ''
                       }`}
-                    >{`Kylk ${date.getDate()}.${date.getMonth() + 1}. ${
-                      monthDates[index].milestone_space
-                    }`}</span>
+                    >{`Kylk ${date.getDate()}.${date.getMonth() + 1}.`}</span>
                   )
                   milestoneType.push(
                     <div key={listKey++} className="milestone-icon sphere black" />
@@ -248,14 +310,21 @@ function ProjectTimeline(props) {
       return null
     }
   }
-  function createTimelineItems() {
-    const months = createMonths(deadlines)
-    const deadlineArray = createDeadlines(deadlines)
+  function loadProject() {
+    if (!loadingProject) {
+      props.getProject(props.id)
+      setLoadingProject(true)
+    }
+  }
+  function createTimelineItems(timelineDeadlines) {
+    const months = createMonths(timelineDeadlines)
+    const deadlineArray = createDeadlines(timelineDeadlines)
     if (months.error || deadlineArray.error) {
       setShowError(true)
     }
     createDrawMonths(months.months)
     createDrawItems(deadlineArray.deadlines)
+    setTimelineLoaded(true)
   }
   return (
     <div className="timeline-graph-container">
@@ -264,6 +333,14 @@ function ProjectTimeline(props) {
           <FontAwesomeIcon icon={faExclamationTriangle} size="2x" />
           <span>Projektin aikataulu ei ole ajan tasalla.</span>
         </div>
+      ) : null}
+      {showLoadProject ? (
+        <FontAwesomeIcon
+          onClick={() => loadProject()}
+          className={`timeline-load-project-message ${loadingProject ? 'fa-spin' : null}`}
+          icon={faSync}
+          size="2x"
+        />
       ) : null}
       <div
         className={`timeline-item-container ${showError ? 'timeline-error' : null}`}
@@ -278,4 +355,15 @@ function ProjectTimeline(props) {
   )
 }
 
-export default ProjectTimeline
+const mapDispatchToProps = {
+  getProject,
+  getProjectSuccessful
+}
+
+const mapStateToProps = state => {
+  return {
+    timelineProject: timelineProjectSelector(state)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectTimeline)

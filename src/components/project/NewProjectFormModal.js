@@ -89,7 +89,23 @@ class NewProjectFormModal extends Component {
     const showXLProjectOptions = selectedSubType === 5
     const isEdit = !!currentProject
 
-    // Decision 22.9 that updating project size is not allowed in phase 1 and it is now disabled.
+    const isValidXLProject =  formValues && (formValues.create_principles || formValues.create_draft)
+
+    const hideSaveButton = () => {
+      if ( !formValues ) {
+        return true
+      }
+      if ( formValues.name && formValues.user && formValues.subtype ) {
+        if ( selectedSubType === 5 ) {
+          return !isValidXLProject
+        }
+        return false
+      }
+      return true
+    }
+
+    const hideSave = hideSaveButton()
+
     return (
       <Modal
         className="form-modal"
@@ -180,7 +196,7 @@ class NewProjectFormModal extends Component {
           </Button>
           <Button
             primary
-            disabled={loading}
+            disabled={loading || hideSave}
             loading={loading}
             type="submit"
             onClick={this.handleSubmit}
