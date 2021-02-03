@@ -265,7 +265,8 @@ class ProjectPage extends Component {
       phases,
       currentProjectLoaded,
       users,
-      projectSubtypes
+      projectSubtypes,
+      edit
     } = this.props
 
     const loading = !currentProjectLoaded || !phases
@@ -284,7 +285,7 @@ class ProjectPage extends Component {
           actions={this.getNavActions()}
           infoOptions={this.getAllChanges()}
         />
-        <ProjectTimeline deadlines={deadlines} projectView={true} />
+        {edit && <ProjectTimeline deadlines={deadlines} projectView={true} />}
         <NewProjectFormModal
           currentProject={currentProject}
           open={this.state.showBaseInformationForm}

@@ -16,6 +16,9 @@ import GeometryInformation from './GeometryInformation'
 
 function ProjectCardPage( { attributeData, deadlines } ) {
 
+  console.log( attributeData )
+  console.log( deadlines )
+
   const [descriptionFields, setDescriptionDFields  ] = useState([])
   const [ basicInformationFields, setBasicInformationFields ] = useState([])
   const [contactsFields, setContactsFields  ] = useState([])
@@ -117,7 +120,7 @@ function ProjectCardPage( { attributeData, deadlines } ) {
     return (
       <Grid stackable columns='equal'>
         <Grid.Column>
-          <Segment><ProjectTimeline deadlines={deadlines} /></Segment>
+          <Segment><ProjectTimeline deadlines={deadlines} projectView={true} /></Segment>
         </Grid.Column>
       </Grid>
     )
