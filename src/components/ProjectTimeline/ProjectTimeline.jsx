@@ -44,11 +44,13 @@ function ProjectTimeline(props) {
   }, [])
   useEffect(() => {
     if (props.timelineProject && loadingProject) {
-      if (props.timelineProject.id === props.id) {
-        setLoadingProject(false)
-        setShowLoadProject(false)
-        createTimelineItems(props.timelineProject.deadlines)
-      }
+      props.timelineProject.forEach(timelineProject => {
+        if (timelineProject.id === props.id) {
+          setLoadingProject(false)
+          setShowLoadProject(false)
+          createTimelineItems(timelineProject.deadlines)
+        }
+      })
     }
   }, [props.timelineProject])
   function createNowMarker(week) {
@@ -309,8 +311,10 @@ function ProjectTimeline(props) {
     }
   }
   function loadProject() {
-    props.getProject(props.id)
-    setLoadingProject(true)
+    if (!loadingProject) {
+      props.getProject(props.id)
+      setLoadingProject(true)
+    }
   }
   function createTimelineItems(timelineDeadlines) {
     const months = createMonths(timelineDeadlines)

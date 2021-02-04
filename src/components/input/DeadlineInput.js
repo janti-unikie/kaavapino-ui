@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Input } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
@@ -6,6 +6,10 @@ import { useTranslation } from 'react-i18next'
 
 const DeadLineInput = ({ input, meta: { error }, currentDeadline, ...custom }) => {
   const { t } = useTranslation()
+
+  const generated = currentDeadline && currentDeadline.generated
+
+  const [valueGenerated, setValueGenerated ] = useState(generated)
 
   let currentError = error
 
@@ -18,7 +22,21 @@ const DeadLineInput = ({ input, meta: { error }, currentDeadline, ...custom }) =
 
   return (
     <div>
-      <Input error={inputUtils.hasError(currentError)} {...input} {...custom} fluid />
+      <Input
+        error={inputUtils.hasError(currentError)}
+        {...input}
+        {...custom}
+        className={generated && valueGenerated ? `${custom.className} deadline-estimated` : custom.className}
+        onBlur={ () => {
+          setValueGenerated(false)
+          }}
+        fluid
+      />
+      {valueGenerated ? (
+        <span className="deadline-estimated">{t('deadlines.estimated')}</span>
+      ) : (
+        ''
+      )}
       {currentError && <div className="error-text">{currentError} </div>}
     </div>
   )
