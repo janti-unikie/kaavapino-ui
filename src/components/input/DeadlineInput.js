@@ -7,11 +7,10 @@ import { useTranslation } from 'react-i18next'
 const DeadLineInput = ({ input, meta: { error }, currentDeadline, ...custom }) => {
   const { t } = useTranslation()
 
+  let currentError
   const generated = currentDeadline && currentDeadline.generated
 
-  const [valueGenerated, setValueGenerated ] = useState(generated)
-
-  let currentError = error
+  const [valueGenerated, setValueGenerated] = useState(generated)
 
   if (currentDeadline && currentDeadline.is_under_min_distance_previous) {
     currentError = t('messages.min-distance')
@@ -20,16 +19,22 @@ const DeadLineInput = ({ input, meta: { error }, currentDeadline, ...custom }) =
     currentError = t('messages.max-distance')
   }
 
+  const hasError = inputUtils.hasError(error) || inputUtils.hasError(currentError)
+
   return (
     <div>
       <Input
-        error={inputUtils.hasError(currentError)}
+        error={hasError}
         {...input}
         {...custom}
-        className={generated && valueGenerated ? `${custom.className} deadline-estimated` : custom.className}
-        onBlur={ () => {
+        className={
+          generated && valueGenerated
+            ? `${custom.className} deadline-estimated`
+            : custom.className
+        }
+        onBlur={() => {
           setValueGenerated(false)
-          }}
+        }}
         fluid
       />
       {valueGenerated ? (
