@@ -112,7 +112,10 @@ export const createOwnProjectSuccessful = project => ({
   payload: project
 })
 
-export const saveProjectBase = () => ({ type: SAVE_PROJECT_BASE })
+export const saveProjectBase = archived => ({
+  type: SAVE_PROJECT_BASE,
+  payload: archived
+})
 export const saveProjectBaseSuccessful = () => ({ type: SAVE_PROJECT_BASE_SUCCESSFUL })
 
 export const saveProjectFloorArea = () => ({ type: SAVE_PROJECT_FLOOR_AREA })

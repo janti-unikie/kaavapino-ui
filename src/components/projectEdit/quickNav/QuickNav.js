@@ -9,6 +9,7 @@ import FormField from '../../input/FormField'
 import { reduxForm } from 'redux-form'
 import { NEW_PROJECT_FORM } from '../../../constants'
 import ConfirmModal from '../ConfirmModal'
+import { withTranslation } from 'react-i18next'
 
 const ONHOLD = 'onhold'
 
@@ -132,7 +133,11 @@ class QuickNav extends Component {
 
   phaseCallback = changePhase => {
     if (changePhase) {
-      this.props.changePhase()
+      if (this.props.notLastPhase) {
+        this.props.changePhase()
+      } else {
+        this.props.saveProjectBase({ archived: true })
+      }
     }
     this.setState({ verifying: false })
   }
@@ -173,9 +178,10 @@ class QuickNav extends Component {
       syncronousErrors,
       currentProject,
       saveProjectBase,
-      isCurrentPhase
+      isCurrentPhase,
+      notLastPhase,
+      t
     } = this.props
-
     const errors = syncronousErrors && !_.isEmpty(syncronousErrors) ? true : false
     return (
       <div className="quicknav-container">
@@ -221,44 +227,52 @@ class QuickNav extends Component {
         <div className="quicknav-buttons">
           <Button
             handleClick={handleCheck}
-            value="Tarkista"
-            help="Korostaa pakolliset puuttuvat kentät"
+            value={t('quick-nav.check')}
+            help={t('quick-nav.check-help-text')}
+            disabled={currentProject.archived}
             secondary
           />
           <Button
             handleClick={handleSave}
-            value="Tallenna"
+            value={t('common.save')}
             loading={saving || errors}
             secondary
-            help="Tallentaa projektin"
+            help={t('quick-nav.save-help')}
+            disabled={currentProject.archived}
           />
           <Button
             handleClick={this.changePhase}
-            value="Lopeta vaihe"
+            value={`${notLastPhase ? t('quick-nav.end-phase') : t('quick-nav.archive')}`}
             loading={changingPhase || validating}
-            disabled={!isCurrentPhase}
+            disabled={!isCurrentPhase || currentProject.archived}
             secondary
             fluid
-            help="Yrittää lopettaa vaiheen"
+            help={`${
+              notLastPhase ? t('quick-nav.end-phase-help') : t('quick-nav.archive-help')
+            }`}
           />
         </div>
         <Form className="quicknav-onhold-form">
           {this.getFormField({
             field: {
               name: ONHOLD,
-              label: 'Projekti on toistaiseksi keskeytynyt',
+              label: t('quick-nav.onhold-lable'),
               type: 'checkbox-onhold',
-              disabled: saving
+              disabled: saving || currentProject.archived
             },
             onhold: currentProject.onhold,
             saveProjectBase: saveProjectBase
           })}
         </Form>
-        <ConfirmModal callback={this.phaseCallback} open={this.state.verifying} />
+        <ConfirmModal
+          callback={this.phaseCallback}
+          open={this.state.verifying}
+          notLastPhase={notLastPhase}
+        />
         {this.state.endPhaseError && (
           <Message
-            header="Vaihetta ei voida vielä lopettaa"
-            content="Täytä puuttuvat kentät"
+            header={t('quick-nav.change-phase-error')}
+            content={t('quick-nav.change-phase-error-message')}
             color="yellow"
           />
         )}
@@ -271,4 +285,4 @@ const QuickNavForm = reduxForm({
   form: NEW_PROJECT_FORM
 })(QuickNav)
 
-export default QuickNavForm
+export default withTranslation()(QuickNavForm)

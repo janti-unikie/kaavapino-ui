@@ -113,6 +113,7 @@ class ProjectEditPage extends Component {
     const projectPhaseIndex = schema.phases.findIndex(s => s.id === phase)
     const formDisabled =
       currentSchemaIndex !== 0 && currentSchemaIndex < projectPhaseIndex
+    const notLastPhase = currentSchemaIndex + 1 < schema.phases.length
 
     if (currentSchemaIndex === -1) {
       return (
@@ -146,6 +147,7 @@ class ProjectEditPage extends Component {
             isCurrentPhase={selectedPhase === phase}
             isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
             formValues={this.props.formValues}
+            notLastPhase={notLastPhase}
           />
           <NavigationPrompt when={this.props.isDirty}>
             {({ onConfirm, onCancel }) => (

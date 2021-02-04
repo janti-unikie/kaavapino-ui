@@ -373,11 +373,13 @@ const getChangedAttributeData = (values, initial, sections) => {
   return attribute_data
 }
 
-function* saveProjectBase() {
+function* saveProjectBase({ payload }) {
   yield put(startSubmit(NEW_PROJECT_FORM))
   const { values } = yield select(newProjectFormSelector)
   const currentProjectId = yield select(currentProjectIdSelector)
-
+  if (payload.archived) {
+    values.archived = payload.archived
+  }
   if (values) {
     try {
       const updatedProject = yield call(
