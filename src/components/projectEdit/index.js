@@ -112,7 +112,8 @@ class ProjectEditPage extends Component {
     const currentSchema = schema.phases[currentSchemaIndex]
     const projectPhaseIndex = schema.phases.findIndex(s => s.id === phase)
     const formDisabled =
-      currentSchemaIndex !== 0 && currentSchemaIndex < projectPhaseIndex || currentProject.archived
+      (currentSchemaIndex !== 0 && currentSchemaIndex < projectPhaseIndex) ||
+      currentProject.archived
     const notLastPhase = currentSchemaIndex + 1 < schema.phases.length
 
     if (currentSchemaIndex === -1) {
