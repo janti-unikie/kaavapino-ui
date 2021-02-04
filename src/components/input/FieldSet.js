@@ -22,23 +22,45 @@ const FieldSet = ({
   syncronousErrors,
   handleSave,
   onRadioChange,
-  updated  }) => {
+  updated
+}) => {
   let numberOfSets = 1
   if (attributeData[sets.name]) {
     if (sets.length !== attributeData[sets.name].length) {
-      numberOfSets = sets.length - attributeData[sets.name].length+1
+      numberOfSets = sets.length - attributeData[sets.name].length + 1
     }
   }
-
   const handleBlurSave = () => {
     setTimeout(function () {
       handleSave()
     }, 500)
   }
+  let requiredError = false
+  if (fields) {
+    fields.forEach(field => {
+      if (attributeData[name]) {
+        attributeData[name].forEach(attribute => {
+          if (
+            checking &&
+            projectUtils.isFieldMissing(field.name, field.required, attribute)
+          ) {
+            requiredError = true
+          }
+        })
+      } else {
+        if (
+          checking &&
+          projectUtils.isFieldMissing(field.name, field.required, attributeData)
+        ) {
+          requiredError = true
+        }
+      }
+    })
+  }
   return (
     <React.Fragment>
       {sets.map((set, i) => {
-        if (i < numberOfSets){
+        if (i < numberOfSets) {
           return (
             <React.Fragment key={`${name}-${i}`}>
               <div key={i} className="fieldset-container">
@@ -60,7 +82,6 @@ const FieldSet = ({
                   let required = false
 
                   const isReadOnly = field && field.autofill_readonly
-
                   if (checking && !(!attributeData[name] || !attributeData[name][i])) {
                     if (
                       checking &&
@@ -75,68 +96,78 @@ const FieldSet = ({
                   } else if (checking && field.required) {
                     required = true
                   }
-                  const defaultValue = projectUtils.getDefaultValue(name, attributeData, field.name)
+                  const defaultValue = projectUtils.getDefaultValue(
+                    name,
+                    attributeData,
+                    field.name
+                  )
 
-                  const title = field.character_limit ?
-                    `${field.label}  (Max ${field.character_limit} merkkiä)` : field.label
+                  const title = field.character_limit
+                    ? `${field.label}  (Max ${field.character_limit} merkkiä)`
+                    : field.label
                   const error = syncronousErrors && syncronousErrors[field.name]
 
                   /* Two ways to bring errors to FormField component:
-                  * 1) the missing attribute data of required fields is checked automatically.
-                  * 2) error text can be given directly to the component as props.
-                  * Redux form gives error information to the Field component, but that's further down the line, and we need that information
-                  * here to modify the input header accordingly. */
-                  const showError = required ? 'pakollinen kenttä' :  error
+                   * 1) the missing attribute data of required fields is checked automatically.
+                   * 2) error text can be given directly to the component as props.
+                   * Redux form gives error information to the Field component, but that's further down the line, and we need that information
+                   * here to modify the input header accordingly. */
+                  const showError = required ? 'pakollinen kenttä' : error
 
-                  const fieldUpdated = updated && updated.new_value && has(updated.new_value[0], field.name )
-
+                  const fieldUpdated =
+                    updated && updated.new_value && has(updated.new_value[0], field.name)
                   return (
-                    <div className={`input-container ${showError ? 'error' : ''}`} key={j}>
+                    <div
+                      className={`input-container ${showError ? 'error' : ''}`}
+                      key={j}
+                    >
                       <Form.Field required={required}>
                         <div className="input-header">
-                          <Label className={`input-title${required ? ' highlight' : ''} ${showError ? 'error' : ''}` }>
+                          <Label
+                            className={`input-title${required ? ' highlight' : ''} ${
+                              showError ? 'error' : ''
+                            }`}
+                          >
                             {title}
                           </Label>
                           <div className="input-header-icons">
-                          {fieldUpdated && !isReadOnly && (
-                            <Popup
-                              trigger={<FontAwesomeIcon icon="clock" />}
-                              inverted
-                              on="hover"
-                              position="top center"
-                              hideOnScroll
-                              content={
-                                (
+                            {fieldUpdated && !isReadOnly && (
+                              <Popup
+                                trigger={<FontAwesomeIcon icon="clock" />}
+                                inverted
+                                on="hover"
+                                position="top center"
+                                hideOnScroll
+                                content={(
                                   <span className="input-history">
-                                  <span>{`${projectUtils.formatDate(
-                                    updated.timestamp
-                                  )} ${projectUtils.formatTime(updated.timestamp)} ${
-                                    updated.user_name
-                                  }`}</span>
-                                </span>
-                                )
-                              }
-                            />
+                                    <span>{`${projectUtils.formatDate(
+                                      updated.timestamp
+                                    )} ${projectUtils.formatTime(updated.timestamp)} ${
+                                      updated.user_name
+                                    }`}</span>
+                                  </span>
+                                )}
+                              />
                             )}
                             {field.help_text && (
                               <Info content={field.help_text} link={field.help_link} />
                             )}
                           </div>
                         </div>
-                      <CustomField
-                        field={{ ...field, disabled }}
-                        attributeData={attributeData}
-                        fieldset={field.type === 'fieldset'}
-                        parentName={name}
-                        defaultValue={defaultValue}
-                        formName={formName}
-                        formValues={formValues}
-                        handleSave={handleSave}
-                        onRadioChange={onRadioChange}
-                        onBlur={handleBlurSave}
-                        validate={validate}
-                      />
-                       {showError && <div className="error-text">{showError}</div>}
+                        <CustomField
+                          field={{ ...field, disabled }}
+                          attributeData={attributeData}
+                          fieldset={field.type === 'fieldset'}
+                          parentName={name}
+                          defaultValue={defaultValue}
+                          formName={formName}
+                          formValues={formValues}
+                          handleSave={handleSave}
+                          onRadioChange={onRadioChange}
+                          onBlur={handleBlurSave}
+                          validate={validate}
+                        />
+                        {showError && <div className="error-text">{showError}</div>}
                       </Form.Field>
                     </div>
                   )
@@ -148,7 +179,13 @@ const FieldSet = ({
           return undefined
         }
       })}
-      <Button className="fieldset-button-add" onClick={() => sets.push({})}>
+      <Button
+        className={`fieldset-button-add ${
+          requiredError ? 'fieldset-internal-error' : null
+        }`}
+        onClick={() => sets.push({})}
+        disabled={disabled}
+      >
         Lisää
       </Button>
       <Button

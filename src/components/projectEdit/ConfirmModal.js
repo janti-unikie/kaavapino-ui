@@ -3,13 +3,19 @@ import { Modal, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { currentProjectSelector } from '../../selectors/projectSelector'
 
-const ConfirmModal = ({ open, callback, currentProject }) => {
+const ConfirmModal = ({ open, callback, notLastPhase, currentProject }) => {
   return (
     <Modal open={open} centered={false} size={'tiny'}>
-      <Modal.Header>Lopeta vaihe</Modal.Header>
+      <Modal.Header>{`${
+        notLastPhase ? 'Lopeta vaihe' : 'Arkistoi projekti'
+      }`}</Modal.Header>
       <Modal.Content>
         <div>
-          Siirrytäänkö seuraavaan vaiheeseen? Vaihetta ei voi enää vaihtaa takaisin.
+          {`${
+            notLastPhase
+              ? 'Siirrytäänkö seuraavaan vaiheeseen? Vaihetta ei voi enää vaihtaa takaisin.'
+              : 'Arkistoidaanko projekti?'
+          }`}
         </div>
         {currentProject && !currentProject.public && (
           <div>
