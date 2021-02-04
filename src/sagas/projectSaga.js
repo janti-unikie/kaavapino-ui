@@ -402,7 +402,6 @@ function* saveProjectFloorArea() {
   yield put(startSubmit(EDIT_FLOOR_AREA_FORM))
   const { initial, values } = yield select(editFloorAreaFormSelector)
   const currentProjectId = yield select(currentProjectIdSelector)
-
   if (values) {
     const attribute_data = getChangedAttributeData(values, initial)
     try {

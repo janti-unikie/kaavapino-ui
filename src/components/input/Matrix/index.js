@@ -23,6 +23,15 @@ const Matrix = ({
     gridTemplateColumns: `repeat(${columnCount}, 1fr`,
     gridTemplateRows: `repeat(${rowCount}, minmax(auto, auto)`
   }
+  const countFieldsInRow = row => {
+    let fields = 0
+    row.forEach(field => {
+      if (field !== 0) {
+        fields++
+      }
+    })
+    return fields
+  }
 
   const fieldMatrix = []
   const col = Array(columnCount).fill(0)
@@ -34,7 +43,6 @@ const Matrix = ({
   const renderInfo = field => {
     return <Info content={field.help_text} link={field.help_link} />
   }
-
   return (
     <div className="matrix-container">
       <div className="matrix" style={matrixStyle}>
@@ -51,36 +59,37 @@ const Matrix = ({
                   field !== 0 &&
                   checking &&
                   projectUtils.isFieldMissing(field.name, field.required, attributeData)
-                if (field !== 0) {
-                  return (
-                    <React.Fragment key={`${field.name}-${y}-${x}-total`}>
-                      <span style={{ display: 'contents' }}>
-                        {field === 0 ? (
-                          <span />
-                        ) : (
-                          <span
-                            className={`${highlighted ? 'highlighted' : ''}`}
-                            key={`${field.name}-${y}-${x}`}
-                          >
-                            <div className="input-header">
-                              <div className="input-title">{columns[x]}</div>
-                              <div className="input-header-icons">
-                                {renderInfo(field)}
-                              </div>
-                            </div>
-                            <CustomField
-                              attributeData={attributeData}
-                              field={field}
-                              fieldset={field.type === 'fieldset'}
-                              formName={formName}
-                              isFloorCalculation={isFloorCalculation}
-                            />
-                          </span>
-                        )}
-                      </span>
-                    </React.Fragment>
-                  )
+                let rowColumnStyle = null
+                if (countFieldsInRow(row) <= 1) {
+                  rowColumnStyle = { gridColumn: `1 / ${columnCount}` }
                 }
+                return (
+                  <React.Fragment key={`${field.name}-${y}-${x}-total`}>
+                    <span style={{ display: 'contents' }}>
+                      {field === 0 ? (
+                        <span />
+                      ) : (
+                        <span
+                          className={`${highlighted ? 'highlighted' : 'rowColumnStyle'}`}
+                          style={rowColumnStyle}
+                          key={`${field.name}-${y}-${x}`}
+                        >
+                          <div className="input-header">
+                            <div className="input-title">{columns[x]}</div>
+                            <div className="input-header-icons">{renderInfo(field)}</div>
+                          </div>
+                          <CustomField
+                            attributeData={attributeData}
+                            field={field}
+                            fieldset={field.type === 'fieldset'}
+                            formName={formName}
+                            isFloorCalculation={isFloorCalculation}
+                          />
+                        </span>
+                      )}
+                    </span>
+                  </React.Fragment>
+                )
               })}
             </React.Fragment>
           )
