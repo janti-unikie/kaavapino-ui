@@ -33,7 +33,7 @@ import EditFloorAreaFormModal from '../project/EditFloorAreaFormModal'
 import { EDIT_PROJECT_FORM } from '../../constants'
 import _ from 'lodash'
 import EditProjectTimetableModal from '../project/EditProjectTimetableModal'
-
+import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
 class ProjectEditPage extends Component {
   state = {
     showEditFloorAreaForm: false,
@@ -50,14 +50,12 @@ class ProjectEditPage extends Component {
 
   handleSave = () => {
     this.props.saveProject()
-
   }
   handleAutoSave = () => {
     if (this.props.syncErrors && !_.isEmpty(this.props.syncErrors)) {
       return
     }
     this.props.saveProject()
-
   }
   handleTimetableClose = () => {
     this.props.saveProjectTimetable()
@@ -115,78 +113,93 @@ class ProjectEditPage extends Component {
         </Loader>
       )
     }
+    const showTimelineModal = show => {
+      this.setState({ showEditProjectTimetableForm: show })
+      }
     return (
-      <div className={`project-input-container ${highlightGroup}`}>
-        <div className="project-input-left">
-          <QuickNav
-            changingPhase={changingPhase}
-            handleSave={this.handleSave}
-            handleCheck={() => this.props.projectSetChecking(!this.props.checking)}
-            projectName={name}
-            sections={currentSchema.sections}
-            phaseTitle={currentSchema.title}
-            currentPhases={currentPhases}
-            saving={saving}
-            switchDisplayedPhase={switchDisplayedPhase}
-            validating={validating}
-            validateProjectFields={validateProjectFields}
-            syncronousErrors={syncErrors}
-            saveProjectBase={saveProjectBase}
-            currentProject={currentProject}
-            setHighlightRole={this.setSelectedRole}
-          />
-          <NavigationPrompt when={this.props.isDirty}>
-            {({ onConfirm, onCancel }) => (
-              <Prompt
-                onCancel={onCancel}
-                onConfirm={onConfirm}
-                message="Hankkeessa on tallentamattomia muutoksia. Haluatteko silti jatkaa?"
-              />
-            )}
-          </NavigationPrompt>
-        </div>
-        <EditForm
-          isCurrentPhase={selectedPhase === phase}
-          isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
-          handleSave={this.handleAutoSave}
-          changePhase={this.changePhase}
-          sections={currentSchema.sections}
-          attributeData={attribute_data}
-          saving={saving}
-          // changingPhase={changingPhase}
-          initialValues={attribute_data}
-          phase={phase}
-          selectedPhase={selectedPhase}
-          setChecking={this.props.projectSetChecking}
-          validateProjectFields={validateProjectFields}
-          validating={validating}
-          hasErrors={hasErrors}
-          disabled={formDisabled}
-          projectId={id}
-          syncronousErrors={syncErrors}
-          submitErrors={submitErrors}
-          title={`${currentSchema.list_prefix}. ${currentSchema.title}`}
-          showEditFloorAreaForm={() => this.setState({ showEditFloorAreaForm: true })}
-          showEditProjectTimetableForm={() =>
-            this.setState({ showEditProjectTimetableForm: true })
-          }
+      <div>
+      <div className="timeline" onClick={() => showTimelineModal(true)}>
+        <ProjectTimeline
+          deadlines={currentProject.deadlines}
+          projectView={true}
         />
-        {this.state.showEditFloorAreaForm && (
-          <EditFloorAreaFormModal
+        </div>
+        <div className={`project-input-container ${highlightGroup}`}>
+          <div className="project-input-left">
+            <QuickNav
+              changingPhase={changingPhase}
+              handleSave={this.handleSave}
+              handleCheck={() => this.props.projectSetChecking(!this.props.checking)}
+              projectName={name}
+              sections={currentSchema.sections}
+              phaseTitle={currentSchema.title}
+              currentPhases={currentPhases}
+              saving={saving}
+              switchDisplayedPhase={switchDisplayedPhase}
+              validating={validating}
+              validateProjectFields={validateProjectFields}
+              syncronousErrors={syncErrors}
+              saveProjectBase={saveProjectBase}
+              currentProject={currentProject}
+              setHighlightRole={this.setSelectedRole}
+            />
+            <NavigationPrompt when={this.props.isDirty}>
+              {({ onConfirm, onCancel }) => (
+                <Prompt
+                  onCancel={onCancel}
+                  onConfirm={onConfirm}
+                  message="Hankkeessa on tallentamattomia muutoksia. Haluatteko silti jatkaa?"
+                />
+              )}
+            </NavigationPrompt>
+          </div>
+
+          <EditForm
+            isCurrentPhase={selectedPhase === phase}
+            isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
+            handleSave={this.handleAutoSave}
+            changePhase={this.changePhase}
+            sections={currentSchema.sections}
             attributeData={attribute_data}
-            open
-            handleSubmit={saveProjectFloorArea}
-            handleClose={() => this.setState({ showEditFloorAreaForm: false })}
+            saving={saving}
+            // changingPhase={changingPhase}
+            initialValues={attribute_data}
+            phase={phase}
+            selectedPhase={selectedPhase}
+            setChecking={this.props.projectSetChecking}
+            validateProjectFields={validateProjectFields}
+            validating={validating}
+            hasErrors={hasErrors}
+            disabled={formDisabled}
+            projectId={id}
+            syncronousErrors={syncErrors}
+            submitErrors={submitErrors}
+            title={`${currentSchema.list_prefix}. ${currentSchema.title}`}
+            showEditFloorAreaForm={() => this.setState({ showEditFloorAreaForm: true })}
+            showEditProjectTimetableForm={() =>
+              this.setState({ showEditProjectTimetableForm: true })
+            }
           />
-        )}
-        {this.state.showEditProjectTimetableForm && (
-          <EditProjectTimetableModal
-            attributeData={attribute_data}
-            open
-            handleSubmit={this.handleTimetableClose}
-            handleClose={ () => this.setState({ showEditProjectTimetableForm: false })}
-          />
-        )}
+          {this.state.showEditFloorAreaForm && (
+            <EditFloorAreaFormModal
+              attributeData={attribute_data}
+              open
+              handleSubmit={saveProjectFloorArea}
+              handleClose={() => this.setState({ showEditFloorAreaForm: false })}
+            />
+          )}
+          {this.state.showEditProjectTimetableForm && (
+            <EditProjectTimetableModal
+              attributeData={attribute_data}
+              open
+              handleSubmit={this.handleTimetableClose}
+              handleClose={() => showTimelineModal(false)}
+              projectView={true}
+              id={currentProject.id}
+              subtype={currentProject.subtype}
+            />
+          )}
+        </div>
       </div>
     )
   }

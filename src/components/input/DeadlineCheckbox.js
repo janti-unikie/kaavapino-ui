@@ -8,21 +8,18 @@ import { useSelector } from 'react-redux'
 const DeadlineCheckbox = ({
   input: { name, value, label, onChange, className },
   meta: { error },
+  autofillRule,
   ...custom
 }) => {
 
   const formValues = useSelector(getFormValues(EDIT_PROJECT_TIMETABLE_FORM))
   let inputValue = value
 
-  if (custom.autofillRule) {
+  if (autofillRule) {
     inputValue = getFieldAutofillValue(custom.autofillRule, formValues)
   }
-
   const onChangeSave = data => {
     onChange(data.checked)
-    if (custom.handleSave) {
-      custom.handleSave(data.checked)
-    }
   }
   return (
     <Checkbox

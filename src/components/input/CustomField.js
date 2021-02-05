@@ -183,7 +183,7 @@ class CustomField extends Component {
 
     if (deadlines && deadlines.length > 0) {
       return (
-        <DeadLineInput onBlur={onBlur} type="date" currentDeadline={current} {...props} />
+        <DeadLineInput type="date" currentDeadline={current} {...props} />
       )
     }
     return <Input onBlur={onBlur} type="date" {...props} />
@@ -309,7 +309,7 @@ class CustomField extends Component {
         {...props}
         label={field.label}
         autofillRule={field.autofill_rule}
-        {...props}
+
       />
     )
   }

@@ -18,7 +18,6 @@ import { phasesSelector } from '../../selectors/phaseSelector'
 import { allEditFieldsSelector } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
-import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
 import ProjectEditPage from '../projectEdit'
 import ProjectCardPage from '../projectCard'
 import ProjectDocumentsPage from '../projectDocuments'
@@ -84,7 +83,7 @@ class ProjectPage extends Component {
   getRouteItems = () => {
     const { currentProject, edit, documents } = this.props
     const path = [
-      { value: 'Kaavaprojektit', path: '/' },
+      { value: 'Kaavaprojektit', path: '/projects' },
       { value: `${currentProject.name}`, path: `/${currentProject.id}` }
     ]
     if (edit) {
@@ -240,7 +239,7 @@ class ProjectPage extends Component {
     <div className="project-container">
       <NavHeader
         routeItems={[
-          { value: 'Kaavaprojektit', path: '/' },
+          { value: 'Kaavaprojektit', path: '/projects' },
           { value: 'Ladataan...', path: '/' }
         ]}
         title={'Ladataan...'}
@@ -271,7 +270,6 @@ class ProjectPage extends Component {
       projectSubtypes
     } = this.props
     const loading = !currentProjectLoaded || !phases
-    const { deadlines } = this.state
 
     if (loading) {
       return this.renderLoading()
@@ -285,7 +283,6 @@ class ProjectPage extends Component {
           actions={this.getNavActions()}
           infoOptions={this.getAllChanges()}
         />
-        <ProjectTimeline deadlines={deadlines} projectView={true} />
         <NewProjectFormModal
           currentProject={currentProject}
           open={this.state.showBaseInformationForm}
