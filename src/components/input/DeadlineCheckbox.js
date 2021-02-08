@@ -20,9 +20,6 @@ const DeadlineCheckbox = ({
 
   const onChangeSave = data => {
     onChange(data.checked)
-    if (custom.handleSave) {
-      custom.handleSave(data.checked)
-    }
   }
   return (
     <Checkbox

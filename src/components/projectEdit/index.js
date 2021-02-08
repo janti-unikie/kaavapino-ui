@@ -24,7 +24,7 @@ import {
   checkingSelector,
   currentProjectSelector
 } from '../../selectors/projectSelector'
-import { schemaSelector } from '../../selectors/schemaSelector'
+import { schemaSelector, allEditFieldsSelector } from '../../selectors/schemaSelector'
 import NavigationPrompt from 'react-router-navigation-prompt'
 import Prompt from '../common/Prompt'
 import EditForm from './EditForm'
@@ -150,7 +150,13 @@ class ProjectEditPage extends Component {
             formValues={this.props.formValues}
             notLastPhase={notLastPhase}
           />
-          <NavigationPrompt when={this.props.isDirty}>
+          <NavigationPrompt
+            when={
+              this.props.isDirty &&
+              this.props.allFields &&
+              this.props.allFields.length > 0
+            }
+          >
             {({ onConfirm, onCancel }) => (
               <Prompt
                 onCancel={onCancel}
@@ -212,7 +218,8 @@ const mapStateToProps = state => {
     syncErrors: getFormSyncErrors(EDIT_PROJECT_FORM)(state),
     currentProject: currentProjectSelector(state),
     submitErrors: getFormSubmitErrors(EDIT_PROJECT_FORM)(state),
-    formValues: getFormValues(EDIT_PROJECT_FORM)(state)
+    formValues: getFormValues(EDIT_PROJECT_FORM)(state),
+    allEditFields: allEditFieldsSelector(state)
   }
 }
 
