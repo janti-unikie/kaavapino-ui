@@ -83,7 +83,7 @@ class ProjectPage extends Component {
   getRouteItems = () => {
     const { currentProject, edit, documents } = this.props
     const path = [
-      { value: 'Kaavaprojektit', path: '/' },
+      { value: 'Kaavaprojektit', path: '/projects' },
       { value: `${currentProject.name}`, path: `/${currentProject.id}` }
     ]
     if (edit) {
@@ -239,7 +239,7 @@ class ProjectPage extends Component {
     <div className="project-container">
       <NavHeader
         routeItems={[
-          { value: 'Kaavaprojektit', path: '/' },
+          { value: 'Kaavaprojektit', path: '/projects' },
           { value: 'Ladataan...', path: '/' }
         ]}
         title={'Ladataan...'}

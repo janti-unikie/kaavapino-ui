@@ -158,7 +158,7 @@ class ProjectListPage extends Component {
     return (
       <div className="project-list-page">
         <NavHeader
-          routeItems={[{ value: t('projects.title'), path: '/' }]}
+          routeItems={[{ value: t('projects.title'), path: '/projects' }]}
           title={t('projects.title')}
           actions={headerActions}
         />
