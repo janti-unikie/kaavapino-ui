@@ -76,7 +76,6 @@ class ProjectPage extends Component {
 
   switchDisplayedPhase = phase => {
     if (this.props.edit) {
-      this.props.changeProjectPhase(phase)
       this.setState({ selectedPhase: phase })
     }
   }
