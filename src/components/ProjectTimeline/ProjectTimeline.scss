@@ -2,11 +2,11 @@
 
 .timeline-graph-container {
   font-family: 'Helsinki Grotesk Medium';
-  margin-left: 10px;
-  margin-right: 10px;
-  padding-top: 20px;
+  padding: 40px 20px 20px 20px;
+  margin-top: 20px;
   overflow: hidden;
   position: relative;
+  border: 1px solid $light-gray;
 
   .timeline-error-message {
     position: absolute;

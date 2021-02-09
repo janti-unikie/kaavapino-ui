@@ -33,6 +33,7 @@ import EditFloorAreaFormModal from '../project/EditFloorAreaFormModal'
 import { EDIT_PROJECT_FORM } from '../../constants'
 import _ from 'lodash'
 import EditProjectTimetableModal from '../project/EditProjectTimetableModal'
+import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
 
 class ProjectEditPage extends Component {
   state = {
@@ -123,7 +124,17 @@ class ProjectEditPage extends Component {
         </Loader>
       )
     }
+    const showTimelineModal = show => {
+      this.setState({ showEditProjectTimetableForm: show })
+    }
     return (
+      <div>
+        <div className="timeline" onClick={() => showTimelineModal(true)}>
+          <ProjectTimeline
+            deadlines={currentProject.deadlines}
+            projectView={true}
+          />
+        </div>
       <div className={`project-input-container ${highlightGroup}`}>
         <div className="project-input-left">
           <QuickNav
@@ -195,6 +206,7 @@ class ProjectEditPage extends Component {
             handleClose={() => this.setState({ showEditProjectTimetableForm: false })}
           />
         )}
+      </div>
       </div>
     )
   }
