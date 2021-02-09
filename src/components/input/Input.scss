@@ -418,6 +418,10 @@
     opacity: 0;
   }
 }
+.fieldset-internal-error{
+  color: $color-error-text !important;
+  border-color: $color-error-border !important;
+}
 .fieldset-container {
   border: 1px solid gainsboro;
   padding: 10px;

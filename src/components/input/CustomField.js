@@ -273,7 +273,6 @@ class CustomField extends Component {
       formName,
       updated
     } = this.props
-
     return (
       <FieldSet
         sets={sets}

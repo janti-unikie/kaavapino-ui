@@ -13,6 +13,7 @@ const SelectInput = ({ input, meta: { error }, options, onBlur, placeholder, ...
         options={options}
         onBlur={onBlur}
         placeholder={placeholder}
+        disabled={custom.disabled}
       />
     )
   }
@@ -39,6 +40,7 @@ const SelectInput = ({ input, meta: { error }, options, onBlur, placeholder, ...
       noResultsMessage="Ei tuloksia"
       options={options}
       defaultValue={input.value}
+      disabled={custom.disabled}
       error={inputUtils.hasError(error)}
     />
   )

@@ -81,6 +81,7 @@ import {
   EDIT_PROJECT_TIMETABLE_FORM
 } from '../constants'
 import i18 from 'i18next'
+import { showField } from '../utils/projectVisibilityUtils'
 
 export default function* projectSaga() {
   yield all([
@@ -291,12 +292,12 @@ function* getProjectSnapshot({ payload }) {
   try {
     let query = {}
 
-    if ( payload.phase ) {
+    if (payload.phase) {
       query = { phase: payload.phase }
-    } else if ( payload.date ) {
+    } else if (payload.date) {
       query = { snapshot: payload.date }
     }
-    const project = yield call (
+    const project = yield call(
       projectApi.get,
       { path: { projectId: payload.projectId }, query: query },
       ':projectId/'
@@ -372,11 +373,13 @@ const getChangedAttributeData = (values, initial, sections) => {
   return attribute_data
 }
 
-function* saveProjectBase() {
+function* saveProjectBase({ payload }) {
   yield put(startSubmit(NEW_PROJECT_FORM))
   const { values } = yield select(newProjectFormSelector)
   const currentProjectId = yield select(currentProjectIdSelector)
-
+  if (payload.archived) {
+    values.archived = payload.archived
+  }
   if (values) {
     try {
       const updatedProject = yield call(
@@ -498,7 +501,7 @@ function* saveProject() {
   yield put(setAllEditFields())
 }
 
-function* validateProjectFields() {
+function* validateProjectFields({ payload: formValues }) {
   try {
     yield call(saveProject)
     // Gather up required data
@@ -510,34 +513,46 @@ function* validateProjectFields() {
     let missingFields = false
     // Go through every single field
     sections.forEach(({ fields }) => {
-      fields.forEach(field => {
-        // Matrices can contain any kinds of fields, so
-        // we must go through them separately
-        if (field.type === 'matrix') {
-          const { matrix } = field
-          matrix.fields.forEach(({ required, name }) => {
-            if (projectUtils.isFieldMissing(name, required, attributeData)) {
-              missingFields = true
-            }
-          })
-          // Fieldsets can contain any fields (except matrices)
-          // multiple times, so we need to go through them all
-        } else if (field.type === 'fieldset') {
-          const { fieldset_attributes } = field
-          const fieldsets = attributeData[field.name]
-          if (fieldsets) {
-            fieldsets.forEach(set => {
-              fieldset_attributes.forEach(({ required, name }) => {
-                if (projectUtils.isFieldMissing(name, required, set)) {
-                  missingFields = true
+      fields.forEach((field, fieldIndex) => {
+        // Only validate visible fields
+        if (showField(field, formValues)) {
+          // Matrices can contain any kinds of fields, so
+          // we must go through them separately
+          if (field.type === 'matrix') {
+            const { matrix } = field
+            matrix.fields.forEach(({ required, name }) => {
+              if (projectUtils.isFieldMissing(name, required, attributeData)) {
+                missingFields = true
+              }
+            })
+            // Fieldsets can contain any fields (except matrices)
+            // multiple times, so we need to go through them all
+          } else if (field.type === 'fieldset') {
+            const { fieldset_attributes } = field
+            if (fieldset_attributes) {
+              fieldset_attributes.forEach(field => {
+                if (attributeData[fields[fieldIndex].name]) {
+                  attributeData[fields[fieldIndex].name].forEach(attribute => {
+                    if (
+                      projectUtils.isFieldMissing(field.name, field.required, attribute)
+                    ) {
+                      missingFields = true
+                    }
+                  })
+                } else {
+                  if (
+                    projectUtils.isFieldMissing(field.name, field.required, attributeData)
+                  ) {
+                    missingFields = true
+                  }
                 }
               })
-            })
+            }
+          } else if (
+            projectUtils.isFieldMissing(field.name, field.required, attributeData)
+          ) {
+            missingFields = true
           }
-        } else if (
-          projectUtils.isFieldMissing(field.name, field.required, attributeData)
-        ) {
-          missingFields = true
         }
       })
     })

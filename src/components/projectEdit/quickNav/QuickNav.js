@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Button from '../../common/Button'
-import { Accordion, Form } from 'semantic-ui-react'
+import { Accordion, Form, Message } from 'semantic-ui-react'
 import AccordionTitle from './AccordionTitle'
 import './styles.scss'
 import RoleHighlightPicker from './roleHighlightPicker'
@@ -8,6 +8,8 @@ import _ from 'lodash'
 import FormField from '../../input/FormField'
 import { reduxForm } from 'redux-form'
 import { NEW_PROJECT_FORM } from '../../../constants'
+import ConfirmModal from '../ConfirmModal'
+import { withTranslation } from 'react-i18next'
 
 const ONHOLD = 'onhold'
 
@@ -19,7 +21,9 @@ class QuickNav extends Component {
       sectionHeights: [],
       active: 0,
       activePhase: 0,
-      selected: 0
+      selected: 0,
+      endPhaseError: false,
+      verifying: false
     }
   }
 
@@ -44,7 +48,19 @@ class QuickNav extends Component {
   }
 
   componentDidUpdate = prevProps => {
-    const { phaseTitle, currentPhases, sections } = this.props
+    const { setChecking, phaseTitle, currentPhases, sections, hasErrors } = this.props
+
+    if (prevProps.validating && !this.props.validating) {
+      if (!hasErrors) {
+        this.setState({ verifying: true, endPhaseError: false })
+        setChecking(false)
+      } else {
+        this.setState({ endPhaseError: true })
+        clearTimeout(this.timeout)
+        this.timeout = setTimeout(() => this.setState({ endPhaseError: false }), 5000)
+        setChecking(true)
+      }
+    }
 
     if (phaseTitle !== prevProps.phaseTitle) {
       this.setState({ sectionHeights: this.initSections(sections) })
@@ -115,7 +131,20 @@ class QuickNav extends Component {
     }
   }
 
-  tryToEndPhase = () => this.props.validateProjectFields()
+  phaseCallback = changePhase => {
+    if (changePhase) {
+      if (this.props.notLastPhase) {
+        this.props.changePhase()
+      } else {
+        this.props.saveProjectBase({ archived: true })
+      }
+    }
+    this.setState({ verifying: false })
+  }
+
+  changePhase = () => {
+    this.props.validateProjectFields(this.props.formValues)
+  }
 
   getFormField = fieldProps => {
     const { formSubmitErrors, formValues, onhold, saveProjectBase } = this.props
@@ -148,10 +177,12 @@ class QuickNav extends Component {
       handleCheck,
       syncronousErrors,
       currentProject,
-      saveProjectBase
+      saveProjectBase,
+      isCurrentPhase,
+      notLastPhase,
+      t
     } = this.props
-
-   const errors = syncronousErrors && !_.isEmpty(syncronousErrors) ? true : false
+    const errors = syncronousErrors && !_.isEmpty(syncronousErrors) ? true : false
     return (
       <div className="quicknav-container">
         <div className="quicknav-navigation-section">
@@ -192,42 +223,59 @@ class QuickNav extends Component {
             </Accordion>
           </div>
         </div>
-        <RoleHighlightPicker onRoleUpdate={this.props.setHighlightRole}/>
+        <RoleHighlightPicker onRoleUpdate={this.props.setHighlightRole} />
         <div className="quicknav-buttons">
           <Button
             handleClick={handleCheck}
-            value="Tarkista"
-            help="Korostaa pakolliset puuttuvat kentät"
+            value={t('quick-nav.check')}
+            help={t('quick-nav.check-help-text')}
+            disabled={currentProject.archived}
             secondary
           />
           <Button
             handleClick={handleSave}
-            value="Tallenna"
-            loading={saving || errors }
+            value={t('common.save')}
+            loading={saving || errors}
             secondary
-            help="Tallentaa projektin"
+            help={t('quick-nav.save-help')}
+            disabled={currentProject.archived}
           />
           <Button
-            handleClick={this.tryToEndPhase}
-            value="Lopeta vaihe"
+            handleClick={this.changePhase}
+            value={`${notLastPhase ? t('quick-nav.end-phase') : t('quick-nav.archive')}`}
             loading={changingPhase || validating}
+            disabled={!isCurrentPhase || currentProject.archived}
             secondary
             fluid
-            help="Yrittää lopettaa vaiheen"
+            help={`${
+              notLastPhase ? t('quick-nav.end-phase-help') : t('quick-nav.archive-help')
+            }`}
           />
         </div>
-        <Form className='quicknav-onhold-form'>
+        <Form className="quicknav-onhold-form">
           {this.getFormField({
             field: {
               name: ONHOLD,
-              label: 'Projekti on toistaiseksi keskeytynyt',
+              label: t('quick-nav.onhold-lable'),
               type: 'checkbox-onhold',
-              disabled: saving
-              },
+              disabled: saving || currentProject.archived
+            },
             onhold: currentProject.onhold,
             saveProjectBase: saveProjectBase
           })}
         </Form>
+        <ConfirmModal
+          callback={this.phaseCallback}
+          open={this.state.verifying}
+          notLastPhase={notLastPhase}
+        />
+        {this.state.endPhaseError && (
+          <Message
+            header={t('quick-nav.change-phase-error')}
+            content={t('quick-nav.change-phase-error-message')}
+            color="yellow"
+          />
+        )}
       </div>
     )
   }
@@ -237,4 +285,4 @@ const QuickNavForm = reduxForm({
   form: NEW_PROJECT_FORM
 })(QuickNav)
 
-export default QuickNavForm
+export default withTranslation()(QuickNavForm)
