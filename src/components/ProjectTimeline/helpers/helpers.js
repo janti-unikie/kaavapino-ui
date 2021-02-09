@@ -19,6 +19,11 @@ export function findWeek(date) {
     return Math.round(date / 5)
   }
 }
+/**
+ * @desc cleans deadline object
+ * @param deadlines - deadlines from api
+ * @return object
+ */
 export function cleanDeadlines(deadlines) {
   let cleanedDeadlines = deadlines
   let deadlineType = null
@@ -51,6 +56,11 @@ export function cleanDeadlines(deadlines) {
   })
   return cleanedDeadlines
 }
+/**
+ * @desc checks deadlines for errors
+ * @param deadlines - deadlines from api
+ * @return boolean
+ */
 export function checkDeadlines(deadlines) {
   if (!deadlines) {
     return true
@@ -64,6 +74,7 @@ export function checkDeadlines(deadlines) {
   const has = Object.prototype.hasOwnProperty
   let deadlineAbbreviation = null
   let deadlineError = false
+  let deadlineEndPoints = []
   deadlines.forEach(deadline => {
     if (deadline.deadline) {
       if (deadline.deadline.deadline_types) {
@@ -71,6 +82,9 @@ export function checkDeadlines(deadlines) {
           if (has.call(deadline.deadline.deadline_types, prop)) {
             if (deadline.deadline.deadline_types[prop] === 'phase_start') {
               deadlineAbbreviation = deadline.deadline.abbreviation.charAt(0)
+            }
+            if (deadline.deadline.deadline_types[prop] === 'phase_end') {
+              deadlineEndPoints.push(deadlineAbbreviation)
             }
             if (deadlineAbbreviation) {
               if (deadlineAbbreviation !== deadline.deadline.abbreviation.charAt(0)) {
@@ -95,7 +109,17 @@ export function checkDeadlines(deadlines) {
       deadlineError = true
     }
   })
+  if (findDuplicateEndPoints(deadlineEndPoints)) {
+    return true
+  }
   if (deadlineError) {
+    return true
+  }
+  return false
+}
+function findDuplicateEndPoints(endPoints) {
+  const duplicateEndPoints = endPoints.filter((item, index) => endPoints.indexOf(item) !== index)
+  if (duplicateEndPoints.length > 0) {
     return true
   }
   return false
