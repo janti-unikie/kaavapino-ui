@@ -6,13 +6,15 @@ import {
   initializeProject,
   saveProjectBase,
   changeProjectPhase,
-  getProjectSnapshot
+  getProjectSnapshot,
+  setSelectedPhaseId
 } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
 import {
   currentProjectSelector,
   currentProjectLoadedSelector,
-  changingPhaseSelector
+  changingPhaseSelector,
+  selectedPhaseSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
 import { allEditFieldsSelector } from '../../selectors/schemaSelector'
@@ -32,16 +34,13 @@ import { userIdSelector } from '../../selectors/authSelector'
 class ProjectPage extends Component {
   constructor(props) {
     super(props)
-
-    let selectedPhase
     if (props.currentProject) {
-      selectedPhase = props.currentProject.phase
+      this.props.setSelectedPhaseId(props.currentProject.phase)
     } else {
-      selectedPhase = 0
+      this.props.setSelectedPhaseId(0)
     }
 
     this.state = {
-      selectedPhase: selectedPhase,
       showDeadlineModal: false,
       showBaseInformationForm: false,
       showPrintProjectDataModal: false,
@@ -65,17 +64,16 @@ class ProjectPage extends Component {
       (!prevProps.currentProject && currentProject) ||
       (prevProps.changingPhase && !changingPhase)
     ) {
-      this.setState({ selectedPhase: currentProject.phase })
+      this.props.setSelectedPhaseId(currentProject.phase)
       this.setState({ deadlines: currentProject.deadlines })
       document.title = currentProject.name
     }
-
-    if (prevProps.edit && !edit) this.setState({ selectedPhase: currentProject.phase })
+    if (prevProps.edit && !edit) this.props.setSelectedPhaseId(currentProject.phase)
   }
 
   switchDisplayedPhase = phase => {
     if (this.props.edit) {
-      this.setState({ selectedPhase: phase })
+      this.props.setSelectedPhaseId(phase)
     }
   }
 
@@ -119,7 +117,7 @@ class ProjectPage extends Component {
 
   getProjectPageContent = () => {
     const { edit, documents, currentProject, phases } = this.props
-    const { selectedPhase } = this.state
+    const { selectedPhase } = this.props
     const currentPhases = this.getCurrentPhases()
 
     if (edit) {
@@ -315,7 +313,8 @@ const mapDispatchToProps = {
   saveProjectBase,
   fetchUsers,
   changeProjectPhase,
-  getProjectSnapshot
+  getProjectSnapshot,
+  setSelectedPhaseId
 }
 
 const mapStateToProps = state => {
@@ -328,7 +327,8 @@ const mapStateToProps = state => {
     changingPhase: changingPhaseSelector(state),
     allEditFields: allEditFieldsSelector(state),
     formValues: getFormValues(DOWNLOAD_PROJECT_DATA_FORM)(state),
-    currentUserId: userIdSelector(state)
+    currentUserId: userIdSelector(state),
+    selectedPhase: selectedPhaseSelector(state)
   }
 }
 

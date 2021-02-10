@@ -18,7 +18,8 @@ import {
   totalProjectsSelector,
   ownProjectsSelector,
   projectsSelector,
-  amountOfProjectsToIncreaseSelector
+  amountOfProjectsToIncreaseSelector,
+  selectedPhaseSelector
 } from '../selectors/projectSelector'
 import { schemaSelector } from '../selectors/schemaSelector'
 import { userIdSelector } from '../selectors/authSelector'
@@ -466,9 +467,9 @@ function* saveProject() {
   const editForm = yield select(editFormSelector) || {}
   const { initial, values } = editForm
   if (values) {
-    const currentProject = yield select(currentProjectSelector)
+    const selectedPhase = yield select(selectedPhaseSelector)
     const schema = yield select(schemaSelector)
-    const currentSchema = schema.phases.find(s => s.id === currentProject.phase)
+    const currentSchema = schema.phases.find(s => s.id === selectedPhase)
     const { sections } = currentSchema
     const changedValues = getChangedAttributeData(values, initial, sections)
     const parentNames = projectUtils.getParents(changedValues)
