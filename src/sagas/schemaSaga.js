@@ -35,12 +35,20 @@ function* allEditedFieldsSaga() {
   const schema = yield select(schemaSelector)
   const updates = yield select(updatesSelector)
   const result = []
+  if (!schema || !schema.phases) {
+    return null
+  }
+
   schema.phases.forEach(({ sections }) =>
-    sections.forEach(({ fields }) =>
-      fields.forEach(({ name, label }, i) =>
-        updates[name] ? result.push({ name: label, ...updates[name], id: i }) : ''
-      )
-    )
+    sections.forEach(({ fields }) => {
+      fields.forEach(({ name, label, autofill_readonly }, i) => {
+        if (!autofill_readonly) {
+          return updates[name]
+            ? result.push({ name: label, ...updates[name], autofill: autofill_readonly, id: i })
+            : ''
+        }
+      })
+    })
   )
   const uniques = projectUtils.getUniqueUpdates(
     result.sort(

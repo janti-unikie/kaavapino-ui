@@ -5,10 +5,9 @@ import { getFieldAutofillValue } from '../../../utils/projectAutofillUtils'
 import { isBoolean } from 'lodash'
 
 const AutofillInput = ({
-  field:{ name, autofill_readonly, autofill_rule },
+  field: { name, autofill_readonly, autofill_rule },
   fieldProps,
-  formName,
-  saveAutofill
+  formName
 }) => {
   const formValues = useSelector(getFormValues(formName))
   const dispatch = useDispatch()
@@ -17,36 +16,30 @@ const AutofillInput = ({
 
   const [autoFillValue, setAutofillValue] = useState('')
 
-  useEffect( () => {
+  useEffect(() => {
     if (!formValues) {
       return
     }
 
-    setAutofillValue(getFieldAutofillValue( autofill_rule, formValues ))
+    setAutofillValue(getFieldAutofillValue(autofill_rule, formValues))
 
-    if ( formValues[name] === autoFillValue ) {
+    if (formValues[name] === autoFillValue) {
       return
     }
 
-    if ( autoFillValue ||  isBoolean( autoFillValue )) {
-       dispatch(autofill(formName, name, autoFillValue))
-
-       if ( saveAutofill ) {
-        saveAutofill()
-       }
+    if (autoFillValue || isBoolean(autoFillValue)) {
+      dispatch(autofill(formName, name, autoFillValue))
     }
   }, [formValues, dispatch, autoFillValue])
 
-  if ( autofill_readonly || isBoolean( autoFillValue )) {
+  if (autofill_readonly || isBoolean(autoFillValue)) {
     newFieldProps = {
       ...fieldProps,
       disabled: true
     }
   }
 
-  return (
-    <Field {...newFieldProps} />
-  )
+  return <Field {...newFieldProps} />
 }
 
 export default AutofillInput
