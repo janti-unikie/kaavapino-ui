@@ -141,7 +141,6 @@ class CustomField extends Component {
   renderRichText = props => {
     const {
       onBlur,
-      handleSave,
       attributeData,
       parentName,
       meta,
@@ -152,7 +151,6 @@ class CustomField extends Component {
     return (
       <RichTextEditor
         onBlur={onBlur}
-        handleSave={handleSave}
         meta={meta}
         defaultValue={defaultValue}
         {...props}
@@ -262,7 +260,7 @@ class CustomField extends Component {
 
   renderFieldset = ({ fields: sets }) => {
     const {
-      field: { fieldset_attributes, name, label, generated, disabled, autofill_readonly },
+      field: { fieldset_attributes, name, label, generated, disabled, autofill_readonly, editable },
       field,
       attributeData,
       formValues,
@@ -280,7 +278,7 @@ class CustomField extends Component {
         attributeData={attributeData}
         name={name}
         placeholder={placeholder || label}
-        disabled={generated || disabled || autofill_readonly ? true : false}
+        disabled={generated || disabled || autofill_readonly  || !editable}
         formValues={formValues}
         validate={[this.validateFieldSize]}
         syncronousErrors={syncronousErrors}
@@ -431,7 +429,7 @@ class CustomField extends Component {
     let fieldProps = {
       name: field.name,
       placeholder: placeHolderText,
-      disabled: field.generated || field.disabled || field.autofill_readonly,
+      disabled: field.generated || field.disabled || field.autofill_readonly || !field.editable,
       component: this.getInput(field),
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
       updated: { updated },
