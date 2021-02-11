@@ -83,6 +83,7 @@ import {
 } from '../constants'
 import i18 from 'i18next'
 import { showField } from '../utils/projectVisibilityUtils'
+import { checkDeadlines } from '../components/ProjectTimeline/helpers/helpers'
 
 export default function* projectSaga() {
   yield all([
@@ -449,12 +450,23 @@ function* saveProjectTimetable() {
       )
       yield put(updateProject(updatedProject))
       yield put(setSubmitSucceeded(EDIT_PROJECT_TIMETABLE_FORM))
-      yield put(
-        toastrActions.add({
-          type: 'success',
-          title: i18.t('messages.deadlines-successfully-saved')
-        })
-      )
+
+      if (!checkDeadlines(updatedProject.deadlines)) {
+        yield put(
+          toastrActions.add({
+            type: 'success',
+            title: i18.t('messages.deadlines-successfully-saved')
+          })
+        )
+      } else {
+        yield put(
+          toastrActions.add({
+            type: 'warning',
+            title: i18.t('messages.deadlines-successfully-saved'),
+            message: i18.t('messages.check-timetable')
+          })
+        )
+      }
       yield put(initializeProjectAction(currentProjectId))
     } catch (e) {
       yield put(stopSubmit(EDIT_PROJECT_TIMETABLE_FORM, e.response.data))

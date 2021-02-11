@@ -22,9 +22,10 @@
         "save": "Tallenna"
     },
     "messages": {
-        "deadlines-successfully-saved": "Aikataulut tallennettu onnistuneesti",
+        "deadlines-successfully-saved": "Aikataulut tallennettu",
         "min-distance": "Valitse myöhempi päivä, koska tämä on liian lähellä edellistä etappia.",
-        "max-distance": "Valitse aikaisempi päivä, koska tämä on liian lähellä seuraavaa etappia."
+        "max-distance": "Valitse aikaisempi päivä, koska tämä on liian lähellä seuraavaa etappia.",
+        "check-timetable": "Tekemäsi aikataulumuutos vaikuttaa myöhempiin vaiheisiin. Siirrä myöhempiä vaiheita eteenpäin, jotta saat koko aikataulun ajantasalle."
     },
     "floor-areas": {
         "title": "Päivitä kerrosalatiedot"
