@@ -18,7 +18,8 @@ import {
   totalProjectsSelector,
   ownProjectsSelector,
   projectsSelector,
-  amountOfProjectsToIncreaseSelector
+  amountOfProjectsToIncreaseSelector,
+  selectedPhaseSelector
 } from '../selectors/projectSelector'
 import { schemaSelector } from '../selectors/schemaSelector'
 import { userIdSelector } from '../selectors/authSelector'
@@ -82,6 +83,7 @@ import {
 } from '../constants'
 import i18 from 'i18next'
 import { showField } from '../utils/projectVisibilityUtils'
+import { checkDeadlines } from '../components/ProjectTimeline/helpers/helpers'
 
 export default function* projectSaga() {
   yield all([
@@ -448,12 +450,23 @@ function* saveProjectTimetable() {
       )
       yield put(updateProject(updatedProject))
       yield put(setSubmitSucceeded(EDIT_PROJECT_TIMETABLE_FORM))
-      yield put(
-        toastrActions.add({
-          type: 'success',
-          title: i18.t('messages.deadlines-successfully-saved')
-        })
-      )
+
+      if (!checkDeadlines(updatedProject.deadlines)) {
+        yield put(
+          toastrActions.add({
+            type: 'success',
+            title: i18.t('messages.deadlines-successfully-saved')
+          })
+        )
+      } else {
+        yield put(
+          toastrActions.add({
+            type: 'warning',
+            title: i18.t('messages.deadlines-successfully-saved'),
+            message: i18.t('messages.check-timetable')
+          })
+        )
+      }
       yield put(initializeProjectAction(currentProjectId))
     } catch (e) {
       yield put(stopSubmit(EDIT_PROJECT_TIMETABLE_FORM, e.response.data))
@@ -466,9 +479,9 @@ function* saveProject() {
   const editForm = yield select(editFormSelector) || {}
   const { initial, values } = editForm
   if (values) {
-    const currentProject = yield select(currentProjectSelector)
+    const selectedPhase = yield select(selectedPhaseSelector)
     const schema = yield select(schemaSelector)
-    const currentSchema = schema.phases.find(s => s.id === currentProject.phase)
+    const currentSchema = schema.phases.find(s => s.id === selectedPhase)
     const { sections } = currentSchema
     const changedValues = getChangedAttributeData(values, initial, sections)
     const parentNames = projectUtils.getParents(changedValues)

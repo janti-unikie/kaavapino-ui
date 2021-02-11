@@ -44,6 +44,7 @@ export const RESET_PROJECT_DEADLINES = 'Reset project deadlines'
 export const GET_PROJECT_SNAPSHOT = 'Get project snapshot'
 export const GET_PROJECT_SNAPSHOT_SUCCESSFUL = 'Get project snapshot succesful'
 export const RESET_PROJECT_SNAPSHOT = 'Reset project snapshot'
+export const SET_SELECTED_PHASE_ID = 'Set selected phase id'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -80,6 +81,8 @@ export const setTotalOwnProjects = count => ({
   type: SET_TOTAL_OWN_PROJECTS,
   payload: count
 })
+
+export const setSelectedPhaseId = phaseId => ({ type: SET_SELECTED_PHASE_ID, payload: phaseId })
 
 export const sortProjects = options => ({ type: SORT_PROJECTS, payload: options })
 

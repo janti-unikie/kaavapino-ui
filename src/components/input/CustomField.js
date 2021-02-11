@@ -400,7 +400,6 @@ class CustomField extends Component {
       error,
       updated,
       defaultValue,
-      handleSave,
       className
     } = this.props
     const type = field.type
@@ -459,7 +458,6 @@ class CustomField extends Component {
           field={field}
           fieldProps={fieldProps}
           formName={formName}
-          saveAutofill={handleSave}
         />
       )
     }
