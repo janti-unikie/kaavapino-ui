@@ -379,7 +379,7 @@ function* saveProjectBase({ payload }) {
   yield put(startSubmit(NEW_PROJECT_FORM))
   const { values } = yield select(newProjectFormSelector)
   const currentProjectId = yield select(currentProjectIdSelector)
-  if (payload.archived) {
+  if (payload && payload.archived) {
     values.archived = payload.archived
   }
   if (values) {
