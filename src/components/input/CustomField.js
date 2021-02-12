@@ -169,7 +169,7 @@ class CustomField extends Component {
   }
 
   renderDate = props => {
-    const { onBlur, attributeData, parentName, deadlines } = this.props
+    const { onBlur, attributeData, parentName, deadlines, field } = this.props
 
     let current
     if (deadlines && deadlines.length > 0) {
@@ -181,7 +181,7 @@ class CustomField extends Component {
 
     if (deadlines && deadlines.length > 0) {
       return (
-        <DeadLineInput type="date" currentDeadline={current} {...props} />
+        <DeadLineInput type="date" enabled={field.enabled} currentDeadline={current} {...props} />
       )
     }
     return <Input onBlur={onBlur} type="date" {...props} />

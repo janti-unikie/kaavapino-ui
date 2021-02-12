@@ -4,7 +4,7 @@ import { Input } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
 import { useTranslation } from 'react-i18next'
 
-const DeadLineInput = ({ input, meta: { error }, currentDeadline, ...custom }) => {
+const DeadLineInput = ({ input, meta: { error }, currentDeadline, enabled,  ...custom }) => {
   const { t } = useTranslation()
 
   let currentError
@@ -19,7 +19,7 @@ const DeadLineInput = ({ input, meta: { error }, currentDeadline, ...custom }) =
     currentError = t('messages.max-distance')
   }
 
-  const hasError = inputUtils.hasError(error) || inputUtils.hasError(currentError)
+  const hasError = enabled && (inputUtils.hasError(error) || inputUtils.hasError(currentError))
 
   return (
     <div>
@@ -28,7 +28,7 @@ const DeadLineInput = ({ input, meta: { error }, currentDeadline, ...custom }) =
         {...input}
         {...custom}
         className={
-          generated && valueGenerated
+          generated && valueGenerated && enabled
             ? `${custom.className} deadline-estimated`
             : custom.className
         }
@@ -37,12 +37,12 @@ const DeadLineInput = ({ input, meta: { error }, currentDeadline, ...custom }) =
         }}
         fluid
       />
-      {valueGenerated ? (
+      {enabled && valueGenerated ? (
         <span className="deadline-estimated">{t('deadlines.estimated')}</span>
       ) : (
         ''
       )}
-      {currentError && <div className="error-text">{currentError} </div>}
+      {enabled && currentError && <div className="error-text">{currentError} </div>}
     </div>
   )
 }
