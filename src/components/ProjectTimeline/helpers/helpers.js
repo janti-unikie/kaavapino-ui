@@ -27,6 +27,7 @@ export function findWeek(date) {
 export function cleanDeadlines(deadlines) {
   let cleanedDeadlines = deadlines
   let deadlineType = null
+  let deadlineEndPoints = []
   const has = Object.prototype.hasOwnProperty
   // cleanup deadline start and end points
   cleanedDeadlines.forEach(function (deadline, index, object) {
@@ -46,11 +47,24 @@ export function cleanDeadlines(deadlines) {
               } else {
                 deadlineType = deadline.deadline.deadline_types[prop]
               }
+              if (deadline.deadline.deadline_types[prop] === 'phase_end') {
+                deadlineEndPoints.push(index)
+              }
             } else {
               deadlineType = null
             }
           }
         }
+      }
+    }
+  })
+  deadlineEndPoints.forEach((arr, index, array) => {
+    if (array[index - 1]) {
+      if (
+        cleanedDeadlines[arr].deadline.abbreviation.charAt(0) ===
+        cleanedDeadlines[array[index - 1]].deadline.abbreviation.charAt(0)
+      ) {
+        cleanedDeadlines[array[index - 1]].not_last_end_point = true
       }
     }
   })
@@ -74,7 +88,6 @@ export function checkDeadlines(deadlines) {
   const has = Object.prototype.hasOwnProperty
   let deadlineAbbreviation = null
   let deadlineError = false
-  let deadlineEndPoints = []
   deadlines.forEach(deadline => {
     if (deadline.deadline) {
       if (deadline.deadline.deadline_types) {
@@ -82,9 +95,6 @@ export function checkDeadlines(deadlines) {
           if (has.call(deadline.deadline.deadline_types, prop)) {
             if (deadline.deadline.deadline_types[prop] === 'phase_start') {
               deadlineAbbreviation = deadline.deadline.abbreviation.charAt(0)
-            }
-            if (deadline.deadline.deadline_types[prop] === 'phase_end') {
-              deadlineEndPoints.push(deadlineAbbreviation)
             }
             if (deadlineAbbreviation) {
               if (deadlineAbbreviation !== deadline.deadline.abbreviation.charAt(0)) {
@@ -109,17 +119,7 @@ export function checkDeadlines(deadlines) {
       deadlineError = true
     }
   })
-  if (findDuplicateEndPoints(deadlineEndPoints)) {
-    return true
-  }
   if (deadlineError) {
-    return true
-  }
-  return false
-}
-function findDuplicateEndPoints(endPoints) {
-  const duplicateEndPoints = endPoints.filter((item, index) => endPoints.indexOf(item) !== index)
-  if (duplicateEndPoints.length > 0) {
     return true
   }
   return false
