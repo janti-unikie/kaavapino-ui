@@ -31,7 +31,8 @@ import {
   FETCH_PROJECT_DEADLINES_SUCCESSFUL,
   GET_PROJECT_SUCCESSFUL,
   GET_PROJECT_SNAPSHOT_SUCCESSFUL,
-  RESET_PROJECT_SNAPSHOT
+  RESET_PROJECT_SNAPSHOT,
+  SET_SELECTED_PHASE_ID
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -51,7 +52,8 @@ export const initialState = {
   hasErrors: false,
   checking: false,
   pollingProjects: false,
-  timelineProject: []
+  timelineProject: [],
+  selectedPhase: 0
 }
 
 export const reducer = (state = initialState, action) => {
@@ -226,6 +228,13 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         changingPhase: true
+      }
+    }
+
+    case SET_SELECTED_PHASE_ID: {
+      return {
+        ...state,
+        selectedPhase: action.payload
       }
     }
 
