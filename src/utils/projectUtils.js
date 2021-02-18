@@ -207,14 +207,15 @@ const getFieldValue = (data, fieldName) => {
   return value
 }
 
-const checkInputValue = (props, attributeData, parentName, currentDeadline) => {
+const checkInputValue = (props, attributeData, parentName, currentDeadline, autofill_rule) => {
 
-    if (currentDeadline) {
-      props.input.defaultValue = currentDeadline.date
-      return
-    }
+  if (currentDeadline) {
+    props.input.defaultValue = currentDeadline.date
+    return
+  }
 
-  if (props && parentName && attributeData[parentName]) {
+  if (props && parentName && attributeData[parentName] && !autofill_rule) {
+
     if (!props.input.value || isBoolean(props.input.value)) {
       const inputValue = getFieldValue(attributeData[parentName], props.input.name)
       if (inputValue || isBoolean(inputValue) || !isNaN(inputValue))

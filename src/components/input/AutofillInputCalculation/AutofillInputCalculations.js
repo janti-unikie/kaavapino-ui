@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { isEqual } from 'lodash'
-import { change, getFormValues, Field } from 'redux-form'
+import { change, autofill, getFormValues, Field } from 'redux-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { handleAutofillCalculations } from './autofillCalculationsUtils'
+import { getFieldAutofillValue } from '../../../utils/projectAutofillUtils'
+import { EDIT_PROJECT_FORM } from '../../../constants'
 
 /* This component should calculate and update it's value in redux form whenever
  * the related fields change.
@@ -17,52 +19,86 @@ import { handleAutofillCalculations } from './autofillCalculationsUtils'
  */
 
 const AutofillInputCalculations = ({
-  field: { autofill_readonly, name, related_fields, calculations, unit },
+  field: {
+    name,
+    autofill_readonly,
+    related_fields,
+    calculations,
+    unit,
+    autofill_rule
+  },
   fieldProps,
   formName
 }) => {
   const dispatch = useDispatch()
   const [previousRelatedFieldValues, setPreviousRelatedFieldValues] = useState([])
   const formValues = useSelector(getFormValues(formName))
+  const editFormValues = useSelector(getFormValues(EDIT_PROJECT_FORM))
   const value = (formValues && formValues[name]) || null
+
+  const [currentAutoFill, setCurrentAutoFill] = useState()
+
+  let calculatedTotal = 0
+  const autoFillValue = getFieldAutofillValue(autofill_rule, editFormValues)
+  const autoFillNumber = autoFillValue ? parseInt( autoFillValue ) : null
+
+  useEffect(() => {
+
+    if ( autoFillNumber && !calculations  ) {
+      setCurrentAutoFill(autoFillNumber)
+      dispatch(autofill(autoFillNumber))
+    }
+  }, [currentAutoFill])
 
   useEffect(() => {
     if (!formValues) {
       return
     }
 
-    /* Optimization: don't recalculate if related form values have not changed */
-    let shouldRecalculate = false
-    for (let i = 0; i < related_fields.length; i += 1) {
-      if (!isEqual(formValues[related_fields[i]], previousRelatedFieldValues[i])) {
-        shouldRecalculate = true
-        break
+      /* Optimization: don't recalculate if related form values have not changed */
+      let shouldRecalculate = false
+      for (let i = 0; i < related_fields.length; i += 1) {
+        if (!isEqual(formValues[related_fields[i]], previousRelatedFieldValues[i])) {
+          shouldRecalculate = true
+          break
+        }
       }
-    }
-    if (!shouldRecalculate) {
-      return
-    }
-    setPreviousRelatedFieldValues(
-      related_fields.map(relatedField => formValues[relatedField])
-    )
-    /* end of optimization */
+      if (!shouldRecalculate) {
+        return
+      }
+      setPreviousRelatedFieldValues(
+        related_fields.map(relatedField => formValues[relatedField])
+      )
+      /* end of optimization */
 
-    const calculatedTotal = handleAutofillCalculations(calculations, formValues)
+      calculatedTotal = handleAutofillCalculations(calculations, formValues)
 
-    if (calculatedTotal !== value) {
-      dispatch(change(formName, name, calculatedTotal))
-    }
+      if (calculatedTotal !== value) {
+        dispatch(change(formName, name, calculatedTotal))
+      }
   }, [related_fields, formValues])
+
+  let newFieldProps = {
+    ...fieldProps
+  }
+  let isDisabled = autofill_readonly || fieldProps.disabled
+
+  if ( !fieldProps.disabled ) {
+    if ( !autoFillValue && autoFillValue !== 0) {
+      isDisabled = false
+    }
+  }
+
   return (
     <div className="autofill-input">
-      {autofill_readonly ? (
+      {autofill_readonly && calculations ? (
         <div className="autofill-readonly-input">
           <div className="autofill-readonly-input-value">
             {`${value || 0}${value && unit ? ` ${unit}` : ''}`}
           </div>
         </div>
       ) : (
-        <Field {...fieldProps} />
+        <Field {...newFieldProps} disabled={isDisabled}/>
       )}
     </div>
   )

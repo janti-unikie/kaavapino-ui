@@ -4,7 +4,7 @@ import { Input } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
 import { useTranslation } from 'react-i18next'
 
-const DeadLineInput = ({ input, meta: { error }, currentDeadline, enabled,  ...custom }) => {
+const DeadLineInput = ({ input, meta: { error }, currentDeadline, editable,  ...custom }) => {
   const { t } = useTranslation()
 
   let currentError
@@ -14,12 +14,20 @@ const DeadLineInput = ({ input, meta: { error }, currentDeadline, enabled,  ...c
 
   if (currentDeadline && currentDeadline.is_under_min_distance_previous) {
     currentError = t('messages.min-distance')
+
+    if ( currentDeadline.deadline && currentDeadline.deadline.error_min_distance_previous) {
+      currentError = currentDeadline.deadline.error_min_distance_previous
+    }
   }
   if (currentDeadline && currentDeadline.is_under_min_distance_next) {
     currentError = t('messages.max-distance')
+
+    if ( currentDeadline.deadline && currentDeadline.warning_min_distance_next) {
+      currentError = currentDeadline.warning_min_distance_next
+    }
   }
 
-  const hasError = enabled && (inputUtils.hasError(error) || inputUtils.hasError(currentError))
+  const hasError = editable && (inputUtils.hasError(error) || inputUtils.hasError(currentError))
 
   return (
     <div>
@@ -28,7 +36,7 @@ const DeadLineInput = ({ input, meta: { error }, currentDeadline, enabled,  ...c
         {...input}
         {...custom}
         className={
-          generated && valueGenerated && enabled
+          generated && valueGenerated && editable
             ? `${custom.className} deadline-estimated`
             : custom.className
         }
@@ -37,12 +45,12 @@ const DeadLineInput = ({ input, meta: { error }, currentDeadline, enabled,  ...c
         }}
         fluid
       />
-      {enabled && valueGenerated ? (
+      {editable && valueGenerated ? (
         <span className="deadline-estimated">{t('deadlines.estimated')}</span>
       ) : (
         ''
       )}
-      {enabled && currentError && <div className="error-text">{currentError} </div>}
+      {editable && currentError && <div className="error-text">{currentError} </div>}
     </div>
   )
 }
