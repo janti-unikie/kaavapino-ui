@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { isEqual } from 'lodash'
-import { change, autofill, getFormValues, Field } from 'redux-form'
+import { change,  getFormValues, Field } from 'redux-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { handleAutofillCalculations } from './autofillCalculationsUtils'
-import { getFieldAutofillValue } from '../../../utils/projectAutofillUtils'
-import { EDIT_PROJECT_FORM } from '../../../constants'
 
 /* This component should calculate and update it's value in redux form whenever
  * the related fields change.
@@ -19,74 +17,71 @@ import { EDIT_PROJECT_FORM } from '../../../constants'
  */
 
 const AutofillInputCalculations = ({
-  field: {
-    name,
-    autofill_readonly,
-    related_fields,
-    calculations,
-    unit,
-    autofill_rule
-  },
+  field: { name, autofill_readonly, related_fields, calculations, unit },
   fieldProps,
   formName
 }) => {
   const dispatch = useDispatch()
   const [previousRelatedFieldValues, setPreviousRelatedFieldValues] = useState([])
   const formValues = useSelector(getFormValues(formName))
-  const editFormValues = useSelector(getFormValues(EDIT_PROJECT_FORM))
+  // TODO: Fix this when FACTA integration is done
+  //const editFormValues = useSelector(getFormValues(EDIT_PROJECT_FORM))
   const value = (formValues && formValues[name]) || null
 
-  const [currentAutoFill, setCurrentAutoFill] = useState()
+  // TODO: Fix this when FACTA integration is done
+  //const [currentAutoFill, setCurrentAutoFill] = useState()
 
   let calculatedTotal = 0
+
+  /*
+  // TODO: Fix this when FACTA integration is done
   const autoFillValue = getFieldAutofillValue(autofill_rule, editFormValues)
-  const autoFillNumber = autoFillValue ? parseInt( autoFillValue ) : null
+  const autoFillNumber = autoFillValue ? parseInt(autoFillValue) : null
 
   useEffect(() => {
+    if (autoFillNumber && !calculations) {
+    dispatch(autofill(autoFillNumber))
+    setCurrentAutoFill(autoFillNumber)
 
-    if ( autoFillNumber && !calculations  ) {
-      setCurrentAutoFill(autoFillNumber)
-      dispatch(autofill(autoFillNumber))
     }
   }, [currentAutoFill])
+  */
 
   useEffect(() => {
     if (!formValues) {
       return
     }
 
-      /* Optimization: don't recalculate if related form values have not changed */
-      let shouldRecalculate = false
-      for (let i = 0; i < related_fields.length; i += 1) {
-        if (!isEqual(formValues[related_fields[i]], previousRelatedFieldValues[i])) {
-          shouldRecalculate = true
-          break
-        }
+    /* Optimization: don't recalculate if related form values have not changed */
+    let shouldRecalculate = false
+    for (let i = 0; i < related_fields.length; i += 1) {
+      if (!isEqual(formValues[related_fields[i]], previousRelatedFieldValues[i])) {
+        shouldRecalculate = true
+        break
       }
-      if (!shouldRecalculate) {
-        return
-      }
-      setPreviousRelatedFieldValues(
-        related_fields.map(relatedField => formValues[relatedField])
-      )
-      /* end of optimization */
+    }
+    if (!shouldRecalculate) {
+      return
+    }
+    setPreviousRelatedFieldValues(
+      related_fields.map(relatedField => formValues[relatedField])
+    )
+    /* end of optimization */
 
-      calculatedTotal = handleAutofillCalculations(calculations, formValues)
+    calculatedTotal = handleAutofillCalculations(calculations, formValues)
 
-      if (calculatedTotal !== value) {
-        dispatch(change(formName, name, calculatedTotal))
-      }
+    if (calculatedTotal !== value) {
+      dispatch(change(formName, name, calculatedTotal))
+    }
   }, [related_fields, formValues])
 
-  let newFieldProps = {
-    ...fieldProps
-  }
   let isDisabled = autofill_readonly || fieldProps.disabled
 
-  if ( !fieldProps.disabled ) {
-    if ( !autoFillValue && autoFillValue !== 0) {
+  if (!fieldProps.disabled) {
+   // TODO: Fix this when FACTA integration is done
+   // if (!autoFillValue && autoFillValue !== 0 || true) {
       isDisabled = false
-    }
+  //  }
   }
 
   return (
@@ -98,7 +93,7 @@ const AutofillInputCalculations = ({
           </div>
         </div>
       ) : (
-        <Field {...newFieldProps} disabled={isDisabled}/>
+        <Field {...fieldProps} disabled={isDisabled} />
       )}
     </div>
   )
