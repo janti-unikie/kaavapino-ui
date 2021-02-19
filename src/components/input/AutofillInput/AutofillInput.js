@@ -31,12 +31,18 @@ const AutofillInput = ({
       dispatch(autofill(formName, name, autoFillValue))
     }
   }, [formValues, dispatch, autoFillValue])
-  if ( autofill_rule && autofill_rule.length > 0 &&  autoFillValue === undefined ) {
+
+  if ( !editable ) {
+    newFieldProps = {
+      ...fieldProps,
+      disabled: true
+    }
+  } else if ( autofill_rule && autofill_rule.length > 0 &&  autoFillValue === undefined ) {
     newFieldProps = {
       ...fieldProps,
       disabled: false
     }
-  } else if (autofill_readonly || !editable ) {
+  } else if (autofill_readonly) {
     newFieldProps = {
       ...fieldProps,
       disabled: true

@@ -421,8 +421,7 @@ class CustomField extends Component {
       error,
       updated,
       defaultValue,
-      className,
-      disabled
+      className
     } = this.props
     const type = field.type
     if (type === 'file' || type === 'image') {
@@ -450,10 +449,7 @@ class CustomField extends Component {
     let fieldProps = {
       name: field.name,
       placeholder: placeHolderText,
-      disabled:
-        disabled !== undefined
-          ? disabled
-          : field.generated ||
+      disabled: field.generated ||
             field.disabled ||
             field.autofill_readonly ||
             !field.editable,
@@ -473,7 +469,7 @@ class CustomField extends Component {
           field.type === 'integer'
             ? val => (val || val === 0 ? Number(val) : null)
             : null,
-        disabled: field.generated || field.disabled || !field.editable
+        disabled: field.generated || !field.editable
       }
       return (
         <AutofillInputCalculations

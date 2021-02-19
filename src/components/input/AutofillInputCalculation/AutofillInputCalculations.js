@@ -75,15 +75,6 @@ const AutofillInputCalculations = ({
     }
   }, [related_fields, formValues])
 
-  let isDisabled = autofill_readonly || fieldProps.disabled
-
-  if (!fieldProps.disabled) {
-   // TODO: Fix this when FACTA integration is done
-   // if (!autoFillValue && autoFillValue !== 0 || true) {
-      isDisabled = false
-  //  }
-  }
-
   return (
     <div className="autofill-input">
       {autofill_readonly && calculations ? (
@@ -93,7 +84,7 @@ const AutofillInputCalculations = ({
           </div>
         </div>
       ) : (
-        <Field {...fieldProps} disabled={isDisabled} />
+        <Field {...fieldProps} disabled={fieldProps.disabled} />
       )}
     </div>
   )
