@@ -93,7 +93,7 @@ const formatFilterProject = (project, sort = false, phases, users) => {
   const { subtype } = project
   const { name } = project
   const projectId = project.attribute_data.hankenumero || '-'
-  const itemDeadline = project.deadlines.find(d => d.phase_id === project.phase).deadline
+  const itemDeadline = project.deadlines && project.deadlines.find(d => d.phase_id === project.phase).deadline
   const nextDeadline = sort ? new Date(itemDeadline).getTime() : formatDate(itemDeadline)
   return { name, user, modified_at, phase, subtype, projectId, nextDeadline }
 }
