@@ -1,4 +1,4 @@
-import { concat, difference, flattenDeep, isBoolean, isNaN } from 'lodash'
+import { concat, difference, flattenDeep, isBoolean } from 'lodash'
 
 const addZeroPrefixIfNecessary = value => (value < 10 ? `0${value}` : value)
 
@@ -145,15 +145,17 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
 
     if (attributes) {
       attributes.forEach(attribute => {
+        console.log(attribute)
         //use new value for this field
         if (
           changedValues[attribute] ||
           isBoolean(changedValues[attribute]) ||
-          changedValues[attribute] === ''
+          changedValues[attribute] === '' ||
+          changedValues[attribute] === null
         ) {
           currentObject[attribute] = changedValues[attribute]
           // use initlavalue
-        } else if (initialValues[attribute] || isBoolean(initialValues[attribute])) {
+        } else if (initialValues[attribute] || isBoolean(initialValues[attribute] || initialValues[attribute] === false)) {
           currentObject[attribute] = initialValues[attribute]
         }
       })
@@ -214,14 +216,13 @@ const checkInputValue = (props, attributeData, parentName, currentDeadline, auto
     return
   }
 
-  if (props && parentName && attributeData[parentName] && !autofill_rule) {
+  if (props && parentName && attributeData[parentName] ) {
 
-    if (!props.input.value || isBoolean(props.input.value)) {
+    if (!props.input.value && (!autofill_rule || autofill_rule.length === 0 )) {
       const inputValue = getFieldValue(attributeData[parentName], props.input.name)
-      if (inputValue || isBoolean(inputValue) || !isNaN(inputValue))
-        props.input.value = inputValue
-    }
+      props.input.value = inputValue
   }
+}
 }
 const getDefaultValue = (parentName, attributeData, name) => {
   const fieldsetFields = attributeData[parentName]

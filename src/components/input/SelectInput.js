@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Dropdown } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
 import DropdownMultiselect from './DropdownMultiselect'
 
 const SelectInput = ({ input, meta: { error }, options, onBlur, placeholder, ...custom }) => {
+
+  const [value, setValue] = useState('')
+
   if (custom.multiple) {
     return (
       <DropdownMultiselect
@@ -21,11 +24,8 @@ const SelectInput = ({ input, meta: { error }, options, onBlur, placeholder, ...
     <Dropdown
       onChange={(param, data) => {
 
-        let returnValue = data.value
-        if ( returnValue === '' ) {
-          returnValue = null
-        }
-        input.onChange(returnValue)
+        setValue(data.value)
+        input.onChange(data.value)
         if ( custom.handleSave ) {
           custom.handleSave()
         }
@@ -39,7 +39,7 @@ const SelectInput = ({ input, meta: { error }, options, onBlur, placeholder, ...
       placeholder={placeholder}
       noResultsMessage="Ei tuloksia"
       options={options}
-      value={input.value}
+      value={input.value !== value ? input.value : value}
       disabled={custom.disabled}
       error={inputUtils.hasError(error)}
     />

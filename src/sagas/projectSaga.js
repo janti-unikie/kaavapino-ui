@@ -482,6 +482,8 @@ function* saveProject() {
   const editForm = yield select(editFormSelector) || {}
   const { initial, values } = editForm
   if (values) {
+
+    console.log( values )
     const selectedPhase = yield select(selectedPhaseSelector)
     const schema = yield select(schemaSelector)
     const currentSchema = schema.phases.find(s => s.id === selectedPhase)
@@ -494,6 +496,8 @@ function* saveProject() {
       parentNames,
       initial
     )
+
+    console.log( formattedData )
 
     const attribute_data = formattedData
 

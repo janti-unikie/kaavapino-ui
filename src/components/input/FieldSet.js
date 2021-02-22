@@ -107,6 +107,10 @@ const FieldSet = ({
                     : field.label
                   const error = syncronousErrors && syncronousErrors[field.name]
 
+                  if ( field.name === 'ehdotusvaiheen_dokumentin_nimi' ) {
+                    console.log( defaultValue )
+                  }
+
                   /* Two ways to bring errors to FormField component:
                    * 1) the missing attribute data of required fields is checked automatically.
                    * 2) error text can be given directly to the component as props.
@@ -128,7 +132,7 @@ const FieldSet = ({
                               showError ? 'error' : ''
                             }`}
                           >
-                            {title}
+                            {title} {field.name}
                           </Label>
                           <div className="input-header-icons">
                             {fieldUpdated && !isReadOnly && (

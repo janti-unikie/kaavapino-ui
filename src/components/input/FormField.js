@@ -134,7 +134,7 @@ class FormField extends Component {
           {!isOneLineField && (
             <div className="input-header">
               <Label className={`input-title${required ? ' highlight' : ''}`}>
-                {title}
+                {title} {field.name}
               </Label>
               <div className="input-header-icons">
                 {updated && !isReadOnly && (
