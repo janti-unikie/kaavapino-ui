@@ -1,4 +1,4 @@
-import { concat, difference, flattenDeep, isBoolean } from 'lodash'
+import { concat, difference, flattenDeep, isBoolean, isNaN } from 'lodash'
 
 const addZeroPrefixIfNecessary = value => (value < 10 ? `0${value}` : value)
 
@@ -145,17 +145,15 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
 
     if (attributes) {
       attributes.forEach(attribute => {
-        console.log(attribute)
         //use new value for this field
         if (
           changedValues[attribute] ||
           isBoolean(changedValues[attribute]) ||
-          changedValues[attribute] === '' ||
-          changedValues[attribute] === null
+          changedValues[attribute] === ''
         ) {
           currentObject[attribute] = changedValues[attribute]
           // use initlavalue
-        } else if (initialValues[attribute] || isBoolean(initialValues[attribute] || initialValues[attribute] === false)) {
+        } else if (initialValues[attribute] || isBoolean(initialValues[attribute])) {
           currentObject[attribute] = initialValues[attribute]
         }
       })
@@ -209,20 +207,20 @@ const getFieldValue = (data, fieldName) => {
   return value
 }
 
-const checkInputValue = (props, attributeData, parentName, currentDeadline, autofill_rule) => {
+const checkInputValue = (props, attributeData, parentName, currentDeadline) => {
 
-  if (currentDeadline) {
-    props.input.defaultValue = currentDeadline.date
-    return
-  }
+    if (currentDeadline) {
+      props.input.defaultValue = currentDeadline.date
+      return
+    }
 
-  if (props && parentName && attributeData[parentName] ) {
-
-    if (!props.input.value && (!autofill_rule || autofill_rule.length === 0 )) {
+  if (props && parentName && attributeData[parentName]) {
+    if (!props.input.value || isBoolean(props.input.value)) {
       const inputValue = getFieldValue(attributeData[parentName], props.input.name)
-      props.input.value = inputValue
+      if (inputValue || isBoolean(inputValue) || !isNaN(inputValue))
+        props.input.value = inputValue
+    }
   }
-}
 }
 const getDefaultValue = (parentName, attributeData, name) => {
   const fieldsetFields = attributeData[parentName]
