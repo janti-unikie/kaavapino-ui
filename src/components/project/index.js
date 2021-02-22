@@ -167,7 +167,7 @@ class ProjectPage extends Component {
 
     const userRole = getUserRole()
 
-    const showCreate = userRole === 'admin' || userRole === 'create'
+    const showCreate = userRole === 'admin' || userRole === 'create' || userRole === 'edit'
 
     return !(edit || documents) ? (
       <NavActions>
@@ -200,9 +200,11 @@ class ProjectPage extends Component {
             Tulosta projektin tiedot
           </NavAction>
         )}
-        <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
-          Muokkaa luontitietoja
-        </NavAction>
+        {showCreate && (
+          <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
+            Muokkaa luontitietoja
+          </NavAction>
+        )}
         <NavAction to={`/${id}`} primary>
           Katso projektikortti
         </NavAction>

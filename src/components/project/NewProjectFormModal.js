@@ -122,7 +122,8 @@ class NewProjectFormModal extends Component {
                 field: {
                   name: PROJECT_NAME,
                   label: 'Projektin nimi',
-                  type: 'text'
+                  type: 'text',
+                  editable: true
                 }
               })}
               {this.getFormField({
@@ -131,7 +132,8 @@ class NewProjectFormModal extends Component {
                   name: USER,
                   label: 'Vastuuhenkilö',
                   type: 'select',
-                  choices: this.formatUsers()
+                  choices: this.formatUsers(),
+                  editable: true
                 }
               })}
             </Form.Group>
@@ -139,7 +141,8 @@ class NewProjectFormModal extends Component {
               field: {
                 name: PUBLIC,
                 label: 'Luodaanko projekti näkyväksi',
-                type: 'boolean'
+                type: 'boolean',
+                editable: true
               },
               double: true
             })}
@@ -155,6 +158,7 @@ class NewProjectFormModal extends Component {
                   name: SUB_TYPE,
                   label: 'Valitse prosessin koko',
                   type: 'radio',
+                  editable: true,
                   options: [
                     { value: 1, label: 'XS' },
                     { value: 2, label: 'S' },

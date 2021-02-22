@@ -463,7 +463,10 @@ function* saveProjectTimetable() {
           toastrActions.add({
             type: 'warning',
             title: i18.t('messages.deadlines-successfully-saved'),
-            message: i18.t('messages.check-timetable')
+            message: i18.t('messages.check-timetable'),
+            options: {
+              timeOut: 5000
+            }
           })
         )
       }
@@ -479,6 +482,7 @@ function* saveProject() {
   const editForm = yield select(editFormSelector) || {}
   const { initial, values } = editForm
   if (values) {
+
     const selectedPhase = yield select(selectedPhaseSelector)
     const schema = yield select(schemaSelector)
     const currentSchema = schema.phases.find(s => s.id === selectedPhase)
