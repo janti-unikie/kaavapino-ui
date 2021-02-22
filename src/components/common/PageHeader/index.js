@@ -36,7 +36,7 @@ class Header extends Component {
       <div className="navbar-container">
         <Menu className="navbar-menu borderless">
           <Container>
-            <Menu.Item as="a" className="navbar-logo" header>
+            <Menu.Item as="a" href="/" className="navbar-logo" header>
               <Image
                 className="navbar-image"
                 size="tiny"

@@ -158,7 +158,7 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
           } else {
             returnValue = thenFormValue || thenBranch
           }
-          continue
+          break
         }
         if (operator === BIGGER_THAN && formValue <= comparisonValue) {
           returnValue = false

@@ -22,9 +22,10 @@
         "save": "Tallenna"
     },
     "messages": {
-        "deadlines-successfully-saved": "Aikataulut tallennettu onnistuneesti",
+        "deadlines-successfully-saved": "Aikataulut tallennettu",
         "min-distance": "Valitse myöhempi päivä, koska tämä on liian lähellä edellistä etappia.",
-        "max-distance": "Valitse aikaisempi päivä, koska tämä on liian lähellä seuraavaa etappia."
+        "max-distance": "Valitse aikaisempi päivä, koska tämä on liian lähellä seuraavaa etappia.",
+        "check-timetable": "Tekemäsi aikataulumuutos vaikuttaa myöhempiin vaiheisiin. Siirrä myöhempiä vaiheita eteenpäin, jotta saat koko aikataulun ajantasalle."
     },
     "floor-areas": {
         "title": "Päivitä kerrosalatiedot"
@@ -60,5 +61,17 @@
         "project-data-loaded": "Tiedot ladattu. Paina oheista linkkiä lataaksesi CSV-tiedoston",
         "load-csv": "Lataa tiedosto",
         "button-close": "Sulje"
+    },
+    "quick-nav" : {
+        "check": "tarkista",
+        "check-help-text": "Korostaa pakolliset puuttuvat kentät",
+        "save-help": "Tallentaa projektin",
+        "end-phase": "Lopeta vaihe",
+        "end-phase-help": "Yrittää lopettaa vaiheen",
+        "archive": "Arkistoi projekti",
+        "archive-help": "Yrittää arkistoida projektin",
+        "onhold-lable": "Projekti on toistaiseksi keskeytynyt",
+        "change-phase-error": "Vaihetta ei voida vielä lopettaa",
+        "change-phase-error-message": "Täytä puuttuvat kentät"
     }
 }

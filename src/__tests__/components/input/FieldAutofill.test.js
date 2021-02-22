@@ -1074,9 +1074,10 @@ describe('Autofill tests', () => {
     field.autofill_rule = [condition, condition2]
 
     const formValues = {
-      vaarien_mielipiteiden_maara: 0
+      mielipiteiden_maara: 0,
+      vaarien_mielipiteiden_maara: 1
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
   })
   it('Autofill multiple rule number bigger than', () => {
     const field = {}
@@ -1098,6 +1099,105 @@ describe('Autofill tests', () => {
     field.autofill_rule = [condition, condition2]
 
     const formValues = {}
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+  })
+  it('Autofill multiple rule three (1) number bigger than', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'mielipiteiden_maara'
+    conditionObject1.operator = '>'
+    conditionObject1.comparison_value = 0
+    conditionObject1.comparison_value_type = 'number'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'vaarien_mielipiteiden_maara'
+    conditionObject2.operator = '>'
+    conditionObject2.comparison_value = 0
+    conditionObject2.comparison_value_type = 'number'
+
+    const conditionObject3 = {}
+    conditionObject3.variable = 'taas_vaarien_mielipiteiden_maara'
+    conditionObject3.operator = '>'
+    conditionObject3.comparison_value = 0
+    conditionObject3.comparison_value_type = 'number'
+
+    const condition = { condition: conditionObject1, then_branch: true }
+    const condition2 = { condition: conditionObject2, then_branch: true }
+    const condition3 = { condition: conditionObject3, then_branch: 'True' }
+
+    field.autofill_rule = [condition, condition2, condition3]
+
+    const formValues = {
+      mielipiteiden_maara: 0,
+      vaarien_mielipiteiden_maara: 1,
+      taas_vaarien_mielipiteiden_maara: 0
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+  })
+  it('Autofill multiple rule three (2) number bigger than', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'mielipiteiden_maara'
+    conditionObject1.operator = '>'
+    conditionObject1.comparison_value = 0
+    conditionObject1.comparison_value_type = 'number'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'vaarien_mielipiteiden_maara'
+    conditionObject2.operator = '>'
+    conditionObject2.comparison_value = 0
+    conditionObject2.comparison_value_type = 'number'
+
+    const conditionObject3 = {}
+    conditionObject3.variable = 'taas_vaarien_mielipiteiden_maara'
+    conditionObject3.operator = '>'
+    conditionObject3.comparison_value = 0
+    conditionObject3.comparison_value_type = 'number'
+
+    const condition = { condition: conditionObject1, then_branch: true }
+    const condition2 = { condition: conditionObject2, then_branch: true }
+    const condition3 = { condition: conditionObject3, then_branch: 'True' }
+
+    field.autofill_rule = [condition, condition2, condition3]
+
+    const formValues = {
+      mielipiteiden_maara: 0,
+      vaarien_mielipiteiden_maara: 0,
+      taas_vaarien_mielipiteiden_maara: 1
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+  })
+  it('Autofill multiple rule three (3) number bigger than', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'mielipiteiden_maara'
+    conditionObject1.operator = '>'
+    conditionObject1.comparison_value = 0
+    conditionObject1.comparison_value_type = 'number'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'vaarien_mielipiteiden_maara'
+    conditionObject2.operator = '>'
+    conditionObject2.comparison_value = 0
+    conditionObject2.comparison_value_type = 'number'
+
+    const conditionObject3 = {}
+    conditionObject3.variable = 'taas_vaarien_mielipiteiden_maara'
+    conditionObject3.operator = '>'
+    conditionObject3.comparison_value = 0
+    conditionObject3.comparison_value_type = 'number'
+
+    const condition = { condition: conditionObject1, then_branch: true }
+    const condition2 = { condition: conditionObject2, then_branch: true }
+    const condition3 = { condition: conditionObject3, then_branch: 'True' }
+
+    field.autofill_rule = [condition, condition2, condition3]
+
+    const formValues = {
+      mielipiteiden_maara: 0,
+      vaarien_mielipiteiden_maara: 0,
+      taas_vaarien_mielipiteiden_maara: 0
+    }
     expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
   })
   it('Autofill rule succeeds string with formvalue', () => {

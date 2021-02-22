@@ -105,3 +105,8 @@ export const deadlinesSelector = createSelector(
   currentProjectSelector,
   (currentProject = { deadlines: [] }) => currentProject.deadlines
 )
+
+export const selectedPhaseSelector = createSelector(
+  selectProject,
+  project => project.selectedPhase
+)

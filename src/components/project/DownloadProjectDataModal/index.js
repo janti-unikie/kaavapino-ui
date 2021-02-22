@@ -125,7 +125,8 @@ class DownloadProjectDataModal extends Component {
                   name: 'phase',
                   label: t('print-project-data.phase-label'),
                   type: 'select',
-                  choices: this.getPhases()
+                  choices: this.getPhases(),
+                  editable: true
                 }
               })}
               {this.getFormField({
@@ -134,7 +135,8 @@ class DownloadProjectDataModal extends Component {
                   name: 'date',
                   label: t('print-project-data.date-label'),
                   type: 'datetime',
-                  placeHolder: t('print-project-data.date-label')
+                  placeHolder: t('print-project-data.date-label'),
+                  editable: true
                 }
               })}
             </Form.Group>

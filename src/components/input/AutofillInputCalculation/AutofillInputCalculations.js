@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { isEqual } from 'lodash'
-import { change, getFormValues, Field } from 'redux-form'
+import { change,  getFormValues, Field } from 'redux-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { handleAutofillCalculations } from './autofillCalculationsUtils'
 
@@ -17,14 +17,35 @@ import { handleAutofillCalculations } from './autofillCalculationsUtils'
  */
 
 const AutofillInputCalculations = ({
-  field: { autofill_readonly, name, related_fields, calculations, unit },
+  field: { name, autofill_readonly, related_fields, calculations, unit },
   fieldProps,
   formName
 }) => {
   const dispatch = useDispatch()
   const [previousRelatedFieldValues, setPreviousRelatedFieldValues] = useState([])
   const formValues = useSelector(getFormValues(formName))
+  // TODO: Fix this when FACTA integration is done
+  //const editFormValues = useSelector(getFormValues(EDIT_PROJECT_FORM))
   const value = (formValues && formValues[name]) || null
+
+  // TODO: Fix this when FACTA integration is done
+  //const [currentAutoFill, setCurrentAutoFill] = useState()
+
+  let calculatedTotal = 0
+
+  /*
+  // TODO: Fix this when FACTA integration is done
+  const autoFillValue = getFieldAutofillValue(autofill_rule, editFormValues)
+  const autoFillNumber = autoFillValue ? parseInt(autoFillValue) : null
+
+  useEffect(() => {
+    if (autoFillNumber && !calculations) {
+    dispatch(autofill(autoFillNumber))
+    setCurrentAutoFill(autoFillNumber)
+
+    }
+  }, [currentAutoFill])
+  */
 
   useEffect(() => {
     if (!formValues) {
@@ -47,7 +68,7 @@ const AutofillInputCalculations = ({
     )
     /* end of optimization */
 
-    const calculatedTotal = handleAutofillCalculations(calculations, formValues)
+    calculatedTotal = handleAutofillCalculations(calculations, formValues)
 
     if (calculatedTotal !== value) {
       dispatch(change(formName, name, calculatedTotal))
@@ -56,7 +77,7 @@ const AutofillInputCalculations = ({
 
   const renderKm2UnitComponent = () => (
     <div className="autofill-input">
-      {autofill_readonly ? (
+      {autofill_readonly && calculations ? (
         <div className="autofill-readonly-input">
           <div className="autofill-readonly-input-value">
             {`${value || 0}`} k-m&sup2;
@@ -79,7 +100,7 @@ const AutofillInputCalculations = ({
           </div>
         </div>
       ) : (
-        <Field {...fieldProps} />
+        <Field {...fieldProps} disabled={fieldProps.disabled} />
       )}
     </div>
   )

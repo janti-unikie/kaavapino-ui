@@ -44,6 +44,7 @@ export const RESET_PROJECT_DEADLINES = 'Reset project deadlines'
 export const GET_PROJECT_SNAPSHOT = 'Get project snapshot'
 export const GET_PROJECT_SNAPSHOT_SUCCESSFUL = 'Get project snapshot succesful'
 export const RESET_PROJECT_SNAPSHOT = 'Reset project snapshot'
+export const SET_SELECTED_PHASE_ID = 'Set selected phase id'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -81,6 +82,8 @@ export const setTotalOwnProjects = count => ({
   payload: count
 })
 
+export const setSelectedPhaseId = phaseId => ({ type: SET_SELECTED_PHASE_ID, payload: phaseId })
+
 export const sortProjects = options => ({ type: SORT_PROJECTS, payload: options })
 
 export const fetchProjectSuccessful = project => ({
@@ -112,7 +115,10 @@ export const createOwnProjectSuccessful = project => ({
   payload: project
 })
 
-export const saveProjectBase = () => ({ type: SAVE_PROJECT_BASE })
+export const saveProjectBase = archived => ({
+  type: SAVE_PROJECT_BASE,
+  payload: archived
+})
 export const saveProjectBaseSuccessful = () => ({ type: SAVE_PROJECT_BASE_SUCCESSFUL })
 
 export const saveProjectFloorArea = () => ({ type: SAVE_PROJECT_FLOOR_AREA })
@@ -128,7 +134,10 @@ export const saveProjectTimetableSuccessful = () => ({
 export const saveProject = () => ({ type: SAVE_PROJECT })
 export const saveProjectSuccessful = () => ({ type: SAVE_PROJECT_SUCCESSFUL })
 
-export const validateProjectFields = () => ({ type: VALIDATE_PROJECT_FIELDS })
+export const validateProjectFields = formValues => ({
+  type: VALIDATE_PROJECT_FIELDS,
+  payload: formValues
+})
 export const validateProjectFieldsSuccessful = result => ({
   type: VALIDATE_PROJECT_FIELDS_SUCCESSFUL,
   payload: result
@@ -194,4 +203,3 @@ export const getProjectSnapshotSuccessful = project => ({
 export const resetProjectSnapshot = () => ({
   type: RESET_PROJECT_SNAPSHOT
 })
-
