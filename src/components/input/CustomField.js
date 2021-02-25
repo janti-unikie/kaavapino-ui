@@ -148,14 +148,11 @@ class CustomField extends Component {
   }
 
   renderRichText = props => {
-    const { onBlur, attributeData, parentName, meta, defaultValue } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName)
-
+    const { onBlur, meta } = this.props
     return (
       <RichTextEditor
         onBlur={onBlur}
         meta={meta}
-        defaultValue={defaultValue}
         {...props}
         largeField
       />
@@ -163,9 +160,7 @@ class CustomField extends Component {
   }
 
   renderRichTextShort = props => {
-    const { onBlur, handleSave, attributeData, parentName, meta } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName)
-
+    const { onBlur, handleSave, meta } = this.props
     return (
       <RichTextEditor onBlur={onBlur} handleSave={handleSave} meta={meta} {...props} />
     )
@@ -293,6 +288,7 @@ class CustomField extends Component {
       formName,
       updated
     } = this.props
+
     return (
       <FieldSet
         sets={sets}
@@ -446,6 +442,7 @@ class CustomField extends Component {
     const placeHolderText = field.placeholder_text
       ? field.placeholder_text.trim()
       : field.label
+
     let fieldProps = {
       name: field.name,
       placeholder: placeHolderText,
@@ -513,7 +510,12 @@ class CustomField extends Component {
     }
 
     if (fieldset) {
-      return <FieldArray attributeData={attributeData} {...fieldProps} />
+      const newProps = {
+        ...fieldProps,
+        type: 'fieldset'
+
+      }
+      return <FieldArray  component={this.renderFieldset} {...newProps} />
     }
 
     return (
