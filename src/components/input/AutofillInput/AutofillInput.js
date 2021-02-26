@@ -26,10 +26,19 @@ const AutofillInput = ({
 
     let currentValue = formValues[name]
 
+    // If value cannot be found from root (eg. it is under fieldset some modifications needs
+    // need to be done. Name is eg. "something_fieldset[0].somefield". Since values are stored to redux as a
+    // object, correct value needs to be found by substring the values from original field name
+    // Now this supports only max 9 fieldsets and do not support nested fieldsets.
+    // If nested fieldsets support is needed, recursive function needs to be done.
     if (formValues[name] === undefined) {
       const lastIndex = name.lastIndexOf('.')
+
+      // Remove "[0]" from name to get fieldset name
       const fieldSet = name.substring(0, lastIndex - 3)
+      // To get field value
       const value = name.substring(lastIndex + 1, name.length)
+      // Get current fieldset number
       const currentFieldSet = name.substring(lastIndex - 2, lastIndex - 1)
       if (formValues && formValues[fieldSet]) {
         currentValue = formValues[fieldSet][currentFieldSet][value]
