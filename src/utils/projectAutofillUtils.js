@@ -8,7 +8,7 @@ import toPlaintext from 'quill-delta-to-plaintext'
  *  rule. Now it is only implemented if type is boolean and expected return value is string.
  *  Eq. "Kaavan nimi"-rule which has project name at the beginning and "asemakaava" or "asemakaava ja asemakaavan muuttaminen"
  */
-export const getFieldAutofillValue = (autofill_rule, formValues) => {
+export const getFieldAutofillValue = (autofill_rule, formValues, name) => {
   let returnValue
   let projectNameAdded = false
 
@@ -33,15 +33,31 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
       const comparisonValueType = condition.comparison_value_type
       const extraVariables = autofill.variables
 
-      let formValue =
-        formValues[variable] === undefined
-          ? projectUtils.findValueFromObject(formValues, variable)
-          : formValues[variable]
+      const lastIndex = name ? name.lastIndexOf('.') : -1
+      let formValue
+      let formExtraValue
 
-      // Now only one variable is expected
-      let formExtraValue = extraVariables
-        ? projectUtils.findValueFromObject(formValues, extraVariables[0])
-        : ''
+      if (lastIndex !== -1) {
+        const fieldSet = name.substring(0, lastIndex - 3)
+        const currentFieldSet = name.substring(lastIndex -2, lastIndex -1)
+
+        const currentValue = formValues[fieldSet][currentFieldSet][variable]
+        const currentExtraValue = formValues[fieldSet][currentFieldSet][extraVariables[0]]
+
+       formValue = !currentValue && currentValue !== false ? '' : currentValue
+       formExtraValue = currentExtraValue !== undefined ? currentExtraValue : ''
+
+      } else {
+        formValue =
+          formValues[variable] === undefined
+            ? projectUtils.findValueFromObject(formValues, variable)
+            : formValues[variable]
+
+        // Now only one variable is expected
+        formExtraValue = extraVariables
+          ? projectUtils.findValueFromObject(formValues, extraVariables[0])
+          : ''
+      }
 
       if (!formExtraValue) {
         formExtraValue = ''
@@ -68,7 +84,8 @@ export const getFieldAutofillValue = (autofill_rule, formValues) => {
 
         // First check if formValue is quill delta format or normal value
         if (formValue && formValue.ops) {
-          const richTextValue = formValue && formValue.ops ? toPlaintext(formValue.ops).trim() : undefined
+          const richTextValue =
+            formValue && formValue.ops ? toPlaintext(formValue.ops).trim() : undefined
           realValue = richTextValue && richTextValue.trim() !== '' ? true : false
         } else {
           if (!isBoolean(formValue)) {
