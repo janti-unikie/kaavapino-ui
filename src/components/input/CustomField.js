@@ -116,7 +116,6 @@ class CustomField extends Component {
 
   renderString = props => {
     const { onBlur } = this.props
-
     return <Input onBlur={onBlur} type="text" {...props} />
   }
 
@@ -127,14 +126,7 @@ class CustomField extends Component {
 
   renderRichText = props => {
     const { onBlur, meta } = this.props
-    return (
-      <RichTextEditor
-        onBlur={onBlur}
-        meta={meta}
-        {...props}
-        largeField
-      />
-    )
+    return <RichTextEditor onBlur={onBlur} meta={meta} {...props} largeField />
   }
 
   renderRichTextShort = props => {
@@ -191,15 +183,13 @@ class CustomField extends Component {
 
   renderRadio = props => {
     const { field, onBlur } = this.props
+
     return <RadioButton options={field.options} onBlur={onBlur} {...props} />
   }
 
   renderBooleanRadio = props => {
-    const {
-      onBlur,
-      input,
-      onRadioChange,
-      defaultValue    } = this.props
+    const { onBlur, input, onRadioChange, defaultValue } = this.props
+
     return (
       <BooleanRadio
         onBlur={onBlur}
@@ -225,7 +215,6 @@ class CustomField extends Component {
 
   renderDateTime = props => {
     const { onBlur, handleSave } = this.props
-
     return <DateTime onBlur={onBlur} handleSave={handleSave} {...props} />
   }
 
@@ -301,6 +290,7 @@ class CustomField extends Component {
   }
   renderDeadlineInfo = props => {
     const { field, deadlines } = this.props
+
     projectUtils.checkDeadline(props, deadlines)
 
     return (
@@ -405,10 +395,8 @@ class CustomField extends Component {
     let fieldProps = {
       name: field.name,
       placeholder: placeHolderText,
-      disabled: field.generated ||
-            field.disabled ||
-            field.autofill_readonly ||
-            !field.editable,
+      disabled:
+        field.generated || field.disabled || field.autofill_readonly || !field.editable,
       component: this.getInput(field),
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
       updated: { updated },
@@ -472,9 +460,8 @@ class CustomField extends Component {
       const newProps = {
         ...fieldProps,
         type: 'fieldset'
-
       }
-      return <FieldArray  component={this.renderFieldset} {...newProps} />
+      return <FieldArray component={this.renderFieldset} {...newProps} />
     }
 
     return (

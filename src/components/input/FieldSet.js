@@ -69,10 +69,11 @@ const FieldSet = ({
                 />
               </div>
               {fields.map((field, j) => {
-                if (!showField(field, formValues) || !field.fieldset_index) {
+                const currentName = `${set}.${field.name}`
+
+                if (!showField(field, formValues, currentName) || !field.fieldset_index) {
                   return null
                 }
-                const currentName = `${set}.${field.name}`
 
                 let required = false
 
