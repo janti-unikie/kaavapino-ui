@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { autofill, getFormValues, Field } from 'redux-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { getFieldAutofillValue } from '../../../utils/projectAutofillUtils'
+import { isBoolean, isNumber } from 'lodash'
 
 const AutofillInput = ({
   field: { name, autofill_readonly, autofill_rule, editable },
@@ -41,7 +42,7 @@ const AutofillInput = ({
       return
     }
 
-    if (autoFillValue !== undefined) {
+    if (autoFillValue || isBoolean(autoFillValue) || isNumber( autoFillValue )) {
       dispatch(autofill(formName, name, autoFillValue))
     }
   }, [formValues, dispatch, autoFillValue])
