@@ -34,29 +34,27 @@ export const getFieldAutofillValue = (autofill_rule, formValues, name) => {
       const extraVariables = autofill.variables
 
       const lastIndex = name ? name.lastIndexOf('.') : -1
-      let formValue
+      let formValue = formValues[variable]
       let formExtraValue
+      if ( extraVariables && extraVariables[0]) {
+        formExtraValue = formValues[extraVariables[0]]
+      }
 
       if (lastIndex !== -1) {
         const fieldSet = name.substring(0, lastIndex - 3)
         const currentFieldSet = name.substring(lastIndex -2, lastIndex -1)
 
         const currentValue = formValues[fieldSet][currentFieldSet][variable]
-        const currentExtraValue = formValues[fieldSet][currentFieldSet][extraVariables[0]]
+
+        let currentExtraValue
+
+        if (extraVariables && extraVariables[0]  ) {
+        currentExtraValue = formValues[fieldSet][currentFieldSet][extraVariables[0]]
+      }
 
        formValue = !currentValue && currentValue !== false ? '' : currentValue
        formExtraValue = currentExtraValue !== undefined ? currentExtraValue : ''
 
-      } else {
-        formValue =
-          formValues[variable] === undefined
-            ? projectUtils.findValueFromObject(formValues, variable)
-            : formValues[variable]
-
-        // Now only one variable is expected
-        formExtraValue = extraVariables
-          ? projectUtils.findValueFromObject(formValues, extraVariables[0])
-          : ''
       }
 
       if (!formExtraValue) {

@@ -804,10 +804,11 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        oasvaiheen_dokumentin_nimi: 'saatekirje'
+         0: { oasvaiheen_dokumentin_nimi: 'saatekirje' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, current)).toBe(true)
   })
   it('Autofill rule list 4 deeper', () => {
     const field = {}
@@ -834,12 +835,11 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        tokafieldset: {
-          oasvaiheen_dokumentin_nimi: 'saatekirje'
-        }
+         0: { oasvaiheen_dokumentin_nimi: 'saatekirje' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, current )).toBe(true)
   })
   it('Autofill rule list 5 fails', () => {
     const field = {}
@@ -866,12 +866,11 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        tokafieldset: {
-          oasvaiheen_dokumentin_nimi: 'saatkirje'
-        }
+         0: { oasvaiheen_dokumentin_nimi: 'saatkirje' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(undefined)
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues,current)).toBe(undefined)
   })
   it('Autofill rule list 6 false', () => {
     const field = {}
@@ -898,12 +897,11 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        tokafieldset: {
-          oasvaiheen_dokumentin_nimi: 'kirje_hakijalle_maksusta'
-        }
+         0: { oasvaiheen_dokumentin_nimi: 'kirje_hakijalle_maksusta' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, current)).toBe(false)
   })
   it('Autofill rule list 7 variables', () => {
     const field = {}
@@ -922,10 +920,11 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        aloituskokous_suunniteltu_pvm: '12.12.2012'
+         0: { aloituskokous_suunniteltu_pvm: '12.12.2012' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('12.12.2012')
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, current)).toBe('12.12.2012')
   })
   it('Autofill rule number bigger than', () => {
     const field = {}
