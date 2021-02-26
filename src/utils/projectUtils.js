@@ -198,12 +198,12 @@ function getFieldsetAttributes(parent, sections) {
   return fieldsetAttributes
 }
 
-const checkInputValue = (props, attributeData, parentName, currentDeadline) => {
+const checkDeadline = (props, currentDeadline) => {
 
-    if (currentDeadline) {
-      props.input.defaultValue = currentDeadline.date
-      return
-    }
+  if (currentDeadline) {
+    props.input.defaultValue = currentDeadline.date
+    return
+  }
 }
 const getDefaultValue = (parentName, attributeData, name) => {
   const fieldsetFields = attributeData[parentName]
@@ -253,7 +253,7 @@ export default {
   formatPhase,
   formatNextDeadline,
   formatSubtype,
-  checkInputValue,
+  checkDeadline,
   getDefaultValue,
   getParents,
   formatPayload,
