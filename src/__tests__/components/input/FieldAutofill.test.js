@@ -1,3 +1,4 @@
+import { EDIT_PROJECT_TIMETABLE_FORM } from '../../../constants'
 import { getFieldAutofillValue } from '../../../utils/projectAutofillUtils'
 describe('Autofill tests', () => {
   it('Autofill rule succeeds (string)', () => {
@@ -925,6 +926,28 @@ describe('Autofill tests', () => {
     }
     const current = 'testfieldset[0].test'
     expect(getFieldAutofillValue(field.autofill_rule, formValues, current)).toBe('12.12.2012')
+  })
+  it('Autofill rule list 8 variables', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'aloituskokous_suunniteltu_pvm'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const condition = {
+      condition: conditionObject1,
+      then_branch: '',
+      variables: ['aloituskokous_suunniteltu_pvm']
+    }
+    field.autofill_rule = [condition]
+
+    const formValues = {
+      testfieldset: {
+         aloituskokous_suunniteltu_pvm: '12.12.2012'
+      }
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, undefined, EDIT_PROJECT_TIMETABLE_FORM)).toBe('12.12.2012')
   })
   it('Autofill rule number bigger than', () => {
     const field = {}

@@ -1,6 +1,7 @@
 import projectUtils from './projectUtils'
 import { isBoolean } from 'lodash'
 import toPlaintext from 'quill-delta-to-plaintext'
+import { EDIT_PROJECT_TIMETABLE_FORM } from '../constants'
 
 /* Field returns info whether field given as a parameter should be shown or not.
  *
@@ -8,7 +9,7 @@ import toPlaintext from 'quill-delta-to-plaintext'
  *  rule. Now it is only implemented if type is boolean and expected return value is string.
  *  Eq. "Kaavan nimi"-rule which has project name at the beginning and "asemakaava" or "asemakaava ja asemakaavan muuttaminen"
  */
-export const getFieldAutofillValue = (autofill_rule, formValues, name) => {
+export const getFieldAutofillValue = (autofill_rule, formValues, name, callerFormName) => {
   let returnValue
   let projectNameAdded = false
 
@@ -36,29 +37,41 @@ export const getFieldAutofillValue = (autofill_rule, formValues, name) => {
       const lastIndex = name ? name.lastIndexOf('.') : -1
       let formValue = formValues[variable]
       let formExtraValue
-      if ( extraVariables && extraVariables[0]) {
+      if (extraVariables && extraVariables[0]) {
         formExtraValue = formValues[extraVariables[0]]
       }
 
       if (lastIndex !== -1) {
         const fieldSet = name.substring(0, lastIndex - 3)
-        const currentFieldSet = name.substring(lastIndex -2, lastIndex -1)
+        const currentFieldSet = name.substring(lastIndex - 2, lastIndex - 1)
 
         const currentValue = formValues[fieldSet][currentFieldSet][variable]
 
         let currentExtraValue
 
-        if (extraVariables && extraVariables[0]  ) {
-        currentExtraValue = formValues[fieldSet][currentFieldSet][extraVariables[0]]
-      }
+        if (extraVariables && extraVariables[0]) {
+          currentExtraValue = formValues[fieldSet][currentFieldSet][extraVariables[0]]
+        }
 
-       formValue = !currentValue && currentValue !== false ? '' : currentValue
-       formExtraValue = currentExtraValue !== undefined ? currentExtraValue : ''
-
+        formValue = !currentValue && currentValue !== false ? '' : currentValue
+        formExtraValue = currentExtraValue !== undefined ? currentExtraValue : ''
       }
 
       if (!formExtraValue) {
         formExtraValue = ''
+      }
+
+      // Special case to check "Aloituspäivä" for timetable modal
+      if ( !formValue && callerFormName ===  EDIT_PROJECT_TIMETABLE_FORM) {
+        formValue =
+          formValues[variable] === undefined
+            ? projectUtils.findValueFromObject(formValues, variable)
+            : formValues[variable]
+
+             // Now only one variable is expected
+        formExtraValue = extraVariables
+        ? projectUtils.findValueFromObject(formValues, extraVariables[0])
+        : ''
       }
 
       // List rule
