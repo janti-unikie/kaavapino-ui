@@ -34,12 +34,23 @@ const AutofillInput = ({
     if (formValues[name] === undefined) {
       const lastIndex = name.lastIndexOf('.')
 
-      // Remove "[0]" from name to get fieldset name
-      const fieldSet = name.substring(0, lastIndex - 3)
+      const testChar = name.length > 3 && name[lastIndex - 3]
+      let fieldSet
+      let  currentFieldSet
+
+      // Support for fieldset bigger than 9.
+      // Eg. if value is test[11] then substring one more
+      if ( testChar === '[') {
+        fieldSet = name.substring(0, lastIndex - 4)
+        // Get current fieldset number
+        currentFieldSet = name.substring(lastIndex - 3, lastIndex - 1)
+      } else {
+        fieldSet = name.substring(0, lastIndex - 3)
+        // Get current fieldset number
+        currentFieldSet = name.substring(lastIndex - 2, lastIndex - 1)
+      }
       // To get field value
       const value = name.substring(lastIndex + 1, name.length)
-      // Get current fieldset number
-      const currentFieldSet = name.substring(lastIndex - 2, lastIndex - 1)
       if (formValues && formValues[fieldSet]) {
         currentValue = formValues[fieldSet][currentFieldSet][value]
       }
