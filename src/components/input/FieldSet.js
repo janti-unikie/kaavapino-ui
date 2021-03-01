@@ -155,7 +155,6 @@ const FieldSet = ({
                         onRadioChange={onRadioChange}
                         onBlur={handleBlurSave}
                         validate={validate}
-                        currentSet={set}
                       />
                       {showError && <div className="error-text">{showError}</div>}
                     </Form.Field>
