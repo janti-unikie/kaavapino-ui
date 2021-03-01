@@ -34,13 +34,13 @@ const AutofillInput = ({
     if (formValues[name] === undefined) {
       const lastIndex = name.lastIndexOf('.')
 
-      const testChar = name.length > 3 && name[lastIndex - 3]
+      const testChar = name.length > 3 && name[lastIndex - 4]
       let fieldSet
-      let  currentFieldSet
+      let currentFieldSet
 
       // Support for fieldset bigger than 9.
       // Eg. if value is test[11] then substring one more
-      if ( testChar === '[') {
+      if (testChar === '[') {
         fieldSet = name.substring(0, lastIndex - 4)
         // Get current fieldset number
         currentFieldSet = name.substring(lastIndex - 3, lastIndex - 1)
@@ -51,7 +51,7 @@ const AutofillInput = ({
       }
       // To get field value
       const value = name.substring(lastIndex + 1, name.length)
-      if (formValues && formValues[fieldSet]) {
+      if (formValues && formValues[fieldSet] && formValues[fieldSet][currentFieldSet]) {
         currentValue = formValues[fieldSet][currentFieldSet][value]
       }
     }
@@ -62,11 +62,11 @@ const AutofillInput = ({
       return
     }
 
-    if (autoFillValue || isBoolean(autoFillValue) || isNumber( autoFillValue )) {
+    if (autoFillValue || isBoolean(autoFillValue) || isNumber(autoFillValue)) {
       dispatch(autofill(formName, name, autoFillValue))
     }
   }, [formValues, dispatch, autoFillValue])
-   if (!editable) {
+  if (!editable) {
     newFieldProps = {
       ...fieldProps,
       disabled: true

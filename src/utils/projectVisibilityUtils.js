@@ -22,13 +22,26 @@ export const showField = (field, formValues, currentName) => {
     const lastIndex = currentName ? currentName.lastIndexOf('.') : -1
 
     if (lastIndex !== -1) {
-      // Get only fieldset name
-      const fieldSet = currentName.substring(0, lastIndex - 3)
+      const testChar = currentName.length > 3 && currentName[lastIndex - 4]
+      let fieldSet
+      let currentFieldSet
 
-      // Get fieldset number
-      const currentFieldSet = currentName.substring(lastIndex - 2, lastIndex - 1)
+      // Support for fieldset bigger than 9.
+      // Eg. if value is test[11] then substring one more
+      if (testChar === '[') {
+        fieldSet = currentName.substring(0, lastIndex - 4)
+        // Get current fieldset number
+        currentFieldSet = currentName.substring(lastIndex - 3, lastIndex - 1)
+      } else {
+        fieldSet = currentName.substring(0, lastIndex - 3)
+        // Get current fieldset number
+        currentFieldSet = currentName.substring(lastIndex - 2, lastIndex - 1)
+      }
 
-      const currentValue = formValues[fieldSet][currentFieldSet][variable]
+      let currentValue
+      if (formValues && formValues[fieldSet] && formValues[fieldSet][currentFieldSet] ) {
+        currentValue = formValues[fieldSet][currentFieldSet][variable]
+      }
 
       value = !currentValue && currentValue !== false ? '' : currentValue
     }

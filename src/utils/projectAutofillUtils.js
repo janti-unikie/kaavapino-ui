@@ -9,7 +9,12 @@ import { EDIT_PROJECT_TIMETABLE_FORM } from '../constants'
  *  rule. Now it is only implemented if type is boolean and expected return value is string.
  *  Eq. "Kaavan nimi"-rule which has project name at the beginning and "asemakaava" or "asemakaava ja asemakaavan muuttaminen"
  */
-export const getFieldAutofillValue = (autofill_rule, formValues, name, callerFormName) => {
+export const getFieldAutofillValue = (
+  autofill_rule,
+  formValues,
+  name,
+  callerFormName
+) => {
   let returnValue
   let projectNameAdded = false
 
@@ -42,14 +47,35 @@ export const getFieldAutofillValue = (autofill_rule, formValues, name, callerFor
       }
 
       if (lastIndex !== -1) {
-        const fieldSet = name.substring(0, lastIndex - 3)
-        const currentFieldSet = name.substring(lastIndex - 2, lastIndex - 1)
+        const testChar = name.length > 3 && name[lastIndex - 4]
+        let fieldSet
+        let currentFieldSet
 
-        const currentValue = formValues[fieldSet][currentFieldSet][variable]
+        // Support for fieldset bigger than 9.
+        // Eg. if value is test[11] then substring one more
+        if (testChar === '[') {
+          fieldSet = name.substring(0, lastIndex -4)
+          // Get current fieldset number
+          currentFieldSet = name.substring(lastIndex - 3, lastIndex - 1)
+        } else {
+          fieldSet = name.substring(0, lastIndex - 3)
+          // Get current fieldset number
+          currentFieldSet = name.substring(lastIndex - 2, lastIndex - 1)
+        }
+        let currentValue
+        if (formValues && formValues[fieldSet] && formValues[fieldSet][currentFieldSet]) {
+          currentValue = formValues[fieldSet][currentFieldSet][variable]
+        }
 
         let currentExtraValue
 
-        if (extraVariables && extraVariables[0]) {
+        if (
+          extraVariables &&
+          extraVariables[0] &&
+          formValues &&
+          formValues[fieldSet] &&
+          formValues[fieldSet][currentFieldSet]
+        ) {
           currentExtraValue = formValues[fieldSet][currentFieldSet][extraVariables[0]]
         }
 
@@ -62,16 +88,16 @@ export const getFieldAutofillValue = (autofill_rule, formValues, name, callerFor
       }
 
       // Special case to check "Aloituspäivä" for timetable modal
-      if ( !formValue && callerFormName ===  EDIT_PROJECT_TIMETABLE_FORM) {
+      if (!formValue && callerFormName === EDIT_PROJECT_TIMETABLE_FORM) {
         formValue =
           formValues[variable] === undefined
             ? projectUtils.findValueFromObject(formValues, variable)
             : formValues[variable]
 
-             // Now only one variable is expected
+        // Now only one variable is expected
         formExtraValue = extraVariables
-        ? projectUtils.findValueFromObject(formValues, extraVariables[0])
-        : ''
+          ? projectUtils.findValueFromObject(formValues, extraVariables[0])
+          : ''
       }
 
       // List rule
