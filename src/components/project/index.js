@@ -6,19 +6,20 @@ import {
   initializeProject,
   saveProjectBase,
   changeProjectPhase,
-  getProjectSnapshot
+  getProjectSnapshot,
+  setSelectedPhaseId
 } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
 import {
   currentProjectSelector,
   currentProjectLoadedSelector,
-  changingPhaseSelector
+  changingPhaseSelector,
+  selectedPhaseSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
 import { allEditFieldsSelector } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
-import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
 import ProjectEditPage from '../projectEdit'
 import ProjectCardPage from '../projectCard'
 import ProjectDocumentsPage from '../projectDocuments'
@@ -33,16 +34,13 @@ import { userIdSelector } from '../../selectors/authSelector'
 class ProjectPage extends Component {
   constructor(props) {
     super(props)
-
-    let selectedPhase
     if (props.currentProject) {
-      selectedPhase = props.currentProject.phase
+      this.props.setSelectedPhaseId(props.currentProject.phase)
     } else {
-      selectedPhase = 0
+      this.props.setSelectedPhaseId(0)
     }
 
     this.state = {
-      selectedPhase: selectedPhase,
       showDeadlineModal: false,
       showBaseInformationForm: false,
       showPrintProjectDataModal: false,
@@ -66,24 +64,23 @@ class ProjectPage extends Component {
       (!prevProps.currentProject && currentProject) ||
       (prevProps.changingPhase && !changingPhase)
     ) {
-      this.setState({ selectedPhase: currentProject.phase })
+      this.props.setSelectedPhaseId(currentProject.phase)
       this.setState({ deadlines: currentProject.deadlines })
       document.title = currentProject.name
     }
-
-    if (prevProps.edit && !edit) this.setState({ selectedPhase: currentProject.phase })
+    if (prevProps.edit && !edit) this.props.setSelectedPhaseId(currentProject.phase)
   }
 
   switchDisplayedPhase = phase => {
     if (this.props.edit) {
-      this.setState({ selectedPhase: phase })
+      this.props.setSelectedPhaseId(phase)
     }
   }
 
   getRouteItems = () => {
     const { currentProject, edit, documents } = this.props
     const path = [
-      { value: 'Kaavaprojektit', path: '/' },
+      { value: 'Kaavaprojektit', path: '/projects' },
       { value: `${currentProject.name}`, path: `/${currentProject.id}` }
     ]
     if (edit) {
@@ -120,7 +117,7 @@ class ProjectPage extends Component {
 
   getProjectPageContent = () => {
     const { edit, documents, currentProject, phases } = this.props
-    const { selectedPhase } = this.state
+    const { selectedPhase } = this.props
     const currentPhases = this.getCurrentPhases()
 
     if (edit) {
@@ -170,7 +167,7 @@ class ProjectPage extends Component {
 
     const userRole = getUserRole()
 
-    const showCreate = userRole === 'admin' || userRole === 'create'
+    const showCreate = userRole === 'admin' || userRole === 'create' || userRole === 'edit'
 
     return !(edit || documents) ? (
       <NavActions>
@@ -203,9 +200,11 @@ class ProjectPage extends Component {
             Tulosta projektin tiedot
           </NavAction>
         )}
-        <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
-          Muokkaa luontitietoja
-        </NavAction>
+        {showCreate && (
+          <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
+            Muokkaa luontitietoja
+          </NavAction>
+        )}
         <NavAction to={`/${id}`} primary>
           Katso projektikortti
         </NavAction>
@@ -239,7 +238,7 @@ class ProjectPage extends Component {
     <div className="project-container">
       <NavHeader
         routeItems={[
-          { value: 'Kaavaprojektit', path: '/' },
+          { value: 'Kaavaprojektit', path: '/projects' },
           { value: 'Ladataan...', path: '/' }
         ]}
         title={'Ladataan...'}
@@ -270,7 +269,6 @@ class ProjectPage extends Component {
       projectSubtypes
     } = this.props
     const loading = !currentProjectLoaded || !phases
-    const { deadlines } = this.state
 
     if (loading) {
       return this.renderLoading()
@@ -284,7 +282,6 @@ class ProjectPage extends Component {
           actions={this.getNavActions()}
           infoOptions={this.getAllChanges()}
         />
-        <ProjectTimeline deadlines={deadlines} projectView={true} />
         <NewProjectFormModal
           currentProject={currentProject}
           open={this.state.showBaseInformationForm}
@@ -318,7 +315,8 @@ const mapDispatchToProps = {
   saveProjectBase,
   fetchUsers,
   changeProjectPhase,
-  getProjectSnapshot
+  getProjectSnapshot,
+  setSelectedPhaseId
 }
 
 const mapStateToProps = state => {
@@ -331,7 +329,8 @@ const mapStateToProps = state => {
     changingPhase: changingPhaseSelector(state),
     allEditFields: allEditFieldsSelector(state),
     formValues: getFormValues(DOWNLOAD_PROJECT_DATA_FORM)(state),
-    currentUserId: userIdSelector(state)
+    currentUserId: userIdSelector(state),
+    selectedPhase: selectedPhaseSelector(state)
   }
 }
 

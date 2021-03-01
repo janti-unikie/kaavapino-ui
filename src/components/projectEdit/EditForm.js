@@ -19,7 +19,12 @@ class EditForm extends Component {
   componentDidUpdate(prevProps) {
     const { saving, initialize, attributeData, submitErrors } = this.props
 
-    if (prevProps.saving && !saving && !submitErrors && Object.keys(submitErrors).length > 0) {
+    if (
+      prevProps.saving &&
+      !saving &&
+      !submitErrors &&
+      Object.keys(submitErrors).length > 0
+    ) {
       initialize(attributeData)
     }
   }
@@ -34,23 +39,28 @@ class EditForm extends Component {
       showEditProjectTimetableForm,
       attributeData,
       syncronousErrors,
-      submitErrors
+      submitErrors,
+      showCreate
     } = this.props
 
     return (
       <Form className="form-container" autoComplete="off">
         <h2 id="accordion-title">{title}</h2>
         <div className="edit-form-buttons">
-          <Button
-            value="Päivitä aikataulu"
-            secondary
-            onClick={showEditProjectTimetableForm}
-          />
-          <Button
-            value="Päivitä kerrosalatiedot"
-            secondary
-            onClick={showEditFloorAreaForm}
-          />
+          {showCreate && (
+            <Button
+              value="Päivitä aikataulu"
+              secondary
+              onClick={showEditProjectTimetableForm}
+            />
+          )}
+          {showCreate && (
+            <Button
+              value="Päivitä kerrosalatiedot"
+              secondary
+              onClick={showEditFloorAreaForm}
+            />
+          )}
           <Shoutbox project={projectId} />
         </div>
         {sections.map((section, i) => (
@@ -58,12 +68,12 @@ class EditForm extends Component {
             syncronousErrors={syncronousErrors}
             submitErrors={submitErrors}
             formName={EDIT_PROJECT_FORM}
-            key={i} handleSave={this.props.handleSave}
+            key={i}
+            handleSave={this.props.handleSave}
             section={section}
             disabled={disabled}
             attributeData={attributeData}
-
-            />
+          />
         ))}
         <div
           className="scroll-to-top"

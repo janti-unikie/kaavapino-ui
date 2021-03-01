@@ -39,7 +39,7 @@ const SelectInput = ({ input, meta: { error }, options, onBlur, placeholder, ...
       placeholder={placeholder}
       noResultsMessage="Ei tuloksia"
       options={options}
-      defaultValue={input.value}
+      value={input.value}
       disabled={custom.disabled}
       error={inputUtils.hasError(error)}
     />
