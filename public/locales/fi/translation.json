@@ -44,7 +44,7 @@
         "button-close": "Sulje"
     },
     "quick-nav" : {
-        "check": "tarkista",
+        "check": "Tarkista",
         "check-help-text": "Korostaa pakolliset puuttuvat kentät",
         "save-help": "Tallentaa projektin",
         "end-phase": "Lopeta vaihe",
@@ -52,6 +52,7 @@
         "archive": "Arkistoi projekti",
         "archive-help": "Yrittää arkistoida projektin",
         "onhold-lable": "Projekti on toistaiseksi keskeytynyt",
+        "set-onhold-lable": "Aseta projekti toistaiseksi keskeytyneeksi",
         "change-phase-error": "Vaihetta ei voida vielä lopettaa",
         "change-phase-error-message": "Täytä puuttuvat kentät"
     }

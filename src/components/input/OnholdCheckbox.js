@@ -4,12 +4,14 @@ import { Checkbox } from 'semantic-ui-react'
 const OnHoldCheckbox = ({
   input: { name, label, onChange },
   meta: { error },
+  projectOnhold,
   ...custom
 }) => {
-    const onChangeSave = (data) => {
+    const onChangeSave = data => {
         onChange(data.checked)
         custom.saveProjectBase()
     }
+
   return (
     <div className={'onhold-checkbox-container'}>
       <Checkbox
@@ -18,7 +20,7 @@ const OnHoldCheckbox = ({
         error={error}
         name={name}
         onChange={(e, data) => onChangeSave(data)}
-        defaultChecked={!!custom.projectOnhold}
+        defaultChecked={projectOnhold}
         disabled={custom.disabled}
       />
     </div>

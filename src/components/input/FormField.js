@@ -11,7 +11,7 @@ import { EDIT_PROJECT_TIMETABLE_FORM } from '../../constants'
 const OneLineFields = ['toggle']
 
 class FormField extends Component {
-  renderField = (newProps) => {
+  renderField = newProps => {
     const {
       field,
       attributeData,
@@ -64,7 +64,8 @@ class FormField extends Component {
       updated,
       formValues,
       syncronousErrors,
-      submitErrors
+      submitErrors,
+      className
     } = this.props
     const required =
       checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
@@ -100,7 +101,7 @@ class FormField extends Component {
       : field.label
 
     const renderCheckBox = () => {
-      const newProps  = {
+      const newProps = {
         ...field,
         type: 'checkbox'
       }
@@ -117,7 +118,7 @@ class FormField extends Component {
     }
 
     const renderDeadlineInfoField = () => {
-      const newProps  = {
+      const newProps = {
         ...field,
         type: 'readonly'
       }
@@ -125,6 +126,12 @@ class FormField extends Component {
     }
 
     const renderNormalField = () => {
+      const classNameFirst = className ? className : ''
+
+      const titleClassName = classNameFirst
+        ? `${classNameFirst} input-title${required ? ' highlight' : ''}`
+        : `input-title${required ? ' highlight' : ''}`
+
       return (
         <Form.Field
           className={`input-container ${isOneLineField ? 'small-margin' : ''} ${
@@ -133,7 +140,7 @@ class FormField extends Component {
         >
           {!isOneLineField && (
             <div className="input-header">
-              <Label className={`input-title${required ? ' highlight' : ''}`}>
+              <Label className={titleClassName}>
                 {title}
               </Label>
               <div className="input-header-icons">
@@ -144,17 +151,15 @@ class FormField extends Component {
                     on="hover"
                     position="top center"
                     hideOnScroll
-                    content={
-                      (
-                      <span className="input-history">
+                    content={(
+<span className="input-history">
                         <span>{`${projectUtils.formatDate(
                           updated.timestamp
                         )} ${projectUtils.formatTime(updated.timestamp)} ${
                           updated.user_name
                         }`}</span>
                       </span>
-                      )
-                    }
+)}
                   />
                 )}
                 {field.help_text && (
