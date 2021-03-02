@@ -30,6 +30,25 @@
     "floor-areas": {
         "title": "Päivitä kerrosalatiedot"
     },
+    "project": {
+        "modify": "Muokkaa",
+        "create-documents": "Luo dokumentteja",
+        "print-project-card": "Tulosta projektikortti",
+        "deadlines": "Määräajat",
+        "modify-project": "Muokkaa luontitietoja",
+        "check-project-card": "Katso projektikortti",
+        "last-edit": "Viimeisin muokkaus: {{fieldName}} {{date}} {{userName}}",
+        "floor-area-title" : "Kerrosalatiedot",
+        "basic-information-title": "Perustiedot",
+        "description-title": "Suunnittelualueen kuvaus",
+        "contract-title": "Maanomistus ja maankäyttösopimus",
+        "strategy-connection-title": "Strategiakytkentä",
+        "timetable-title": "Aikataulu",
+        "contact-title": "Yhteyshenkilöt",
+        "photo-description": "Kuvaus",
+        "planning-area-constraints": "Suunnittelualueen rajaus",
+        "documents-title": "Valmiit dokumentit Ahjossa"
+    },    
     "nav-header": {
         "latest-update": "Viimeisin muokkaus: {{latestUpdate}}"
     },

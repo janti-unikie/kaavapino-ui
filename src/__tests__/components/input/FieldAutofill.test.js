@@ -904,6 +904,52 @@ describe('Autofill tests', () => {
     const current = 'testfieldset[0].test'
     expect(getFieldAutofillValue(field.autofill_rule, formValues, current)).toBe(false)
   })
+  it('Autofill rule list 7 kaupunkiympäristölautakunta', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'kaavaprosessin_kokoluokka'
+    conditionObject1.operator = 'in'
+    conditionObject1.comparison_value = ['S', 'XS']
+    conditionObject1.comparison_value_type = 'list<string>'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'kaavaprosessin_kokoluokka'
+    conditionObject2.operator = 'in'
+    conditionObject2.comparison_value = ['M', 'L', 'XL']
+    conditionObject2.comparison_value_type = 'list<string>'
+
+    const condition = { condition: conditionObject1, then_branch : 'kaupunkiympäristölautakunta' }
+    const condition2 = { condition: conditionObject2, then_branch : 'kaupunginvaltuusto' }
+     field.autofill_rule =[condition, condition2, []]
+
+    const formValues = {
+      kaavaprosessin_kokoluokka: 'XS'
+      }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('kaupunkiympäristölautakunta')
+  })
+  it('Autofill rule list 8 kaupunginvaltuusto', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'kaavaprosessin_kokoluokka'
+    conditionObject1.operator = 'in'
+    conditionObject1.comparison_value = ['S', 'XS']
+    conditionObject1.comparison_value_type = 'list<string>'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'kaavaprosessin_kokoluokka'
+    conditionObject2.operator = 'in'
+    conditionObject2.comparison_value = ['M', 'L', 'XL']
+    conditionObject2.comparison_value_type = 'list<string>'
+
+    const condition = { condition: conditionObject1, then_branch : 'kaupunkiympäristölautakunta' }
+    const condition2 = { condition: conditionObject2, then_branch : 'kaupunginvaltuusto' }
+     field.autofill_rule =[condition, condition2, []]
+
+    const formValues = {
+      kaavaprosessin_kokoluokka: 'L'
+      }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('kaupunginvaltuusto')
+  })
   it('Autofill rule list 7 variables', () => {
     const field = {}
     const conditionObject1 = {}
