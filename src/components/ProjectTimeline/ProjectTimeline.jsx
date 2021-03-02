@@ -130,6 +130,21 @@ function ProjectTimeline(props) {
           </div>
         )
       case 'phase_end':
+        if (monthDates[loopIndex][property].not_last_end_point) {
+          return (
+            <div
+              key={`${monthDates[loopIndex][property].abbreviation}-${loopIndex}`}
+              style={{
+                background: monthDates[loopIndex][property].color_code
+              }}
+              className='timeline-item'
+            >
+              {monthDates[loopIndex].milestone
+                ? createMilestoneItem(loopIndex, propI, monthDates)
+                : ''}
+            </div>
+          )
+        } else {
         return (
           <div
             key={`${monthDates[loopIndex][property].abbreviation}-${loopIndex}`}
@@ -143,6 +158,8 @@ function ProjectTimeline(props) {
               : ''}
           </div>
         )
+        }
+        break
       case 'start_end_point':
         return (
           <div
