@@ -16,9 +16,6 @@ import GeometryInformation from './GeometryInformation'
 
 function ProjectCardPage( { attributeData, deadlines } ) {
 
-  console.log( attributeData )
-  console.log( deadlines )
-
   const [descriptionFields, setDescriptionDFields  ] = useState([])
   const [ basicInformationFields, setBasicInformationFields ] = useState([])
   const [contactsFields, setContactsFields  ] = useState([])
