@@ -137,7 +137,7 @@ function ProjectTimeline(props) {
               style={{
                 background: monthDates[loopIndex][property].color_code
               }}
-              className='timeline-item'
+              className="timeline-item"
             >
               {monthDates[loopIndex].milestone
                 ? createMilestoneItem(loopIndex, propI, monthDates)
@@ -145,21 +145,20 @@ function ProjectTimeline(props) {
             </div>
           )
         } else {
-        return (
-          <div
-            key={`${monthDates[loopIndex][property].abbreviation}-${loopIndex}`}
-            style={{
-              background: monthDates[loopIndex][property].color_code
-            }}
-            className="timeline-item last"
-          >
-            {monthDates[loopIndex].milestone
-              ? createMilestoneItem(loopIndex, propI, monthDates)
-              : ''}
-          </div>
-        )
+          return (
+            <div
+              key={`${monthDates[loopIndex][property].abbreviation}-${loopIndex}`}
+              style={{
+                background: monthDates[loopIndex][property].color_code
+              }}
+              className="timeline-item last"
+            >
+              {monthDates[loopIndex].milestone
+                ? createMilestoneItem(loopIndex, propI, monthDates)
+                : ''}
+            </div>
+          )
         }
-        break
       case 'start_end_point':
         return (
           <div
