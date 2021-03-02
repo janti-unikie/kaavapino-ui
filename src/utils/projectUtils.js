@@ -1,4 +1,4 @@
-import { concat, difference, flattenDeep, isBoolean, isNaN } from 'lodash'
+import { concat, difference, flattenDeep, isBoolean } from 'lodash'
 
 const addZeroPrefixIfNecessary = value => (value < 10 ? `0${value}` : value)
 
@@ -198,28 +198,11 @@ function getFieldsetAttributes(parent, sections) {
   return fieldsetAttributes
 }
 
-const getFieldValue = (data, fieldName) => {
-  let value
-  data.forEach(index => {
-    if (index.hasOwnProperty(fieldName)) value = index[fieldName]
-  })
+const checkDeadline = (props, currentDeadline) => {
 
-  return value
-}
-
-const checkInputValue = (props, attributeData, parentName, currentDeadline) => {
-
-    if (currentDeadline) {
-      props.input.defaultValue = currentDeadline.date
-      return
-    }
-
-  if (props && parentName && attributeData[parentName]) {
-    if (!props.input.value || isBoolean(props.input.value)) {
-      const inputValue = getFieldValue(attributeData[parentName], props.input.name)
-      if (inputValue || isBoolean(inputValue) || !isNaN(inputValue))
-        props.input.value = inputValue
-    }
+  if (currentDeadline) {
+    props.input.defaultValue = currentDeadline.date
+    return
   }
 }
 const getDefaultValue = (parentName, attributeData, name) => {
@@ -270,7 +253,7 @@ export default {
   formatPhase,
   formatNextDeadline,
   formatSubtype,
-  checkInputValue,
+  checkDeadline,
   getDefaultValue,
   getParents,
   formatPayload,
