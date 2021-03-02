@@ -1,3 +1,4 @@
+import { EDIT_PROJECT_TIMETABLE_FORM } from '../../../constants'
 import { getFieldAutofillValue } from '../../../utils/projectAutofillUtils'
 describe('Autofill tests', () => {
   it('Autofill rule succeeds (string)', () => {
@@ -804,10 +805,11 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        oasvaiheen_dokumentin_nimi: 'saatekirje'
+         0: { oasvaiheen_dokumentin_nimi: 'saatekirje' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, current)).toBe(true)
   })
   it('Autofill rule list 4 deeper', () => {
     const field = {}
@@ -834,12 +836,11 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        tokafieldset: {
-          oasvaiheen_dokumentin_nimi: 'saatekirje'
-        }
+         0: { oasvaiheen_dokumentin_nimi: 'saatekirje' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, current )).toBe(true)
   })
   it('Autofill rule list 5 fails', () => {
     const field = {}
@@ -866,12 +867,11 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        tokafieldset: {
-          oasvaiheen_dokumentin_nimi: 'saatkirje'
-        }
+         0: { oasvaiheen_dokumentin_nimi: 'saatkirje' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(undefined)
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues,current)).toBe(undefined)
   })
   it('Autofill rule list 6 false', () => {
     const field = {}
@@ -898,12 +898,11 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        tokafieldset: {
-          oasvaiheen_dokumentin_nimi: 'kirje_hakijalle_maksusta'
-        }
+         0: { oasvaiheen_dokumentin_nimi: 'kirje_hakijalle_maksusta' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, current)).toBe(false)
   })
   it('Autofill rule list 7 kaupunkiympäristölautakunta', () => {
     const field = {}
@@ -968,10 +967,33 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        aloituskokous_suunniteltu_pvm: '12.12.2012'
+         0: { aloituskokous_suunniteltu_pvm: '12.12.2012' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('12.12.2012')
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, current)).toBe('12.12.2012')
+  })
+  it('Autofill rule list 8 variables', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'aloituskokous_suunniteltu_pvm'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const condition = {
+      condition: conditionObject1,
+      then_branch: '',
+      variables: ['aloituskokous_suunniteltu_pvm']
+    }
+    field.autofill_rule = [condition]
+
+    const formValues = {
+      testfieldset: {
+         aloituskokous_suunniteltu_pvm: '12.12.2012'
+      }
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, undefined, EDIT_PROJECT_TIMETABLE_FORM)).toBe('12.12.2012')
   })
   it('Autofill rule number bigger than', () => {
     const field = {}

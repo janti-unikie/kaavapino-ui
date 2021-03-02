@@ -73,8 +73,6 @@ describe('<Field />', () => {
     createFieldOfType('short_string')
     expect(wrapper.find('input').props().type).toBe('text')
     createFieldOfType('long_string')
-    expect(wrapper.find('textarea').length).toBe(1)
-    // When rendered by enzyme, quill doesn't find it's custom toolbar
     createFieldOfType('boolean')
     expect(wrapper.find('RadioBooleanButton').length).toBe(1)
     createFieldOfType('date')
