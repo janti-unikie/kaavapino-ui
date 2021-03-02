@@ -463,7 +463,10 @@ function* saveProjectTimetable() {
           toastrActions.add({
             type: 'warning',
             title: i18.t('messages.deadlines-successfully-saved'),
-            message: i18.t('messages.check-timetable')
+            message: i18.t('messages.check-timetable'),
+            options: {
+              timeOut: 5000
+            }
           })
         )
       }
@@ -484,15 +487,8 @@ function* saveProject() {
     const currentSchema = schema.phases.find(s => s.id === selectedPhase)
     const { sections } = currentSchema
     const changedValues = getChangedAttributeData(values, initial, sections)
-    const parentNames = projectUtils.getParents(changedValues)
-    const formattedData = projectUtils.formatPayload(
-      changedValues,
-      sections,
-      parentNames,
-      initial
-    )
 
-    const attribute_data = formattedData
+    const attribute_data = changedValues
 
     try {
       const updatedProject = yield call(
