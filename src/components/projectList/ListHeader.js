@@ -14,7 +14,8 @@ const ListHeader = ({
   toggleGraph,
   toggleSearch,
   searchOpen,
-  setFilter
+  setFilter,
+  graphToggled
 }) => {
   return (
     <div className="project-list-wrapper">
@@ -39,12 +40,12 @@ const ListHeader = ({
         ))}
         <span className="header-item project-timeline-toggle">
           Aikajana
-          <Radio onChange={() => toggleGraph()} toggle />
+          <Radio onChange={() => toggleGraph()} toggle checked={graphToggled}/>
         </span>
       </div>
       <div className="project-list-mb-actions">
         <span className="project-timeline-toggle-mb">
-          <Radio onChange={() => toggleGraph()} toggle label="Näytä aikajanat" />
+          <Radio onChange={() => toggleGraph()} toggle checked={graphToggled} label="Näytä aikajanat" />
         </span>
         <SearchBar
           toggleSearch={toggleSearch}

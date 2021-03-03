@@ -64,9 +64,9 @@ const getUniqueUpdates = updates => {
 const sortProjects = (projects, options) => {
   const targetAttributes = [
     'projectId',
+    'hankenumero',
     'name',
     'phase',
-    'nextDeadline',
     'subtype',
     'modified_at',
     'user'
@@ -92,10 +92,9 @@ const formatFilterProject = (project, sort = false, phases, users) => {
   const phase = formatPhase(project.phase, phases).index
   const { subtype } = project
   const { name } = project
-  const projectId = project.attribute_data.hankenumero || '-'
-  const itemDeadline = project.deadlines && project.deadlines.find(d => d.phase_id === project.phase).deadline
-  const nextDeadline = sort ? new Date(itemDeadline).getTime() : formatDate(itemDeadline)
-  return { name, user, modified_at, phase, subtype, projectId, nextDeadline }
+  const projectId = project.pino_number || '-'
+  const { hankenumero } = project.attribute_data
+  return { name, hankenumero, user, modified_at, phase, subtype, projectId }
 }
 
 const formatPhase = (id, phases) => {

@@ -277,14 +277,13 @@ class CustomField extends Component {
   }
 
   renderOnholdCheckbox = props => {
-    const { onhold, saveProjectBase, disabled } = this.props.field
+    const { onhold, saveProjectBase, disabled } = this.props
     return (
       <OnHoldCheckbox
+       {...props}
         projectOnhold={onhold}
         saveProjectBase={saveProjectBase}
         disabled={disabled}
-        attributeData={this.props.attributeData}
-        {...props}
       />
     )
   }
