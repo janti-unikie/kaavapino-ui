@@ -165,7 +165,6 @@ class QuickNav extends Component {
         formValues={formValues}
         onhold={fieldProps.onhold}
         saveProjectBase={saveProjectBase}
-        className={fieldProps.onhold ? 'input-title-interrupted' : ''}
       />
     )
   }
