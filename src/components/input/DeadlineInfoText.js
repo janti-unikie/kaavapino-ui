@@ -10,12 +10,17 @@ const DeadlineInfoText = props => {
   let inputValue = props.input && props.input.value
 
   if (props.autofillRule && props.autofillRule.length > 0) {
-    inputValue = getFieldAutofillValue(props.autofillRule, formValues)
+    inputValue = getFieldAutofillValue(
+      props.autofillRule,
+      formValues,
+      null,
+      EDIT_PROJECT_TIMETABLE_FORM
+    )
   }
 
   // Expect date in value
   let value = inputValue && moment(inputValue).format('DD.MM.YYYY')
-  if (value==='Invalid date') {
+  if (value === 'Invalid date') {
     value = inputValue
   }
 

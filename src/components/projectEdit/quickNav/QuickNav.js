@@ -23,7 +23,8 @@ class QuickNav extends Component {
       activePhase: 0,
       selected: 0,
       endPhaseError: false,
-      verifying: false
+      verifying: false,
+      checkButtonPressed: false
     }
   }
 
@@ -41,6 +42,8 @@ class QuickNav extends Component {
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll)
     this.setState({ sectionHeights: this.initSections(this.props.sections) })
+    const { initialize, currentProject } = this.props
+    initialize({ onhold: currentProject.onhold })
   }
 
   componentWillUnmount() {
@@ -147,7 +150,7 @@ class QuickNav extends Component {
   }
 
   getFormField = fieldProps => {
-    const { formSubmitErrors, formValues, onhold, saveProjectBase } = this.props
+    const { formSubmitErrors, formValues, saveProjectBase } = this.props
 
     const error =
       formSubmitErrors &&
@@ -160,8 +163,9 @@ class QuickNav extends Component {
         {...fieldProps}
         error={error}
         formValues={formValues}
-        onhold={onhold}
+        onhold={fieldProps.onhold}
         saveProjectBase={saveProjectBase}
+        className={fieldProps.onhold ? 'input-title-interrupted' : ''}
       />
     )
   }
@@ -174,7 +178,6 @@ class QuickNav extends Component {
       validating,
       saving,
       handleSave,
-      handleCheck,
       syncronousErrors,
       currentProject,
       saveProjectBase,
@@ -183,6 +186,17 @@ class QuickNav extends Component {
       t
     } = this.props
     const errors = syncronousErrors && !_.isEmpty(syncronousErrors) ? true : false
+
+    const onCheckPressed = () => {
+      const { handleCheck } = this.props
+      const { checkButtonPressed } = this.state
+
+      this.setState({
+        ...this.state,
+        checkButtonPressed: checkButtonPressed
+      })
+      handleCheck()
+    }
     return (
       <div className="quicknav-container">
         <div className="quicknav-navigation-section">
@@ -226,10 +240,11 @@ class QuickNav extends Component {
         <RoleHighlightPicker onRoleUpdate={this.props.setHighlightRole} />
         <div className="quicknav-buttons">
           <Button
-            handleClick={handleCheck}
+            handleClick={onCheckPressed}
             value={t('quick-nav.check')}
             help={t('quick-nav.check-help-text')}
             disabled={currentProject.archived}
+            className={this.state.checkButtonPressed ? 'check-pressed' : ''}
             secondary
           />
           <Button
@@ -256,7 +271,9 @@ class QuickNav extends Component {
           {this.getFormField({
             field: {
               name: ONHOLD,
-              label: t('quick-nav.onhold-lable'),
+              label: currentProject.onhold
+                ? t('quick-nav.onhold-lable')
+                : t('quick-nav.set-onhold-lable'),
               type: 'checkbox-onhold',
               disabled: saving || currentProject.archived
             },

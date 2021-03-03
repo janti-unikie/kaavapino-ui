@@ -1,4 +1,4 @@
-import { concat, difference, flattenDeep, isBoolean, isNaN } from 'lodash'
+import { concat, difference, flattenDeep, isBoolean } from 'lodash'
 
 const addZeroPrefixIfNecessary = value => (value < 10 ? `0${value}` : value)
 
@@ -64,9 +64,9 @@ const getUniqueUpdates = updates => {
 const sortProjects = (projects, options) => {
   const targetAttributes = [
     'projectId',
+    'hankenumero',
     'name',
     'phase',
-    'nextDeadline',
     'subtype',
     'modified_at',
     'user'
@@ -92,10 +92,9 @@ const formatFilterProject = (project, sort = false, phases, users) => {
   const phase = formatPhase(project.phase, phases).index
   const { subtype } = project
   const { name } = project
-  const projectId = project.attribute_data.hankenumero || '-'
-  const itemDeadline = project.deadlines.find(d => d.phase_id === project.phase).deadline
-  const nextDeadline = sort ? new Date(itemDeadline).getTime() : formatDate(itemDeadline)
-  return { name, user, modified_at, phase, subtype, projectId, nextDeadline }
+  const projectId = project.pino_number || '-'
+  const { hankenumero } = project.attribute_data
+  return { name, hankenumero, user, modified_at, phase, subtype, projectId }
 }
 
 const formatPhase = (id, phases) => {
@@ -198,28 +197,11 @@ function getFieldsetAttributes(parent, sections) {
   return fieldsetAttributes
 }
 
-const getFieldValue = (data, fieldName) => {
-  let value
-  data.forEach(index => {
-    if (index.hasOwnProperty(fieldName)) value = index[fieldName]
-  })
+const checkDeadline = (props, currentDeadline) => {
 
-  return value
-}
-
-const checkInputValue = (props, attributeData, parentName, currentDeadline) => {
-
-    if (currentDeadline) {
-      props.input.defaultValue = currentDeadline.date
-      return
-    }
-
-  if (props && parentName && attributeData[parentName]) {
-    if (!props.input.value || isBoolean(props.input.value)) {
-      const inputValue = getFieldValue(attributeData[parentName], props.input.name)
-      if (inputValue || isBoolean(inputValue) || !isNaN(inputValue))
-        props.input.value = inputValue
-    }
+  if (currentDeadline) {
+    props.input.defaultValue = currentDeadline.date
+    return
   }
 }
 const getDefaultValue = (parentName, attributeData, name) => {
@@ -270,7 +252,7 @@ export default {
   formatPhase,
   formatNextDeadline,
   formatSubtype,
-  checkInputValue,
+  checkDeadline,
   getDefaultValue,
   getParents,
   formatPayload,

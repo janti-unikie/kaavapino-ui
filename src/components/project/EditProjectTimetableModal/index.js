@@ -98,7 +98,7 @@ class EditProjectTimeTableModal extends Component {
   getFormFields = (sections, sectionIndex) => {
     const formFields = []
     sections.forEach(subsection => {
-      subsection.attributes.forEach((field, fieldIndex) => {
+      subsection.attributes && subsection.attributes.forEach((field, fieldIndex) => {
         formFields.push(this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`))
       })
     })

@@ -29,18 +29,77 @@
       }
     }
   }
-
-  .project-image-container {
-    flex: 0.5;
-    .project-image {
-      max-width: 600px;
-      max-height: 600px;
-      width: 100%;
-      height: auto;
-    }
-  }
 }
 
 .project-card-extend {
+  margin-top: 10px;
+}
+.project-card .basic-information {
+  height: 250px;
+}
+.project-card .contract {
+  height: 250px;
+}
+.project-card .description {
+  height: 300px;
+  
+}
+.project-card .floor-area-information {
+  height: 100px;
+}
+.project-card .strategy-connection {
+  min-height: 200px;
+}
+.project-card .documents {
+  min-height: 200px;
+}
+.project-card .timetable {
+  min-height: 200px;
+}
+.project-card .contacts {
+  min-height: 200px;
+}
+.project-card .photo {
+  height: 300px;
+  text-align: center;
+}
+.project-card .project-image-container {
+  flex: 0.5;
+  .project-image {
+    max-width: 100%;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+  }
+}
+.project-card .ui.segment {
+  padding: 10px;
+}
+.project-card .ui.grid {
+  margin: 0;
+}
+.project-card .inner-left-column {
+  margin: 0;
+  padding: 0 !important;
+  padding-right: 7px !important;
+}
+.project-card .inner-right-column {
+  margin: 0;
+  padding: 0 !important;
+  padding-left: 7px !important;
+}
+.project-card .floor-area-information .floor-area-value {
+  font-weight: bold;
+  font-size: larger;
+}
+.project-card .floor-area-information .column:first-of-type {
+  border-right: 1px solid black;
+}
+.project-card .geometry-input-container {
+  .geometry-input {
+    height: 300px;
+  }
+}
+.project-card .project-container {
   margin-top: 10px;
 }

@@ -1,3 +1,4 @@
+import { EDIT_PROJECT_TIMETABLE_FORM } from '../../../constants'
 import { getFieldAutofillValue } from '../../../utils/projectAutofillUtils'
 describe('Autofill tests', () => {
   it('Autofill rule succeeds (string)', () => {
@@ -804,10 +805,11 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        oasvaiheen_dokumentin_nimi: 'saatekirje'
+         0: { oasvaiheen_dokumentin_nimi: 'saatekirje' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, current)).toBe(true)
   })
   it('Autofill rule list 4 deeper', () => {
     const field = {}
@@ -834,12 +836,11 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        tokafieldset: {
-          oasvaiheen_dokumentin_nimi: 'saatekirje'
-        }
+         0: { oasvaiheen_dokumentin_nimi: 'saatekirje' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, current )).toBe(true)
   })
   it('Autofill rule list 5 fails', () => {
     const field = {}
@@ -866,12 +867,11 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        tokafieldset: {
-          oasvaiheen_dokumentin_nimi: 'saatkirje'
-        }
+         0: { oasvaiheen_dokumentin_nimi: 'saatkirje' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(undefined)
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues,current)).toBe(undefined)
   })
   it('Autofill rule list 6 false', () => {
     const field = {}
@@ -898,12 +898,57 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        tokafieldset: {
-          oasvaiheen_dokumentin_nimi: 'kirje_hakijalle_maksusta'
-        }
+         0: { oasvaiheen_dokumentin_nimi: 'kirje_hakijalle_maksusta' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, current)).toBe(false)
+  })
+  it('Autofill rule list 7 kaupunkiympäristölautakunta', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'kaavaprosessin_kokoluokka'
+    conditionObject1.operator = 'in'
+    conditionObject1.comparison_value = ['S', 'XS']
+    conditionObject1.comparison_value_type = 'list<string>'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'kaavaprosessin_kokoluokka'
+    conditionObject2.operator = 'in'
+    conditionObject2.comparison_value = ['M', 'L', 'XL']
+    conditionObject2.comparison_value_type = 'list<string>'
+
+    const condition = { condition: conditionObject1, then_branch : 'kaupunkiympäristölautakunta' }
+    const condition2 = { condition: conditionObject2, then_branch : 'kaupunginvaltuusto' }
+     field.autofill_rule =[condition, condition2, []]
+
+    const formValues = {
+      kaavaprosessin_kokoluokka: 'XS'
+      }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('kaupunkiympäristölautakunta')
+  })
+  it('Autofill rule list 8 kaupunginvaltuusto', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'kaavaprosessin_kokoluokka'
+    conditionObject1.operator = 'in'
+    conditionObject1.comparison_value = ['S', 'XS']
+    conditionObject1.comparison_value_type = 'list<string>'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'kaavaprosessin_kokoluokka'
+    conditionObject2.operator = 'in'
+    conditionObject2.comparison_value = ['M', 'L', 'XL']
+    conditionObject2.comparison_value_type = 'list<string>'
+
+    const condition = { condition: conditionObject1, then_branch : 'kaupunkiympäristölautakunta' }
+    const condition2 = { condition: conditionObject2, then_branch : 'kaupunginvaltuusto' }
+     field.autofill_rule =[condition, condition2, []]
+
+    const formValues = {
+      kaavaprosessin_kokoluokka: 'L'
+      }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('kaupunginvaltuusto')
   })
   it('Autofill rule list 7 variables', () => {
     const field = {}
@@ -922,10 +967,33 @@ describe('Autofill tests', () => {
 
     const formValues = {
       testfieldset: {
-        aloituskokous_suunniteltu_pvm: '12.12.2012'
+         0: { aloituskokous_suunniteltu_pvm: '12.12.2012' }
       }
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('12.12.2012')
+    const current = 'testfieldset[0].test'
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, current)).toBe('12.12.2012')
+  })
+  it('Autofill rule list 8 variables', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'aloituskokous_suunniteltu_pvm'
+    conditionObject1.operator = '=='
+    conditionObject1.comparison_value = true
+    conditionObject1.comparison_value_type = 'boolean'
+
+    const condition = {
+      condition: conditionObject1,
+      then_branch: '',
+      variables: ['aloituskokous_suunniteltu_pvm']
+    }
+    field.autofill_rule = [condition]
+
+    const formValues = {
+      testfieldset: {
+         aloituskokous_suunniteltu_pvm: '12.12.2012'
+      }
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues, undefined, EDIT_PROJECT_TIMETABLE_FORM)).toBe('12.12.2012')
   })
   it('Autofill rule number bigger than', () => {
     const field = {}
@@ -1028,9 +1096,10 @@ describe('Autofill tests', () => {
     field.autofill_rule = [condition, condition2]
 
     const formValues = {
-      vaarien_mielipiteiden_maara: 0
+      mielipiteiden_maara: 0,
+      vaarien_mielipiteiden_maara: 1
     }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
   })
   it('Autofill multiple rule number bigger than', () => {
     const field = {}
@@ -1052,6 +1121,105 @@ describe('Autofill tests', () => {
     field.autofill_rule = [condition, condition2]
 
     const formValues = {}
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+  })
+  it('Autofill multiple rule three (1) number bigger than', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'mielipiteiden_maara'
+    conditionObject1.operator = '>'
+    conditionObject1.comparison_value = 0
+    conditionObject1.comparison_value_type = 'number'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'vaarien_mielipiteiden_maara'
+    conditionObject2.operator = '>'
+    conditionObject2.comparison_value = 0
+    conditionObject2.comparison_value_type = 'number'
+
+    const conditionObject3 = {}
+    conditionObject3.variable = 'taas_vaarien_mielipiteiden_maara'
+    conditionObject3.operator = '>'
+    conditionObject3.comparison_value = 0
+    conditionObject3.comparison_value_type = 'number'
+
+    const condition = { condition: conditionObject1, then_branch: true }
+    const condition2 = { condition: conditionObject2, then_branch: true }
+    const condition3 = { condition: conditionObject3, then_branch: 'True' }
+
+    field.autofill_rule = [condition, condition2, condition3]
+
+    const formValues = {
+      mielipiteiden_maara: 0,
+      vaarien_mielipiteiden_maara: 1,
+      taas_vaarien_mielipiteiden_maara: 0
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+  })
+  it('Autofill multiple rule three (2) number bigger than', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'mielipiteiden_maara'
+    conditionObject1.operator = '>'
+    conditionObject1.comparison_value = 0
+    conditionObject1.comparison_value_type = 'number'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'vaarien_mielipiteiden_maara'
+    conditionObject2.operator = '>'
+    conditionObject2.comparison_value = 0
+    conditionObject2.comparison_value_type = 'number'
+
+    const conditionObject3 = {}
+    conditionObject3.variable = 'taas_vaarien_mielipiteiden_maara'
+    conditionObject3.operator = '>'
+    conditionObject3.comparison_value = 0
+    conditionObject3.comparison_value_type = 'number'
+
+    const condition = { condition: conditionObject1, then_branch: true }
+    const condition2 = { condition: conditionObject2, then_branch: true }
+    const condition3 = { condition: conditionObject3, then_branch: 'True' }
+
+    field.autofill_rule = [condition, condition2, condition3]
+
+    const formValues = {
+      mielipiteiden_maara: 0,
+      vaarien_mielipiteiden_maara: 0,
+      taas_vaarien_mielipiteiden_maara: 1
+    }
+    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+  })
+  it('Autofill multiple rule three (3) number bigger than', () => {
+    const field = {}
+    const conditionObject1 = {}
+    conditionObject1.variable = 'mielipiteiden_maara'
+    conditionObject1.operator = '>'
+    conditionObject1.comparison_value = 0
+    conditionObject1.comparison_value_type = 'number'
+
+    const conditionObject2 = {}
+    conditionObject2.variable = 'vaarien_mielipiteiden_maara'
+    conditionObject2.operator = '>'
+    conditionObject2.comparison_value = 0
+    conditionObject2.comparison_value_type = 'number'
+
+    const conditionObject3 = {}
+    conditionObject3.variable = 'taas_vaarien_mielipiteiden_maara'
+    conditionObject3.operator = '>'
+    conditionObject3.comparison_value = 0
+    conditionObject3.comparison_value_type = 'number'
+
+    const condition = { condition: conditionObject1, then_branch: true }
+    const condition2 = { condition: conditionObject2, then_branch: true }
+    const condition3 = { condition: conditionObject3, then_branch: 'True' }
+
+    field.autofill_rule = [condition, condition2, condition3]
+
+    const formValues = {
+      mielipiteiden_maara: 0,
+      vaarien_mielipiteiden_maara: 0,
+      taas_vaarien_mielipiteiden_maara: 0
+    }
     expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
   })
   it('Autofill rule succeeds string with formvalue', () => {

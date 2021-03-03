@@ -101,6 +101,7 @@ function createStartAndEndPoints(inputMonths, deadlines) {
               phase_id: deadline.deadline.phase_id,
               color_code: deadline.deadline.phase_color_code,
               phase_name: deadline.deadline.phase_name,
+              not_last_end_point: deadline.not_last_end_point,
               deadline_length: 2
             }
           }

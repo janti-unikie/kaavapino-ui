@@ -25,6 +25,7 @@
         color: white !important;
         border: 2px solid $color-primary !important;
         background: $color-primary !important;
+        margin-right: 0;
       }
       @media screen and (max-width: 800px) {
         justify-content: end;

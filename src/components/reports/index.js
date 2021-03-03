@@ -14,7 +14,7 @@ class Reports extends Component {
       <div className="reports-page">
         <NavHeader
           routeItems={[
-            { value: 'Kaavaprojektit', path: '/' },
+            { value: 'Kaavaprojektit', path: '/projects' },
             { value: 'Raportit', path: '/reports' }
           ]}
           title="Raportit"

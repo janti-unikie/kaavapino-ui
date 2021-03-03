@@ -1,108 +1,179 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Loader, Radio } from 'semantic-ui-react'
-import { projectTypesSelector } from '../../selectors/projectTypeSelector'
-import { usersSelector } from '../../selectors/projectSelector'
-import Summary from './Summary'
-import Image from './Image'
+import React, { useState, useEffect } from 'react'
+import { Grid, Segment } from 'semantic-ui-react'
+import BasicInformation from './BasicInformation'
+import Contract from './Contract'
+import Description from './Description'
+import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
+import TimeTable from './Timetable'
+import Contacts from './Contacts'
+import FloorAreaInformation from './FloorAreaInformation'
+import StrategyConnection from './StrategyConnection'
+import Photo from './Photo'
+import Documents from './Documents'
+import { fieldsMockData } from './fieldsMockData'
 import projectUtils from '../../utils/projectUtils'
+import GeometryInformation from './GeometryInformation'
 
-class ProjectCardPage extends Component {
-  constructor(props) {
-    super(props)
+function ProjectCardPage( { attributeData, deadlines } ) {
 
-    let imageSrc = null
-    if (props.attributeData.hankekortin_kuva) {
-      imageSrc = props.attributeData.hankekortin_kuva
-    }
-    const imageLink = imageSrc ? imageSrc.link : null
+  const [descriptionFields, setDescriptionDFields  ] = useState([])
+  const [ basicInformationFields, setBasicInformationFields ] = useState([])
+  const [contactsFields, setContactsFields  ] = useState([])
+  const [ photoField, setPhotoField ] = useState( null )
+  const [ strategyConnectionFields, setStrategyConnectionFields ] = useState([])
+  const [ timeTableFields, setTimeTableFields ] = useState([])
+  const [ floorAreaFields, setFloorAreaFields ] = useState([])
+  const [ contractFields, setContractFields ] = useState([])
+  const [ documentFields, setDocumentFields ] = useState([])
+  const [ planningRestriction, setPlanningRestriction ] = useState(null)
 
-    this.state = {
-      metadata: null,
-      extended: false,
-      imageLink
-    }
-  }
+  useEffect(() => {
+      buildPage()
+    }, [])
 
-  componentDidMount() {
-    const { projectTypes } = this.props
-    if (projectTypes) {
-      this.updateMetadata()
-    }
-  }
+  const buildPage = () => {
 
-  componentDidUpdate(prevProps) {
-    const { projectTypes } = this.props
-    if (!prevProps.projectTypes && projectTypes) {
-      this.updateMetadata()
-    }
-  }
+    const currentDescriptionFields = []
+    const currentBasicInformationFields= []
+    const currentContactsFields = []
+    let currentPhotoField = null
+    const currentStrategyConnectionFields = []
+    const currentTimeTableFields = []
+    const currentFloorAreaFields = []
+    const currentContractFields = []
+    const currentDocumentFields = []
+    let currentPlanningRestriction = null
 
-  updateMetadata = () => {
-    const { projectTypes, type } = this.props
-    const metadata = projectTypes.find(projectType => projectType.id === type).metadata
-    this.setState({ metadata })
-  }
+    fieldsMockData.forEach( field => {
+      const value = projectUtils.findValueFromObject( attributeData, field.name )
 
-  filterAttributeData = () => {
-    const { metadata, extended } = this.state
-    const { attributeData } = this.props
-    const currentMetadata = extended
-      ? metadata.extended_project_card_attributes
-      : metadata.normal_project_card_attributes
-    let result = []
-    currentMetadata.forEach(({ label, name, type, fieldset_attributes, choices }) => {
-      const data = { label, type }
-      if (!projectUtils.isFieldMissing(name, true, attributeData)) {
-        data['value'] = attributeData[name]
-        data['choices'] = choices || null
-        data['fieldset_attributes'] = fieldset_attributes
-      } else {
-        data['empty'] = true
+      let newField = {
+        ...field,
+        value: value === undefined ? null : value
       }
-      result.push(data)
-    })
-    return result
+      if ( field.display === 'photo') {
+        newField = {
+          ...field,
+          link: value === undefined ? null :  value.link,
+          description: value === undefined ? null :  value.description
+
+        }
+       currentPhotoField = newField
+      }
+      if ( field.display === 'basic') {
+        currentBasicInformationFields.push( newField )
+      }
+      if ( field.display === 'description') {
+        currentDescriptionFields.push( newField )
+      }
+      if ( field.display === 'strategy') {
+        currentStrategyConnectionFields.push( newField )
+      }
+      if ( field.display === 'contract') {
+        currentContractFields.push( newField )
+      }
+      if ( field.display === 'floor-area-information') {
+        currentFloorAreaFields.push( newField )
+      }
+      if ( field.display === 'timetable') {
+        currentTimeTableFields.push( newField )
+      }
+      if ( field.display === 'contact') {
+        currentContactsFields.push( newField )
+      }
+      if ( field.display === 'documents') {
+        currentDocumentFields.push( newField )
+      }
+      if ( field.display === 'geometry') {
+        currentPlanningRestriction = newField
+      }
+     })
+
+     setDescriptionDFields(currentDescriptionFields)
+     setBasicInformationFields(currentBasicInformationFields)
+     setContactsFields(currentContactsFields)
+     setPhotoField( currentPhotoField )
+     setStrategyConnectionFields( currentStrategyConnectionFields )
+     setTimeTableFields( currentTimeTableFields )
+     setFloorAreaFields( currentFloorAreaFields )
+     setContractFields( currentContractFields)
+     setDocumentFields( currentDocumentFields )
+     setPlanningRestriction( currentPlanningRestriction )
+
   }
 
-  handleExtendedChange = () => {
-    this.setState(prevState => ({ extended: !prevState.extended }))
-  }
+  const renderFirstRow = () => (
+    <Grid stackable columns='equal'>
+        <Grid.Column width={8}>
+          <Segment><Description fields={descriptionFields}/></Segment>
+        </Grid.Column>
+        <Grid.Column>
+          <Segment><Photo field={photoField} /></Segment>
+        </Grid.Column>
+    </Grid>
+  )
+  const renderTimeLineRow = () => {
 
-  render() {
-    const { metadata, extended, imageLink } = this.state
-    const { users } = this.props
-
-    if (!metadata) {
-      return (
-        <Loader inline={'centered'} active>
-          Ladataan
-        </Loader>
-      )
-    }
-    const attributeData = this.filterAttributeData()
     return (
-      <div>
-        <div className="project-card-container">
-          <Summary attributeData={attributeData} users={users} />
-          <Image src={imageLink} />
-        </div>
-        <div className="project-card-extend">
-          <Radio
-            onChange={this.handleExtendedChange}
-            toggle
-            label="Laajennettu"
-            checked={extended}
-          />
-        </div>
-      </div>
+      <Grid stackable columns='equal'>
+        <Grid.Column>
+          <Segment><ProjectTimeline deadlines={deadlines} projectView={true} /></Segment>
+        </Grid.Column>
+      </Grid>
     )
   }
+  const renderSecondRow = () => {
+
+    return (
+      <Grid stackable columns='equal'>
+          <Grid.Column width={5}>
+            <Segment>
+              <Contacts fields={contactsFields}/>
+            </Segment>
+            <Segment key="basic-information">
+              <StrategyConnection fields={strategyConnectionFields}/>
+          </Segment>
+            <Segment>
+                <TimeTable fields={timeTableFields}/>
+            </Segment>
+          </Grid.Column>
+          <Grid.Column>
+            <Segment>
+              <FloorAreaInformation fields={floorAreaFields} />
+            </Segment>
+            <Grid columns='equal'>
+              <Grid.Column className="inner-left-column">
+                <Segment key="basic-information">
+                  <BasicInformation fields={basicInformationFields} />
+                </Segment>
+              </Grid.Column>
+              <Grid.Column className="inner-right-column">
+                <Segment>
+                  <Contract fields={contractFields} />
+                </Segment>
+              </Grid.Column>
+            </Grid>
+            <Segment>
+              <GeometryInformation field={planningRestriction} />
+            </Segment>
+            <Segment>
+              <Documents fields={documentFields} />
+            </Segment>
+          </Grid.Column>
+      </Grid>
+    )
+  }
+  const firstRow = renderFirstRow()
+  const secondRow = renderSecondRow()
+  const timelineRow = renderTimeLineRow()
+
+  return (
+    <div className="project-card">
+        {firstRow}
+        {timelineRow}
+        {secondRow}
+    </div>
+  )
 }
 
-const mapStateToProps = state => ({
-  projectTypes: projectTypesSelector(state),
-  users: usersSelector(state)
-})
-
-export default connect(mapStateToProps)(ProjectCardPage)
+export default ProjectCardPage
