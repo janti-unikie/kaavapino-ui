@@ -21,6 +21,7 @@ import List from './List'
 import SearchBar from '../SearchBar'
 import { withTranslation } from 'react-i18next'
 import { userIdSelector } from '../../selectors/authSelector'
+import projectUtils from './../../utils/projectUtils'
 
 class ProjectListPage extends Component {
   constructor(props) {
@@ -76,24 +77,28 @@ class ProjectListPage extends Component {
       ownProjects,
       allProjects,
       totalOwnProjects,
-      totalProjects
+      totalProjects,
+      currentUserId
     } = this.props
 
     const { searchOpen, activeIndex, screenWidth } = this.state
 
     const { t } = this.props
 
+    const showCreate = projectUtils.isUserPrivileged(currentUserId, users)
+
     const panes = [
       {
-        menuItem: `${screenWidth < 600 ? t('projects.own-short') : t('projects.own-long')} (${totalOwnProjects}${
-          totalOwnProjects > 0 ? ' kpl' : ''
-        })`,
+        menuItem: `${
+          screenWidth < 600 ? t('projects.own-short') : t('projects.own-long')
+        } (${totalOwnProjects}${totalOwnProjects > 0 ? ' kpl' : ''})`,
         render: () => (
           <List
             projectSubtypes={projectSubtypes}
             users={users}
             items={ownProjects.slice(0, amountOfProjectsToShow)}
             total={totalOwnProjects}
+            isUserPrivileged={showCreate}
           />
         )
       },
@@ -110,36 +115,21 @@ class ProjectListPage extends Component {
             items={allProjects.slice(0, amountOfProjectsToShow)}
             total={totalProjects}
             setFilter={this.setFilter}
+            isUserPrivileged={showCreate}
           />
         )
       }
     ]
-    const getUserRole = ()  => {
-      let privilege
-      if ( users ) {
-        users.forEach(user => {
-            if ( user.id === this.props.currentUserId) {
-              privilege = user.privilege
-              return
-            }
-        })
-      }
-      return privilege
-    }
-
-    const userRole = getUserRole()
-
-    const showCreate = userRole === 'admin' || userRole === 'create'
 
     let headerActions = (
       <NavActions>
         {!searchOpen && (
           <>
-        {showCreate && (
+            {showCreate && (
               <NavAction onClick={() => this.toggleForm(true)}>
-              <FontAwesomeIcon icon="plus" />
-              {t('projects.createNewProject')}
-            </NavAction>
+                <FontAwesomeIcon icon="plus" />
+                {t('projects.createNewProject')}
+              </NavAction>
             )}
             <NavAction to={'/reports'}>{t('projects.createReports')}</NavAction>
           </>
@@ -201,4 +191,7 @@ const mapDispatchToProps = {
   fetchProjectSubtypes
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProjectListPage))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTranslation()(ProjectListPage))
