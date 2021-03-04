@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import Button from '../../../components/common/Button'
+import FormButton from '../../../components/common/FormButton'
 
 describe('<Button />', () => {
   let btn
@@ -9,7 +9,7 @@ describe('<Button />', () => {
   beforeEach(() => {
     mockFn = jest.fn(() => null)
     btn = mount(
-      <Button
+      <FormButton
         handleClick={mockFn}
         icon={<div className="icon" />}
         help="help"
@@ -41,7 +41,7 @@ describe('<Button />', () => {
 
   it('can be loading', () => {
     const loadingMockFn = jest.fn(() => null)
-    const loadingBtn = mount(<Button loading handleClick={loadingMockFn} />)
+    const loadingBtn = mount(<FormButton loading handleClick={loadingMockFn} />)
     expect(loadingBtn.find('Loader').length).toBe(1)
     btn.find('button').simulate('click')
     expect(loadingMockFn.mock.calls.length).toBe(0)

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Loader } from 'semantic-ui-react'
 import {
   initializeProject,
@@ -19,7 +18,7 @@ import {
 import { phasesSelector } from '../../selectors/phaseSelector'
 import { allEditFieldsSelector } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
-import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
+import { NavHeader } from '../common/NavHeader'
 import ProjectEditPage from '../projectEdit'
 import ProjectCardPage from '../projectCard'
 import ProjectDocumentsPage from '../projectDocuments'
@@ -33,6 +32,8 @@ import { DOWNLOAD_PROJECT_DATA_FORM } from '../../constants'
 import { getFormValues } from 'redux-form'
 import moment from 'moment'
 import { userIdSelector } from '../../selectors/authSelector'
+import { Button, IconPen, IconPrinter } from 'hds-react'
+import { withRouter } from 'react-router-dom'
 class ProjectPage extends Component {
   constructor(props) {
     super(props)
@@ -148,13 +149,7 @@ class ProjectPage extends Component {
   }
 
   getNavActions = () => {
-    const {
-      edit,
-      documents,
-      currentProject: { id },
-      t,
-      users
-    } = this.props
+    const { edit, documents, users, t } = this.props
 
     const getUserRole = () => {
       let privilege
@@ -171,41 +166,74 @@ class ProjectPage extends Component {
 
     const userRole = getUserRole()
 
-    const showCreate = userRole === 'admin' || userRole === 'create' || userRole === 'edit'
+    const showCreate =
+      userRole === 'admin' || userRole === 'create' || userRole === 'edit'
 
     return !(edit || documents) ? (
-      <NavActions>
-        <NavAction to={`/${id}/edit`}>
-          <FontAwesomeIcon icon="pen" />
-          {t('project.modify')}
-        </NavAction>
-        <NavAction to={`/${id}/documents`}>
-          <FontAwesomeIcon icon="file" />
+      <span className="header-buttons">
+        {showCreate && (
+          <Button
+            variant="secondary"
+            className="header-button"
+            onClick={this.modifyContent}
+            iconLeft={<IconPen/>}
+          >
+            {t('project.modify')}
+          </Button>
+        )}
+        <Button variant="secondary" iconLeft={<IconPen/>} onClick={this.createDocuments}>
           {t('project.create-documents')}
-        </NavAction>
-        <NavAction onClick={() => window.print()}>
-          <FontAwesomeIcon icon="print" />
+        </Button>
+        <Button variant="secondary" iconLeft={<IconPrinter/>} onClick={() => window.print()}>
           {t('project.print-project-card')}
-        </NavAction>
-      </NavActions>
+        </Button>
+        <Button
+          variant="secondary"
+          iconLeft={<IconPen/>}
+          onClick={() => this.setState({ showDeadlineModal: true })}
+        >
+          Määräajat
+        </Button>
+      </span>
     ) : (
-      <NavActions>
+      <span className="header-buttons">
         {showCreate && (
-          <NavAction onClick={this.openProjectDataModal}>
-            <FontAwesomeIcon icon="file-csv" />
-            Tulosta projektin tiedot
-          </NavAction>
+          <Button
+            variant="secondary"
+            className="header-button"
+            onClick={this.openProjectDataModal}
+            iconLeft={<IconPen/>}
+          >
+            {t('project.modify-project')}
+          </Button>
         )}
-        {showCreate && (
-          <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
-          {t('project.modify-project')}
-          </NavAction>
-        )}
-        <NavAction to={`/${id}`} primary>
+        <Button variant="primary" iconLeft={<IconPen/>} onClick={this.checkProjectCard}>
           {t('project.check-project-card')}
-        </NavAction>
-      </NavActions>
+        </Button>
+      </span>
     )
+  }
+
+  modifyContent = () => {
+    const {
+      currentProject: { id },
+      history
+    } = this.props
+    history.push(`/${id}/edit`)
+  }
+  createDocuments = () => {
+    const {
+      currentProject: { id },
+      history
+    } = this.props
+    history.push(`/${id}/documents`)
+  }
+  checkProjectCard = () => {
+    const {
+      currentProject: { id },
+      history
+    } = this.props
+    history.push(`/${id}`)
   }
   openProjectDataModal = () => this.togglePrintProjectDataModal(true)
 
@@ -335,7 +363,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(
+export default withRouter( connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation()(ProjectPage))
+)(withTranslation()(ProjectPage)))

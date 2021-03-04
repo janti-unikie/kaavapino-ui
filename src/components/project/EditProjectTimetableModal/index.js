@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Form, Button } from 'semantic-ui-react'
+import { Modal, Form } from 'semantic-ui-react'
 import { reduxForm, getFormSubmitErrors, getFormValues } from 'redux-form'
 import { connect } from 'react-redux'
 import { EDIT_PROJECT_TIMETABLE_FORM } from '../../../constants'
@@ -14,6 +14,7 @@ import { withTranslation } from 'react-i18next'
 import { deadlinesSelector } from '../../../selectors/projectSelector'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button } from 'hds-react'
 
 class EditProjectTimeTableModal extends Component {
   constructor(props) {
@@ -98,9 +99,10 @@ class EditProjectTimeTableModal extends Component {
   getFormFields = (sections, sectionIndex) => {
     const formFields = []
     sections.forEach(subsection => {
-      subsection.attributes && subsection.attributes.forEach((field, fieldIndex) => {
-        formFields.push(this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`))
-      })
+      subsection.attributes &&
+        subsection.attributes.forEach((field, fieldIndex) => {
+          formFields.push(this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`))
+        })
     })
     return formFields
   }
@@ -150,18 +152,20 @@ class EditProjectTimeTableModal extends Component {
           </div>
         </Modal.Content>
         <Modal.Actions>
-          <Button secondary disabled={loading} onClick={this.handleClose}>
-            {t('common.cancel')}
-          </Button>
-          <Button
-            primary
-            disabled={loading}
-            loading={loading}
-            type="submit"
-            onClick={this.handleSubmit}
-          >
-            {t('common.save')}
-          </Button>
+          <span className="form-buttons">
+            <Button variant="secondary" disabled={loading} onClick={this.handleClose}>
+              {t('common.cancel')}
+            </Button>
+            <Button
+              variant="primary"
+              disabled={loading}
+              loading={loading}
+              type="submit"
+              onClick={this.handleSubmit}
+            >
+              {t('common.save')}
+            </Button>
+          </span>
         </Modal.Actions>
       </Modal>
     )

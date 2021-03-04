@@ -15,12 +15,14 @@ import {
   totalOwnProjectsSelector,
   totalProjectsSelector
 } from '../../selectors/projectSelector'
-import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
+import { NavHeader } from '../common/NavHeader'
 import NewProjectFormModal from '../project/NewProjectFormModal'
 import List from './List'
 import SearchBar from '../SearchBar'
 import { withTranslation } from 'react-i18next'
 import { userIdSelector } from '../../selectors/authSelector'
+import { withRouter } from 'react-router-dom'
+import { Button } from 'hds-react'
 
 class ProjectListPage extends Component {
   constructor(props) {
@@ -66,6 +68,11 @@ class ProjectListPage extends Component {
 
   handleTabChange = (e, { activeIndex }) => {
     this.setState({ activeIndex })
+  }
+
+  createReports = () => {
+    const { history } = this.props
+    history.push('/reports')
   }
 
   render() {
@@ -132,16 +139,23 @@ class ProjectListPage extends Component {
     const showCreate = userRole === 'admin' || userRole === 'create'
 
     let headerActions = (
-      <NavActions>
+      <span className="header-buttons">
         {!searchOpen && (
           <>
-        {showCreate && (
-              <NavAction onClick={() => this.toggleForm(true)}>
-              <FontAwesomeIcon icon="plus" />
-              {t('projects.createNewProject')}
-            </NavAction>
+            {showCreate && (
+              <Button
+                variant="secondary"
+                className="header-button"
+                onClick={() => this.toggleForm(true)}
+              >
+                <FontAwesomeIcon icon="plus" />
+                {t('projects.createNewProject')}
+              </Button>
             )}
-            <NavAction to={'/reports'}>{t('projects.createReports')}</NavAction>
+            <Button variant="secondary" className="header-button" onClick={this.createReports}>
+              <FontAwesomeIcon icon="plus" />
+              {t('projects.createReports')}
+            </Button>
           </>
         )}
         <Responsive
@@ -152,7 +166,7 @@ class ProjectListPage extends Component {
           setFilter={this.setFilter}
           buttonAction={this.fetchFilteredItems}
         />
-      </NavActions>
+      </span>
     )
 
     return (
@@ -201,4 +215,4 @@ const mapDispatchToProps = {
   fetchProjectSubtypes
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProjectListPage))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProjectListPage)))

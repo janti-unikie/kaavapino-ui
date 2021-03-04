@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { ReactComponent as ProjectEditIcon } from '../../assets//icons/edit-project.svg'
 import { Popup } from 'semantic-ui-react'
 import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
+import { IconPenLine } from 'hds-react'
 
 const Status = ({ color }) => {
   return (
@@ -57,7 +57,7 @@ const ListItem = ({
           content={user}
         />
         <Link className="project-list-button" to={`/${id}/edit`}>
-          <ProjectEditIcon />
+          <IconPenLine color='black' />
         </Link>
       </div>
       <div className="project-list-item-graph">

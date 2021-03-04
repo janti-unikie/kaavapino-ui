@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Form, Button } from 'semantic-ui-react'
+import { Modal, Form } from 'semantic-ui-react'
 import { reduxForm, getFormSubmitErrors, getFormValues } from 'redux-form'
 import { connect } from 'react-redux'
 import { EDIT_FLOOR_AREA_FORM } from '../../../constants'
@@ -11,6 +11,7 @@ import Collapse from '../../common/collapse'
 import './styles.scss'
 import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
 import { withTranslation } from 'react-i18next'
+import { Button } from 'hds-react'
 
 const FloorAreaTotals = ({ formValues, floorAreaSections }) => {
   // Would love a more rubust check than string includes if one becomes available
@@ -77,7 +78,6 @@ class EditFloorAreaFormModal extends Component {
   }
 
   handleSubmit = () => {
-
     this.setState({ loading: true })
     const errors = this.props.handleSubmit()
     console.log(errors)
@@ -108,26 +108,24 @@ class EditFloorAreaFormModal extends Component {
           error={error}
           formValues={formValues}
           isFloorCalculation={true}
-          className='modal-field'
-          />
+          className="modal-field"
+        />
       </div>
     )
   }
   renderSection = (section, sectionIndex) => {
-
     // "Yhteesä" section is handled separately
-    if ( section.title.includes('yhteensä') ) {
+    if (section.title.includes('yhteensä')) {
       return null
     }
-     return (
-        <Collapse title={section.title} key={sectionIndex}>
-          {section.fields.map((field, fieldIndex) => (
-              this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
-            ))
-          }
-        </Collapse>
- )
-    }
+    return (
+      <Collapse title={section.title} key={sectionIndex}>
+        {section.fields.map((field, fieldIndex) =>
+          this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`)
+        )}
+      </Collapse>
+    )
+  }
 
   render() {
     const { loading } = this.state
@@ -146,25 +144,26 @@ class EditFloorAreaFormModal extends Component {
           {this.getFloorAreaTotalsComponent()}
           <Form>
             {floorAreaSections &&
-              floorAreaSections.map((section, sectionIndex) => (
+              floorAreaSections.map((section, sectionIndex) =>
                 this.renderSection(section, sectionIndex)
-              ))
-              }
+              )}
           </Form>
         </Modal.Content>
         <Modal.Actions>
-          <Button secondary disabled={loading} onClick={this.handleClose}>
-            {t('common.cancel')}
-          </Button>
-          <Button
-            primary
-            disabled={loading}
-            loading={loading}
-            type="submit"
-            onClick={this.handleSubmit}
-          >
-            {t('common.save')}
-          </Button>
+          <span className="form-buttons">
+            <Button variant="secondary" disabled={loading} onClick={this.handleClose}>
+              {t('common.cancel')}
+            </Button>
+            <Button
+              variant="primary"
+              disabled={loading}
+              loading={loading}
+              type="submit"
+              onClick={this.handleSubmit}
+            >
+              {t('common.save')}
+            </Button>
+          </span>
         </Modal.Actions>
       </Modal>
     )

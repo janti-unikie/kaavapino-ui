@@ -5,6 +5,17 @@
   margin: 0 auto;
   max-width: 1148px;
   width: calc(100% - 32px);
+
+  .header-buttons {
+    text-align: right;
+   button {
+      margin-left: 4px;
+
+      svg {
+        padding-right: 2px;
+      }
+    }
+  }
   .nav-header-container {
     .nav-header-actions {
       margin-top: 0;

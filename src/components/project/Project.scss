@@ -7,6 +7,16 @@
   .project-page-content {
     flex: 1;
     width: 100%;
+  }
+  .header-buttons {
+    text-align: right;
+   button {
+      margin-left: 4px;
+
+      svg {
+        padding-right: 2px;
+      }
+    }
    }
   @media screen and (max-width: 600px) {
     .nav-header-actions {
@@ -152,5 +162,11 @@
 .edit-floor-area-form-modal {
   .collapse-content > .field.input-container {
     margin-top: 0;
+  }
+}
+.form-buttons {
+  text-align: right;
+ button {
+    margin-left: 4px;
   }
 }

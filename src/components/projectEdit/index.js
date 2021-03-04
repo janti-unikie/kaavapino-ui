@@ -36,6 +36,7 @@ import EditProjectTimetableModal from '../project/EditProjectTimetableModal'
 import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
 import { usersSelector } from '../../selectors/userSelector'
 import { userIdSelector } from '../../selectors/authSelector'
+import { withRouter } from 'react-router-dom'
 class ProjectEditPage extends Component {
   state = {
     showEditFloorAreaForm: false,
@@ -273,4 +274,4 @@ const mapDispatchToProps = {
   getProjectSnapshot
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)
+export default withRouter( connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage))

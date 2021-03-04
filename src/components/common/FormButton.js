@@ -1,10 +1,18 @@
 import React from 'react'
-import { Loader, Popup, Button } from 'semantic-ui-react'
+import { Loader, Popup } from 'semantic-ui-react'
+import { Button } from 'hds-react'
 import PropTypes from 'prop-types'
 
-const FormButton = ({ handleClick, value, icon, loading, help, ...rest }) => {
+const FormButton = ({ handleClick, value, icon, loading, help, variant, fullWidth, ...rest }) => {
   const btn = (
-    <Button disabled={loading} className="form-button" onClick={handleClick} {...rest}>
+    <Button
+      disabled={loading}
+      variant={variant}
+      className="form-button"
+      onClick={handleClick}
+      fullWidth={fullWidth}
+      {...rest}
+    >
       {!loading && icon}
       {loading && <Loader inverted size="tiny" color="white" inline active />}
       {` ${value}`}

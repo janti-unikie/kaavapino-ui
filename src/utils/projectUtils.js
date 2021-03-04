@@ -198,7 +198,6 @@ function getFieldsetAttributes(parent, sections) {
 }
 
 const checkDeadline = (props, currentDeadline) => {
-
   if (currentDeadline) {
     props.input.defaultValue = currentDeadline.date
     return
@@ -239,6 +238,25 @@ const findValueFromObject = (object, key) => {
   })
   return value
 }
+const isUserPrivileged = (currentUserId, users) => {
+  const getUserRole = () => {
+    let privilege
+    if (users) {
+      users.forEach(user => {
+        if (user.id === currentUserId) {
+          privilege = user.privilege
+          return
+        }
+      })
+    }
+    return privilege
+  }
+
+  const userRole = getUserRole()
+
+  return userRole === 'admin' || userRole === 'create' || userRole === 'edit'
+}
+
 export default {
   formatDate,
   formatTime,
@@ -258,5 +276,6 @@ export default {
   formatPayload,
   generateArrayOfYears,
   getFieldsetAttributes,
-  findValueFromObject
+  findValueFromObject,
+  isUserPrivileged
 }
