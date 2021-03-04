@@ -43,7 +43,15 @@ class QuickNav extends Component {
     window.addEventListener('scroll', this.handleScroll)
     this.setState({ sectionHeights: this.initSections(this.props.sections) })
     const { initialize, currentProject } = this.props
-    initialize({ onhold: currentProject.onhold })
+    initialize({
+      onhold: currentProject.onhold,
+      public: currentProject.public,
+      user: currentProject.user,
+      subtype: currentProject.subtype,
+      create_draft: currentProject.create_draft,
+      create_principles: currentProject.create_principles,
+      name: currentProject.name
+    })
   }
 
   componentWillUnmount() {
