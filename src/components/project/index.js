@@ -198,6 +198,8 @@ class ProjectPage extends Component {
   }
   openProjectDataModal = () => this.togglePrintProjectDataModal(true)
 
+  toggleBaseInformationForm = opened => this.setState({ showBaseInformationForm: opened })
+
   getAllChanges = () => {
     const { allEditFields, edit } = this.props
 

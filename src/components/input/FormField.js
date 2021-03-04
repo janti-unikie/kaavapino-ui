@@ -64,8 +64,7 @@ class FormField extends Component {
       updated,
       formValues,
       syncronousErrors,
-      submitErrors,
-      className
+      submitErrors
     } = this.props
     const required =
       checking && projectUtils.isFieldMissing(field.name, field.required, attributeData)
@@ -126,12 +125,6 @@ class FormField extends Component {
     }
 
     const renderNormalField = () => {
-      const classNameFirst = className ? className : ''
-
-      const titleClassName = classNameFirst
-        ? `${classNameFirst} input-title${required ? ' highlight' : ''}`
-        : `input-title${required ? ' highlight' : ''}`
-
       return (
         <Form.Field
           className={`input-container ${isOneLineField ? 'small-margin' : ''} ${
@@ -140,7 +133,7 @@ class FormField extends Component {
         >
           {!isOneLineField && (
             <div className="input-header">
-              <Label className={titleClassName}>
+              <Label className={`input-title${required ? ' highlight' : ''}`}>
                 {title}
               </Label>
               <div className="input-header-icons">
