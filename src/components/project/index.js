@@ -160,14 +160,18 @@ class ProjectPage extends Component {
 
     return !(edit || documents) ? (
       <NavActions>
+      {showCreate && (
         <NavAction to={`/${id}/edit`}>
           <FontAwesomeIcon icon="pen" />
           {t('project.modify')}
         </NavAction>
+      )}
+      {showCreate && (
         <NavAction to={`/${id}/documents`}>
           <FontAwesomeIcon icon="file" />
           {t('project.create-documents')}
         </NavAction>
+      )}
         <NavAction onClick={() => window.print()}>
           <FontAwesomeIcon icon="print" />
           {t('project.print-project-card')}

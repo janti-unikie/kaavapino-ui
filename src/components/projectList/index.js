@@ -87,7 +87,7 @@ class ProjectListPage extends Component {
 
     const showCreate = projectUtils.isUserPrivileged(currentUserId, users)
 
-    const panes = [
+    let panes = [
       {
         menuItem: `${
           screenWidth < 600 ? t('projects.own-short') : t('projects.own-long')
@@ -120,6 +120,28 @@ class ProjectListPage extends Component {
         )
       }
     ]
+
+    if ( !showCreate ) {
+      panes = [
+        {
+          menuItem: `${
+            screenWidth < 600 ? t('projects.all-short') : t('projects.all-long')
+          } (${totalProjects > 0 ? t('projects.amount', { pieces: totalProjects }) : ''})`,
+          render: () => (
+            <List
+              toggleSearch={this.toggleSearch}
+              searchOpen={searchOpen}
+              projectSubtypes={projectSubtypes}
+              users={users}
+              items={allProjects.slice(0, amountOfProjectsToShow)}
+              total={totalProjects}
+              setFilter={this.setFilter}
+              isUserPrivileged={showCreate}
+            />
+          )
+        }
+      ]
+    }
 
     let headerActions = (
       <NavActions>
