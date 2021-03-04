@@ -1,11 +1,12 @@
 import React from 'react'
 import { AccordionTitle as SUIAccordionTitle } from 'semantic-ui-react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
+import { IconAngleDown, IconAngleUp } from 'hds-react'
 
 const AccordionTitle = props => {
   const { activePhase, children, id, index, handleClick, list_prefix } = props
   const isActive = activePhase === id
+
+  const icon = isActive ? <IconAngleUp /> : <IconAngleDown />
 
   return (
     <SUIAccordionTitle
@@ -17,7 +18,7 @@ const AccordionTitle = props => {
       <div>
         {list_prefix}. {children}
       </div>
-      <FontAwesomeIcon icon={isActive ? faChevronUp : faChevronDown} />
+      {icon}
     </SUIAccordionTitle>
   )
 }

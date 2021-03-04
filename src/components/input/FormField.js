@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CustomField from './CustomField'
 import Matrix from './Matrix'
 import { Form, Label, Popup } from 'semantic-ui-react'
@@ -7,6 +6,7 @@ import Info from './Info'
 import projectUtils from '../../utils/projectUtils'
 import { showField } from '../../utils/projectVisibilityUtils'
 import { EDIT_PROJECT_TIMETABLE_FORM } from '../../constants'
+import { IconClock } from 'hds-react'
 
 const OneLineFields = ['toggle']
 
@@ -139,7 +139,7 @@ class FormField extends Component {
               <div className="input-header-icons">
                 {updated && !isReadOnly && (
                   <Popup
-                    trigger={<FontAwesomeIcon icon="clock" />}
+                    trigger={<IconClock />}
                     inverted
                     on="hover"
                     position="top center"

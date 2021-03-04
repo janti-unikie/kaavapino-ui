@@ -12,9 +12,7 @@ import './styles.scss'
 import { deadlineSectionsSelector } from '../../../selectors/schemaSelector'
 import { withTranslation } from 'react-i18next'
 import { deadlinesSelector } from '../../../selectors/projectSelector'
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button } from 'hds-react'
+import { Button, IconInfoCircle } from 'hds-react'
 
 class EditProjectTimeTableModal extends Component {
   constructor(props) {
@@ -143,12 +141,8 @@ class EditProjectTimeTableModal extends Component {
             )}
           </Form>
           <div className="warning-box">
-            <FontAwesomeIcon
-              className="warning-icon"
-              icon={faExclamationTriangle}
-              size="sm"
-            />
-            {t('deadlines.warning')}
+          <span><IconInfoCircle className="warning-icon" size='s' /></span>
+          <span> {t('deadlines.warning')}</span>
           </div>
         </Modal.Content>
         <Modal.Actions>

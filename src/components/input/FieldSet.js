@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { checkingSelector } from '../../selectors/projectSelector'
 import CustomField from './CustomField'
 import { Form, Button, Label, Popup } from 'semantic-ui-react'
@@ -8,6 +7,7 @@ import projectUtils from '../../utils/projectUtils'
 import Info from './Info'
 import { showField } from '../../utils/projectVisibilityUtils'
 import { has } from 'lodash'
+import { IconCross, IconClock } from 'hds-react'
 
 const FieldSet = ({
   sets,
@@ -60,13 +60,12 @@ const FieldSet = ({
             <div key={i} className="fieldset-container">
               <div className="fieldset-header">
                 <h3 className="fieldset-header-number">{i + 1}.</h3>
-                <FontAwesomeIcon
+
+                <IconCross
                   className="fieldset-remove"
-                  icon="times"
                   color="red"
-                  size="lg"
-                  onClick={() => sets.remove(i)}
-                />
+                  size="l"
+                  onClick={() => sets.remove(i)} />
               </div>
               {fields.map((field, j) => {
                 const currentName = `${set}.${field.name}`
@@ -121,7 +120,7 @@ const FieldSet = ({
                         <div className="input-header-icons">
                           {fieldUpdated && !isReadOnly && (
                             <Popup
-                              trigger={<FontAwesomeIcon icon="clock" />}
+                              trigger={<IconClock />}
                               inverted
                               on="hover"
                               position="top center"

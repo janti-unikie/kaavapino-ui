@@ -3,14 +3,10 @@ import {
   Container,
   Image,
   Menu,
-  Button,
   Responsive,
   Sidebar,
   Grid
 } from 'semantic-ui-react'
-import '@fortawesome/fontawesome-svg-core'
-import { faBars, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NavLink from '../NavLink'
 import { ReactComponent as HistogramIcon } from '../../../assets/histogram.svg'
 import { ReactComponent as HistogramMobileIcon } from '../../../assets/histogram-mobile.svg'
@@ -20,6 +16,7 @@ import { ReactComponent as PagesIcon } from '../../../assets/pages.svg'
 import { ReactComponent as PagesMobileIcon } from '../../../assets/pages-mobile.svg'
 import { ReactComponent as LogoutIcon } from '../../../assets/logout.svg'
 import { ReactComponent as LogoutMobileIcon } from '../../../assets/logout-mobile.svg'
+import { Button, IconMenuHamburger, IconCrossCircle } from 'hds-react'
 
 class Header extends Component {
   state = {
@@ -73,12 +70,12 @@ class Header extends Component {
           <Responsive as={Menu.Menu} maxWidth={799} position="right">
             <Button
               className="navbar-responsive-button"
+              variant='supplementary'
+              iconLeft={<IconMenuHamburger/>}
               basic
               icon
               onClick={() => this.setVisible(true)}
-            >
-              <FontAwesomeIcon icon={faBars} />
-            </Button>
+            />
           </Responsive>
         </Menu>
         <Sidebar
@@ -98,12 +95,12 @@ class Header extends Component {
               <Grid.Column floated="left" width={1}>
                 <Button
                   className="navbar-responsive-close-icon"
+                  variant='supplementary'
+                  iconLeft={ <IconCrossCircle />}
                   basic
                   icon
                   onClick={() => this.setVisible(false)}
-                >
-                  <FontAwesomeIcon icon={faTimesCircle} />
-                </Button>
+                />
               </Grid.Column>
             </Grid>
           </Menu.Item>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import './SearchBar.scss'
 import { Button, Input, Form } from 'semantic-ui-react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ReactComponent as MagnifierIcon } from '../../assets/icons/magnifier-icon.svg'
+import { IconCross } from 'hds-react'
 
 class SearchBar extends Component {
   render() {
@@ -31,7 +31,7 @@ class SearchBar extends Component {
               />
             </Form>
             <MagnifierIcon className="magnifier-icon" />
-            <FontAwesomeIcon onClick={() => toggleSearch(false)} icon="times" />
+            <IconCross onClick={() => toggleSearch(false)} />
           </div>
         )}
       </div>

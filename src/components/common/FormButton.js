@@ -14,7 +14,7 @@ const FormButton = ({ handleClick, value, icon, loading, help, variant, fullWidt
       {...rest}
     >
       {!loading && icon}
-      {loading && <Loader inverted size="tiny" color="white" inline active />}
+      {loading && <Loader inverted size="tiny" color="blue" inline active />}
       {` ${value}`}
     </Button>
   )

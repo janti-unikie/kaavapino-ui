@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import './ProjectTimeline.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExclamationTriangle, faSync } from '@fortawesome/free-solid-svg-icons'
 import { createMonths } from './helpers/createMonths'
 import { createDeadlines } from './helpers/createDeadlines'
 import { connect } from 'react-redux'
 import { getProject, getProjectSuccessful } from '../../actions/projectActions'
 import { timelineProjectSelector } from '../../selectors/projectSelector'
 import { findWeek } from './helpers/helpers'
+import { IconError, IconRefresh } from 'hds-react'
 
 function ProjectTimeline(props) {
   const { deadlines, projectView } = props
@@ -346,17 +345,13 @@ function ProjectTimeline(props) {
     <div className="timeline-graph-container">
       {showError ? (
         <div className="timeline-error-message">
-          <FontAwesomeIcon icon={faExclamationTriangle} size="2x" />
+          <IconError />
           <span>Projektin aikataulu ei ole ajan tasalla.</span>
         </div>
       ) : null}
       {showLoadProject ? (
-        <FontAwesomeIcon
-          onClick={() => loadProject()}
-          className={`timeline-load-project-message ${loadingProject ? 'fa-spin' : null}`}
-          icon={faSync}
-          size="2x"
-        />
+        <IconRefresh  onClick={() => loadProject()}
+          className={`timeline-load-project-message ${loadingProject ? 'fa-spin' : null}`} />
       ) : null}
       <div
         className={`timeline-item-container ${showError ? 'timeline-error' : null}`}

@@ -3,11 +3,10 @@ import { Button, Responsive } from 'semantic-ui-react'
 import './shoutbox.scss'
 import Comments from './comments'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
 import { unreadCommentsCountSelector } from '../../selectors/commentSelector'
 import { markCommentsAsRead } from '../../actions/commentActions'
+import { IconCross } from 'hds-react'
 
 const ShoutBoxButton = ({ unreadCommentsCount, ...rest }) => (
   <Button className="shoutbox-button" {...rest}>
@@ -62,7 +61,7 @@ const Shoutbox = props => {
             onClick={toggleOpen}
             className="shoutbox-close-icon"
           >
-            <FontAwesomeIcon icon={faTimes} />
+           <IconCross />
           </Responsive>
           <Comments project={project} />
         </div>

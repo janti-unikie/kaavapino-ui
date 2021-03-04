@@ -6,7 +6,6 @@ import { fetchUsers } from '../../actions/userActions'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { Responsive, Tab } from 'semantic-ui-react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { createProject } from '../../actions/projectActions'
 import {
   ownProjectsSelector,
@@ -22,7 +21,7 @@ import SearchBar from '../SearchBar'
 import { withTranslation } from 'react-i18next'
 import { userIdSelector } from '../../selectors/authSelector'
 import { withRouter } from 'react-router-dom'
-import { Button } from 'hds-react'
+import { Button, IconPlus } from 'hds-react'
 
 class ProjectListPage extends Component {
   constructor(props) {
@@ -146,14 +145,13 @@ class ProjectListPage extends Component {
               <Button
                 variant="secondary"
                 className="header-button"
+                iconLeft={<IconPlus />}
                 onClick={() => this.toggleForm(true)}
               >
-                <FontAwesomeIcon icon="plus" />
                 {t('projects.createNewProject')}
               </Button>
             )}
-            <Button variant="secondary" className="header-button" onClick={this.createReports}>
-              <FontAwesomeIcon icon="plus" />
+            <Button variant="secondary" iconLeft={<IconPlus />} className="header-button" onClick={this.createReports}>
               {t('projects.createReports')}
             </Button>
           </>

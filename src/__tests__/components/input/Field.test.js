@@ -4,15 +4,10 @@ import { Provider } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import configureStore from 'redux-mock-store'
 import CustomField from '../../../components/input/CustomField'
-import iconHandler from '../../../utils/iconHandler'
 
 describe('<Field />', () => {
   let wrapper
   let store
-
-  beforeAll(() => {
-    iconHandler.initIcons()
-  })
 
   beforeEach(() => {
     const mockStore = configureStore()

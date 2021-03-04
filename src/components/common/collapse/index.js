@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react'
 import './styles.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { IconAngleUp, IconAngleDown } from 'hds-react'
 
 const Collapse = props => {
   const { children, title, ...rest } = props
@@ -21,11 +20,13 @@ const Collapse = props => {
     }
   }
 
+  const icon = open ? <IconAngleUp /> : <IconAngleDown />
+
   return (
     <div className={`collapse ${open ? 'open' : ''}`} {...rest}>
       <h3 className="collapse-header" onClick={handleClick}>
         <div>{title}</div>
-        <FontAwesomeIcon icon={open ? faChevronUp : faChevronDown} />
+        {icon}
       </h3>
       <div ref={contentRef} className="collapse-content">
         {children}

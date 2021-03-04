@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Radio } from 'semantic-ui-react'
 import SearchBar from '../SearchBar'
+import { IconAngleUp, IconAngleDown } from 'hds-react'
 
 const getArrowIcon = dir => (dir === 0 ? 'dir-up' : 'dir-down')
 
@@ -24,17 +24,15 @@ const ListHeader = ({
         {items.map((item, i) => (
           <span className="header-item" key={i} onClick={() => sort(i)}>
             {item}
-            <FontAwesomeIcon
+            <IconAngleUp
               className={`angle-icon angle-up-icon ${
                 selected === i && getArrowIcon(dir)
               }`}
-              icon="angle-up"
             />
-            <FontAwesomeIcon
+            <IconAngleDown
               className={`angle-icon angle-down-icon ${
                 selected === i && getArrowIcon(dir)
               }`}
-              icon="angle-down"
             />
           </span>
         ))}
