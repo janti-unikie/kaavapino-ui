@@ -77,7 +77,8 @@ class List extends Component {
       pollingProjects,
       searchOpen,
       toggleSearch,
-      setFilter
+      setFilter,
+      isUserPrivileged
     } = this.props
     if (loadingProjects || !phases) {
       return (
@@ -134,17 +135,17 @@ class List extends Component {
         }
         if (onhold) {
           abortedProjects.push(
-            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} />
+            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged}/>
           )
           return false
         } else if (archived) {
           archivedProjects.push(
-            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} />
+            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged}/>
           )
           return false
         } else {
           projects.push(
-            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} />
+            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged} />
           )
           return false
         }

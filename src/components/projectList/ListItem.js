@@ -18,6 +18,7 @@ const Status = ({ color }) => {
 
 const ListItem = ({
   showGraph,
+  isUserPrivileged,
   item: {
     phaseName,
     phaseColor,
@@ -57,7 +58,7 @@ const ListItem = ({
           content={user}
         />
         <Link className="project-list-button" to={`/${id}/edit`}>
-          <ProjectEditIcon />
+         {isUserPrivileged && <ProjectEditIcon />}
         </Link>
       </div>
       <div className="project-list-item-graph">
