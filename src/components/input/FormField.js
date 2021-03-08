@@ -11,7 +11,7 @@ import { EDIT_PROJECT_TIMETABLE_FORM } from '../../constants'
 const OneLineFields = ['toggle']
 
 class FormField extends Component {
-  renderField = (newProps) => {
+  renderField = newProps => {
     const {
       field,
       attributeData,
@@ -100,7 +100,7 @@ class FormField extends Component {
       : field.label
 
     const renderCheckBox = () => {
-      const newProps  = {
+      const newProps = {
         ...field,
         type: 'checkbox'
       }
@@ -117,7 +117,7 @@ class FormField extends Component {
     }
 
     const renderDeadlineInfoField = () => {
-      const newProps  = {
+      const newProps = {
         ...field,
         type: 'readonly'
       }
@@ -144,17 +144,15 @@ class FormField extends Component {
                     on="hover"
                     position="top center"
                     hideOnScroll
-                    content={
-                      (
-                      <span className="input-history">
+                    content={(
+<span className="input-history">
                         <span>{`${projectUtils.formatDate(
                           updated.timestamp
                         )} ${projectUtils.formatTime(updated.timestamp)} ${
                           updated.user_name
                         }`}</span>
                       </span>
-                      )
-                    }
+)}
                   />
                 )}
                 {field.help_text && (

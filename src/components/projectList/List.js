@@ -16,7 +16,6 @@ import ListHeader from './ListHeader'
 import ListItem from './ListItem'
 import projectUtils from '../../utils/projectUtils'
 import SubList from './ListSubList'
-
 class List extends Component {
   constructor(props) {
     super(props)
@@ -44,13 +43,27 @@ class List extends Component {
     }
 
     this.props.sortProjects({ sort: newSort, dir: newDir })
-    this.setState({ sort: newSort, dir: newDir })
+
+    this.setState({
+      ...this.state,
+      sort: newSort,
+      dir: newDir,
+      showGraph: false
+    })
   }
 
   toggleGraph = () => {
-    this.setState(prevState => ({
-      showGraph: !prevState.showGraph
-    }))
+    if (this.state.showGraph) {
+      this.setState({
+        ...this.state,
+        showGraph: false
+      })
+    } else {
+      this.setState({
+        ...this.state,
+        showGraph: true
+      })
+    }
   }
 
   render() {
@@ -64,7 +77,8 @@ class List extends Component {
       pollingProjects,
       searchOpen,
       toggleSearch,
-      setFilter
+      setFilter,
+      isUserPrivileged
     } = this.props
     if (loadingProjects || !phases) {
       return (
@@ -74,6 +88,10 @@ class List extends Component {
           </Loader>
         </div>
       )
+    }
+
+    const onIncreaseProjectAmount = () => {
+      increaseAmountOfProjectsToShow()
     }
 
     const items = this.props.items
@@ -117,32 +135,17 @@ class List extends Component {
         }
         if (onhold) {
           abortedProjects.push(
-            <ListItem
-              key={i}
-              item={listItem}
-              showGraph={showGraph}
-              phases={phases}
-            />
+            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged}/>
           )
           return false
         } else if (archived) {
           archivedProjects.push(
-            <ListItem
-              key={i}
-              item={listItem}
-              showGraph={showGraph}
-              phases={phases}
-            />
+            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged}/>
           )
           return false
         } else {
           projects.push(
-            <ListItem
-              key={i}
-              item={listItem}
-              showGraph={showGraph}
-              phases={phases}
-            />
+            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged} />
           )
           return false
         }
@@ -160,6 +163,7 @@ class List extends Component {
             dir={dir}
             sort={this.setSort}
             toggleGraph={this.toggleGraph}
+            graphToggled={showGraph}
             setFilter={setFilter}
           />
         )}
@@ -180,7 +184,7 @@ class List extends Component {
               loading={pollingProjects}
               disabled={pollingProjects}
               secondary
-              onClick={() => increaseAmountOfProjectsToShow()}
+              onClick={onIncreaseProjectAmount}
               content="Näytä lisää"
             />
           </div>

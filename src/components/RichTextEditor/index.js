@@ -41,10 +41,14 @@ const formats =
 
 function RichTextEditor(props) {
   const {
-    input: { value, ...inputProps },
+    input: { value,...inputProps },
     largeField,
     disabled,
-    ...rest
+    meta,
+    placeholder,
+    onBlur,
+    className,
+    updated
   } = props
   const dispatch = useDispatch()
   const fieldComments = useSelector(fieldCommentsSelector)
@@ -57,15 +61,20 @@ function RichTextEditor(props) {
   const editorRef = useRef(null)
   const [counter, setCounter] = useState(props.currentSize)
   const [showCounter, setShowCounter] = useState(false)
+  const [currentTimeout, setCurrentTimeout] = useState(0)
 
   const handleChange = (_val, _delta, source) => {
 
+    if ( currentTimeout ) {
+      clearTimeout( currentTimeout )
+     setCurrentTimeout(0)
+    }
     if (source === 'user') {
+
       /* Get the value from the editor - the delta provided to handlechange does not have complete state */
 
       const actualDeltaValue = editorRef.current.editor.getContents()
-
-      dispatch(change(EDIT_PROJECT_FORM, inputProps.name, actualDeltaValue))
+      setCurrentTimeout( () => setTimeout( () => dispatch(change(EDIT_PROJECT_FORM, inputProps.name, actualDeltaValue)), 500) )
       setCounter(actualDeltaValue.length() - 1 )
       setShowCounter(true)
    }
@@ -80,11 +89,26 @@ function RichTextEditor(props) {
       setShowComments(true)
     }
   }
+  const newInputProps = {
+    ...inputProps,
+    defaultValue: value
+  }
 
-  const toolbarName = `toolbar-${inputProps.name || ''}`
+  let reducedName = inputProps.name
+
+    const lastIndex = inputProps.name.lastIndexOf('.')
+
+    let number = 0
+
+    if ( lastIndex !== -1) {
+      reducedName = inputProps.name.substring( lastIndex + 1, inputProps.name.length )
+      number = inputProps.name[lastIndex-2]
+    }
+  const toolbarName = `toolbar-${reducedName || ''}-${number}`
   const modules = {
     toolbar: `#${toolbarName}`
   }
+
   return (
     <div className={`rich-text-editor-wrapper ${disabled ? 'rich-text-disabled' : ''}`}>
       <div
@@ -131,20 +155,22 @@ function RichTextEditor(props) {
           theme="snow"
           modules={modules}
           formats={formats}
-          {...inputProps}
+          {...newInputProps}
           // default value initialized, after that quill handles internal state
           // Do not explicitly set value. see comments at top of this file.
-          defaultValue={value}
           onChange={handleChange}
           onBlur={(_range, _source, quill) => {
             setToolbarVisible(false)
             setShowCounter(false)
-            if ( inputProps.onBlur ) {
-              inputProps.onBlur(quill.getContents())
+            if ( onBlur ) {
+              onBlur(quill.getContents())
             }
           }}
+          meta = {meta}
+          placeholder={placeholder}
+          className={className}
           onClick={() => setToolbarVisible(true)}
-          {...rest}
+          updated={updated}
         />
       </div>
       {showComments && comments && comments.length > 0 && (
@@ -156,11 +182,11 @@ function RichTextEditor(props) {
               editable={userId === comment.user}
               onSave={content =>
                 dispatch(
-                  editFieldComment(projectId, comment.id, content, inputProps.name)
+                  editFieldComment(projectId, comment.id, content, reducedName)
                 )
               }
               onDelete={() =>
-                dispatch(deleteFieldComment(projectId, comment.id, inputProps.name))
+                dispatch(deleteFieldComment(projectId, comment.id, reducedName))
               }
             />
           ))}

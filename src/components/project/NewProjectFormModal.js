@@ -24,6 +24,22 @@ class NewProjectFormModal extends Component {
       loading: false
     }
   }
+  componentDidMount() {
+    const { initialize, currentProject } = this.props
+
+    if ( !currentProject ) {
+      return
+    }
+    initialize({
+      onhold: currentProject.onhold,
+      public: currentProject.public,
+      user: currentProject.user,
+      subtype: currentProject.subtype,
+      create_draft: currentProject.create_draft,
+      create_principles: currentProject.create_principles,
+      name: currentProject.name
+    })
+  }
 
   componentDidUpdate(prevProps) {
     if (prevProps.submitting && this.props.submitSucceeded) {

@@ -44,15 +44,6 @@ class CustomField extends Component {
       return true
     }
 
-    /*This is for updating fieldset value*/
-    const oldParent = this.props.parentName
-    const oldFieldset = this.props.attributeData[oldParent]
-    const newParent = p.parentName
-    const newFieldset = p.attributeData[newParent]
-    if (oldParent && !oldFieldset && newParent && newFieldset) {
-      return true
-    }
-
     /*This is for adding fieldsets  */
     if (
       !isEqual(
@@ -99,21 +90,14 @@ class CustomField extends Component {
   }
 
   renderNumber = props => {
-    const { onBlur, attributeData, parentName, field } = this.props
-    projectUtils.checkInputValue(
-      props,
-      attributeData,
-      parentName,
-      field && field.autofill_rule
-    )
+    const { onBlur } = this.props
+
     return <Input onBlur={onBlur} {...props} type="number" />
   }
 
   renderYearSelect = props => {
     const { multiple_choice, placeholder_text } = this.props.field
-    const { onBlur, handleSave, attributeData, parentName } = this.props
-
-    projectUtils.checkInputValue(props, attributeData, parentName)
+    const { onBlur, handleSave } = this.props
 
     if (this.yearOptions.length === 0) {
       this.yearOptions = projectUtils.generateArrayOfYears()
@@ -131,48 +115,29 @@ class CustomField extends Component {
   }
 
   renderString = props => {
-    const { onBlur, attributeData, parentName, field } = this.props
-    projectUtils.checkInputValue(
-      props,
-      attributeData,
-      parentName,
-      field && field.autofill_rule
-    )
+    const { onBlur } = this.props
     return <Input onBlur={onBlur} type="text" {...props} />
   }
 
   renderTextArea = props => {
-    const { onBlur, attributeData, parentName } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName)
+    const { onBlur } = this.props
     return <TextArea onBlur={onBlur} {...props} />
   }
 
   renderRichText = props => {
-    const { onBlur, attributeData, parentName, meta, defaultValue } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName)
-
-    return (
-      <RichTextEditor
-        onBlur={onBlur}
-        meta={meta}
-        defaultValue={defaultValue}
-        {...props}
-        largeField
-      />
-    )
+    const { onBlur, meta } = this.props
+    return <RichTextEditor onBlur={onBlur} meta={meta} {...props} largeField />
   }
 
   renderRichTextShort = props => {
-    const { onBlur, handleSave, attributeData, parentName, meta } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName)
-
+    const { onBlur, meta } = this.props
     return (
-      <RichTextEditor onBlur={onBlur} handleSave={handleSave} meta={meta} {...props} />
+      <RichTextEditor onBlur={onBlur} meta={meta} {...props} />
     )
   }
 
   renderDate = props => {
-    const { onBlur, attributeData, parentName, deadlines, field } = this.props
+    const { onBlur, deadlines, field } = this.props
 
     let current
     if (deadlines && deadlines.length > 0) {
@@ -180,7 +145,7 @@ class CustomField extends Component {
         deadline => deadline.deadline.attribute === props.input.name
       )
     }
-    projectUtils.checkInputValue(props, attributeData, parentName, current)
+    projectUtils.checkDeadline(props, current)
 
     if (deadlines && deadlines.length > 0) {
       return (
@@ -196,16 +161,14 @@ class CustomField extends Component {
   }
 
   renderGeometry = props => {
-    const { attributeData, parentName, onBlur } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName)
+    const { attributeData, onBlur } = this.props
     return <Geometry onBlur={onBlur} attributeData={attributeData} {...props} />
   }
 
   renderSelect = props => {
-    const { choices, multiple_choice, placeholder_text, autofill_rule } = this.props.field
-    const { onBlur, handleSave, attributeData, parentName } = this.props
+    const { choices, multiple_choice, placeholder_text } = this.props.field
+    const { onBlur, handleSave } = this.props
 
-    projectUtils.checkInputValue(props, attributeData, parentName, autofill_rule)
     return (
       <SelectInput
         {...props}
@@ -219,27 +182,14 @@ class CustomField extends Component {
   }
 
   renderRadio = props => {
-    const { field, onBlur, attributeData, parentName } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName)
+    const { field, onBlur } = this.props
+
     return <RadioButton options={field.options} onBlur={onBlur} {...props} />
   }
 
   renderBooleanRadio = props => {
-    const {
-      onBlur,
-      input,
-      onRadioChange,
-      defaultValue,
-      attributeData,
-      parentName,
-      field
-    } = this.props
-    projectUtils.checkInputValue(
-      props,
-      attributeData,
-      parentName,
-      field && field.autofill_rule
-    )
+    const { onBlur, input, onRadioChange, defaultValue } = this.props
+
     return (
       <BooleanRadio
         onBlur={onBlur}
@@ -252,23 +202,19 @@ class CustomField extends Component {
   }
 
   renderToggle = props => {
-    const { onBlur, attributeData, parentName } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName)
+    const { onBlur } = this.props
     return <ToggleButton onBlur={onBlur} {...props} />
   }
 
   renderLink = props => {
-    const { onBlur, attributeData, parentName } = this.props
+    const { onBlur } = this.props
     const { placeholder_text } = this.props.field
-    projectUtils.checkInputValue(props, attributeData, parentName)
 
     return <Link onBlur={onBlur} placeholder={placeholder_text} {...props} />
   }
 
   renderDateTime = props => {
-    const { onBlur, handleSave, attributeData, parentName } = this.props
-
-    projectUtils.checkInputValue(props, attributeData, parentName)
+    const { onBlur, handleSave } = this.props
     return <DateTime onBlur={onBlur} handleSave={handleSave} {...props} />
   }
 
@@ -293,6 +239,7 @@ class CustomField extends Component {
       formName,
       updated
     } = this.props
+
     return (
       <FieldSet
         sets={sets}
@@ -314,15 +261,12 @@ class CustomField extends Component {
   }
 
   renderDecimal = props => {
-    const { onBlur, attributeData, parentName } = this.props
-
-    projectUtils.checkInputValue(props, attributeData, parentName)
+    const { onBlur } = this.props
     return <Input type="number" step="0.01" onBlur={onBlur} {...props} />
   }
 
   renderDeadlineCheckbox = props => {
-    const { attributeData, parentName, field } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName)
+    const { field } = this.props
     return (
       <DeadlineCheckbox
         {...props}
@@ -333,20 +277,20 @@ class CustomField extends Component {
   }
 
   renderOnholdCheckbox = props => {
-    const { onhold, saveProjectBase, disabled } = this.props.field
+    const { onhold, saveProjectBase, disabled } = this.props
     return (
       <OnHoldCheckbox
+       {...props}
         projectOnhold={onhold}
         saveProjectBase={saveProjectBase}
         disabled={disabled}
-        attributeData={this.props.attributeData}
-        {...props}
       />
     )
   }
   renderDeadlineInfo = props => {
-    const { attributeData, parentName, field, deadlines } = this.props
-    projectUtils.checkInputValue(props, attributeData, parentName, deadlines)
+    const { field, deadlines } = this.props
+
+    projectUtils.checkDeadline(props, deadlines)
 
     return (
       <DeadlineInfoText
@@ -446,13 +390,12 @@ class CustomField extends Component {
     const placeHolderText = field.placeholder_text
       ? field.placeholder_text.trim()
       : field.label
+
     let fieldProps = {
       name: field.name,
       placeholder: placeHolderText,
-      disabled: field.generated ||
-            field.disabled ||
-            field.autofill_readonly ||
-            !field.editable,
+      disabled:
+        field.generated || field.disabled || field.autofill_readonly || !field.editable,
       component: this.getInput(field),
       ...(field.multiple_choice ? { type: 'select-multiple' } : {}),
       updated: { updated },
@@ -513,7 +456,11 @@ class CustomField extends Component {
     }
 
     if (fieldset) {
-      return <FieldArray attributeData={attributeData} {...fieldProps} />
+      const newProps = {
+        ...fieldProps,
+        type: 'fieldset'
+      }
+      return <FieldArray component={this.renderFieldset} {...newProps} />
     }
 
     return (

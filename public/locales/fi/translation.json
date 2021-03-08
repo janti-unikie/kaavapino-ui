@@ -30,6 +30,25 @@
     "floor-areas": {
         "title": "Päivitä kerrosalatiedot"
     },
+    "project": {
+        "modify": "Muokkaa",
+        "create-documents": "Luo dokumentteja",
+        "print-project-card": "Tulosta projektikortti",
+        "deadlines": "Määräajat",
+        "modify-project": "Muokkaa luontitietoja",
+        "check-project-card": "Katso projektikortti",
+        "last-edit": "Viimeisin muokkaus: {{fieldName}} {{date}} {{userName}}",
+        "floor-area-title" : "Kerrosalatiedot",
+        "basic-information-title": "Perustiedot",
+        "description-title": "Suunnittelualueen kuvaus",
+        "contract-title": "Maanomistus ja maankäyttösopimus",
+        "strategy-connection-title": "Strategiakytkentä",
+        "timetable-title": "Aikataulu",
+        "contact-title": "Yhteyshenkilöt",
+        "photo-description": "Kuvaus",
+        "planning-area-constraints": "Suunnittelualueen rajaus",
+        "documents-title": "Valmiit dokumentit Ahjossa"
+    },    
     "nav-header": {
         "latest-update": "Viimeisin muokkaus: {{latestUpdate}}"
     },
@@ -44,7 +63,7 @@
         "button-close": "Sulje"
     },
     "quick-nav" : {
-        "check": "tarkista",
+        "check": "Tarkista",
         "check-help-text": "Korostaa pakolliset puuttuvat kentät",
         "save-help": "Tallentaa projektin",
         "end-phase": "Lopeta vaihe",
@@ -52,6 +71,7 @@
         "archive": "Arkistoi projekti",
         "archive-help": "Yrittää arkistoida projektin",
         "onhold-lable": "Projekti on toistaiseksi keskeytynyt",
+        "set-onhold-lable": "Aseta projekti toistaiseksi keskeytyneeksi",
         "change-phase-error": "Vaihetta ei voida vielä lopettaa",
         "change-phase-error-message": "Täytä puuttuvat kentät"
     }

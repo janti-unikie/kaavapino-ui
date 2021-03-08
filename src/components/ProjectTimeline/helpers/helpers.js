@@ -19,9 +19,15 @@ export function findWeek(date) {
     return Math.round(date / 5)
   }
 }
+/**
+ * @desc cleans deadline object
+ * @param deadlines - deadlines from api
+ * @return object
+ */
 export function cleanDeadlines(deadlines) {
   let cleanedDeadlines = deadlines
   let deadlineType = null
+  let deadlineEndPoints = []
   const has = Object.prototype.hasOwnProperty
   // cleanup deadline start and end points
   cleanedDeadlines.forEach(function (deadline, index, object) {
@@ -41,6 +47,9 @@ export function cleanDeadlines(deadlines) {
               } else {
                 deadlineType = deadline.deadline.deadline_types[prop]
               }
+              if (deadline.deadline.deadline_types[prop] === 'phase_end') {
+                deadlineEndPoints.push(index)
+              }
             } else {
               deadlineType = null
             }
@@ -49,8 +58,23 @@ export function cleanDeadlines(deadlines) {
       }
     }
   })
+  deadlineEndPoints.forEach((arr, index, array) => {
+    if (array[index - 1]) {
+      if (
+        cleanedDeadlines[arr].deadline.abbreviation.charAt(0) ===
+        cleanedDeadlines[array[index - 1]].deadline.abbreviation.charAt(0)
+      ) {
+        cleanedDeadlines[array[index - 1]].not_last_end_point = true
+      }
+    }
+  })
   return cleanedDeadlines
 }
+/**
+ * @desc checks deadlines for errors
+ * @param deadlines - deadlines from api
+ * @return boolean
+ */
 export function checkDeadlines(deadlines) {
   if (!deadlines) {
     return true

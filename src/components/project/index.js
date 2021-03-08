@@ -26,6 +26,8 @@ import ProjectDocumentsPage from '../projectDocuments'
 import projectUtils from '../../utils/projectUtils'
 import NewProjectFormModal from './NewProjectFormModal'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
+import { withTranslation } from 'react-i18next'
+
 import DownloadProjectDataModal from './DownloadProjectDataModal'
 import { DOWNLOAD_PROJECT_DATA_FORM } from '../../constants'
 import { getFormValues } from 'redux-form'
@@ -129,7 +131,8 @@ class ProjectPage extends Component {
           project={currentProject}
         />
       )
-    } else if (documents) {
+    }
+    if (documents) {
       return <ProjectDocumentsPage />
     }
     return (
@@ -148,48 +151,30 @@ class ProjectPage extends Component {
     const {
       edit,
       documents,
-      users,
-      currentProject: { id }
+      currentProject: { id },
+      t,
+      users
     } = this.props
 
-    const getUserRole = () => {
-      let privilege
-      if (users) {
-        users.forEach(user => {
-          if (user.id === this.props.currentUserId) {
-            privilege = user.privilege
-            return
-          }
-        })
-      }
-      return privilege
-    }
-
-    const userRole = getUserRole()
-
-    const showCreate = userRole === 'admin' || userRole === 'create' || userRole === 'edit'
+    const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
 
     return !(edit || documents) ? (
       <NavActions>
+      {showCreate && (
         <NavAction to={`/${id}/edit`}>
           <FontAwesomeIcon icon="pen" />
-          Muokkaa
+          {t('project.modify')}
         </NavAction>
-        <NavAction to={`/${id}/edit`}>
-          <FontAwesomeIcon icon="pen" />
-          Muokkaa
-        </NavAction>
+      )}
+      {showCreate && (
         <NavAction to={`/${id}/documents`}>
           <FontAwesomeIcon icon="file" />
-          Luo dokumentteja
+          {t('project.create-documents')}
         </NavAction>
+      )}
         <NavAction onClick={() => window.print()}>
           <FontAwesomeIcon icon="print" />
-          Tulosta projektikortti
-        </NavAction>
-        <NavAction onClick={() => this.setState({ showDeadlineModal: true })}>
-          <FontAwesomeIcon icon="cog" />
-          Määräajat
+          {t('project.print-project-card')}
         </NavAction>
       </NavActions>
     ) : (
@@ -202,16 +187,18 @@ class ProjectPage extends Component {
         )}
         {showCreate && (
           <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
-            Muokkaa luontitietoja
+          {t('project.modify-project')}
           </NavAction>
         )}
         <NavAction to={`/${id}`} primary>
-          Katso projektikortti
+          {t('project.check-project-card')}
         </NavAction>
       </NavActions>
     )
   }
   openProjectDataModal = () => this.togglePrintProjectDataModal(true)
+
+  toggleBaseInformationForm = opened => this.setState({ showBaseInformationForm: opened })
 
   getAllChanges = () => {
     const { allEditFields, edit } = this.props
@@ -229,27 +216,28 @@ class ProjectPage extends Component {
     })
   }
 
-  toggleBaseInformationForm = opened => this.setState({ showBaseInformationForm: opened })
-
   togglePrintProjectDataModal = opened =>
     this.setState({ showPrintProjectDataModal: opened })
 
-  renderLoading = () => (
-    <div className="project-container">
-      <NavHeader
-        routeItems={[
-          { value: 'Kaavaprojektit', path: '/projects' },
-          { value: 'Ladataan...', path: '/' }
-        ]}
-        title={'Ladataan...'}
-      />
-      <div className="project-page-content">
-        <Loader inline={'centered'} active>
-          Ladataan
-        </Loader>
+  renderLoading = () => {
+    const { t } = this.props
+    return (
+      <div className="project-container">
+        <NavHeader
+          routeItems={[
+            { value: 'Kaavaprojektit', path: '/projects' },
+            { value: 'Ladataan...', path: '/' }
+          ]}
+          title={t('loading')}
+        />
+        <div className="project-page-content">
+          <Loader inline={'centered'} active>
+            {t('loading')}
+          </Loader>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 
   downloadProjectData = async () => {
     const { currentProject, getProjectSnapshot, formValues } = this.props
@@ -268,11 +256,13 @@ class ProjectPage extends Component {
       users,
       projectSubtypes
     } = this.props
+
     const loading = !currentProjectLoaded || !phases
 
     if (loading) {
       return this.renderLoading()
     }
+
     return (
       <div className="project-container">
         <NavHeader
@@ -334,4 +324,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectPage)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTranslation()(ProjectPage))
