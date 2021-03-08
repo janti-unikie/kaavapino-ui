@@ -156,33 +156,22 @@ class ProjectPage extends Component {
       users
     } = this.props
 
-    const getUserRole = () => {
-      let privilege
-      if (users) {
-        users.forEach(user => {
-          if (user.id === this.props.currentUserId) {
-            privilege = user.privilege
-            return
-          }
-        })
-      }
-      return privilege
-    }
-
-    const userRole = getUserRole()
-
-    const showCreate = userRole === 'admin' || userRole === 'create' || userRole === 'edit'
+    const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
 
     return !(edit || documents) ? (
       <NavActions>
+      {showCreate && (
         <NavAction to={`/${id}/edit`}>
           <FontAwesomeIcon icon="pen" />
           {t('project.modify')}
         </NavAction>
+      )}
+      {showCreate && (
         <NavAction to={`/${id}/documents`}>
           <FontAwesomeIcon icon="file" />
           {t('project.create-documents')}
         </NavAction>
+      )}
         <NavAction onClick={() => window.print()}>
           <FontAwesomeIcon icon="print" />
           {t('project.print-project-card')}
@@ -208,6 +197,8 @@ class ProjectPage extends Component {
     )
   }
   openProjectDataModal = () => this.togglePrintProjectDataModal(true)
+
+  toggleBaseInformationForm = opened => this.setState({ showBaseInformationForm: opened })
 
   getAllChanges = () => {
     const { allEditFields, edit } = this.props
