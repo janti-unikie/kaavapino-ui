@@ -9,7 +9,7 @@
     width: 540px;
     border-radius: 0 !important;
     margin-top: 6px;
-
+    
     input[type='text'] {
       text-indent: 62px;
       @media screen and (max-width: 599px) {
@@ -18,6 +18,14 @@
         border-bottom: 1px solid $black !important;
         font-size: 12px;
         width: 226px;
+        height: 32px;
+      }
+      @media screen and (max-width: 360px) {
+        box-sizing: border-box;
+        border: none !important;
+        border-bottom: 1px solid $black !important;
+        font-size: 12px;
+        width: 100px;
         height: 32px;
       }
       &:focus {

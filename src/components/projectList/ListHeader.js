@@ -15,8 +15,10 @@ const ListHeader = ({
   toggleSearch,
   searchOpen,
   setFilter,
-  graphToggled
+  graphToggled,
+  buttonAction
 }) => {
+
   return (
     <div className="project-list-wrapper">
       <p className="project-list-sort-text">Lajittele</p>
@@ -51,6 +53,7 @@ const ListHeader = ({
           toggleSearch={toggleSearch}
           searchOpen={searchOpen}
           setFilter={setFilter}
+          buttonAction={buttonAction}
         />
       </div>
     </div>
