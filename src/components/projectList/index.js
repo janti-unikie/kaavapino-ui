@@ -56,7 +56,14 @@ class ProjectListPage extends Component {
 
   toggleForm = opened => this.setState({ showBaseInformationForm: opened })
 
-  toggleSearch = opened => this.setState({ searchOpen: opened })
+  toggleSearch = opened => {
+     this.setState({ searchOpen: opened })
+
+     if ( !opened) {
+      this.setFilter('')
+      this.props.fetchProjects()
+     }
+  }
 
   setFilter = value => this.setState({ filter: value })
 
@@ -99,6 +106,10 @@ class ProjectListPage extends Component {
             items={ownProjects.slice(0, amountOfProjectsToShow)}
             total={totalOwnProjects}
             isUserPrivileged={showCreate}
+            toggleSearch={this.toggleSearch}
+            setFilter={this.setFilter}
+            searchOpen={searchOpen}
+            buttonAction={this.fetchFilteredItems}
           />
         )
       },
@@ -116,6 +127,7 @@ class ProjectListPage extends Component {
             total={totalProjects}
             setFilter={this.setFilter}
             isUserPrivileged={showCreate}
+            buttonAction={this.fetchFilteredItems}
           />
         )
       }
@@ -137,6 +149,7 @@ class ProjectListPage extends Component {
               total={totalProjects}
               setFilter={this.setFilter}
               isUserPrivileged={showCreate}
+              buttonAction={this.fetchFilteredItems}
             />
           )
         }

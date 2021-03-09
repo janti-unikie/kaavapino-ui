@@ -78,7 +78,8 @@ class List extends Component {
       searchOpen,
       toggleSearch,
       setFilter,
-      isUserPrivileged
+      isUserPrivileged,
+      buttonAction
     } = this.props
     if (loadingProjects || !phases) {
       return (
@@ -151,7 +152,6 @@ class List extends Component {
         }
       }
     )
-
     return (
       <div className="project-list">
         {items.length > 0 && (
@@ -165,6 +165,7 @@ class List extends Component {
             toggleGraph={this.toggleGraph}
             graphToggled={showGraph}
             setFilter={setFilter}
+            buttonAction={buttonAction}
           />
         )}
 
