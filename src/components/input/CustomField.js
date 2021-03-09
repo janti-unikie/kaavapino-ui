@@ -84,7 +84,7 @@ class CustomField extends Component {
       return {
         key: option.value,
         value: option.value,
-        text: option.label
+        label: option.label
       }
     })
   }
@@ -97,7 +97,7 @@ class CustomField extends Component {
 
   renderYearSelect = props => {
     const { multiple_choice, placeholder_text } = this.props.field
-    const { onBlur, handleSave } = this.props
+    const { onBlur, formName } = this.props
 
     if (this.yearOptions.length === 0) {
       this.yearOptions = projectUtils.generateArrayOfYears()
@@ -105,9 +105,9 @@ class CustomField extends Component {
     return (
       <SelectInput
         multiple={multiple_choice}
-        options={this.formatOptions(this.yearOptions)}
+        options={this.yearOptions}
         onBlur={onBlur}
-        handleSave={handleSave}
+        formName={formName}
         placeholder={placeholder_text}
         {...props}
       />
@@ -166,8 +166,8 @@ class CustomField extends Component {
   }
 
   renderSelect = props => {
-    const { choices, multiple_choice, placeholder_text } = this.props.field
-    const { onBlur, handleSave } = this.props
+    const { choices, multiple_choice, placeholder_text, formName } = this.props.field
+    const { onBlur } = this.props
 
     return (
       <SelectInput
@@ -175,24 +175,22 @@ class CustomField extends Component {
         multiple={multiple_choice}
         options={this.formatOptions(choices)}
         onBlur={onBlur}
-        handleSave={handleSave}
         placeholder={placeholder_text}
+        formName={formName}
       />
     )
   }
 
   renderRadio = props => {
     const { field, onBlur } = this.props
-
     return <RadioButton options={field.options} onBlur={onBlur} {...props} />
   }
 
   renderBooleanRadio = props => {
-    const { onBlur, input, onRadioChange, defaultValue } = this.props
-
+    const { input, onRadioChange, defaultValue } = this.props
     return (
       <BooleanRadio
-        onBlur={onBlur}
+        onBlur={props.onBlur}
         input={input}
         onRadioChange={onRadioChange}
         defaultValue={defaultValue}

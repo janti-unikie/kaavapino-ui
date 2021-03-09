@@ -4,8 +4,6 @@ import { Radio } from 'semantic-ui-react'
 import SearchBar from '../SearchBar'
 import { IconAngleUp, IconAngleDown } from 'hds-react'
 
-const getArrowIcon = dir => (dir === 0 ? 'dir-up' : 'dir-down')
-
 const ListHeader = ({
   items,
   sort,
@@ -17,33 +15,36 @@ const ListHeader = ({
   setFilter,
   graphToggled
 }) => {
+  const getArrowIcon = () => {
+    return dir === 0 ? <IconAngleUp display='none' size='s' /> : <IconAngleDown size='s'/>
+  }
   return (
     <div className="project-list-wrapper">
       <p className="project-list-sort-text">Lajittele</p>
       <div className="project-list-header">
-        {items.map((item, i) => (
-          <span className="header-item" key={i} onClick={() => sort(i)}>
-            {item}
-            <IconAngleUp
-              className={`angle-icon angle-up-icon ${
-                selected === i && getArrowIcon(dir)
-              }`}
-            />
-            <IconAngleDown
-              className={`angle-icon angle-down-icon ${
-                selected === i && getArrowIcon(dir)
-              }`}
-            />
-          </span>
-        ))}
+        {items.map((item, index) => {
+          return (
+            <span className="header-item" key={index} onClick={() => sort(index)}>
+              {item}
+              <span className="header-sort-icon">
+                {selected === index && getArrowIcon()}
+              </span>
+            </span>
+          )
+        })}
         <span className="header-item project-timeline-toggle">
           Aikajana
-          <Radio onChange={() => toggleGraph()} toggle checked={graphToggled}/>
+          <Radio onChange={() => toggleGraph()} toggle checked={graphToggled} />
         </span>
       </div>
       <div className="project-list-mb-actions">
         <span className="project-timeline-toggle-mb">
-          <Radio onChange={() => toggleGraph()} toggle checked={graphToggled} label="Näytä aikajanat" />
+          <Radio
+            onChange={() => toggleGraph()}
+            toggle
+            checked={graphToggled}
+            label="Näytä aikajanat"
+          />
         </span>
         <SearchBar
           toggleSearch={toggleSearch}

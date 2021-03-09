@@ -97,8 +97,6 @@ class Header extends Component {
                   className="navbar-responsive-close-icon"
                   variant='supplementary'
                   iconLeft={ <IconCrossCircle />}
-                  basic
-                  icon
                   onClick={() => this.setVisible(false)}
                 />
               </Grid.Column>

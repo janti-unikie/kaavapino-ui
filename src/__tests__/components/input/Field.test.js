@@ -93,11 +93,10 @@ describe('<Field />', () => {
       }
     )
     expect(wrapper.find('SelectInput').length).toBe(1)
-    expect(wrapper.find('SelectInput').props().type).toBe('select-multiple')
-    const options = wrapper.find('Checkbox')
-    expect(options.length).toBe(2)
-    expect(options.at(0).props().value).toBe('a')
-    expect(options.at(0).props().label).toBe('1')
+    const selectInput = wrapper.find('SelectInput')
+    expect(selectInput.props().options.length).toBe(2)
+    expect(selectInput.props().options[0].value).toBe('a')
+    expect(selectInput.props().options[0].label).toBe('1')
   })
 
   it('updates only when necessary', () => {

@@ -15,15 +15,8 @@
   .input-container {
     margin-top: 10px !important;
   }
-  .ui.search.selection.dropdown > input.search {
-    position: absolute;
-    height: 40px;
-    line-height: 56px;
-    padding: 0 15px 6px 0 6px;
-    margin: 0;
-    padding-left: 15px;
-  }
-  .ui.form .field>.selection.dropdown {
+  
+  .selection {
     width: 80%;
   }
   .ui.form .input input:not(textarea) {
@@ -33,12 +26,7 @@
   .radio-input-container .ui.checkbox:first-of-type label {
     margin-top: 4px;
   }
-  .ui.search.selection.dropdown > .dropdown.icon {
-    line-height: 40px;
-    padding: 0;
-    right: 20px;
-    padding-top: 2px;
-}
+  
   .radio-input-container label, .radio-input-container .ui.checkbox label {
     font-size: 14px;
     margin-top: 10px

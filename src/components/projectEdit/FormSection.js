@@ -22,12 +22,10 @@ const FormSection = ({
   syncronousErrors,
   submitErrors
 }) => {
-  const handleBlurSave = (evt, handleSave) => {
-    if (evt) {
-      setTimeout(function () {
-        handleSave()
-      }, 500)
-    }
+  const handleBlurSave = () => {
+    setTimeout(function () {
+      handleSave()
+    }, 500)
   }
   return (
     <Segment>
@@ -43,9 +41,7 @@ const FormSection = ({
           attributeData={attributeData}
           updated={updates[field.name] || null}
           handleSave={handleSave}
-          onBlur={e => {
-            handleBlurSave(e, handleSave)
-          }}
+          onBlur={handleBlurSave}
           onRadioChange={handleSave}
           formName={formName}
           formValues={formValues}
@@ -63,6 +59,6 @@ const mapStateToProps = state => ({
   attributeData: attributeDataSelector(state),
   checking: checkingSelector(state),
   formValues: getFormValues(EDIT_PROJECT_FORM)(state)
- })
+})
 
 export default connect(mapStateToProps)(FormSection)
