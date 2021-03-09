@@ -125,8 +125,8 @@ class CustomField extends Component {
   }
 
   renderRichText = props => {
-    const { onBlur, meta } = this.props
-    return <RichTextEditor onBlur={onBlur} meta={meta} {...props} largeField />
+    const { onBlur, meta, formName } = this.props
+    return <RichTextEditor onBlur={onBlur} meta={meta} {...props} formName={formName} largeField />
   }
 
   renderRichTextShort = props => {

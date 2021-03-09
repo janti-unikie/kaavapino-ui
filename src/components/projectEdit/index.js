@@ -39,7 +39,7 @@ import { userIdSelector } from '../../selectors/authSelector'
 import projectUtils from '../../utils/projectUtils'
 class ProjectEditPage extends Component {
   state = {
-    showEditFloorAreaForm: true,
+    showEditFloorAreaForm: false,
     showEditProjectTimetableForm: false,
     highlightGroup: ''
   }
