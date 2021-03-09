@@ -25,7 +25,7 @@ const ListHeader = ({
       <div className="project-list-header">
         {items.map((item, i) => (
           <span className="header-item" key={i} onClick={() => sort(i)}>
-            {item}
+            {`${item}`}
             <FontAwesomeIcon
               className={`angle-icon angle-up-icon ${
                 selected === i && getArrowIcon(dir)

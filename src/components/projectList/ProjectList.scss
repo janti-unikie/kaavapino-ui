@@ -209,6 +209,10 @@
           text-overflow: ellipsis;
           white-space: nowrap;
           grid-column: span 2;
+          text-decoration-line: underline;
+          text-decoration-thickness: 2px;
+          text-decoration-color: $gray2;
+          //border-bottom: 2px solid $gray2;
 
           .angle-icon {
             position: absolute;
@@ -230,7 +234,7 @@
           }
 
           .angle-down-icon {
-            bottom: 14px;
+            bottom: 18px;
 
             &.dir-down {
               color: $black;

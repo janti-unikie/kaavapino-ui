@@ -11,7 +11,7 @@ import {
   pollingProjectsSelector,
   amountOfProjectsToIncreaseSelector
 } from '../../selectors/projectSelector'
-import { Loader, Button } from 'semantic-ui-react'
+import { Loader } from 'semantic-ui-react'
 import ListHeader from './ListHeader'
 import ListItem from './ListItem'
 import projectUtils from '../../utils/projectUtils'
@@ -69,12 +69,10 @@ class List extends Component {
   render() {
     const { sort, dir, showGraph } = this.state
     const {
-      increaseAmountOfProjectsToShow,
       loadingProjects,
       phases,
       projectSubtypes,
       users,
-      pollingProjects,
       searchOpen,
       toggleSearch,
       setFilter,
@@ -89,10 +87,6 @@ class List extends Component {
           </Loader>
         </div>
       )
-    }
-
-    const onIncreaseProjectAmount = () => {
-      increaseAmountOfProjectsToShow()
     }
 
     const items = this.props.items
@@ -118,8 +112,6 @@ class List extends Component {
           user,
           subtype,
           phase,
-          onhold,
-          archived,
           pino_number
         },
         i
@@ -134,22 +126,9 @@ class List extends Component {
           subtype: projectUtils.formatSubtype(subtype, projectSubtypes),
           projectId: attribute_data['hankenumero'] || '-'
         }
-        if (onhold) {
-          abortedProjects.push(
-            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged}/>
-          )
-          return false
-        } else if (archived) {
-          archivedProjects.push(
-            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged}/>
-          )
-          return false
-        } else {
-          projects.push(
-            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged} />
-          )
-          return false
-        }
+        projects.push(
+          <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged} />
+        )
       }
     )
     return (
@@ -179,17 +158,6 @@ class List extends Component {
 
         {items.length === 0 && <span className="empty-list-info">Ei projekteja!</span>}
 
-        {items.length > 0 && (
-          <div className="list-actions-container">
-            <Button
-              loading={pollingProjects}
-              disabled={pollingProjects}
-              secondary
-              onClick={onIncreaseProjectAmount}
-              content="Näytä lisää"
-            />
-          </div>
-        )}
       </div>
     )
   }
