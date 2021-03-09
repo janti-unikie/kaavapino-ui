@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import './styles.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
@@ -8,9 +8,18 @@ const Collapse = props => {
   const [open, setOpen] = useState(false)
   const contentRef = useRef(null)
 
+  useEffect(() => {
+    let content = contentRef.current
+    if (open) {
+      if (content) {
+        content.style.maxHeight = content.scrollHeight + 'px'
+      }
+    }
+  })
+
   const handleClick = () => {
     setOpen(!open)
-    var content = contentRef.current
+    let content = contentRef.current
     if (!content) {
       return
     }
