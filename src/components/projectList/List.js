@@ -15,7 +15,7 @@ import { Loader } from 'semantic-ui-react'
 import ListHeader from './ListHeader'
 import ListItem from './ListItem'
 import projectUtils from '../../utils/projectUtils'
-import SubList from './ListSubList'
+
 class List extends Component {
   constructor(props) {
     super(props)
@@ -99,10 +99,10 @@ class List extends Component {
       'Muokattu',
       'Vastuuhenkilö'
     ]
-    let abortedProjects = []
-    let archivedProjects = []
+
     let projects = []
-    items.map(
+
+    items.forEach(
       (
         {
           attribute_data,
@@ -147,17 +147,8 @@ class List extends Component {
             buttonAction={buttonAction}
           />
         )}
-
         {projects.length !== 0 && projects}
-        {abortedProjects.length !== 0 && (
-          <SubList title={'Keskeytyneet projektit'} items={abortedProjects} />
-        )}
-        {archivedProjects.length !== 0 && (
-          <SubList title={'Arkistoidut projektit'} items={archivedProjects} />
-        )}
-
         {items.length === 0 && <span className="empty-list-info">Ei projekteja!</span>}
-
       </div>
     )
   }
