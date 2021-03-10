@@ -110,12 +110,12 @@ function RichTextEditor(props) {
   }
 
   return (
-    <div className={`rich-text-editor-wrapper ${disabled ? 'rich-text-disabled' : ''}`}>
+    <div  role='textbox' className={`rich-text-editor-wrapper ${disabled ? 'rich-text-disabled' : ''}`}>
       <div
         className={`rich-text-editor ${
           toolbarVisible || showComments ? 'toolbar-visible' : ''
         } ${largeField ? 'large' : ''}`}
-        onClick={() => setToolbarVisible(true)}
+        onFocus={() => setToolbarVisible(true)}
       >
         <div id={toolbarName} className="ql-toolbar">
           <span className="ql-formats">

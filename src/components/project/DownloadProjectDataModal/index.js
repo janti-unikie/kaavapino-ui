@@ -142,7 +142,7 @@ class DownloadProjectDataModal extends Component {
               })}
             </Form.Group>
           </Form>
-          <Button variant='primary' onClick={this.loadClicked}>
+          <Button theme='black' variant='primary' onClick={this.loadClicked}>
             {t('print-project-data.load-project-data')}
           </Button>
           <div className="download-csv">
@@ -163,7 +163,7 @@ class DownloadProjectDataModal extends Component {
           </div>
         </Modal.Content>
         <Modal.Actions>
-          <Button variant='secondary' onClick={this.handleClose}>
+          <Button theme='black' variant='secondary' onClick={this.handleClose}>
             {t('print-project-data.button-close')}
           </Button>
         </Modal.Actions>

@@ -146,12 +146,13 @@ class ProjectListPage extends Component {
                 variant="secondary"
                 className="header-button"
                 iconLeft={<IconPlus />}
+                theme='black'
                 onClick={() => this.toggleForm(true)}
               >
                 {t('projects.createNewProject')}
               </Button>
             )}
-            <Button variant="secondary" iconLeft={<IconPlus />} className="header-button" onClick={this.createReports}>
+            <Button theme='black' variant="secondary" iconLeft={<IconPlus />} className="header-button" onClick={this.createReports}>
               {t('projects.createReports')}
             </Button>
           </>

@@ -177,18 +177,20 @@ class ProjectPage extends Component {
             className="header-button"
             onClick={this.modifyContent}
             iconLeft={<IconPen/>}
+            theme='black'
           >
             {t('project.modify')}
           </Button>
         )}
-        <Button variant="secondary" iconLeft={<IconPen/>} onClick={this.createDocuments}>
+        <Button variant="secondary" theme='black' iconLeft={<IconPen/>} onClick={this.createDocuments}>
           {t('project.create-documents')}
         </Button>
-        <Button variant="secondary" iconLeft={<IconPrinter/>} onClick={() => window.print()}>
+        <Button variant="secondary" theme='black' iconLeft={<IconPrinter/>} onClick={() => window.print()}>
           {t('project.print-project-card')}
         </Button>
         <Button
           variant="secondary"
+          theme='black'
           iconLeft={<IconPen/>}
           onClick={() => this.setState({ showDeadlineModal: true })}
         >
@@ -203,11 +205,12 @@ class ProjectPage extends Component {
             className="header-button"
             onClick={this.openProjectDataModal}
             iconLeft={<IconPen/>}
+            theme='black'
           >
             {t('project.modify-project')}
           </Button>
         )}
-        <Button variant="primary" iconLeft={<IconPen/>} onClick={this.checkProjectCard}>
+        <Button theme='black' variant="primary" iconLeft={<IconPen/>} onClick={this.checkProjectCard}>
           {t('project.check-project-card')}
         </Button>
       </span>

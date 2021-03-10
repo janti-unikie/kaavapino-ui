@@ -147,7 +147,7 @@ class EditProjectTimeTableModal extends Component {
         </Modal.Content>
         <Modal.Actions>
           <span className="form-buttons">
-            <Button variant="secondary" disabled={loading} onClick={this.handleClose}>
+            <Button theme='black' variant="secondary" disabled={loading} onClick={this.handleClose}>
               {t('common.cancel')}
             </Button>
             <Button
@@ -155,6 +155,7 @@ class EditProjectTimeTableModal extends Component {
               disabled={loading}
               loading={loading.toString()}
               type="submit"
+              theme='black'
               onClick={this.handleSubmit}
             >
               {t('common.save')}

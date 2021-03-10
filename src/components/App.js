@@ -24,8 +24,8 @@ import ProjectListPage from './projectList'
 import ProjectPage from './project'
 import ReportsPage from './reports'
 import ErrorPage from './error'
-import PageHeader from './common/PageHeader'
-import Footer from './common/Footer'
+import Header from './common/Header'
+import Footer from './common/NewFooter'
 import FakeLoginPage from './auth/FakeLogin'
 import Overview from './overview'
 import Terms from './common/Terms'
@@ -70,7 +70,7 @@ class App extends Component {
           />
           <Route path="/logout/callback" render={() => <LogoutCallbackPage />} />
           <ProtectedRoute path="/" pred={this.props.apiToken !== null} redirect="/login">
-            <PageHeader />
+            <Header />
             <Switch>
               <Route exact path="/" render={() => <Overview />} />
               <Route exact path="/terms" render={() => <Terms />} />
