@@ -153,7 +153,7 @@ class EditProjectTimeTableModal extends Component {
             <Button
               variant="primary"
               disabled={loading}
-              loading={loading}
+              loading={loading.toString()}
               type="submit"
               onClick={this.handleSubmit}
             >

@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Input } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
+import { TextInput } from 'hds-react'
 
 const CustomInput = ({ input, meta: { error }, ...custom }) => (
-  <Input error={inputUtils.hasError(error)} {...input} {...custom} fluid />
+  <TextInput error={inputUtils.hasError(error).toString()} {...input} {...custom} fluid='true' />
 )
 
 CustomInput.propTypes = {

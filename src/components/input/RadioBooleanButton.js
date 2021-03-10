@@ -1,5 +1,5 @@
-import React from 'react'
-import { Radio } from 'semantic-ui-react'
+import React, { useState } from 'react'
+import { RadioButton } from 'hds-react'
 
 const RadioBooleanButton = ({
   input: { value, name, ...rest },
@@ -7,40 +7,57 @@ const RadioBooleanButton = ({
   inverted,
   double,
   onRadioChange,
-  ...custom
+  disabled,
+  className
 }) => {
+  const [radioValue, setRadioValue] = useState(value)
+
   const handleOnChange = value => {
+    setRadioValue(value)
     rest.onChange(value)
     if (onRadioChange) {
       onRadioChange()
     }
   }
+
   return (
     <div className={`radio-input-container${inverted ? ' inverted' : ''}`}>
-      <Radio
+      <RadioButton
+        key={`${name}-true`}
+        id={`${name}-true`}
         label="Kyllä"
-        {...custom}
+        disabled={disabled}
+        className={`radio-button-true ${className}`}
+        value="Kyllä"
         error={error}
         name={name}
         onChange={() => handleOnChange(true)}
-        checked={value === true}
+        checked={radioValue === true}
       />
-      <Radio
+      <RadioButton
         label="Ei"
-        {...custom}
+        id={`${name}-false`}
+        key={`${name}-false`}
+        disabled={disabled}
+        className={`radio-button-false ${className}`}
         error={error}
+        value="Ei"
         name={name}
         onChange={() => handleOnChange(false)}
-        checked={value === false}
+        checked={radioValue === false}
       />
       {!double && (
-        <Radio
+        <RadioButton
+          key={`${name}-null`}
+          id={`${name}-null`}
           label="Tieto puuttuu"
-          {...custom}
+          disabled={disabled}
+          className={`radio-button-null ${className}`}
+          value=""
           error={error}
           name={name}
           onChange={() => handleOnChange(null)}
-          checked={value !== true && value !== false}
+          checked={radioValue !== false && radioValue !== true}
         />
       )}
     </div>

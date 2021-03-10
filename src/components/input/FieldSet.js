@@ -2,12 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { checkingSelector } from '../../selectors/projectSelector'
 import CustomField from './CustomField'
-import { Form, Button, Label, Popup } from 'semantic-ui-react'
+import { Form, Label, Popup } from 'semantic-ui-react'
 import projectUtils from '../../utils/projectUtils'
 import Info from './Info'
 import { showField } from '../../utils/projectVisibilityUtils'
 import { has } from 'lodash'
 import { IconCross, IconClock } from 'hds-react'
+import { Button } from 'hds-react'
 
 const FieldSet = ({
   sets,
@@ -173,6 +174,8 @@ const FieldSet = ({
             sets.push({})
             }}
         disabled={disabled}
+        variant='secondary'
+        theme='black'
       >
         Lisää
       </Button>
@@ -180,6 +183,8 @@ const FieldSet = ({
         className="fieldset-button-remove"
         disabled={sets.length < 1}
         onClick={() => sets.remove(sets.length - 1)}
+        variant='secondary'
+        theme='black'
       >
         Poista
       </Button>

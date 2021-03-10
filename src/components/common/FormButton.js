@@ -1,9 +1,18 @@
 import React from 'react'
-import { Loader, Popup } from 'semantic-ui-react'
-import { Button } from 'hds-react'
+import { Popup } from 'semantic-ui-react'
+import { Button, LoadingSpinner } from 'hds-react'
 import PropTypes from 'prop-types'
 
-const FormButton = ({ handleClick, value, icon, loading, help, variant, fullWidth, ...rest }) => {
+const FormButton = ({
+  handleClick,
+  value,
+  icon,
+  loading,
+  help,
+  variant,
+  fullWidth,
+  ...rest
+}) => {
   const btn = (
     <Button
       disabled={loading}
@@ -11,10 +20,10 @@ const FormButton = ({ handleClick, value, icon, loading, help, variant, fullWidt
       className="form-button"
       onClick={handleClick}
       fullWidth={fullWidth}
+      iconLeft={loading ? <LoadingSpinner className="loading-spinner" small /> : null}
       {...rest}
     >
       {!loading && icon}
-      {loading && <Loader inverted size="tiny" color="blue" inline active />}
       {` ${value}`}
     </Button>
   )

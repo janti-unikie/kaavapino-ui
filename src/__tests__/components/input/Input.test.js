@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import Input from '../../../components/input/Input'
+import Input from '../../../components/input/CustomInput'
 
 describe('<Input />', () => {
   let inputComponent

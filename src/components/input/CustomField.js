@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import Input from './Input'
+import CustomInput from './CustomInput'
 import DeadLineInput from './DeadlineInput'
 import SelectInput from './SelectInput'
 import BooleanRadio from './RadioBooleanButton'
-import TextArea from './TextArea'
+import CustomTextArea from './CustomTextArea'
 import File from './File'
 import FieldSet from './FieldSet'
 import Geometry from './Geometry'
 import Link from './Link'
 import DateTime from './DateTime'
 import { Field, FieldArray } from 'redux-form'
-import RadioButton from './RadioButton'
+import CustomRadioButton from './CustomRadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
 import OnHoldCheckbox from './OnholdCheckbox'
@@ -92,7 +92,7 @@ class CustomField extends Component {
   renderNumber = props => {
     const { onBlur } = this.props
 
-    return <Input onBlur={onBlur} {...props} type="number" />
+    return <CustomInput onBlur={onBlur} {...props} type="number" />
   }
 
   renderYearSelect = props => {
@@ -116,12 +116,12 @@ class CustomField extends Component {
 
   renderString = props => {
     const { onBlur } = this.props
-    return <Input onBlur={onBlur} type="text" {...props} />
+    return <CustomInput onBlur={onBlur} type="text" {...props} />
   }
 
   renderTextArea = props => {
     const { onBlur } = this.props
-    return <TextArea onBlur={onBlur} {...props} />
+    return <CustomTextArea onBlur={onBlur} {...props} />
   }
 
   renderRichText = props => {
@@ -157,7 +157,7 @@ class CustomField extends Component {
         />
       )
     }
-    return <Input onBlur={onBlur} type="date" {...props} />
+    return <CustomInput onBlur={onBlur} type="date" {...props} />
   }
 
   renderGeometry = props => {
@@ -183,7 +183,7 @@ class CustomField extends Component {
 
   renderRadio = props => {
     const { field, onBlur } = this.props
-    return <RadioButton options={field.options} onBlur={onBlur} {...props} />
+    return <CustomRadioButton options={field.options} onBlur={onBlur} {...props} />
   }
 
   renderBooleanRadio = props => {
@@ -260,7 +260,7 @@ class CustomField extends Component {
 
   renderDecimal = props => {
     const { onBlur } = this.props
-    return <Input type="number" step="0.01" onBlur={onBlur} {...props} />
+    return <CustomInput type="number" step="0.01" onBlur={onBlur} {...props} />
   }
 
   renderDeadlineCheckbox = props => {

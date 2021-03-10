@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Button } from 'semantic-ui-react'
-import Input from './Input'
+import Input from './CustomInput'
 import isUrl from 'is-url'
 import ipRegex from 'ip-regex'
 import { IconCross, IconCheck } from 'hds-react'
