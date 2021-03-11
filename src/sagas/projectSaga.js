@@ -271,7 +271,7 @@ function* sortProjectsSaga({ payload: { sort, dir } }) {
     const projects = yield select(projectsSelector)
     const phases = yield select(phasesSelector)
     const users = yield select(usersSelector)
-    const amountOfProjectsToShow = yield select(amountOfProjectsToShowSelector)
+    const amountOfProjectsToShow = yield select(totalProjectsSelector)
     const options = { sort, dir, phases, amountOfProjectsToShow, users }
     yield put(setOwnProjects(projectUtils.sortProjects(ownProjects, options)))
     yield put(setProjects(projectUtils.sortProjects(projects, options)))
