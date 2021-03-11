@@ -593,11 +593,38 @@ function* projectFileUpload({
 }) {
   try {
     const currentProjectId = yield select(currentProjectIdSelector)
+
+    let fieldSetIndex = []
+
+    if (attribute.lastIndexOf('.') !== -1) {
+      const splitted = attribute.split('.')
+
+      splitted.forEach(value => {
+        const firstBracket = value.indexOf('[')
+        const secondBracket = value.indexOf(']')
+
+        const fieldSet = attribute.substring(0, firstBracket)
+        const index = attribute.substring(firstBracket + 1, secondBracket)
+
+        if (fieldSet !== '' && index !== '') {
+          const returnObject = {
+            parent: fieldSet,
+            index: index
+          }
+          fieldSetIndex.push(returnObject)
+        }
+      })
+    }
+
     // Create formdata
     const formData = new FormData()
     formData.append('attribute', attribute)
     formData.append('file', file)
     formData.append('description', description)
+
+    if (fieldSetIndex && fieldSetIndex.length > 0) {
+      formData.append('fieldsetIndex', fieldSetIndex)
+    }
     // Set cancel token
     const CancelToken = axios.CancelToken
     const src = CancelToken.source()
