@@ -30,12 +30,13 @@ navigateToReports = () => {
           skipTo="#content"
           skipToContentLabel="Siirry sivun pääsisältöön"
           theme="light"
-          title="Helsingin kaupunki"
-          titleAriaLabel="Helsinki: Helsingin kaupunki"
+          title="Kaavapino"
+          titleAriaLabel="Helsinki: Kaavapino"
           titleUrl="./"
           className='header'
         >
           <Navigation.Row variant="inline">
+
             <Navigation.Item
               as="a"
               label="Yleisnäkymä"
