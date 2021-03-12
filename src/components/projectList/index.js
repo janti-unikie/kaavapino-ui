@@ -13,7 +13,9 @@ import {
   projectsSelector,
   amountOfProjectsToShowSelector,
   totalOwnProjectsSelector,
-  totalProjectsSelector
+  totalProjectsSelector,
+  onHoldProjectSelector,
+  archivedProjectSelector
 } from '../../selectors/projectSelector'
 import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
 import NewProjectFormModal from '../project/NewProjectFormModal'
@@ -85,7 +87,9 @@ class ProjectListPage extends Component {
       allProjects,
       totalOwnProjects,
       totalProjects,
-      currentUserId
+      currentUserId,
+      onHoldProjects,
+      archivedProjects
     } = this.props
 
     const { searchOpen, activeIndex, screenWidth } = this.state
@@ -103,13 +107,14 @@ class ProjectListPage extends Component {
           <List
             projectSubtypes={projectSubtypes}
             users={users}
-            items={ownProjects.slice(0, amountOfProjectsToShow)}
+            items={ownProjects}
             total={totalOwnProjects}
             isUserPrivileged={showCreate}
             toggleSearch={this.toggleSearch}
             setFilter={this.setFilter}
             searchOpen={searchOpen}
             buttonAction={this.fetchFilteredItems}
+            newProjectTab={'own'}
           />
         )
       },
@@ -123,11 +128,40 @@ class ProjectListPage extends Component {
             searchOpen={searchOpen}
             projectSubtypes={projectSubtypes}
             users={users}
-            items={allProjects.slice(0, amountOfProjectsToShow)}
+            items={allProjects}
+            total={totalProjects}
+            setFilter={this.setFilter}
+            isUserPrivileged={showCreate}
+            newProjectTab={'all'}
+          />
+        )
+      },
+      {
+        menuItem: `${screenWidth < 600 ? t('projects.onhold-short') : t('projects.onhold-long')}`,
+        render: () => (
+          <List
+            projectSubtypes={projectSubtypes}
+            users={users}
+            items={onHoldProjects}
+            total={totalProjects}
+            setFilter={this.setFilter}
+            isUserPrivileged={showCreate}
+            newProjectTab={'onhold'}
+          />
+        )
+      },
+      {
+        menuItem: `${screenWidth < 600 ? t('projects.archived-short') : t('projects.archived-long')}`,
+        render: () => (
+          <List
+            projectSubtypes={projectSubtypes}
+            users={users}
+            items={archivedProjects}
             total={totalProjects}
             setFilter={this.setFilter}
             isUserPrivileged={showCreate}
             buttonAction={this.fetchFilteredItems}
+            newProjectTab={'archived'}
           />
         )
       }
@@ -179,7 +213,6 @@ class ProjectListPage extends Component {
         />
       </NavActions>
     )
-
     return (
       <div className="project-list-page">
         <NavHeader
@@ -215,7 +248,9 @@ const mapStateToProps = state => {
     amountOfProjectsToShow: amountOfProjectsToShowSelector(state),
     totalOwnProjects: totalOwnProjectsSelector(state),
     totalProjects: totalProjectsSelector(state),
-    currentUserId: userIdSelector(state)
+    currentUserId: userIdSelector(state),
+    onHoldProjects: onHoldProjectSelector(state),
+    archivedProjects: archivedProjectSelector(state)
   }
 }
 

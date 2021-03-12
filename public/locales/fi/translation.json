@@ -9,7 +9,11 @@
         "amount": "{{pieces}} kpl",
         "title": "Kaavaprojektit",
         "createNewProject": "Luo uusi projekti",
-        "createReports": "Luo raportteja" 
+        "createReports": "Luo raportteja",
+        "onhold-short": "Keskeytyneet",
+        "archived-short": "Arkistoidut",
+        "onhold-long": "Keskeytyneet projektit",
+        "archived-long": "Arkistoidut projektit"
     },
     "deadlines": {
         "title": "Päivitä aikataulut",

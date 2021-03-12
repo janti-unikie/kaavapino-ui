@@ -11,11 +11,11 @@ import {
   pollingProjectsSelector,
   amountOfProjectsToIncreaseSelector
 } from '../../selectors/projectSelector'
-import { Loader, Button } from 'semantic-ui-react'
+import { Loader } from 'semantic-ui-react'
 import ListHeader from './ListHeader'
 import ListItem from './ListItem'
 import projectUtils from '../../utils/projectUtils'
-import SubList from './ListSubList'
+
 class List extends Component {
   constructor(props) {
     super(props)
@@ -23,7 +23,8 @@ class List extends Component {
     this.state = {
       showGraph: false,
       sort: 5,
-      dir: 1
+      dir: 1,
+      projectTab: 'own'
     }
   }
 
@@ -66,21 +67,31 @@ class List extends Component {
     }
   }
 
+  static getDerivedStateFromProps(nextProps,prevState) {
+    const { newProjectTab } = nextProps
+    const { projectTab } = prevState
+    if (newProjectTab && newProjectTab !== projectTab) {
+      return {
+        showGraph: false,
+        projectTab: newProjectTab
+      }
+    }
+  }
+
   render() {
     const { sort, dir, showGraph } = this.state
     const {
-      increaseAmountOfProjectsToShow,
       loadingProjects,
       phases,
       projectSubtypes,
       users,
-      pollingProjects,
       searchOpen,
       toggleSearch,
       setFilter,
       isUserPrivileged,
       buttonAction
     } = this.props
+
     if (loadingProjects || !phases) {
       return (
         <div className="project-list">
@@ -89,10 +100,6 @@ class List extends Component {
           </Loader>
         </div>
       )
-    }
-
-    const onIncreaseProjectAmount = () => {
-      increaseAmountOfProjectsToShow()
     }
 
     const items = this.props.items
@@ -105,10 +112,10 @@ class List extends Component {
       'Muokattu',
       'Vastuuhenkilö'
     ]
-    let abortedProjects = []
-    let archivedProjects = []
+
     let projects = []
-    items.map(
+
+    items.forEach(
       (
         {
           attribute_data,
@@ -118,8 +125,6 @@ class List extends Component {
           user,
           subtype,
           phase,
-          onhold,
-          archived,
           pino_number
         },
         i
@@ -134,22 +139,9 @@ class List extends Component {
           subtype: projectUtils.formatSubtype(subtype, projectSubtypes),
           projectId: attribute_data['hankenumero'] || '-'
         }
-        if (onhold) {
-          abortedProjects.push(
-            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged}/>
-          )
-          return false
-        } else if (archived) {
-          archivedProjects.push(
-            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged}/>
-          )
-          return false
-        } else {
-          projects.push(
-            <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged} />
-          )
-          return false
-        }
+        projects.push(
+          <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged} />
+        )
       }
     )
     return (
@@ -168,28 +160,8 @@ class List extends Component {
             buttonAction={buttonAction}
           />
         )}
-
         {projects.length !== 0 && projects}
-        {abortedProjects.length !== 0 && (
-          <SubList title={'Keskeytyneet projektit'} items={abortedProjects} />
-        )}
-        {archivedProjects.length !== 0 && (
-          <SubList title={'Arkistoidut projektit'} items={archivedProjects} />
-        )}
-
         {items.length === 0 && <span className="empty-list-info">Ei projekteja!</span>}
-
-        {items.length > 0 && (
-          <div className="list-actions-container">
-            <Button
-              loading={pollingProjects}
-              disabled={pollingProjects}
-              secondary
-              onClick={onIncreaseProjectAmount}
-              content="Näytä lisää"
-            />
-          </div>
-        )}
       </div>
     )
   }
