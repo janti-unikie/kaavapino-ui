@@ -23,7 +23,8 @@ class List extends Component {
     this.state = {
       showGraph: false,
       sort: 5,
-      dir: 1
+      dir: 1,
+      projectTab: 'own'
     }
   }
 
@@ -66,6 +67,17 @@ class List extends Component {
     }
   }
 
+  static getDerivedStateFromProps(nextProps,prevState) {
+    const { newProjectTab } = nextProps
+    const { projectTab } = prevState
+    if (newProjectTab && newProjectTab !== projectTab) {
+      return {
+        showGraph: false,
+        projectTab: newProjectTab
+      }
+    }
+  }
+
   render() {
     const { sort, dir, showGraph } = this.state
     const {
@@ -79,6 +91,7 @@ class List extends Component {
       isUserPrivileged,
       buttonAction
     } = this.props
+
     if (loadingProjects || !phases) {
       return (
         <div className="project-list">

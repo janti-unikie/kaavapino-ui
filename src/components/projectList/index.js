@@ -114,6 +114,7 @@ class ProjectListPage extends Component {
             setFilter={this.setFilter}
             searchOpen={searchOpen}
             buttonAction={this.fetchFilteredItems}
+            newProjectTab={'own'}
           />
         )
       },
@@ -131,6 +132,7 @@ class ProjectListPage extends Component {
             total={totalProjects}
             setFilter={this.setFilter}
             isUserPrivileged={showCreate}
+            newProjectTab={'all'}
           />
         )
       },
@@ -144,6 +146,7 @@ class ProjectListPage extends Component {
             total={totalProjects}
             setFilter={this.setFilter}
             isUserPrivileged={showCreate}
+            newProjectTab={'onhold'}
           />
         )
       },
@@ -158,6 +161,7 @@ class ProjectListPage extends Component {
             setFilter={this.setFilter}
             isUserPrivileged={showCreate}
             buttonAction={this.fetchFilteredItems}
+            newProjectTab={'archived'}
           />
         )
       }
