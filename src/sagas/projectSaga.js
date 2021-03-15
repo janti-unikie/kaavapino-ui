@@ -595,8 +595,10 @@ function* projectFileUpload({
     const currentProjectId = yield select(currentProjectIdSelector)
 
     let fieldSetIndex = []
+    let currentFieldName = attribute
 
-    if (attribute.lastIndexOf('.') !== -1) {
+    const lastIndex = attribute.lastIndexOf('.')
+    if (lastIndex !== -1 ) {
       const splitted = attribute.split('.')
 
       splitted.forEach(value => {
@@ -605,6 +607,7 @@ function* projectFileUpload({
 
         const fieldSet = attribute.substring(0, firstBracket)
         const index = attribute.substring(firstBracket + 1, secondBracket)
+        currentFieldName = attribute.substring(lastIndex + 1, attribute.length)
 
         if (fieldSet !== '' && index !== '') {
           const returnObject = {
@@ -618,12 +621,12 @@ function* projectFileUpload({
 
     // Create formdata
     const formData = new FormData()
-    formData.append('attribute', attribute)
+    formData.append('attribute', currentFieldName)
     formData.append('file', file)
     formData.append('description', description)
 
     if (fieldSetIndex && fieldSetIndex.length > 0) {
-      formData.append('fieldsetIndex', fieldSetIndex)
+      formData.append('fieldset_path', JSON.stringify(fieldSetIndex))
     }
     // Set cancel token
     const CancelToken = axios.CancelToken
