@@ -42,7 +42,7 @@ class File extends Component {
       }
       const urlParts = src.split('/')
       this.setState({ current: urlParts[urlParts.length - 1] })
-      if (image) {
+      if (image && this.imageRef.current) {
         this.imageRef.current.src = src
       }
     }

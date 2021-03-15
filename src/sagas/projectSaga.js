@@ -55,7 +55,6 @@ import {
   validateProjectFieldsSuccessful,
   PROJECT_FILE_UPLOAD,
   PROJECT_FILE_REMOVE,
-  projectFileUploadSuccessful,
   projectFileRemoveSuccessful,
   saveProject as saveProjectAction,
   PROJECT_SET_DEADLINES,
@@ -633,7 +632,7 @@ function* projectFileUpload({
     const src = CancelToken.source()
     setCancelToken(src)
     // Upload file
-    const newFile = yield call(
+    yield call(
       projectApi.put,
       formData,
       { path: { id: currentProjectId } },
@@ -644,7 +643,6 @@ function* projectFileUpload({
         cancelToken: src.token
       }
     )
-    yield put(projectFileUploadSuccessful(newFile))
     yield put(saveProjectAction())
   } catch (e) {
     if (!axios.isCancel(e)) {
