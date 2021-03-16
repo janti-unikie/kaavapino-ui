@@ -77,7 +77,12 @@ class EditProjectTimeTableModal extends Component {
       fieldProps &&
       formSubmitErrors &&
       formSubmitErrors[fieldProps.field.name]
+    let className = error ? 'modal-field error-border' : 'modal-field'
 
+    // Special case since label is used.
+    if ( fieldProps.field.display === 'checkbox') {
+      className = error ? 'error-border' : ''
+    }
     return (
       <div key={key}>
         <FormField
@@ -87,7 +92,7 @@ class EditProjectTimeTableModal extends Component {
           deadlines={deadlines}
           error={error}
           formValues={formValues}
-          className={error ? 'modal-field error-border' : 'modal-field'}
+          className={className}
           isProjectTimetableEdit={true}
         />
         {error && <div className="field-error">{error}</div>}

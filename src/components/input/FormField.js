@@ -114,7 +114,6 @@ const FormField = props => {
       >
         <Label>
           <span className="checkbox">{renderField(newProps)}</span>
-          <span>{title}</span>
         </Label>
       </Form.Field>
     )
