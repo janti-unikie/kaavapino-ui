@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Modal, Form } from 'semantic-ui-react'
+import { Modal, Form } from 'semantic-ui-react'
 import { reduxForm, getFormSubmitErrors, getFormValues } from 'redux-form'
-import projectUtils from '../../utils/projectUtils'
+import projectUtils from '../../../utils/projectUtils'
 import './NewProjectFormModal.scss'
 import { connect } from 'react-redux'
-import { NEW_PROJECT_FORM } from '../../constants'
-import { newProjectSubtypeSelector } from '../../selectors/formSelector'
-import FormField from '../input/FormField'
+import { NEW_PROJECT_FORM } from '../../../constants'
+import { newProjectSubtypeSelector } from '../../../selectors/formSelector'
+import FormField from '../../input/FormField'
+import { Button } from 'hds-react'
 
 const PROJECT_NAME = 'name'
 const USER = 'user'
@@ -124,10 +125,10 @@ class NewProjectFormModal extends Component {
 
     return (
       <Modal
-        className="form-modal"
+        className="form-modal project-edit"
         size={'small'}
         onClose={this.props.handleClose}
-        open={this.props.open}
+        open={this.props.modalOpen}
         closeIcon
       >
         <Modal.Header> {isEdit ? 'Muokkaa luontitietoja' : 'Luo uusi projekti'}</Modal.Header>
@@ -211,19 +212,21 @@ class NewProjectFormModal extends Component {
           </Form>
         </Modal.Content>
         <Modal.Actions>
-          <Button secondary disabled={loading} theme='black'  onClick={this.handleClose}>
+        <div className="form-buttons">
+          <Button variant='secondary' disabled={loading} theme='black'  onClick={this.handleClose}>
             Peruuta
           </Button>
           <Button
-            primary
-            disabled={loading || hideSave}
-            loading={loading}
+            variant='primary'
+            disabled={loading ? true : false || hideSave}
+            loading={loading.toString()}
             type="submit"
             theme='black'
             onClick={this.handleSubmit}
           >
             {isEdit ? 'Tallenna' : 'Luo projekti'}
           </Button>
+          </div>
         </Modal.Actions>
       </Modal>
     )
@@ -231,7 +234,7 @@ class NewProjectFormModal extends Component {
 }
 
 NewProjectFormModal.propTypes = {
-  open: PropTypes.bool.isRequired,
+  modalOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired
 }
 

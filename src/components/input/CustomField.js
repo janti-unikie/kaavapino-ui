@@ -183,7 +183,7 @@ class CustomField extends Component {
 
   renderRadio = props => {
     const { field, onBlur } = this.props
-    return <CustomRadioButton options={field.options} onBlur={onBlur} {...props} />
+    return <CustomRadioButton options={this.formatOptions(field.options)} onBlur={onBlur} {...props} />
   }
 
   renderBooleanRadio = props => {

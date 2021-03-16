@@ -15,16 +15,21 @@ const SelectInput = ({
   const currentValue = []
 
   const getValue = value => {
-    const current = options.find( option => option.value === value )
+    const current = options.find(option => option.value === value)
     return current && current.label
   }
   let currentSingleValue
 
   if (multiple) {
-    input.value.forEach(value => currentValue.push({ label: getValue(value), value: value }))
+    input.value.forEach(value =>
+      currentValue.push({ label: getValue(value), value: value })
+    )
   } else {
-    const current = options.find( option => option.value === input.value)
-    currentSingleValue = { label: current && current.label, value: current && current.value  }
+    const current = options.find(option => option.value === input.value)
+    currentSingleValue = {
+      label: current && current.label,
+      value: current && current.value
+    }
   }
 
   return (
@@ -32,18 +37,18 @@ const SelectInput = ({
       placeholder={placeholder}
       className="selection"
       id={input.name}
-      name={input.name}
+          name={input.name}
       multiselect={multiple}
       error={inputUtils.hasError(error)}
       onBlur={onBlur}
-      clearable='true'
+      clearable="true"
       disabled={disabled}
       defaultValue={multiple ? currentValue : currentSingleValue}
       options={options}
       onChange={data => {
         let returnValue
-        if ( multiple ) {
-          returnValue = data.map( currentValue => currentValue.value)
+        if (multiple) {
+          returnValue = data.map(currentValue => currentValue.value)
         } else {
           returnValue = data.value
         }

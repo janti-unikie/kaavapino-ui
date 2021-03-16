@@ -23,7 +23,7 @@ import ProjectEditPage from '../projectEdit'
 import ProjectCardPage from '../projectCard'
 import ProjectDocumentsPage from '../projectDocuments'
 import projectUtils from '../../utils/projectUtils'
-import NewProjectFormModal from './NewProjectFormModal'
+import NewProjectFormModal from './EditProjectModal/NewProjectFormModal'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
 import { withTranslation } from 'react-i18next'
 
@@ -32,7 +32,7 @@ import { DOWNLOAD_PROJECT_DATA_FORM } from '../../constants'
 import { getFormValues } from 'redux-form'
 import moment from 'moment'
 import { userIdSelector } from '../../selectors/authSelector'
-import { Button, IconPen, IconPrinter } from 'hds-react'
+import { Button, IconPen, IconPrinter, IconDownload } from 'hds-react'
 import { withRouter } from 'react-router-dom'
 class ProjectPage extends Component {
   constructor(props) {
@@ -199,17 +199,27 @@ class ProjectPage extends Component {
       </span>
     ) : (
       <span className="header-buttons">
+        <Button
+          variant="secondary"
+          className="header-button"
+          onClick={this.openProjectDataModal}
+          iconLeft={<IconDownload/>}
+          theme='black'
+        >
+          Tulosta projektin tiedot
+        </Button>
         {showCreate && (
           <Button
             variant="secondary"
             className="header-button"
-            onClick={this.openProjectDataModal}
+            onClick={() => this.toggleBaseInformationForm(true)}
             iconLeft={<IconPen/>}
             theme='black'
           >
             {t('project.modify-project')}
           </Button>
-        )}
+          )
+        }
         <Button theme='black' variant="primary" iconLeft={<IconPen/>} onClick={this.checkProjectCard}>
           {t('project.check-project-card')}
         </Button>
@@ -240,7 +250,7 @@ class ProjectPage extends Component {
   }
   openProjectDataModal = () => this.togglePrintProjectDataModal(true)
 
-  toggleBaseInformationForm = opened => this.setState({ showBaseInformationForm: opened })
+  toggleBaseInformationForm = opened => this.setState({ ...this.state, showBaseInformationForm: opened })
 
   getAllChanges = () => {
     const { allEditFields, edit } = this.props
@@ -316,7 +326,7 @@ class ProjectPage extends Component {
         />
         <NewProjectFormModal
           currentProject={currentProject}
-          open={this.state.showBaseInformationForm}
+          modalOpen={this.state.showBaseInformationForm}
           initialValues={{
             name: currentProject.name,
             public: currentProject.public,

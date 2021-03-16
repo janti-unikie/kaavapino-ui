@@ -7,18 +7,17 @@ import { ReactComponent as PagesMobile } from '../../assets/pages-mobile.svg'
 import { withRouter } from 'react-router-dom'
 
 class Header extends Component {
-
   navigateToProjects = () => {
-      this.props.history.push( '../projects')
+    this.props.history.push('../projects')
   }
 
   navigateToHome = () => {
-    this.props.history.push( '../')
-}
+    this.props.history.push('../')
+  }
 
-navigateToReports = () => {
-    this.props.history.push( '../reports')
-}
+  navigateToReports = () => {
+    this.props.history.push('../reports')
+  }
   render() {
     return (
       <>
@@ -33,10 +32,9 @@ navigateToReports = () => {
           title="Kaavapino"
           titleAriaLabel="Helsinki: Kaavapino"
           titleUrl="./"
-          className='header'
+          className="header"
         >
           <Navigation.Row variant="inline">
-
             <Navigation.Item
               as="a"
               label="Yleisnäkymä"
@@ -57,16 +55,21 @@ navigateToReports = () => {
             />
           </Navigation.Row>
           <Navigation.Actions>
-            <Navigation.User
-              buttonAriaLabel="Käyttäjä: John Doe"
-              label="Kirjaudu ulos"
-              userName="John Doe"
-            >
+            <Navigation.User  label="Sign in"
+      userName="John Doe" >
               <Navigation.Item
                 as="a"
-                href="/Logout"
+                href="#"
+                label="Link"
+                onClick={function noRefCheck() {}}
+                variant="secondary"
+              />
+              <Navigation.Item
+                as="a"
+                href="#"
                 icon={<IconSignout aria-hidden />}
-                label="Kirjaudu ulos"
+                label="Sign out"
+                onClick={function noRefCheck() {}}
                 variant="supplementary"
               />
             </Navigation.User>

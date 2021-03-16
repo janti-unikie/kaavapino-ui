@@ -76,8 +76,7 @@ class List extends Component {
       users,
       pollingProjects,
       searchOpen,
-      toggleSearch,
-      setFilter
+      toggleSearch
     } = this.props
     if (loadingProjects || !phases) {
       return (
@@ -163,7 +162,6 @@ class List extends Component {
             sort={this.setSort}
             toggleGraph={this.toggleGraph}
             graphToggled={showGraph}
-            setFilter={setFilter}
           />
         )}
 

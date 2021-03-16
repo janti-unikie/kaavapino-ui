@@ -1,15 +1,13 @@
 @import '../../components/common/colors.scss';
 
 .search-bar {
-  display: flex;
+  display: inline-flex;
   justify-content: flex-end;
+  margin-left: 10px;
 
   .search-bar-bar {
-    position: relative;
     width: 540px;
-    border-radius: 0 !important;
-    margin-top: 6px;
-
+    
     input[type='text'] {
       text-indent: 62px;
       @media screen and (max-width: 599px) {
@@ -38,37 +36,6 @@
         display: none !important;
       }
     }
-    svg {
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      right: 182px;
-      bottom: 20px;
-
-      &:hover {
-        cursor: pointer;
-      }
-
-      @media screen and (max-width: 599px) {
-        right: 0;
-        bottom: 11px;
-      }
-    }
-    .magnifier-icon {
-      bottom: 14px;
-      left: 20px;
-      width: 24px;
-      height: 24px;
-      pointer-events: none;
-
-      path {
-        fill: $color-primary !important;
-      }
-      @media screen and (max-width: 599px) {
-        top: 50%;
-        transform: translate(0, -50%);
-      }
-    }
 
     @media screen and (max-width: 599px) {
       z-index: 1;
@@ -77,25 +44,10 @@
       width: 100%;
       margin-top: -4px;
     }
+    
   }
-
-  .magnifier-icon {
-    margin-top: 24px;
-    height: 24px;
-    width: 24px;
-    z-index: 1;
-
-    path {
-      fill: $color-primary !important;
-    }
-
-    &:hover {
-      cursor: pointer;
-    }
-    @media screen and (max-width: 599px) {
-      margin-top: 0;
-    }
-  }
+  
+ 
 
   @media screen and (max-width: 599px) {
     width: 100%;
@@ -106,3 +58,7 @@
     }
   }
 }
+.search-action-icon {
+  height: 50px;
+}
+

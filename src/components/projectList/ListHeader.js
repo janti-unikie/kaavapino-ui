@@ -12,7 +12,6 @@ const ListHeader = ({
   toggleGraph,
   toggleSearch,
   searchOpen,
-  setFilter,
   graphToggled
 }) => {
   const getArrowIcon = () => {
@@ -49,7 +48,6 @@ const ListHeader = ({
         <SearchBar
           toggleSearch={toggleSearch}
           searchOpen={searchOpen}
-          setFilter={setFilter}
         />
       </div>
     </div>
@@ -59,7 +57,6 @@ const ListHeader = ({
 ListHeader.propTypes = {
   toggleSearch: PropTypes.func,
   searchOpen: PropTypes.bool,
-  setFilter: PropTypes.func,
   toggleGraph: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired,
   sort: PropTypes.func.isRequired,

@@ -6,8 +6,11 @@
   max-width: 1148px;
   width: calc(100% - 32px);
 
+  
+
   .header-buttons {
     text-align: right;
+    margin: 10px 0 10px 0;
    button {
       margin-left: 10px;
 
@@ -383,7 +386,6 @@
     border: none;
     height: 50px;
     margin-bottom: 30px;
-    margin-top: -68px;
     font-size: 16px;
     .item {
       border-radius: 0;

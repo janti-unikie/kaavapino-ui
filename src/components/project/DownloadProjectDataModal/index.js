@@ -20,7 +20,7 @@ import './styles.scss'
 
 class DownloadProjectDataModal extends Component {
   getFormField = fieldProps => {
-    return <FormField {...fieldProps} onChange={this.onChange} />
+    return <FormField className="download-project-data-field" {...fieldProps} onChange={this.onChange} />
   }
 
   onChange = () => {
@@ -110,7 +110,7 @@ class DownloadProjectDataModal extends Component {
 
     return (
       <Modal
-        className="form-modal"
+        className="form-modal download-project"
         size={'tiny'}
         onClose={this.handleClose}
         open={this.props.open}
@@ -142,7 +142,7 @@ class DownloadProjectDataModal extends Component {
               })}
             </Form.Group>
           </Form>
-          <Button theme='black' variant='primary' onClick={this.loadClicked}>
+          <Button theme='black' variant='secondary' onClick={this.loadClicked}>
             {t('print-project-data.load-project-data')}
           </Button>
           <div className="download-csv">

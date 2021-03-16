@@ -15,7 +15,7 @@ import {
   totalProjectsSelector
 } from '../../selectors/projectSelector'
 import { NavHeader } from '../common/NavHeader'
-import NewProjectFormModal from '../project/NewProjectFormModal'
+import NewProjectFormModal from '../project/EditProjectModal/NewProjectFormModal'
 import List from './List'
 import SearchBar from '../SearchBar'
 import { withTranslation } from 'react-i18next'
@@ -58,11 +58,11 @@ class ProjectListPage extends Component {
 
   toggleSearch = opened => this.setState({ searchOpen: opened })
 
-  setFilter = value => this.setState({ filter: value })
+  fetchFilteredItems = value => {
 
-  fetchFilteredItems = () => {
-    const { filter } = this.state
-    this.props.fetchProjects(filter)
+    this.setState({ filter: value }, () => {
+      this.props.fetchProjects(this.state.filter)
+    })
   }
 
   handleTabChange = (e, { activeIndex }) => {
@@ -115,7 +115,6 @@ class ProjectListPage extends Component {
             users={users}
             items={allProjects.slice(0, amountOfProjectsToShow)}
             total={totalProjects}
-            setFilter={this.setFilter}
           />
         )
       }
@@ -162,7 +161,6 @@ class ProjectListPage extends Component {
           minWidth={601}
           toggleSearch={this.toggleSearch}
           searchOpen={searchOpen}
-          setFilter={this.setFilter}
           buttonAction={this.fetchFilteredItems}
         />
       </span>
@@ -176,7 +174,7 @@ class ProjectListPage extends Component {
           actions={headerActions}
         />
         <NewProjectFormModal
-          open={this.state.showBaseInformationForm}
+          modalOpen={this.state.showBaseInformationForm}
           handleSubmit={this.props.createProject}
           handleClose={() => this.toggleForm(false)}
           users={users}
