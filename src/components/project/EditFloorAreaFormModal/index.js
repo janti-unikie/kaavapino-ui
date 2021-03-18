@@ -157,7 +157,7 @@ class EditFloorAreaFormModal extends Component {
             <Button
               variant="primary"
               disabled={loading}
-              loading={loading}
+              loading={loading.toString()}
               type="submit"
               theme='black'
               onClick={this.handleSubmit}

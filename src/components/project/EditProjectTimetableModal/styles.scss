@@ -46,27 +46,17 @@
   .field-error {
     color: $color-error-text;
   }
-  .ui.input.error>input {
-    background-color: #fff6f6;
-    border: 1px solid #e0b4b4;
-    color: $color-error-text;
-  }
-  .ui.input.error>input:focus {
-    border: 1px solid $color-error-text;
-    background-color: #fff6f6;
-    box-shadow: 1px solid $color-error-text;
-  }
-  .ui.input.error>input:hover {
-    border: 1px solid $color-error-text;
-    box-shadow: inset 0px 0px 0px 1px $color-error-text;
-  
-  }
+ 
+
   .error {
     color: $color-error-text !important;
     border: 2px solid $color-error-text;
   }
   .error-border {
     border: 2px solid $color-error-text;
+  }
+  .error-border>input:focus {
+      background: #fff6f6;
   }
   .error input {
     border: 0;

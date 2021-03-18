@@ -145,7 +145,6 @@ class CustomField extends Component {
         deadline => deadline.deadline.attribute === props.input.name
       )
     }
-    projectUtils.checkDeadline(props, current)
 
     if (deadlines && deadlines.length > 0) {
       return (

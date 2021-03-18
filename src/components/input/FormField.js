@@ -6,14 +6,11 @@ import Info from './Info'
 import projectUtils from '../../utils/projectUtils'
 import { showField } from '../../utils/projectVisibilityUtils'
 import { EDIT_PROJECT_TIMETABLE_FORM } from '../../constants'
-import { IconClock } from 'hds-react'
-import { useDispatch } from 'react-redux'
-import { change } from 'redux-form'
+import { IconClock, IconAlertCircle } from 'hds-react'
 
 const OneLineFields = ['toggle']
 
 const FormField = props => {
-  const dispatch = useDispatch()
 
   const renderField = newProps => {
     const {
@@ -31,7 +28,6 @@ const FormField = props => {
     if (newProps) {
       newField = newProps
     }
-
     switch (newField.type) {
       case 'matrix':
         return (
@@ -95,7 +91,6 @@ const FormField = props => {
 
   const showError = required ? 'pakollinen kenttä' : error
   if (!showField(field, formValues) || field.display === 'hidden') {
-    dispatch(change(formName, field.name, undefined))
     return null
   }
 
@@ -166,7 +161,7 @@ const FormField = props => {
           </div>
         )}
         {renderField()}
-        {showError && <div className="error-text">{showError}</div>}
+        {showError && <div className="error-text"><IconAlertCircle size='xs' /> {showError}</div>}
       </Form.Field>
     )
   }
