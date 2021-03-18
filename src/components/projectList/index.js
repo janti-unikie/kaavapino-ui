@@ -12,7 +12,9 @@ import {
   projectsSelector,
   amountOfProjectsToShowSelector,
   totalOwnProjectsSelector,
-  totalProjectsSelector
+  totalProjectsSelector,
+  onHoldProjectSelector,
+  archivedProjectSelector
 } from '../../selectors/projectSelector'
 import { NavHeader } from '../common/NavHeader'
 import NewProjectFormModal from '../project/EditProjectModal/NewProjectFormModal'
@@ -22,6 +24,7 @@ import { withTranslation } from 'react-i18next'
 import { userIdSelector } from '../../selectors/authSelector'
 import { withRouter } from 'react-router-dom'
 import { Button, IconPlus } from 'hds-react'
+import projectUtils from './../../utils/projectUtils'
 
 class ProjectListPage extends Component {
   constructor(props) {
@@ -56,10 +59,16 @@ class ProjectListPage extends Component {
 
   toggleForm = opened => this.setState({ showBaseInformationForm: opened })
 
-  toggleSearch = opened => this.setState({ searchOpen: opened })
+  toggleSearch = opened => {
+    this.setState({ searchOpen: opened })
+
+    if (!opened) {
+      this.setFilter('')
+      this.props.fetchProjects()
+    }
+  }
 
   fetchFilteredItems = value => {
-
     this.setState({ filter: value }, () => {
       this.props.fetchProjects(this.state.filter)
     })
@@ -82,24 +91,35 @@ class ProjectListPage extends Component {
       ownProjects,
       allProjects,
       totalOwnProjects,
-      totalProjects
+      totalProjects,
+      currentUserId,
+      onHoldProjects,
+      archivedProjects
     } = this.props
 
     const { searchOpen, activeIndex, screenWidth } = this.state
 
     const { t } = this.props
 
-    const panes = [
+    const showCreate = projectUtils.isUserPrivileged(currentUserId, users)
+
+    let panes = [
       {
-        menuItem: `${screenWidth < 600 ? t('projects.own-short') : t('projects.own-long')} (${totalOwnProjects}${
-          totalOwnProjects > 0 ? ' kpl' : ''
-        })`,
+        menuItem: `${
+          screenWidth < 600 ? t('projects.own-short') : t('projects.own-long')
+        } (${totalOwnProjects}${totalOwnProjects > 0 ? ' kpl' : ''})`,
         render: () => (
           <List
             projectSubtypes={projectSubtypes}
             users={users}
-            items={ownProjects.slice(0, amountOfProjectsToShow)}
+            items={ownProjects}
             total={totalOwnProjects}
+            isUserPrivileged={showCreate}
+            toggleSearch={this.toggleSearch}
+            setFilter={this.setFilter}
+            searchOpen={searchOpen}
+            buttonAction={this.fetchFilteredItems}
+            newProjectTab={'own'}
           />
         )
       },
@@ -113,28 +133,73 @@ class ProjectListPage extends Component {
             searchOpen={searchOpen}
             projectSubtypes={projectSubtypes}
             users={users}
-            items={allProjects.slice(0, amountOfProjectsToShow)}
+            items={allProjects}
             total={totalProjects}
+            setFilter={this.setFilter}
+            isUserPrivileged={showCreate}
+            newProjectTab={'all'}
+          />
+        )
+      },
+      {
+        menuItem: `${
+          screenWidth < 600 ? t('projects.onhold-short') : t('projects.onhold-long')
+        }`,
+        render: () => (
+          <List
+            projectSubtypes={projectSubtypes}
+            users={users}
+            items={onHoldProjects}
+            total={totalProjects}
+            setFilter={this.setFilter}
+            isUserPrivileged={showCreate}
+            newProjectTab={'onhold'}
+          />
+        )
+      },
+      {
+        menuItem: `${
+          screenWidth < 600 ? t('projects.archived-short') : t('projects.archived-long')
+        }`,
+        render: () => (
+          <List
+            projectSubtypes={projectSubtypes}
+            users={users}
+            items={archivedProjects}
+            total={totalProjects}
+            setFilter={this.setFilter}
+            isUserPrivileged={showCreate}
+            buttonAction={this.fetchFilteredItems}
+            newProjectTab={'archived'}
           />
         )
       }
     ]
-    const getUserRole = ()  => {
-      let privilege
-      if ( users ) {
-        users.forEach(user => {
-            if ( user.id === this.props.currentUserId) {
-              privilege = user.privilege
-              return
-            }
-        })
-      }
-      return privilege
+
+    if (!showCreate) {
+      panes = [
+        {
+          menuItem: `${
+            screenWidth < 600 ? t('projects.all-short') : t('projects.all-long')
+          } (${
+            totalProjects > 0 ? t('projects.amount', { pieces: totalProjects }) : ''
+          })`,
+          render: () => (
+            <List
+              toggleSearch={this.toggleSearch}
+              searchOpen={searchOpen}
+              projectSubtypes={projectSubtypes}
+              users={users}
+              items={allProjects.slice(0, amountOfProjectsToShow)}
+              total={totalProjects}
+              setFilter={this.setFilter}
+              isUserPrivileged={showCreate}
+              buttonAction={this.fetchFilteredItems}
+            />
+          )
+        }
+      ]
     }
-
-    const userRole = getUserRole()
-
-    const showCreate = userRole === 'admin' || userRole === 'create'
 
     let headerActions = (
       <span className="header-buttons">
@@ -145,13 +210,19 @@ class ProjectListPage extends Component {
                 variant="secondary"
                 className="header-button"
                 iconLeft={<IconPlus />}
-                theme='black'
+                theme="black"
                 onClick={() => this.toggleForm(true)}
               >
                 {t('projects.createNewProject')}
               </Button>
             )}
-            <Button theme='black' variant="secondary" iconLeft={<IconPlus />} className="header-button" onClick={this.createReports}>
+            <Button
+              theme="black"
+              variant="secondary"
+              iconLeft={<IconPlus />}
+              className="header-button"
+              onClick={this.createReports}
+            >
               {t('projects.createReports')}
             </Button>
           </>
@@ -165,7 +236,6 @@ class ProjectListPage extends Component {
         />
       </span>
     )
-
     return (
       <div className="project-list-page">
         <NavHeader
@@ -201,7 +271,9 @@ const mapStateToProps = state => {
     amountOfProjectsToShow: amountOfProjectsToShowSelector(state),
     totalOwnProjects: totalOwnProjectsSelector(state),
     totalProjects: totalProjectsSelector(state),
-    currentUserId: userIdSelector(state)
+    currentUserId: userIdSelector(state),
+    onHoldProjects: onHoldProjectSelector(state),
+    archivedProjects: archivedProjectSelector(state)
   }
 }
 
@@ -212,4 +284,6 @@ const mapDispatchToProps = {
   fetchProjectSubtypes
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProjectListPage)))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProjectListPage))
+)

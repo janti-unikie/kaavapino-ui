@@ -6,7 +6,13 @@ import projectUtils from '../../../utils/projectUtils'
 import './styles.scss'
 import Info from '../../../components/input/Info'
 
-const Matrix = ({ field: { matrix }, checking, attributeData, formName, isFloorCalculation }) => {
+const Matrix = ({
+  field: { matrix },
+  checking,
+  attributeData,
+  formName,
+  isFloorCalculation
+}) => {
   const { rows, columns, fields } = matrix
 
   const columnCount = columns.length
@@ -16,6 +22,15 @@ const Matrix = ({ field: { matrix }, checking, attributeData, formName, isFloorC
     display: 'grid',
     gridTemplateColumns: `repeat(${columnCount}, 1fr`,
     gridTemplateRows: `repeat(${rowCount}, minmax(auto, auto)`
+  }
+  const countFieldsInRow = row => {
+    let fields = 0
+    row.forEach(field => {
+      if (field !== 0) {
+        fields++
+      }
+    })
+    return fields
   }
 
   const fieldMatrix = []
@@ -28,23 +43,26 @@ const Matrix = ({ field: { matrix }, checking, attributeData, formName, isFloorC
   const renderInfo = field => {
     return <Info content={field.help_text} link={field.help_link} />
   }
-
   return (
     <div className="matrix-container">
       <div className="matrix" style={matrixStyle}>
         {fieldMatrix.map((row, y) => {
           return (
             <React.Fragment key={`${rows[y]}-${y}`}>
-            {rows[y] && (
-              <span className="row-header" style={{ gridColumn: '1 / -1' }}>
-                {rows[y]}
-              </span>
+              {rows[y] && (
+                <span className="row-header" style={{ gridColumn: '1 / -1' }}>
+                  {rows[y]}
+                </span>
               )}
               {row.map((field, x) => {
                 const highlighted =
                   field !== 0 &&
                   checking &&
                   projectUtils.isFieldMissing(field.name, field.required, attributeData)
+                let rowColumnStyle = null
+                if (countFieldsInRow(row) <= 1) {
+                  rowColumnStyle = { gridColumn: `1 / ${columnCount}` }
+                }
                 return (
                   <React.Fragment key={`${field.name}-${y}-${x}-total`}>
                     <span style={{ display: 'contents' }}>
@@ -52,14 +70,13 @@ const Matrix = ({ field: { matrix }, checking, attributeData, formName, isFloorC
                         <span />
                       ) : (
                         <span
-                          className={`${highlighted ? 'highlighted' : ''}`}
+                          className={`${highlighted ? 'highlighted' : 'rowColumnStyle'}`}
+                          style={rowColumnStyle}
                           key={`${field.name}-${y}-${x}`}
                         >
                           <div className="input-header">
-                            <div className="input-title" >{columns[x]}</div>
-                            <div className="input-header-icons">
-                              {renderInfo(field)}
-                            </div>
+                            <div className="input-title">{columns[x]}</div>
+                            <div className="input-header-icons">{renderInfo(field)}</div>
                           </div>
                           <CustomField
                             attributeData={attributeData}

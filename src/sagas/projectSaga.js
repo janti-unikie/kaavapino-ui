@@ -271,7 +271,7 @@ function* sortProjectsSaga({ payload: { sort, dir } }) {
     const projects = yield select(projectsSelector)
     const phases = yield select(phasesSelector)
     const users = yield select(usersSelector)
-    const amountOfProjectsToShow = yield select(amountOfProjectsToShowSelector)
+    const amountOfProjectsToShow = yield select(totalProjectsSelector)
     const options = { sort, dir, phases, amountOfProjectsToShow, users }
     yield put(setOwnProjects(projectUtils.sortProjects(ownProjects, options)))
     yield put(setProjects(projectUtils.sortProjects(projects, options)))
@@ -407,7 +407,6 @@ function* saveProjectFloorArea() {
   yield put(startSubmit(EDIT_FLOOR_AREA_FORM))
   const { initial, values } = yield select(editFloorAreaFormSelector)
   const currentProjectId = yield select(currentProjectIdSelector)
-
   if (values) {
     const attribute_data = getChangedAttributeData(values, initial)
     try {

@@ -13,7 +13,7 @@ import { floorAreaSectionsSelector } from '../../../selectors/schemaSelector'
 import { withTranslation } from 'react-i18next'
 import { Button } from 'hds-react'
 
-const FloorAreaTotals = ({ formValues, floorAreaSections }) => {
+const FloorAreaTotals = ({ formValues, floorAreaSections, attributeData }) => {
   // Would love a more rubust check than string includes if one becomes available
   const totalSection = floorAreaSections.find(section =>
     section.title.includes('yhteensä')
@@ -26,10 +26,10 @@ const FloorAreaTotals = ({ formValues, floorAreaSections }) => {
         {totalSection.fields.map((totalMatrix, i) => (
           <FormField
             field={totalMatrix}
-            attributeData={formValues}
+            attributeData={attributeData}
             key={i}
-            formName={EDIT_FLOOR_AREA_FORM}
             formValues={formValues}
+            formName={EDIT_FLOOR_AREA_FORM}
             isFloorCalculation={true}
           />
         ))}
@@ -45,8 +45,7 @@ class EditFloorAreaFormModal extends Component {
       loading: false
     }
   }
-
-  componentDidMount() {
+  componentWillMount () {
     const { initialize, attributeData } = this.props
     initialize(attributeData)
   }
@@ -57,7 +56,7 @@ class EditFloorAreaFormModal extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, initialize, attributeData } = this.props
+    const { saving, initialize, formValues } = this.props
 
     /* handle submit success / failure */
 
@@ -71,9 +70,8 @@ class EditFloorAreaFormModal extends Component {
     ) {
       this.setState({ loading: false })
     }
-
     if (prevProps.saving && !saving) {
-      initialize(attributeData)
+      initialize(formValues)
     }
   }
 
@@ -90,12 +88,12 @@ class EditFloorAreaFormModal extends Component {
   }
 
   getFloorAreaTotalsComponent = () => {
-    const { floorAreaSections } = this.props
-    return <FloorAreaTotals formValues={{}} floorAreaSections={floorAreaSections} />
+    const { floorAreaSections, formValues, attributeData } = this.props
+    return <FloorAreaTotals formValues={formValues} attributeData={attributeData} floorAreaSections={floorAreaSections} />
   }
 
   getFormField = (fieldProps, key) => {
-    const { formSubmitErrors, formValues } = this.props
+    const { formSubmitErrors, formValues, attributeData } = this.props
     const error =
       formSubmitErrors && fieldProps.field && formSubmitErrors[fieldProps.field.name]
 
@@ -104,7 +102,7 @@ class EditFloorAreaFormModal extends Component {
         <FormField
           {...fieldProps}
           formName={EDIT_FLOOR_AREA_FORM}
-          attributeData={{}}
+          attributeData={attributeData}
           error={error}
           formValues={formValues}
           isFloorCalculation={true}
@@ -182,8 +180,9 @@ const mapStateToProps = state => ({
   formValues: getFormValues(EDIT_FLOOR_AREA_FORM)(state)
 })
 
-const decoratedForm = reduxForm({
-  form: EDIT_FLOOR_AREA_FORM
+const floorAreaForm = reduxForm({
+  form: EDIT_FLOOR_AREA_FORM,
+  enableReinitialize: true
 })(EditFloorAreaFormModal)
 
-export default connect(mapStateToProps, () => ({}))(withTranslation()(decoratedForm))
+export default connect(mapStateToProps, () => ({}))(withTranslation()(floorAreaForm))

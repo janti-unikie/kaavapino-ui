@@ -151,23 +151,7 @@ class ProjectPage extends Component {
   getNavActions = () => {
     const { edit, documents, users, t } = this.props
 
-    const getUserRole = () => {
-      let privilege
-      if (users) {
-        users.forEach(user => {
-          if (user.id === this.props.currentUserId) {
-            privilege = user.privilege
-            return
-          }
-        })
-      }
-      return privilege
-    }
-
-    const userRole = getUserRole()
-
-    const showCreate =
-      userRole === 'admin' || userRole === 'create' || userRole === 'edit'
+    const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
 
     return !(edit || documents) ? (
       <span className="header-buttons">

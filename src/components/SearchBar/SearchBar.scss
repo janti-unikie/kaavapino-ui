@@ -18,6 +18,14 @@
         width: 226px;
         height: 32px;
       }
+      @media screen and (max-width: 360px) {
+        box-sizing: border-box;
+        border: none !important;
+        border-bottom: 1px solid $black !important;
+        font-size: 12px;
+        width: 100px;
+        height: 32px;
+      }
       &:focus {
           box-shadow: none !important;
       }

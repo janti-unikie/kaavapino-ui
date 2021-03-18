@@ -12,7 +12,8 @@ const ListHeader = ({
   toggleGraph,
   toggleSearch,
   searchOpen,
-  graphToggled
+  graphToggled,
+  buttonAction
 }) => {
   const getArrowIcon = () => {
     return dir === 0 ? <IconAngleUp display='none' size='s' /> : <IconAngleDown size='s'/>
@@ -48,6 +49,7 @@ const ListHeader = ({
         <SearchBar
           toggleSearch={toggleSearch}
           searchOpen={searchOpen}
+          buttonAction={buttonAction}
         />
       </div>
     </div>

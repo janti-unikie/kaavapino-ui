@@ -48,7 +48,8 @@ function RichTextEditor(props) {
     placeholder,
     onBlur,
     className,
-    updated
+    updated,
+    formName
   } = props
   const dispatch = useDispatch()
   const fieldComments = useSelector(fieldCommentsSelector)
@@ -62,6 +63,7 @@ function RichTextEditor(props) {
   const [counter, setCounter] = useState(props.currentSize)
   const [showCounter, setShowCounter] = useState(false)
   const [currentTimeout, setCurrentTimeout] = useState(0)
+  const fieldFormName = formName ? formName : EDIT_PROJECT_FORM
 
   const handleChange = (_val, _delta, source) => {
 
@@ -74,7 +76,7 @@ function RichTextEditor(props) {
       /* Get the value from the editor - the delta provided to handlechange does not have complete state */
 
       const actualDeltaValue = editorRef.current.editor.getContents()
-      setCurrentTimeout( () => setTimeout( () => dispatch(change(EDIT_PROJECT_FORM, inputProps.name, actualDeltaValue)), 500) )
+      setCurrentTimeout( () => setTimeout( () => dispatch(change(fieldFormName, inputProps.name, actualDeltaValue)), 500) )
       setCounter(actualDeltaValue.length() - 1 )
       setShowCounter(true)
    }

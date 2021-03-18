@@ -37,6 +37,7 @@ import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
 import { usersSelector } from '../../selectors/userSelector'
 import { userIdSelector } from '../../selectors/authSelector'
 import { withRouter } from 'react-router-dom'
+import projectUtils from '../../utils/projectUtils'
 class ProjectEditPage extends Component {
   state = {
     showEditFloorAreaForm: false,
@@ -133,23 +134,7 @@ class ProjectEditPage extends Component {
       }
     }
 
-    const getUserRole = () => {
-      let privilege
-      if (users) {
-        users.forEach(user => {
-          if (user.id === this.props.currentUserId) {
-            privilege = user.privilege
-            return
-          }
-        })
-      }
-      return privilege
-    }
-
-    const userRole = getUserRole()
-
-    const showCreate =
-      userRole === 'admin' || userRole === 'create' || userRole === 'edit'
+    const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
 
     return (
       <div>
