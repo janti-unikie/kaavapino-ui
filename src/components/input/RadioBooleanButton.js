@@ -32,7 +32,6 @@ const RadioBooleanButton = ({
         name={name}
         onChange={() => handleOnChange(true)}
         checked={radioValue === true}
-        theme='black'
       />
       <RadioButton
         label="Ei"
@@ -45,7 +44,6 @@ const RadioBooleanButton = ({
         name={name}
         onChange={() => handleOnChange(false)}
         checked={radioValue === false}
-        theme='black'
       />
       {!double && (
         <RadioButton
@@ -59,7 +57,6 @@ const RadioBooleanButton = ({
           name={name}
           onChange={() => handleOnChange(null)}
           checked={radioValue !== false && radioValue !== true}
-          theme='black'
         />
       )}
     </div>

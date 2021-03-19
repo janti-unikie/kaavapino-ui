@@ -28,7 +28,6 @@ class Header extends Component {
           searchPlaceholder="Search page"
           skipTo="#content"
           skipToContentLabel="Siirry sivun pääsisältöön"
-          theme="light"
           title="Kaavapino"
           titleAriaLabel="Helsinki: Kaavapino"
           titleUrl="./"
@@ -55,8 +54,7 @@ class Header extends Component {
             />
           </Navigation.Row>
           <Navigation.Actions>
-            <Navigation.User  label="Sign in"
-      userName="John Doe" >
+            <Navigation.User label="Sign in" userName="John Doe">
               <Navigation.Item
                 as="a"
                 href="#"

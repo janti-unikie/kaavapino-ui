@@ -149,7 +149,7 @@ class EditFloorAreaFormModal extends Component {
         </Modal.Content>
         <Modal.Actions>
           <span className="form-buttons">
-            <Button theme='black' variant="secondary" disabled={loading} onClick={this.handleClose}>
+            <Button  variant="secondary" disabled={loading} onClick={this.handleClose}>
               {t('common.cancel')}
             </Button>
             <Button
@@ -157,7 +157,6 @@ class EditFloorAreaFormModal extends Component {
               disabled={loading}
               loading={loading.toString()}
               type="submit"
-              theme='black'
               onClick={this.handleSubmit}
             >
               {t('common.save')}

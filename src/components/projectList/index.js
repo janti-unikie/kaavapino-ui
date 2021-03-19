@@ -106,7 +106,9 @@ class ProjectListPage extends Component {
       {
         menuItem: `${
           screenWidth < 600 ? t('projects.own-short') : t('projects.own-long')
-        } (${totalOwnProjects}${totalOwnProjects > 0 ? ' kpl' : ''})`,
+        } ${
+          totalOwnProjects > 0 ? t('projects.amount', { pieces: totalOwnProjects }) : ''
+        }`,
         render: () => (
           <List
             projectSubtypes={projectSubtypes}
@@ -125,7 +127,7 @@ class ProjectListPage extends Component {
       {
         menuItem: `${
           screenWidth < 600 ? t('projects.all-short') : t('projects.all-long')
-        } (${totalProjects > 0 ? t('projects.amount', { pieces: totalProjects }) : ''})`,
+        } ${totalProjects > 0 ? t('projects.amount', { pieces: totalProjects }) : ''}`,
         render: () => (
           <List
             toggleSearch={this.toggleSearch}
@@ -143,6 +145,10 @@ class ProjectListPage extends Component {
       {
         menuItem: `${
           screenWidth < 600 ? t('projects.onhold-short') : t('projects.onhold-long')
+        } ${
+          onHoldProjects && onHoldProjects.length > 0
+            ? t('projects.amount', { pieces: onHoldProjects.length })
+            : ''
         }`,
         render: () => (
           <List
@@ -159,6 +165,10 @@ class ProjectListPage extends Component {
       {
         menuItem: `${
           screenWidth < 600 ? t('projects.archived-short') : t('projects.archived-long')
+        } ${
+          archivedProjects && archivedProjects.length > 0
+            ? t('projects.amount', { pieces: archivedProjects.length })
+            : ''
         }`,
         render: () => (
           <List
@@ -209,14 +219,12 @@ class ProjectListPage extends Component {
                 variant="secondary"
                 className="header-button"
                 iconLeft={<IconPlus />}
-                theme="black"
                 onClick={() => this.toggleForm(true)}
               >
                 {t('projects.createNewProject')}
               </Button>
             )}
             <Button
-              theme="black"
               variant="secondary"
               iconLeft={<IconPlus />}
               className="header-button"

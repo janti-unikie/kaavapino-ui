@@ -213,7 +213,7 @@ class NewProjectFormModal extends Component {
         </Modal.Content>
         <Modal.Actions>
         <div className="form-buttons">
-          <Button variant='secondary' disabled={loading} theme='black'  onClick={this.handleClose}>
+          <Button variant='secondary' disabled={loading}  onClick={this.handleClose}>
             Peruuta
           </Button>
           <Button
@@ -221,7 +221,6 @@ class NewProjectFormModal extends Component {
             disabled={loading ? true : false || hideSave}
             loading={loading.toString()}
             type="submit"
-            theme='black'
             onClick={this.handleSubmit}
           >
             {isEdit ? 'Tallenna' : 'Luo projekti'}

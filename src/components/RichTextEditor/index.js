@@ -154,7 +154,6 @@ function RichTextEditor(props) {
         </div>
         <ReactQuill
           ref={editorRef}
-          theme="snow"
           modules={modules}
           formats={formats}
           {...newInputProps}

@@ -37,7 +37,7 @@ class ReportBuilder extends Component {
           </div>
         )}
         {selectedReport && (
-          <Button color="black" className="report-create-button">
+          <Button color="default" className="report-create-button">
             Luo raportti
           </Button>
         )}

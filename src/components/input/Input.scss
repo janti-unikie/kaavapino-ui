@@ -448,3 +448,10 @@
 .error-text {
   color: $color-error-border;
 }
+.checkbox {
+  display: flex;
+}
+.checkbox-item {
+  margin-top: 0 !important;
+  margin-right: 10px;
+}

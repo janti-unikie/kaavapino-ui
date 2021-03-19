@@ -175,7 +175,6 @@ const FieldSet = ({
             }}
         disabled={disabled}
         variant='secondary'
-        theme='black'
       >
         Lisää
       </Button>
@@ -184,7 +183,6 @@ const FieldSet = ({
         disabled={sets.length < 1}
         onClick={() => sets.remove(sets.length - 1)}
         variant='secondary'
-        theme='black'
       >
         Poista
       </Button>

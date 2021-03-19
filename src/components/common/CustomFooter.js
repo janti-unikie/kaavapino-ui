@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import { fetchFooter } from '../../actions/footerActions'
 import { footerSelector } from '../../selectors/footerSelector'
 
-class NewFooter extends Component {
+class CustomFooter extends Component {
   componentDidMount() {
     this.props.fetchFooter()
   }
@@ -78,7 +78,6 @@ class NewFooter extends Component {
         }}
         korosType="basic"
         logoLanguage="fi"
-        theme="light"
         title={this.renderTitle()}
       >
         <Footer.Navigation
@@ -175,4 +174,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewFooter)
+export default connect(mapStateToProps, mapDispatchToProps)(CustomFooter)

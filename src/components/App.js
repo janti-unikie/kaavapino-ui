@@ -25,7 +25,7 @@ import ProjectPage from './project'
 import ReportsPage from './reports'
 import ErrorPage from './error'
 import Header from './common/Header'
-import Footer from './common/NewFooter'
+import CustomFooter from './common/CustomFooter'
 import FakeLoginPage from './auth/FakeLogin'
 import Overview from './overview'
 import Terms from './common/Terms'
@@ -94,7 +94,7 @@ class App extends Component {
               <Route exact path="/error/:code" component={ErrorPage} />
               <Redirect to="/error/404" />
             </Switch>
-            <Footer />
+            <CustomFooter />
           </ProtectedRoute>
         </Switch>
       </ConnectedRouter>

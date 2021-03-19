@@ -19,7 +19,6 @@ const FormButton = ({
       variant={variant}
       className="form-button"
       onClick={handleClick}
-      theme='black'
       fullWidth={fullWidth}
       iconLeft={loading ? <LoadingSpinner className="loading-spinner" small /> : null}
       {...rest}

@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import './SearchBar.scss'
-import { IconCross, IconSearch, SearchInput } from 'hds-react'
+import { IconCross, IconSearch, SearchInput, Button } from 'hds-react'
 
 class SearchBar extends Component {
-
   onSubmit = value => {
     const { buttonAction } = this.props
     buttonAction(value)
@@ -21,15 +20,25 @@ class SearchBar extends Component {
     return (
       <span className="search-bar">
         {!searchOpen ? (
-          <IconSearch className="search-action-icon" size='m' onClick={() => toggleSearch(true)} />
+          <Button
+            variant="supplementary"
+            className="search-action-icon"
+            iconLeft={<IconSearch size="l" />}
+            onClick={() => toggleSearch(true)}
+          />
         ) : (
           <>
-              <SearchInput
-                clearButtonAriaLabel="Clear"
-                onSubmit={ value => this.onSubmit( value )}
-              />
-            <IconCross className="search-action-icon" size='m' onClick={this.onReset} />
-            </>
+            <SearchInput
+              clearButtonAriaLabel="Clear"
+              onSubmit={value => this.onSubmit(value)}
+            />
+            <Button
+              variant="supplementary"
+              iconLeft={<IconCross size="l"  />}
+              onClick={this.onReset}
+
+            />
+          </>
         )}
       </span>
     )
