@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Loader } from 'semantic-ui-react'
 import {
   initializeProject,
   saveProjectBase,
@@ -32,7 +31,7 @@ import { DOWNLOAD_PROJECT_DATA_FORM } from '../../constants'
 import { getFormValues } from 'redux-form'
 import moment from 'moment'
 import { userIdSelector } from '../../selectors/authSelector'
-import { Button, IconPen, IconPrinter, IconDownload } from 'hds-react'
+import { Button, IconPen, IconPrinter, IconDownload, LoadingSpinner } from 'hds-react'
 import { withRouter } from 'react-router-dom'
 class ProjectPage extends Component {
   constructor(props) {
@@ -258,14 +257,13 @@ class ProjectPage extends Component {
         <NavHeader
           routeItems={[
             { value: 'Kaavaprojektit', path: '/projects' },
-            { value: 'Ladataan...', path: '/' }
+            { value: '', path: '/' }
           ]}
-          title={t('loading')}
         />
         <div className="project-page-content">
-          <Loader inline={'centered'} active>
+          <LoadingSpinner className="loader-icon">
             {t('loading')}
-          </Loader>
+          </LoadingSpinner>
         </div>
       </div>
     )

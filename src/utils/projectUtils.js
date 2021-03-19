@@ -161,24 +161,6 @@ const formatPayload = (changedValues, sections, parentNames, initialValues) => {
   })
   return returnValue
 }
-// Returns parents from changed values.
-const getParents = changedValues => {
-  const keysToSearch = Object.keys(changedValues)
-
-  // Bug fix which caused saga crash
-  if (!keysToSearch || keysToSearch.length === 0) {
-    return
-  }
-  const parentNames = []
-
-  // Check if fieldset is in keysToSearch
-  keysToSearch.forEach(key => {
-    if (key.indexOf('fieldset') !== -1) parentNames.push(key)
-  })
-
-  return parentNames
-}
-
 function getFieldsetAttributes(parent, sections) {
   let fieldsetAttributes
   sections.some(title => {
@@ -196,15 +178,6 @@ function getFieldsetAttributes(parent, sections) {
   })
   return fieldsetAttributes
 }
-
-const getDefaultValue = (parentName, attributeData, name) => {
-  const fieldsetFields = attributeData[parentName]
-
-  if (fieldsetFields && fieldsetFields.length > 0) {
-    return fieldsetFields[0][name]
-  }
-}
-
 const generateArrayOfYears = () => {
   const max = new Date().getFullYear()
   const min = max - 20
@@ -264,8 +237,6 @@ export default {
   formatPhase,
   formatNextDeadline,
   formatSubtype,
-  getDefaultValue,
-  getParents,
   formatPayload,
   generateArrayOfYears,
   getFieldsetAttributes,

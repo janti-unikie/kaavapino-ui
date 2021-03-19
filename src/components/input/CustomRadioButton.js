@@ -7,7 +7,6 @@ const RadioButton = ({
   options
 }) => {
 
-  console.log( options )
   const [checked, setChecked] = useState(value)
   return (
     <span className="checkbox">

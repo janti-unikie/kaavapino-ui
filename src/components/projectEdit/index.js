@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getFormSyncErrors, getFormSubmitErrors, getFormValues } from 'redux-form'
-import { Loader } from 'semantic-ui-react'
+import { LoadingSpinner } from 'hds-react'
 import { isDirty } from 'redux-form/immutable'
 import {
   saveProject,
@@ -108,9 +108,7 @@ class ProjectEditPage extends Component {
     const { highlightGroup } = this.state
     if (!schema) {
       return (
-        <Loader inline={'centered'} active>
-          Ladataan
-        </Loader>
+        <LoadingSpinner className="loader-icon" />
       )
     }
     const currentSchemaIndex = schema.phases.findIndex(s => s.id === selectedPhase)
@@ -123,9 +121,7 @@ class ProjectEditPage extends Component {
 
     if (currentSchemaIndex === -1) {
       return (
-        <Loader inline={'centered'} active>
-          Ladataan
-        </Loader>
+        <LoadingSpinner className="loader-icon" />
       )
     }
     const showTimelineModal = show => {

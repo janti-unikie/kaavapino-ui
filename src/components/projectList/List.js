@@ -11,10 +11,10 @@ import {
   pollingProjectsSelector,
   amountOfProjectsToIncreaseSelector
 } from '../../selectors/projectSelector'
-import { Loader } from 'semantic-ui-react'
 import ListHeader from './ListHeader'
 import ListItem from './ListItem'
 import projectUtils from '../../utils/projectUtils'
+import { LoadingSpinner } from 'hds-react'
 
 class List extends Component {
   constructor(props) {
@@ -75,6 +75,8 @@ class List extends Component {
         showGraph: false,
         projectTab: newProjectTab
       }
+    } else {
+      return null
     }
   }
 
@@ -93,9 +95,7 @@ class List extends Component {
     if (loadingProjects || !phases) {
       return (
         <div className="project-list">
-          <Loader inline={'centered'} active>
-            Ladataan
-          </Loader>
+          <LoadingSpinner className="loader-icon" position="center" />
         </div>
       )
     }
