@@ -63,7 +63,6 @@ class ProjectListPage extends Component {
     this.setState({ searchOpen: opened })
 
     if (!opened) {
-      this.setFilter('')
       this.props.fetchProjects()
     }
   }
