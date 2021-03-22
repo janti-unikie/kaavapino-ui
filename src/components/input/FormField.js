@@ -114,6 +114,22 @@ const FormField = props => {
     )
   }
 
+  const renderOnHoldCheckbox = () => {
+    const newProps = {
+      ...field,
+      type: 'checkbox-onhold'
+    }
+    return (
+      <Form.Field
+        className={`checkbox-container small-margin'} ${showError ? 'error' : ''}`}
+      >
+        <Label>
+          <span className="checkbox">{renderField(newProps)}</span>
+        </Label>
+      </Form.Field>
+    )
+  }
+
   const renderDeadlineInfoField = () => {
     const newProps = {
       ...field,
@@ -170,6 +186,11 @@ const FormField = props => {
     // Only for project timetable modal
     if (isCheckBox && formName === EDIT_PROJECT_TIMETABLE_FORM) {
       return renderCheckBox()
+    }
+
+    // Only for project timetable modal
+    if (field.type === 'checkbox-onhold') {
+      return renderOnHoldCheckbox()
     }
     // Only for project timetable modal
     if (isDeadlineInfo && formName === EDIT_PROJECT_TIMETABLE_FORM) {

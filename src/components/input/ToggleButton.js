@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Radio } from 'semantic-ui-react'
 
 const ToggleButton = ({
@@ -6,6 +6,12 @@ const ToggleButton = ({
   meta: { error },
   ...custom
 }) => {
+  const [checked, setChecked ] = useState(value)
+
+  const onChange = () => {
+    setChecked( !checked )
+    rest.onChange( !checked )
+  }
   return (
     <div className={'radio-input-container'}>
       <Radio
@@ -15,8 +21,8 @@ const ToggleButton = ({
         onBlur={custom.onBlur}
         error={error}
         name={name}
-        onChange={() => rest.onChange(!value)}
-        checked={value ? true : false }
+        onChange={onChange}
+        checked={checked}
       />
     </div>
   )

@@ -34,13 +34,13 @@ const ListHeader = ({
         })}
         <span className="header-item project-timeline-toggle">
           Aikajana
-          <Radio onChange={() => toggleGraph()} toggle checked={graphToggled} />
+          <Radio onChange={toggleGraph} toggle checked={graphToggled} />
         </span>
       </div>
       <div className="project-list-mb-actions">
         <span className="project-timeline-toggle-mb">
           <Radio
-            onChange={() => toggleGraph()}
+            onChange={toggleGraph}
             toggle
             checked={graphToggled}
             label="Näytä aikajanat"

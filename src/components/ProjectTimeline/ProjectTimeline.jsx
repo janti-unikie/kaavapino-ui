@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { getProject, getProjectSuccessful } from '../../actions/projectActions'
 import { timelineProjectSelector } from '../../selectors/projectSelector'
 import { findWeek } from './helpers/helpers'
-import { IconError, IconRefresh } from 'hds-react'
+import { IconError, IconRefresh, Button, LoadingSpinner } from 'hds-react'
 
 function ProjectTimeline(props) {
   const { deadlines, projectView } = props
@@ -341,6 +341,17 @@ function ProjectTimeline(props) {
     createDrawItems(deadlineArray.deadlines)
     setTimelineLoaded(true)
   }
+
+  const showButtons = () =>
+    loadingProject ? (
+      <LoadingSpinner />
+    ) : (
+      <Button
+        variant="supplementary"
+        onClick={() => loadProject()}
+        iconRight={loadingProject ? <LoadingSpinner /> : <IconRefresh />}
+      />
+    )
   return (
     <div className="timeline-graph-container">
       {showError ? (
@@ -350,8 +361,7 @@ function ProjectTimeline(props) {
         </div>
       ) : null}
       {showLoadProject ? (
-        <IconRefresh  onClick={() => loadProject()}
-          className={`timeline-load-project-message ${loadingProject ? 'fa-spin' : null}`} />
+        <div className="timeline-load-project-message">{showButtons()} </div>
       ) : null}
       <div
         className={`timeline-item-container ${showError ? 'timeline-error' : null}`}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Map, TileLayer } from 'react-leaflet'
 import Polygon from '../common/Polygon'
-import { Button } from 'semantic-ui-react'
+import { Button } from 'hds-react'
 import {
   EPSG3879,
   formatGeoJSONToPositions,
@@ -105,9 +105,9 @@ class Geometry extends Component {
         </Map>
         {!disabled && (
           <div className="geometry-input-actions">
-            <Button onClick={this.clear}>Tyhjennä</Button>
-            <Button onClick={this.addArea}>Lisää uusi alue</Button>
-            <Button onClick={this.revert} disabled={!userActions.length}>
+            <Button variant="secondary" onClick={this.clear}>Tyhjennä</Button>
+            <Button variant="primary" onClick={this.addArea}>Lisää uusi alue</Button>
+            <Button variant="secondary" onClick={this.revert} disabled={!userActions.length}>
               Peruuta muutos
             </Button>
           </div>
