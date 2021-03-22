@@ -20,7 +20,7 @@ const DeadLineInput = ({
   const generated = currentDeadline && currentDeadline.generated
 
   const [currentValue, setCurrentValue] = useState(
-    currentDeadline ? currentDeadline.date : ''
+    currentDeadline ? currentDeadline.date : input.value
   )
 
   const [valueGenerated, setValueGenerated] = useState(generated)
@@ -48,9 +48,9 @@ const DeadLineInput = ({
       ? `${className} deadline-estimated`
       : className
 
-      const hasError =
-      editable && (inputUtils.hasError(error) || inputUtils.hasError(currentError))
-  if ( hasError ) {
+  const hasError =
+    editable && (inputUtils.hasError(error) || inputUtils.hasError(currentError))
+  if (hasError) {
     currentClassName = `${currentClassName} error-border`
   }
 
@@ -75,14 +75,17 @@ const DeadLineInput = ({
             setValueGenerated(true)
           }
         }}
-        fluid
       />
       {editable && valueGenerated ? (
         <span className="deadline-estimated">{t('deadlines.estimated')}</span>
       ) : (
         ''
       )}
-      {editable && hasError && <div className="error-text"><IconAlertCircle size='xs' /> {currentError} </div>}
+      {editable && hasError && (
+        <div className="error-text">
+          <IconAlertCircle size="xs" /> {currentError}{' '}
+        </div>
+      )}
     </div>
   )
 }

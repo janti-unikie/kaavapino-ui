@@ -17,21 +17,15 @@
     display: flex;
     font-weight: bold;
     justify-content: space-between;
-    position: relative;
     z-index: 1;
   }
 
   .input-header-icons {
-    align-items: center;
     display: flex;
     margin-right: 8px;
 
     @media screen and (min-width: 600px) {
       margin-right: 0;
-    }
-
-    :nth-child(2) {
-      margin-left: 8px;
     }
 
     .input-info {

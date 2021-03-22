@@ -285,9 +285,7 @@ class CustomField extends Component {
     )
   }
   renderDeadlineInfo = props => {
-    const { field, deadlines } = this.props
-
-    projectUtils.checkDeadline(props, deadlines)
+    const { field } = this.props
 
     return (
       <DeadlineInfoText

@@ -45,7 +45,7 @@ class EditFloorAreaFormModal extends Component {
       loading: false
     }
   }
-  componentWillMount () {
+  componentDidMount () {
     const { initialize, attributeData } = this.props
     initialize(attributeData)
   }
