@@ -1,38 +1,35 @@
-import React, { PureComponent } from 'react'
-import { Button } from 'semantic-ui-react'
+import React from 'react'
 import Input from './CustomInput'
 import isUrl from 'is-url'
 import ipRegex from 'ip-regex'
-import { IconCross, IconCheck } from 'hds-react'
+import { IconCross, IconCheck, Button, IconLink } from 'hds-react'
 
-class Link extends PureComponent {
-  openLink = () => window.open(this.props.input.value)
+const Link = props => {
+  const openLink = () => window.open(props.input.value)
 
-  render() {
-    const { value } = this.props.input
-    const valid = isUrl(value) || ipRegex({ exact: true }).test(value)
-    return (
-      <div className="link-container">
-        <Input type="text" {...this.props}  />
-        <Button
-          className="link-button"
-          labelPosition="right"
-          disabled={!valid}
-          icon="world"
-          label={{
-            basic: true,
-            content: 'Avaa',
-            style: { padding: '0 16px' }
-          }}
-          onClick={this.openLink}
-        />
-        {valid && <IconCheck size="l" color="green" />}
-        {!valid && value && value.length > 0 && (
-          <IconCross size='l' color="red" />
-        )}
-      </div>
-    )
-  }
+  const { value } = props.input
+  const valid = isUrl(value) || ipRegex({ exact: true }).test(value)
+
+  return (
+    <div className="link-container">
+      <Input
+        type="text"
+        {...props}
+      />
+      <Button
+        className="link-button"
+        disabled={!valid}
+        iconLeft={<IconLink />}
+        onClick={openLink}
+      >
+        Avaa
+      </Button>
+      {valid && <IconCheck className="link-status" size="l" color="green" />}
+      {!valid && value && value.length > 0 && (
+        <IconCross className="link-status" size="l" color="red" />
+      )}
+    </div>
+  )
 }
 
 export default Link
