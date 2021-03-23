@@ -10,22 +10,35 @@ const Link = props => {
   const { value } = props.input
   const valid = isUrl(value) || ipRegex({ exact: true }).test(value)
 
+  const multipleLinks = props.type === 'select-multiple'
+
+  const onChange = event => {
+    const value = event.target.value
+
+    if (multipleLinks) {
+      value && props.input.onChange(value.split(','))
+    } else {
+      props.input.onChange(value)
+    }
+  }
+
   return (
     <div className="link-container">
-      <Input
-        type="text"
-        {...props}
-      />
-      <Button
-        className="link-button"
-        disabled={!valid}
-        iconLeft={<IconLink />}
-        onClick={openLink}
-      >
-        Avaa
-      </Button>
-      {valid && <IconCheck className="link-status" size="l" color="green" />}
-      {!valid && value && value.length > 0 && (
+      <Input type="text" onChange={onChange} {...props} />
+      {!multipleLinks && (
+        <Button
+          className="link-button"
+          disabled={!valid}
+          iconLeft={<IconLink />}
+          onClick={openLink}
+        >
+          Avaa
+        </Button>
+      )}
+      {!multipleLinks && valid && (
+        <IconCheck className="link-status" size="l" color="green" />
+      )}
+      {!multipleLinks && !valid && value && value.length > 0 && (
         <IconCross className="link-status" size="l" color="red" />
       )}
     </div>
