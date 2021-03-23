@@ -28,7 +28,7 @@ class NewProjectFormModal extends Component {
   componentDidMount() {
     const { initialize, currentProject } = this.props
 
-    if ( !currentProject ) {
+    if (!currentProject) {
       return
     }
     initialize({
@@ -75,20 +75,18 @@ class NewProjectFormModal extends Component {
     this.props.handleClose()
     this.setState({ loading: false })
   }
-  getError = (error, fieldName ) => {
-
+  getError = (error, fieldName) => {
     // In case that there are field related errors, show errors.
     // Required field error is handled differently
-    if  (error) {
-       if ( fieldName === USER ) {
-         return error.user
-       }
+    if (error) {
+      if (fieldName === USER) {
+        return error.user
+      }
     }
     return error
-
   }
 
-  getFormField = ( fieldProps )  => {
+  getFormField = fieldProps => {
     const { formSubmitErrors, formValues } = this.props
 
     const error =
@@ -97,7 +95,13 @@ class NewProjectFormModal extends Component {
       fieldProps.field &&
       formSubmitErrors[fieldProps.field.name]
 
-    return <FormField {...fieldProps} error={this.getError( error, fieldProps.field.name)} formValues={formValues} />
+    return (
+      <FormField
+        {...fieldProps}
+        error={this.getError(error, fieldProps.field.name)}
+        formValues={formValues}
+      />
+    )
   }
 
   render() {
@@ -106,14 +110,15 @@ class NewProjectFormModal extends Component {
     const showXLProjectOptions = selectedSubType === 5
     const isEdit = !!currentProject
 
-    const isValidXLProject =  formValues && (formValues.create_principles || formValues.create_draft)
+    const isValidXLProject =
+      formValues && (formValues.create_principles || formValues.create_draft)
 
     const hideSaveButton = () => {
-      if ( !formValues ) {
+      if (!formValues) {
         return true
       }
-      if ( formValues.name && formValues.user && formValues.subtype ) {
-        if ( selectedSubType === 5 ) {
+      if (formValues.name && formValues.user && formValues.subtype) {
+        if (selectedSubType === 5) {
           return !isValidXLProject
         }
         return false
@@ -131,7 +136,9 @@ class NewProjectFormModal extends Component {
         open={this.props.modalOpen}
         closeIcon
       >
-        <Modal.Header> {isEdit ? 'Muokkaa luontitietoja' : 'Luo uusi projekti'}</Modal.Header>
+        <Modal.Header>
+          {isEdit ? 'Muokkaa luontitietoja' : 'Luo uusi projekti'}
+        </Modal.Header>
         <Modal.Content>
           <Form>
             <Form.Group widths="equal">
@@ -212,19 +219,19 @@ class NewProjectFormModal extends Component {
           </Form>
         </Modal.Content>
         <Modal.Actions>
-        <div className="form-buttons">
-          <Button variant='secondary' disabled={loading}  onClick={this.handleClose}>
-            Peruuta
-          </Button>
-          <Button
-            variant='primary'
-            disabled={loading ? true : false || hideSave}
-            loading={loading.toString()}
-            type="submit"
-            onClick={this.handleSubmit}
-          >
-            {isEdit ? 'Tallenna' : 'Luo projekti'}
-          </Button>
+          <div className="form-buttons">
+            <Button variant="secondary" disabled={loading} onClick={this.handleClose}>
+              Peruuta
+            </Button>
+            <Button
+              variant="primary"
+              disabled={loading ? true : false || hideSave}
+              loading={loading.toString()}
+              type="submit"
+              onClick={this.handleSubmit}
+            >
+              {isEdit ? 'Tallenna' : 'Luo projekti'}
+            </Button>
           </div>
         </Modal.Actions>
       </Modal>

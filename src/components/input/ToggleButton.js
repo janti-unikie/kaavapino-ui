@@ -6,7 +6,7 @@ const ToggleButton = ({
   meta: { error },
   ...custom
 }) => {
-  const [checked, setChecked ] = useState(value)
+  const [checked, setChecked ] = useState(value ? true : false)
 
   const onChange = () => {
     setChecked( !checked )

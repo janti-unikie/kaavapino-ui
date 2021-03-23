@@ -16,7 +16,11 @@ const ListHeader = ({
   buttonAction
 }) => {
   const getArrowIcon = () => {
-    return dir === 0 ? <IconAngleUp display='none' size='s' /> : <IconAngleDown size='s'/>
+    return dir === 0 ? (
+      <IconAngleUp size="xs" display="none" />
+    ) : (
+      <IconAngleDown size="xs" />
+    )
   }
   return (
     <div className="project-list-wrapper">
@@ -26,9 +30,7 @@ const ListHeader = ({
           return (
             <span className="header-item" key={index} onClick={() => sort(index)}>
               {item}
-              <span className="header-sort-icon">
-                {selected === index && getArrowIcon()}
-              </span>
+              {selected === index && getArrowIcon()}
             </span>
           )
         })}

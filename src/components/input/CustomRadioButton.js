@@ -7,7 +7,8 @@ const RadioButton = ({
   options
 }) => {
 
-  const [checked, setChecked] = useState(value)
+  const [checked, setChecked] = useState(value ? value : false)
+
   return (
     <span className="checkbox">
       {options.map((option, i) => (
