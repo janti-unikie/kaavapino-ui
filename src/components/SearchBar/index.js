@@ -25,17 +25,20 @@ class SearchBar extends Component {
             className="search-action-icon"
             iconLeft={<IconSearch size="l" />}
             onClick={() => toggleSearch(true)}
+            aria-label="Hae"
           />
         ) : (
           <>
             <SearchInput
               clearButtonAriaLabel="Clear"
               onSubmit={value => this.onSubmit(value)}
+              aria-label="Tyhjennä"
             />
             <Button
               variant="supplementary"
               iconLeft={<IconCross size="l"  />}
               onClick={this.onReset}
+              aria-label="Poista"
 
             />
           </>

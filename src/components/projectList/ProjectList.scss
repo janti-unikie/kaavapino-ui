@@ -121,7 +121,6 @@
       }
       .project-list-item {
         height: 64px;
-        padding: 20px 28px 0;
         border: 2px solid #dedfe1;
         font-size: 16px;
         position: relative;
@@ -225,7 +224,6 @@
           text-overflow: ellipsis;
           white-space: nowrap;
           grid-column: span 2;
-          text-decoration-line: underline;
           text-decoration-thickness: 2px;
           text-decoration-color: $gray2;
           //border-bottom: 2px solid $gray2;
@@ -299,29 +297,8 @@
       }
 
       .project-list-button {
-        position: absolute;
-        white-space: nowrap;
-        color: white;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        border-radius: 5px;
-        max-height: 30px;
-        grid-column: span 1;
-        right: 36px;
-        top: 22px;
-
-        svg {
-          height: 20px;
-          width: 20px;
-
-          @media screen and (max-width: 800px) {
-            position: initial;
-          }
-        }
-        @media screen and (max-width: 599px) {
-          display: none;
-        }
+        overflow: hidden;
+        height: 60px;
       }
 
       .project-list-item-name,
@@ -332,6 +309,9 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+      }
+      .center {
+        margin: auto;
       }
 
       .project-list-sublist {

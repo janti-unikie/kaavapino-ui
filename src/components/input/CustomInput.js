@@ -5,7 +5,7 @@ import { TextInput } from 'hds-react'
 
 const CustomInput = ({ input, meta: { error }, ...custom }) => {
 
-  return <TextInput error={inputUtils.hasError(error).toString()} {...input} {...custom} fluid='true' />
+  return <TextInput aria-label={input.name} error={inputUtils.hasError(error).toString()} {...input} {...custom} fluid='true' />
 }
 
 CustomInput.propTypes = {

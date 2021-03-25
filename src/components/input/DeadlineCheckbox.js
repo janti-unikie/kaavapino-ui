@@ -29,6 +29,7 @@ const DeadlineCheckbox = ({
   }
   return (
     <Checkbox
+      aria-label={name}
       disabled={disabled}
       label={label}
       updated={updated}

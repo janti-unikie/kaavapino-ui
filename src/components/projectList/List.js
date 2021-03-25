@@ -67,7 +67,7 @@ class List extends Component {
     }
   }
 
-  static getDerivedStateFromProps(nextProps,prevState) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const { newProjectTab } = nextProps
     const { projectTab } = prevState
     if (newProjectTab && newProjectTab !== projectTab) {
@@ -89,7 +89,8 @@ class List extends Component {
       users,
       searchOpen,
       toggleSearch,
-      isUserPrivileged
+      isUserPrivileged,
+      modifyProject
     } = this.props
 
     if (loadingProjects || !phases) {
@@ -115,16 +116,7 @@ class List extends Component {
 
     items.forEach(
       (
-        {
-          attribute_data,
-          name,
-          id,
-          modified_at,
-          user,
-          subtype,
-          phase,
-          pino_number
-        },
+        { attribute_data, name, id, modified_at, user, subtype, phase, pino_number },
         i
       ) => {
         const listItem = {
@@ -138,7 +130,14 @@ class List extends Component {
           projectId: attribute_data['hankenumero'] || '-'
         }
         projects.push(
-          <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged} />
+          <ListItem
+            key={i}
+            modifyProject={modifyProject}
+            item={listItem}
+            showGraph={showGraph}
+            phases={phases}
+            isUserPrivileged={isUserPrivileged}
+          />
         )
       }
     )

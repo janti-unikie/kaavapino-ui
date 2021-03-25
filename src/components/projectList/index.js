@@ -113,6 +113,7 @@ class ProjectListPage extends Component {
         searchOpen={searchOpen}
         buttonAction={this.fetchFilteredItems}
         newProjectTab={'own'}
+        modifyProject={modifyProject}
       />
     )
 
@@ -127,6 +128,7 @@ class ProjectListPage extends Component {
         setFilter={this.setFilter}
         isUserPrivileged={showCreate}
         newProjectTab={'all'}
+        modifyProject={modifyProject}
       />
     )
 
@@ -139,6 +141,7 @@ class ProjectListPage extends Component {
         setFilter={this.setFilter}
         isUserPrivileged={showCreate}
         newProjectTab={'onhold'}
+        modifyProject={modifyProject}
       />
     )
 
@@ -151,6 +154,7 @@ class ProjectListPage extends Component {
         setFilter={this.setFilter}
         isUserPrivileged={showCreate}
         newProjectTab={'onhold'}
+        modifyProject={modifyProject}
       />
     )
 
@@ -176,6 +180,10 @@ class ProjectListPage extends Component {
         ? t('projects.amount', { pieces: archivedProjects.length })
         : ''
     }`
+
+    const modifyProject = id => {
+      this.props.history.push(`/${id}/edit`)
+    }
 
     const createTabPanes = () => showCreate
       ? (

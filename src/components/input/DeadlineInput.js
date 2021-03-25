@@ -62,6 +62,7 @@ const DeadLineInput = ({
         type={type}
         disabled={disabled}
         placeholder={placeholder}
+        aria-label={input.name}
         onChange={event => {
           const value = event.target.value
           setCurrentValue(value)

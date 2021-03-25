@@ -348,6 +348,7 @@ function ProjectTimeline(props) {
     ) : (
       <Button
         variant="supplementary"
+        aria-label="Lataa aikajana"
         onClick={() => loadProject()}
         iconRight={loadingProject ? <LoadingSpinner /> : <IconRefresh />}
       />

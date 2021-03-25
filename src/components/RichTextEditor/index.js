@@ -121,29 +121,30 @@ function RichTextEditor(props) {
       >
         <div id={toolbarName} className="ql-toolbar">
           <span className="ql-formats">
-            <button className="ql-bold" />
-            <button className="ql-italic" />
-            <button className="ql-underline" />
-            <button className="ql-strike" />
+            <button aria-label="bold" className="ql-bold" />
+            <button aria-label="italic" className="ql-italic" />
+            <button aria-label="underline" className="ql-underline" />
+            <button aria-label="strike" className="ql-strike" />
           </span>
           <span className="ql-formats">
-            <select className="ql-color" />
-            <select className="ql-background" />
+            <select aria-label="color" className="ql-color" />
+            <select aria-label="background" className="ql-background" />
           </span>
           <span className="ql-formats">
-            <button className="ql-list" value="ordered" />
-            <button className="ql-list" value="bullet" />
+            <button aria-label="list" className="ql-list" value="ordered" />
+            <button aria-label="bullet" className="ql-list" value="bullet" />
           </span>
           <span className="ql-formats">
-            <button className="ql-script" value="super" />
-            <button className="ql-script" value="sub" />
+            <button aria-label="script" className="ql-script" value="super" />
+            <button aria-label="sub" className="ql-script" value="sub" />
           </span>
           <span className="ql-formats">
-            <button className="quill-toolbar-comment-button" onClick={addComment}>
+            <button aria-label="Lisää kommentti" className="quill-toolbar-comment-button" onClick={addComment}>
               <CommentIcon className="comment-icon" />
             </button>
             <button
               className="show-comments-button"
+              aria-label="Näytä kommentit"
               onClick={() => setShowComments(!showComments)}
               disabled={!comments || !comments.length}
             >
