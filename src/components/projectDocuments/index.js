@@ -6,7 +6,7 @@ import {
   documentsLoadingSelector
 } from '../../selectors/documentSelector'
 import { currentProjectIdSelector } from '../../selectors/projectSelector'
-import { Loader } from 'semantic-ui-react'
+import { LoadingSpinner } from 'hds-react'
 import DocumentGroup from './DocumentGroup'
 
 class ProjectDocumentsPage extends Component {
@@ -34,9 +34,7 @@ class ProjectDocumentsPage extends Component {
     return (
       <div className="documents-page-container">
         {documentsLoading && (
-          <Loader inline={'centered'} active>
-            Ladataan
-          </Loader>
+          <LoadingSpinner className="loader-icon" />
         )}
         {!documentsLoading && Object.keys(groupedDocuments).length === 0 && (
           <p className="no-documents">Ei dokumentteja.</p>

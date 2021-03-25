@@ -11,10 +11,10 @@ import {
   pollingProjectsSelector,
   amountOfProjectsToIncreaseSelector
 } from '../../selectors/projectSelector'
-import { Loader } from 'semantic-ui-react'
 import ListHeader from './ListHeader'
 import ListItem from './ListItem'
 import projectUtils from '../../utils/projectUtils'
+import { LoadingSpinner } from 'hds-react'
 
 class List extends Component {
   constructor(props) {
@@ -67,7 +67,7 @@ class List extends Component {
     }
   }
 
-  static getDerivedStateFromProps(nextProps,prevState) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const { newProjectTab } = nextProps
     const { projectTab } = prevState
     if (newProjectTab && newProjectTab !== projectTab) {
@@ -75,6 +75,8 @@ class List extends Component {
         showGraph: false,
         projectTab: newProjectTab
       }
+    } else {
+      return null
     }
   }
 
@@ -87,17 +89,14 @@ class List extends Component {
       users,
       searchOpen,
       toggleSearch,
-      setFilter,
       isUserPrivileged,
-      buttonAction
+      modifyProject
     } = this.props
 
     if (loadingProjects || !phases) {
       return (
         <div className="project-list">
-          <Loader inline={'centered'} active>
-            Ladataan
-          </Loader>
+          <LoadingSpinner className="loader-icon" position="center" />
         </div>
       )
     }
@@ -117,16 +116,7 @@ class List extends Component {
 
     items.forEach(
       (
-        {
-          attribute_data,
-          name,
-          id,
-          modified_at,
-          user,
-          subtype,
-          phase,
-          pino_number
-        },
+        { attribute_data, name, id, modified_at, user, subtype, phase, pino_number },
         i
       ) => {
         const listItem = {
@@ -140,7 +130,14 @@ class List extends Component {
           projectId: attribute_data['hankenumero'] || '-'
         }
         projects.push(
-          <ListItem key={i} item={listItem} showGraph={showGraph} phases={phases} isUserPrivileged={isUserPrivileged} />
+          <ListItem
+            key={i}
+            modifyProject={modifyProject}
+            item={listItem}
+            showGraph={showGraph}
+            phases={phases}
+            isUserPrivileged={isUserPrivileged}
+          />
         )
       }
     )
@@ -156,8 +153,6 @@ class List extends Component {
             sort={this.setSort}
             toggleGraph={this.toggleGraph}
             graphToggled={showGraph}
-            setFilter={setFilter}
-            buttonAction={buttonAction}
           />
         )}
         {projects.length !== 0 && projects}

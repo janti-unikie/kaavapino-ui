@@ -7,7 +7,6 @@ import ReduxToastr from 'react-redux-toastr'
 import App from './components/App'
 import store from './store'
 import userManager from './utils/userManager'
-import iconHandler from './utils/iconHandler'
 import apiUtils from './utils/apiUtils'
 import 'semantic-ui-css/semantic.min.css'
 import './index.css'
@@ -20,9 +19,6 @@ if (window.location.pathname === '/silent-renew') {
 } else {
   // Initialize axios
   apiUtils.initAxios()
-
-  // Initialize icons
-  iconHandler.initIcons()
 
   // Initialize sentry
   if (process.env.NODE_ENV === 'production') {

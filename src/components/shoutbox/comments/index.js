@@ -18,8 +18,8 @@ import {
   amountOfCommentsToShowSelector
 } from '../../../selectors/commentSelector'
 import { userIdSelector } from '../../../selectors/authSelector'
-import { Input, Button } from 'semantic-ui-react'
 import Comment from './Comment'
+import { TextInput, Button } from 'hds-react'
 
 class Comments extends Component {
   constructor(props) {
@@ -121,20 +121,17 @@ class Comments extends Component {
           ))}
         </div>
         <div className="comment-submit-container">
-            <Input
-              onChange={this.handleChange}
-              type="text"
-              fluid
-              placeholder="Lisää kommentti"
-              action={
-                (
-                <Button primary onClick={this.handleSubmit}>
-                  Lähetä
-                </Button>
-                )
-              }
-              value={this.state.value}
-            />
+          <TextInput
+            onChange={this.handleChange}
+            type="text"
+            placeholder="Lisää kommentti"
+            value={this.state.value}
+            className="comment-text-field"
+          />
+
+          <Button className="send-button" variant="primary" onClick={this.handleSubmit}>
+            Lähetä
+          </Button>
         </div>
       </div>
     )

@@ -6,7 +6,7 @@
         "all-short": "Kaikki",
         "own-long": "Omat projektit",
         "all-long": "Kaikki projektit",
-        "amount": "{{pieces}} kpl",
+        "amount": "({{pieces}} kpl)",
         "title": "Kaavaprojektit",
         "createNewProject": "Luo uusi projekti",
         "createReports": "Luo raportteja",

@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import TextArea from '../../../components/input/TextArea'
+import CustomTextArea from '../../../components/input/CustomTextArea'
 
 describe('<TextArea />', () => {
   let textAreaComponent
@@ -8,7 +8,7 @@ describe('<TextArea />', () => {
   beforeEach(() => {
     change = ''
     textAreaComponent = mount(
-      <TextArea
+      <CustomTextArea
         input={{ value: '123', name: 'test', onChange: e => (change = e.target.value) }}
         meta={{}}
       />
@@ -28,7 +28,7 @@ describe('<TextArea />', () => {
 
   it('can have custom props', () => {
     const customComponent = mount(
-      <TextArea input={{}} meta={{}} placeholder="123" />
+      <CustomTextArea input={{}} meta={{}} placeholder="123" />
     ).find('textarea')
     const { placeholder } = customComponent.instance()
     expect(placeholder).toBe('123')

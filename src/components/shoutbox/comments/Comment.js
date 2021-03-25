@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Input, Button, Dropdown } from 'semantic-ui-react'
+import { Dropdown } from 'semantic-ui-react'
 import projectUtils from '../../../utils/projectUtils'
+import { TextInput, Button } from 'hds-react'
 
 class Comment extends Component {
   constructor(props) {
@@ -95,7 +96,7 @@ class Comment extends Component {
         <div className="comment-content">
           {!editing && content}
           {editing && (
-            <Input
+            <TextInput
               onChange={e => this.setState({ content: e.target.value })}
               focus
               type="text"
@@ -108,10 +109,10 @@ class Comment extends Component {
           <div className="comment-footer-actions">
             {editing && (
               <React.Fragment>
-                <Button secondary onClick={this.handleEditCancel}>
+                <Button variant="secondary" onClick={this.handleEditCancel}>
                   Peruuta
                 </Button>
-                <Button primary onClick={this.handleEditSave} disabled={!content}>
+                <Button variant="primary" onClick={this.handleEditSave} disabled={!content}>
                   Tallenna
                 </Button>
               </React.Fragment>

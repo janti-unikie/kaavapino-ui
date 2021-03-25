@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getFormSyncErrors, getFormSubmitErrors, getFormValues } from 'redux-form'
-import { Loader } from 'semantic-ui-react'
+import { LoadingSpinner } from 'hds-react'
 import { isDirty } from 'redux-form/immutable'
 import {
   saveProject,
@@ -36,6 +36,7 @@ import EditProjectTimetableModal from '../project/EditProjectTimetableModal'
 import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
 import { usersSelector } from '../../selectors/userSelector'
 import { userIdSelector } from '../../selectors/authSelector'
+import { withRouter } from 'react-router-dom'
 import projectUtils from '../../utils/projectUtils'
 class ProjectEditPage extends Component {
   state = {
@@ -107,9 +108,7 @@ class ProjectEditPage extends Component {
     const { highlightGroup } = this.state
     if (!schema) {
       return (
-        <Loader inline={'centered'} active>
-          Ladataan
-        </Loader>
+        <LoadingSpinner className="loader-icon" />
       )
     }
     const currentSchemaIndex = schema.phases.findIndex(s => s.id === selectedPhase)
@@ -122,9 +121,7 @@ class ProjectEditPage extends Component {
 
     if (currentSchemaIndex === -1) {
       return (
-        <Loader inline={'centered'} active>
-          Ladataan
-        </Loader>
+        <LoadingSpinner className="loader-icon" />
       )
     }
     const showTimelineModal = show => {
@@ -258,4 +255,4 @@ const mapDispatchToProps = {
   getProjectSnapshot
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage)
+export default withRouter( connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage))

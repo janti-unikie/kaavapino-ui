@@ -19,15 +19,21 @@
 
 
   .comment-submit-container {
-    display: flex;
-    flex-direction: column;
-    flex: 0.5;
+    display: inline-flex;
     margin-top: 16px;
+    width: 100%;
 
     .ui.button {
       height: 56px;
     }
   }
+}
+.send-button {
+  height: 56px;
+  margin-left: 2px;
+}
+.comment-text-field {
+  width: 100%;
 }
 
 .comment-list {

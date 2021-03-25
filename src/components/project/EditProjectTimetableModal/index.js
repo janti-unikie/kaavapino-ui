@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Form, Button } from 'semantic-ui-react'
+import { Modal, Form } from 'semantic-ui-react'
 import { reduxForm, getFormSubmitErrors, getFormValues } from 'redux-form'
 import { connect } from 'react-redux'
 import { EDIT_PROJECT_TIMETABLE_FORM } from '../../../constants'
@@ -12,8 +12,7 @@ import './styles.scss'
 import { deadlineSectionsSelector } from '../../../selectors/schemaSelector'
 import { withTranslation } from 'react-i18next'
 import { deadlinesSelector } from '../../../selectors/projectSelector'
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, IconInfoCircle } from 'hds-react'
 
 class EditProjectTimeTableModal extends Component {
   constructor(props) {
@@ -74,10 +73,22 @@ class EditProjectTimeTableModal extends Component {
   getFormField(fieldProps, key) {
     const { formSubmitErrors, formValues, deadlines } = this.props
     const error =
-      formSubmitErrors &&
-      fieldProps &&
-      formSubmitErrors &&
-      formSubmitErrors[fieldProps.field.name]
+    formSubmitErrors &&
+    fieldProps &&
+    formSubmitErrors &&
+    formSubmitErrors[fieldProps.field.name]
+    let className = ''
+
+    if ( error !== undefined ) {
+
+      className = 'modal-field error-border'
+    } else {
+      className = 'modal-field'
+    }
+    // Special case since label is used.
+    if ( fieldProps.field.display === 'checkbox') {
+      className = error ? 'error-border' : ''
+    }
 
     return (
       <div key={key}>
@@ -88,7 +99,7 @@ class EditProjectTimeTableModal extends Component {
           deadlines={deadlines}
           error={error}
           formValues={formValues}
-          className={error ? 'modal-field error-border' : 'modal-field'}
+          className={className}
           isProjectTimetableEdit={true}
         />
         {error && <div className="field-error">{error}</div>}
@@ -98,9 +109,10 @@ class EditProjectTimeTableModal extends Component {
   getFormFields = (sections, sectionIndex) => {
     const formFields = []
     sections.forEach(subsection => {
-      subsection.attributes && subsection.attributes.forEach((field, fieldIndex) => {
-        formFields.push(this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`))
-      })
+      subsection.attributes &&
+        subsection.attributes.forEach((field, fieldIndex) => {
+          formFields.push(this.getFormField({ field }, `${sectionIndex} - ${fieldIndex}`))
+        })
     })
     return formFields
   }
@@ -141,27 +153,25 @@ class EditProjectTimeTableModal extends Component {
             )}
           </Form>
           <div className="warning-box">
-            <FontAwesomeIcon
-              className="warning-icon"
-              icon={faExclamationTriangle}
-              size="sm"
-            />
-            {t('deadlines.warning')}
+          <span><IconInfoCircle className="warning-icon" size='s' /></span>
+          <span> {t('deadlines.warning')}</span>
           </div>
         </Modal.Content>
         <Modal.Actions>
-          <Button secondary disabled={loading} onClick={this.handleClose}>
-            {t('common.cancel')}
-          </Button>
-          <Button
-            primary
-            disabled={loading}
-            loading={loading}
-            type="submit"
-            onClick={this.handleSubmit}
-          >
-            {t('common.save')}
-          </Button>
+          <span className="form-buttons">
+            <Button variant="secondary" disabled={loading} onClick={this.handleClose}>
+              {t('common.cancel')}
+            </Button>
+            <Button
+              variant="primary"
+              disabled={loading}
+              loading={loading.toString()}
+              type="submit"
+              onClick={this.handleSubmit}
+            >
+              {t('common.save')}
+            </Button>
+          </span>
         </Modal.Actions>
       </Modal>
     )

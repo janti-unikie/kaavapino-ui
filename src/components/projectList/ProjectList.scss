@@ -5,6 +5,20 @@
   margin: 0 auto;
   max-width: 1148px;
   width: calc(100% - 32px);
+
+  
+
+  .header-buttons {
+    text-align: right;
+    margin: 10px 0 10px 0;
+   button {
+      margin-left: 10px;
+
+      svg {
+        padding-right: 2px;
+      }
+    }
+  }
   .nav-header-container {
     .nav-header-actions {
       margin-top: 0;
@@ -79,6 +93,7 @@
           width: 300px;
           height: 56px;
         }
+       
       }
       .project-list-item-container {
         color: $black;
@@ -106,7 +121,6 @@
       }
       .project-list-item {
         height: 64px;
-        padding: 20px 28px 0;
         border: 2px solid #dedfe1;
         font-size: 16px;
         position: relative;
@@ -202,7 +216,7 @@
 
         .header-item {
           text-align: center;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: bold;
           user-select: none;
           cursor: pointer;
@@ -210,7 +224,6 @@
           text-overflow: ellipsis;
           white-space: nowrap;
           grid-column: span 2;
-          text-decoration-line: underline;
           text-decoration-thickness: 2px;
           text-decoration-color: $gray2;
           //border-bottom: 2px solid $gray2;
@@ -264,7 +277,7 @@
             font-size: 14px;
             padding: 4px 14px;
             border: 2px solid $color-primary;
-
+            
             .angle-icon {
               display: none;
             }
@@ -284,29 +297,8 @@
       }
 
       .project-list-button {
-        position: absolute;
-        white-space: nowrap;
-        color: white;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        border-radius: 5px;
-        max-height: 30px;
-        grid-column: span 1;
-        right: 36px;
-        top: 22px;
-
-        svg {
-          height: 20px;
-          width: 20px;
-
-          @media screen and (max-width: 800px) {
-            position: initial;
-          }
-        }
-        @media screen and (max-width: 599px) {
-          display: none;
-        }
+        overflow: hidden;
+        height: 60px;
       }
 
       .project-list-item-name,
@@ -317,6 +309,9 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+      }
+      .center {
+        margin: auto;
       }
 
       .project-list-sublist {
@@ -377,7 +372,6 @@
     border: none;
     height: 50px;
     margin-bottom: 30px;
-    margin-top: -68px;
     font-size: 16px;
     .item {
       border-radius: 0;

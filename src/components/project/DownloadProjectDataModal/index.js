@@ -5,7 +5,7 @@ import FormField from '../../input/FormField'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { phasesSelector } from '../../../selectors/phaseSelector'
-import { Button, Modal, Form } from 'semantic-ui-react'
+import {  Modal, Form } from 'semantic-ui-react'
 import { getProjectSnapshot, resetProjectSnapshot } from '../../../actions/projectActions'
 import { getFormValues } from 'redux-form'
 import { currentProjectSelector } from '../../../selectors/projectSelector'
@@ -14,12 +14,13 @@ import { CSVLink } from 'react-csv'
 import { withTranslation } from 'react-i18next'
 import { isObject } from 'lodash'
 import toPlaintext from 'quill-delta-to-plaintext'
+import { Button } from 'hds-react'
 
 import './styles.scss'
 
 class DownloadProjectDataModal extends Component {
   getFormField = fieldProps => {
-    return <FormField {...fieldProps} onChange={this.onChange} />
+    return <FormField className="download-project-data-field" {...fieldProps} onChange={this.onChange} />
   }
 
   onChange = () => {
@@ -109,7 +110,7 @@ class DownloadProjectDataModal extends Component {
 
     return (
       <Modal
-        className="form-modal"
+        className="form-modal download-project"
         size={'tiny'}
         onClose={this.handleClose}
         open={this.props.open}
@@ -141,7 +142,7 @@ class DownloadProjectDataModal extends Component {
               })}
             </Form.Group>
           </Form>
-          <Button primary onClick={this.loadClicked}>
+          <Button variant='secondary' onClick={this.loadClicked}>
             {t('print-project-data.load-project-data')}
           </Button>
           <div className="download-csv">
@@ -162,7 +163,7 @@ class DownloadProjectDataModal extends Component {
           </div>
         </Modal.Content>
         <Modal.Actions>
-          <Button secondary onClick={this.handleClose}>
+          <Button variant='secondary' onClick={this.handleClose}>
             {t('print-project-data.button-close')}
           </Button>
         </Modal.Actions>

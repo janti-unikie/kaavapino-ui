@@ -1,20 +1,27 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Input } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
 import { useTranslation } from 'react-i18next'
+import { TextInput, IconAlertCircle } from 'hds-react'
 
 const DeadLineInput = ({
   input,
   meta: { error },
   currentDeadline,
   editable,
-  ...custom
+  type,
+  disabled,
+  placeholder,
+  className
 }) => {
   const { t } = useTranslation()
 
   let currentError
   const generated = currentDeadline && currentDeadline.generated
+
+  const [currentValue, setCurrentValue] = useState(
+    currentDeadline ? currentDeadline.date : input.value
+  )
 
   const [valueGenerated, setValueGenerated] = useState(generated)
 
@@ -36,20 +43,32 @@ const DeadLineInput = ({
     }
   }
 
+  let currentClassName =
+    generated && valueGenerated && editable
+      ? `${className} deadline-estimated`
+      : className
+
   const hasError =
     editable && (inputUtils.hasError(error) || inputUtils.hasError(currentError))
+  if (hasError) {
+    currentClassName = `${currentClassName} error-border`
+  }
 
   return (
     <div>
-      <Input
-        error={hasError}
-        {...input}
-        {...custom}
-        className={
-          generated && valueGenerated && editable
-            ? `${custom.className} deadline-estimated`
-            : custom.className
-        }
+      <TextInput
+        value={currentValue}
+        name={input.name}
+        type={type}
+        disabled={disabled}
+        placeholder={placeholder}
+        aria-label={input.name}
+        onChange={event => {
+          const value = event.target.value
+          setCurrentValue(value)
+          input.onChange(value)
+        }}
+        className={currentClassName}
         onBlur={() => {
           if (input.value !== input.defaultValue) {
             setValueGenerated(false)
@@ -57,14 +76,17 @@ const DeadLineInput = ({
             setValueGenerated(true)
           }
         }}
-        fluid
       />
       {editable && valueGenerated ? (
         <span className="deadline-estimated">{t('deadlines.estimated')}</span>
       ) : (
         ''
       )}
-      {editable && currentError && <div className="error-text">{currentError} </div>}
+      {editable && hasError && (
+        <div className="error-text">
+          <IconAlertCircle size="xs" /> {currentError}{' '}
+        </div>
+      )}
     </div>
   )
 }

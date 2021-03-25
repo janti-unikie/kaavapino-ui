@@ -1,40 +1,49 @@
 import React, { Component } from 'react'
 import './SearchBar.scss'
-import { Button, Input, Form } from 'semantic-ui-react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ReactComponent as MagnifierIcon } from '../../assets/icons/magnifier-icon.svg'
+import { IconCross, IconSearch, SearchInput, Button } from 'hds-react'
 
 class SearchBar extends Component {
+  onSubmit = value => {
+    const { buttonAction } = this.props
+    buttonAction(value)
+  }
+
+  onReset = () => {
+    const { buttonAction, toggleSearch } = this.props
+
+    toggleSearch(false)
+    buttonAction('')
+  }
   render() {
-    const { setFilter, searchOpen, toggleSearch, buttonAction } = this.props
+    const { searchOpen, toggleSearch } = this.props
 
     return (
-      <div className="search-bar">
+      <span className="search-bar">
         {!searchOpen ? (
-          <MagnifierIcon className="magnifier-icon" onClick={() => toggleSearch(true)} />
+          <Button
+            variant="supplementary"
+            className="search-action-icon"
+            iconLeft={<IconSearch size="l" />}
+            onClick={() => toggleSearch(true)}
+            aria-label="Hae"
+          />
         ) : (
-          <div className="search-bar-bar">
-            <Form>
-              <Input
-                autoFocus
-                onChange={e => setFilter(e.target.value)}
-                type="text"
-                fluid
-                placeholder="Hae"
-                action={
-                  (
-                  <Button onClick={buttonAction} primary>
-                    Hae
-                  </Button>
-                  )
-                }
-              />
-            </Form>
-            <MagnifierIcon className="magnifier-icon" />
-            <FontAwesomeIcon onClick={() => toggleSearch(false)} icon="times" />
-          </div>
+          <>
+            <SearchInput
+              clearButtonAriaLabel="Clear"
+              onSubmit={value => this.onSubmit(value)}
+              aria-label="Tyhjennä"
+            />
+            <Button
+              variant="supplementary"
+              iconLeft={<IconCross size="l"  />}
+              onClick={this.onReset}
+              aria-label="Poista"
+
+            />
+          </>
         )}
-      </div>
+      </span>
     )
   }
 }

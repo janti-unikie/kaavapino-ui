@@ -1,29 +1,30 @@
-import React from 'react'
-import { Checkbox } from 'semantic-ui-react'
+import React, { useState } from 'react'
+import { Checkbox } from 'hds-react'
 
 const OnHoldCheckbox = ({
-  input: { name, label, onChange },
+  input: { name, onChange },
   meta: { error },
   projectOnhold,
+  placeholder,
   ...custom
 }) => {
-    const onChangeSave = data => {
-        onChange(data.checked)
-        custom.saveProjectBase()
-    }
+  const [checked, setChecked] = useState(projectOnhold)
+  const onChangeSave = () => {
+    setChecked(!checked)
+    onChange(!checked)
+    setTimeout(() => custom.saveProjectBase(), 200)
+  }
 
   return (
-    <div className={'onhold-checkbox-container'}>
-      <Checkbox
-        label={label}
-        placeholder={custom.placeholder}
-        error={error}
-        name={name}
-        onChange={(e, data) => onChangeSave(data)}
-        defaultChecked={projectOnhold}
-        disabled={custom.disabled}
-      />
-    </div>
+    <Checkbox
+      label={placeholder}
+      error={error}
+      name={name}
+      id={name}
+      onChange={onChangeSave}
+      checked={checked}
+      disabled={custom.disabled}
+    />
   )
 }
 

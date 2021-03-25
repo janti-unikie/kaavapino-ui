@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Loader } from 'semantic-ui-react'
 import {
   initializeProject,
   saveProjectBase,
@@ -19,12 +17,12 @@ import {
 import { phasesSelector } from '../../selectors/phaseSelector'
 import { allEditFieldsSelector } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
-import { NavHeader, NavActions, NavAction } from '../common/NavHeader'
+import { NavHeader } from '../common/NavHeader'
 import ProjectEditPage from '../projectEdit'
 import ProjectCardPage from '../projectCard'
 import ProjectDocumentsPage from '../projectDocuments'
 import projectUtils from '../../utils/projectUtils'
-import NewProjectFormModal from './NewProjectFormModal'
+import NewProjectFormModal from './EditProjectModal/NewProjectFormModal'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
 import { withTranslation } from 'react-i18next'
 
@@ -33,6 +31,8 @@ import { DOWNLOAD_PROJECT_DATA_FORM } from '../../constants'
 import { getFormValues } from 'redux-form'
 import moment from 'moment'
 import { userIdSelector } from '../../selectors/authSelector'
+import { Button, IconPen, IconPrinter, IconDownload, LoadingSpinner } from 'hds-react'
+import { withRouter } from 'react-router-dom'
 class ProjectPage extends Component {
   constructor(props) {
     super(props)
@@ -148,57 +148,88 @@ class ProjectPage extends Component {
   }
 
   getNavActions = () => {
-    const {
-      edit,
-      documents,
-      currentProject: { id },
-      t,
-      users
-    } = this.props
+    const { edit, documents, users, t } = this.props
 
     const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
 
     return !(edit || documents) ? (
-      <NavActions>
-      {showCreate && (
-        <NavAction to={`/${id}/edit`}>
-          <FontAwesomeIcon icon="pen" />
-          {t('project.modify')}
-        </NavAction>
-      )}
-      {showCreate && (
-        <NavAction to={`/${id}/documents`}>
-          <FontAwesomeIcon icon="file" />
+      <span className="header-buttons">
+        {showCreate && (
+          <Button
+            variant="secondary"
+            className="header-button"
+            onClick={this.modifyContent}
+            iconLeft={<IconPen/>}
+          >
+            {t('project.modify')}
+          </Button>
+        )}
+        <Button variant="secondary" iconLeft={<IconPen/>} onClick={this.createDocuments}>
           {t('project.create-documents')}
-        </NavAction>
-      )}
-        <NavAction onClick={() => window.print()}>
-          <FontAwesomeIcon icon="print" />
+        </Button>
+        <Button variant="secondary" iconLeft={<IconPrinter/>} onClick={() => window.print()}>
           {t('project.print-project-card')}
-        </NavAction>
-      </NavActions>
+        </Button>
+        <Button
+          variant="secondary"
+          iconLeft={<IconPen/>}
+          onClick={() => this.setState({ showDeadlineModal: true })}
+        >
+          Määräajat
+        </Button>
+      </span>
     ) : (
-      <NavActions>
+      <span className="header-buttons">
+        <Button
+          variant="secondary"
+          className="header-button"
+          onClick={this.openProjectDataModal}
+          iconLeft={<IconDownload/>}
+        >
+          Tulosta projektin tiedot
+        </Button>
         {showCreate && (
-          <NavAction onClick={this.openProjectDataModal}>
-            <FontAwesomeIcon icon="file-csv" />
-            Tulosta projektin tiedot
-          </NavAction>
-        )}
-        {showCreate && (
-          <NavAction onClick={() => this.toggleBaseInformationForm(true)}>
-          {t('project.modify-project')}
-          </NavAction>
-        )}
-        <NavAction to={`/${id}`} primary>
+          <Button
+            variant="secondary"
+            className="header-button"
+            onClick={() => this.toggleBaseInformationForm(true)}
+            iconLeft={<IconPen/>}
+          >
+            {t('project.modify-project')}
+          </Button>
+          )
+        }
+        <Button  variant="primary" iconLeft={<IconPen/>} onClick={this.checkProjectCard}>
           {t('project.check-project-card')}
-        </NavAction>
-      </NavActions>
+        </Button>
+      </span>
     )
+  }
+
+  modifyContent = () => {
+    const {
+      currentProject: { id },
+      history
+    } = this.props
+    history.push(`/${id}/edit`)
+  }
+  createDocuments = () => {
+    const {
+      currentProject: { id },
+      history
+    } = this.props
+    history.push(`/${id}/documents`)
+  }
+  checkProjectCard = () => {
+    const {
+      currentProject: { id },
+      history
+    } = this.props
+    history.push(`/${id}`)
   }
   openProjectDataModal = () => this.togglePrintProjectDataModal(true)
 
-  toggleBaseInformationForm = opened => this.setState({ showBaseInformationForm: opened })
+  toggleBaseInformationForm = opened => this.setState({ ...this.state, showBaseInformationForm: opened })
 
   getAllChanges = () => {
     const { allEditFields, edit } = this.props
@@ -226,14 +257,13 @@ class ProjectPage extends Component {
         <NavHeader
           routeItems={[
             { value: 'Kaavaprojektit', path: '/projects' },
-            { value: 'Ladataan...', path: '/' }
+            { value: '', path: '/' }
           ]}
-          title={t('loading')}
         />
         <div className="project-page-content">
-          <Loader inline={'centered'} active>
+          <LoadingSpinner className="loader-icon">
             {t('loading')}
-          </Loader>
+          </LoadingSpinner>
         </div>
       </div>
     )
@@ -274,7 +304,7 @@ class ProjectPage extends Component {
         />
         <NewProjectFormModal
           currentProject={currentProject}
-          open={this.state.showBaseInformationForm}
+          modalOpen={this.state.showBaseInformationForm}
           initialValues={{
             name: currentProject.name,
             public: currentProject.public,
@@ -324,7 +354,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(
+export default withRouter( connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation()(ProjectPage))
+)(withTranslation()(ProjectPage)))

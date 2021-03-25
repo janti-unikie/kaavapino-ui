@@ -9,35 +9,27 @@ describe('<SelectInput />', () => {
   beforeEach(() => {
     change = null
     selectInputComponent = mount(
-      <SelectInput
-        input={{ name: 'test', onChange: value => (change = value) }}
-        meta={{}}
-        options={options.map(option => ({ key: option, value: option, text: option }))}
-        placeholder="placeholder"
-      />
+        <SelectInput
+          input={{ name: 'test', onChange: value => (change = value) }}
+          meta={{}}
+          options={options.map(option => ({ key: option, value: option, label: option }))}
+          placeholder="placeholder"
+        />
     )
   })
 
   it('is initialized correctly', () => {
-    const dropwDownComponent = selectInputComponent.find('Dropdown')
-    expect(dropwDownComponent.props().name).toBe('test')
+    const dropwDownComponent = selectInputComponent.find('SelectInput')
+    expect(dropwDownComponent.props().input.name).toBe('test')
     expect(dropwDownComponent.props().placeholder).toBe('placeholder')
-    expect(dropwDownComponent.props().noResultsMessage).toBe('Ei tuloksia')
     expect(change).toBeNull()
   })
 
   it('has all option components', () => {
-    const optionComponents = selectInputComponent.find('DropdownItem')
-    expect(optionComponents.length).toBe(options.length)
-    expect(optionComponents.at(0).props().text).toBe('a')
-    expect(optionComponents.at(0).props().value).toBe('a')
-  })
+    const dropwDownComponent = selectInputComponent.find('SelectInput')
 
-  it('can be changed', () => {
-    selectInputComponent
-      .find('DropdownItem')
-      .at(1)
-      .simulate('click')
-    expect(change).toBe('b')
+    expect(dropwDownComponent.props().options.length).toBe(options.length)
+    expect(dropwDownComponent.props().options[0].label).toBe('a')
+    expect(dropwDownComponent.props().options[0].value).toBe('a')
   })
 })

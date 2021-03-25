@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Button from '../../common/Button'
+import FormButton from '../../common/FormButton'
 import { Accordion, Form, Message } from 'semantic-ui-react'
 import AccordionTitle from './AccordionTitle'
 import './styles.scss'
@@ -246,29 +246,30 @@ class QuickNav extends Component {
         </div>
         <RoleHighlightPicker onRoleUpdate={this.props.setHighlightRole} />
         <div className="quicknav-buttons">
-          <Button
+          <FormButton
             handleClick={onCheckPressed}
             value={t('quick-nav.check')}
             help={t('quick-nav.check-help-text')}
             disabled={currentProject.archived}
             className={this.state.checkButtonPressed ? 'check-pressed' : ''}
-            secondary
+            variant='secondary'
           />
-          <Button
+          <FormButton
             handleClick={handleSave}
             value={t('common.save')}
             loading={saving || errors}
-            secondary
             help={t('quick-nav.save-help')}
             disabled={currentProject.archived}
+            variant='secondary'
+
           />
-          <Button
+          <FormButton
             handleClick={this.changePhase}
             value={`${notLastPhase ? t('quick-nav.end-phase') : t('quick-nav.archive')}`}
             loading={changingPhase || validating}
             disabled={!isCurrentPhase || currentProject.archived}
-            secondary
-            fluid
+            variant='secondary'
+            fullWidth={true}
             help={`${
               notLastPhase ? t('quick-nav.end-phase-help') : t('quick-nav.archive-help')
             }`}

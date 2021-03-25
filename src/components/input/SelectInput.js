@@ -1,47 +1,63 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Dropdown } from 'semantic-ui-react'
 import inputUtils from '../../utils/inputUtils'
-import DropdownMultiselect from './DropdownMultiselect'
+import { Select } from 'hds-react'
 
-const SelectInput = ({ input, meta: { error }, options, onBlur, placeholder, ...custom }) => {
-  if (custom.multiple) {
-    return (
-      <DropdownMultiselect
-        input={input}
-        error={error}
-        options={options}
-        onBlur={onBlur}
-        placeholder={placeholder}
-        disabled={custom.disabled}
-      />
-    )
+const SelectInput = ({
+  input,
+  error,
+  options,
+  onBlur,
+  placeholder,
+  disabled,
+  multiple
+}) => {
+  const currentValue = []
+
+  const getValue = value => {
+    const current = options.find(option => option.value === value)
+    return current && current.label
   }
-  return (
-    <Dropdown
-      onChange={(param, data) => {
+  let currentSingleValue
 
-        let returnValue = data.value
-        if ( returnValue === '' ) {
+  if (multiple) {
+    input.value.forEach(value =>
+      currentValue.push({ label: getValue(value), value: value })
+    )
+  } else {
+    const current = options.find(option => option.value === input.value)
+    currentSingleValue = {
+      label: current && current.label,
+      value: current && current.value
+    }
+  }
+
+  return (
+    <Select
+      placeholder={placeholder}
+      className="selection"
+      id={input.name}
+          name={input.name}
+      multiselect={multiple}
+      error={inputUtils.hasError(error)}
+      onBlur={onBlur}
+      clearable="true"
+      disabled={disabled}
+      defaultValue={multiple ? currentValue : currentSingleValue}
+      options={options}
+      onChange={data => {
+        let returnValue
+        if (multiple) {
+          returnValue = data.map(currentValue => currentValue.value)
+        } else {
+          returnValue = data.value
+        }
+
+        if (returnValue === '') {
           returnValue = null
         }
         input.onChange(returnValue)
-        if ( custom.handleSave ) {
-          custom.handleSave()
-        }
-        }
-      }
-      name={input.name}
-      fluid
-      search
-      selection
-      clearable
-      placeholder={placeholder}
-      noResultsMessage="Ei tuloksia"
-      options={options}
-      value={input.value}
-      disabled={custom.disabled}
-      error={inputUtils.hasError(error)}
+      }}
     />
   )
 }

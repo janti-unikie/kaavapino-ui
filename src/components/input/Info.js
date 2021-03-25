@@ -1,38 +1,24 @@
-import React, { PureComponent } from 'react'
-import { Popup } from 'semantic-ui-react'
+import React from 'react'
 import { Link } from 'react-router-dom'
+import { Tooltip } from 'hds-react'
 
-class InfoContent extends PureComponent {
-  render() {
-    const { content, link } = this.props
-    return (
-      <React.Fragment>
-        <span className="content">{content}</span>
-        {link && (
-          <div>
-            <Link to={{ pathname: link }} target="_blank">
-              Lisäohjeita
-            </Link>
-          </div>
-        )}
-      </React.Fragment>
-    )
-  }
-}
+const InfoContent = props => (
+    <React.Fragment>
+      <span className="content">{props.content}</span>
+      {props.link && (
+        <div>
+          <Link to={{ pathname: props.link }} target="_blank">
+            Lisäohjeita
+          </Link>
+        </div>
+      )}
+    </React.Fragment>
+  )
 
-class Info extends PureComponent {
-  render() {
-    return (
-      <Popup
-        trigger={<div className="input-info" />}
-        inverted
-        on="click"
-        position="top center"
-        hoverable={false}
-        content={<InfoContent {...this.props} />}
-      />
-    )
-  }
-}
+const Info = props => (
+  <Tooltip tooltipClassName={props.className} placement="top">
+    {<InfoContent content={props.content} link={props.link} />}
+  </Tooltip>
+)
 
 export default Info
