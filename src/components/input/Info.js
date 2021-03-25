@@ -16,7 +16,7 @@ const InfoContent = props => (
   )
 
 const Info = props => (
-  <Tooltip tooltipClassName={props.className}>
+  <Tooltip tooltipClassName={props.className} placement="top">
     {<InfoContent content={props.content} link={props.link} />}
   </Tooltip>
 )
