@@ -6,7 +6,6 @@
     height: 40px;
   }
   .modal-field {
-    margin-top: 0;
     max-width: 80%;
   }
   .input-header {
@@ -15,15 +14,8 @@
   .input-container {
     margin-top: 10px !important;
   }
-  .ui.search.selection.dropdown > input.search {
-    position: absolute;
-    height: 40px;
-    line-height: 56px;
-    padding: 0 15px 6px 0 6px;
-    margin: 0;
-    padding-left: 15px;
-  }
-  .ui.form .field>.selection.dropdown {
+  
+  .selection {
     width: 80%;
   }
   .ui.form .input input:not(textarea) {
@@ -33,22 +25,14 @@
   .radio-input-container .ui.checkbox:first-of-type label {
     margin-top: 4px;
   }
-  .ui.search.selection.dropdown > .dropdown.icon {
-    line-height: 40px;
-    padding: 0;
-    right: 20px;
-    padding-top: 2px;
-}
-  .radio-input-container label, .radio-input-container .ui.checkbox label {
-    font-size: 14px;
-    margin-top: 10px
-  }
+
   .ui.input {
     margin: 0;
     height: 42px;
   }
   .ui.label {
     font-size: 12px;
+    margin-top: 5px;
   }
   .ui.form .field>.selection.dropdown {
     padding: 6px 16px 6px 4px;
@@ -62,27 +46,17 @@
   .field-error {
     color: $color-error-text;
   }
-  .ui.input.error>input {
-    background-color: #fff6f6;
-    border: 1px solid #e0b4b4;
-    color: $color-error-text;
-  }
-  .ui.input.error>input:focus {
-    border: 1px solid $color-error-text;
-    background-color: #fff6f6;
-    box-shadow: 1px solid $color-error-text;
-  }
-  .ui.input.error>input:hover {
-    border: 1px solid $color-error-text;
-    box-shadow: inset 0px 0px 0px 1px $color-error-text;
-  
-  }
+ 
+
   .error {
     color: $color-error-text !important;
     border: 2px solid $color-error-text;
   }
   .error-border {
     border: 2px solid $color-error-text;
+  }
+  .error-border>input:focus {
+      background: #fff6f6;
   }
   .error input {
     border: 0;
@@ -101,9 +75,6 @@
   }
   .collapse-content {
     overflow-y: auto
-  }
-  .warning-icon {
-    padding-right: 2px;
   }
   .warning-box {
     font-size: 14px !important;

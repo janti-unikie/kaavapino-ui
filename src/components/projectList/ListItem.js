@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { ReactComponent as ProjectEditIcon } from '../../assets//icons/edit-project.svg'
 import { Popup } from 'semantic-ui-react'
 import ProjectTimeline from '../ProjectTimeline/ProjectTimeline'
+import { IconPenLine, Button } from 'hds-react'
 
 const Status = ({ color }) => {
   return (
@@ -19,6 +19,7 @@ const Status = ({ color }) => {
 const ListItem = ({
   showGraph,
   isUserPrivileged,
+  modifyProject,
   item: {
     phaseName,
     phaseColor,
@@ -28,15 +29,17 @@ const ListItem = ({
     modified_at,
     user,
     projectId,
-    pino_number
+   pino_number
   }
 }) => {
   return (
     <div className="project-list-item-container">
       <div className="project-list-item">
-        <span className="project-list-item-pino">{pino_number}</span>
-        <span>{projectId}</span>
-        <span className="project-list-item-name field-ellipsis">
+        <span className="project-list-item-pino field-ellipsis center">
+          {pino_number}
+        </span>
+        <span className="center field-ellipsis" >{projectId}</span>
+        <span className="project-list-item-name center field-ellipsis">
           <Popup
             trigger={(
               <Link className="project-name" to={`/${id}`}>
@@ -47,26 +50,32 @@ const ListItem = ({
             content={name}
           />
         </span>
-        <span className="project-list-item-phase field-ellipsis">
+        <span className="project-list-item-phase center field-ellipsis">
           <Status color={phaseColor} /> {phaseName}
         </span>
-        <span>{subtype}</span>
-        <span>{modified_at}</span>
+        <span className="center field-ellipsis">{subtype}</span>
+        <span className="center field-ellipsis">{modified_at}</span>
         <Popup
-          trigger={<span className="field-ellipsis">{user}</span>}
+          trigger={<span className="field-ellipsis center">{user}</span>}
           on="hover"
           content={user}
         />
-        <Link className="project-list-button" to={`/${id}/edit`}>
-         {isUserPrivileged && <ProjectEditIcon />}
-        </Link>
+        <span className="project-list-button">
+        {isUserPrivileged && (
+          <Button
+            aria-label="Muokkaa"
+            className="project-list-button"
+            value="modify"
+            variant="supplementary"
+            iconLeft={<IconPenLine />}
+            onClick={() => modifyProject(id)}
+          />
+        )}
+        </span>
       </div>
       <div className="project-list-item-graph">
         {showGraph && <ProjectTimeline id={id} />}
       </div>
-      <Link to={`/${id}`} className="project-card-mb">
-        Projektikortti, {name}
-      </Link>
     </div>
   )
 }

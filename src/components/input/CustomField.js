@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import Input from './Input'
+import CustomInput from './CustomInput'
 import DeadLineInput from './DeadlineInput'
 import SelectInput from './SelectInput'
 import BooleanRadio from './RadioBooleanButton'
-import TextArea from './TextArea'
+import CustomTextArea from './CustomTextArea'
 import File from './File'
 import FieldSet from './FieldSet'
 import Geometry from './Geometry'
 import Link from './Link'
 import DateTime from './DateTime'
 import { Field, FieldArray } from 'redux-form'
-import RadioButton from './RadioButton'
+import CustomRadioButton from './CustomRadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
 import OnHoldCheckbox from './OnholdCheckbox'
@@ -84,7 +84,7 @@ class CustomField extends Component {
       return {
         key: option.value,
         value: option.value,
-        text: option.label
+        label: option.label
       }
     })
   }
@@ -92,12 +92,12 @@ class CustomField extends Component {
   renderNumber = props => {
     const { onBlur } = this.props
 
-    return <Input onBlur={onBlur} {...props} type="number" />
+    return <CustomInput onBlur={onBlur} {...props} type="number" />
   }
 
   renderYearSelect = props => {
     const { multiple_choice, placeholder_text } = this.props.field
-    const { onBlur, handleSave } = this.props
+    const { onBlur, formName } = this.props
 
     if (this.yearOptions.length === 0) {
       this.yearOptions = projectUtils.generateArrayOfYears()
@@ -105,9 +105,9 @@ class CustomField extends Component {
     return (
       <SelectInput
         multiple={multiple_choice}
-        options={this.formatOptions(this.yearOptions)}
+        options={this.yearOptions}
         onBlur={onBlur}
-        handleSave={handleSave}
+        formName={formName}
         placeholder={placeholder_text}
         {...props}
       />
@@ -116,12 +116,12 @@ class CustomField extends Component {
 
   renderString = props => {
     const { onBlur } = this.props
-    return <Input onBlur={onBlur} type="text" {...props} />
+    return <CustomInput onBlur={onBlur} type="text" {...props} />
   }
 
   renderTextArea = props => {
     const { onBlur } = this.props
-    return <TextArea onBlur={onBlur} {...props} />
+    return <CustomTextArea onBlur={onBlur} {...props} />
   }
 
   renderRichText = props => {
@@ -151,7 +151,6 @@ class CustomField extends Component {
         deadline => deadline.deadline.attribute === props.input.name
       )
     }
-    projectUtils.checkDeadline(props, current)
 
     if (deadlines && deadlines.length > 0) {
       return (
@@ -163,7 +162,7 @@ class CustomField extends Component {
         />
       )
     }
-    return <Input onBlur={onBlur} type="date" {...props} />
+    return <CustomInput onBlur={onBlur} type="date" {...props} />
   }
 
   renderGeometry = props => {
@@ -172,8 +171,8 @@ class CustomField extends Component {
   }
 
   renderSelect = props => {
-    const { choices, multiple_choice, placeholder_text } = this.props.field
-    const { onBlur, handleSave } = this.props
+    const { choices, multiple_choice, placeholder_text, formName } = this.props.field
+    const { onBlur } = this.props
 
     return (
       <SelectInput
@@ -181,24 +180,22 @@ class CustomField extends Component {
         multiple={multiple_choice}
         options={this.formatOptions(choices)}
         onBlur={onBlur}
-        handleSave={handleSave}
         placeholder={placeholder_text}
+        formName={formName}
       />
     )
   }
 
   renderRadio = props => {
     const { field, onBlur } = this.props
-
-    return <RadioButton options={field.options} onBlur={onBlur} {...props} />
+    return <CustomRadioButton options={this.formatOptions(field.options)} onBlur={onBlur} {...props} />
   }
 
   renderBooleanRadio = props => {
-    const { onBlur, input, onRadioChange, defaultValue } = this.props
-
+    const { input, onRadioChange, defaultValue } = this.props
     return (
       <BooleanRadio
-        onBlur={onBlur}
+        onBlur={props.onBlur}
         input={input}
         onRadioChange={onRadioChange}
         defaultValue={defaultValue}
@@ -268,7 +265,7 @@ class CustomField extends Component {
 
   renderDecimal = props => {
     const { onBlur } = this.props
-    return <Input type="number" step="0.01" onBlur={onBlur} {...props} />
+    return <CustomInput type="number" step="0.01" onBlur={onBlur} {...props} />
   }
 
   renderDeadlineCheckbox = props => {
@@ -283,20 +280,20 @@ class CustomField extends Component {
   }
 
   renderOnholdCheckbox = props => {
-    const { onhold, saveProjectBase, disabled } = this.props
+    const { onhold, saveProjectBase, disabled, label } = this.props
+
     return (
       <OnHoldCheckbox
         {...props}
         projectOnhold={onhold}
         saveProjectBase={saveProjectBase}
         disabled={disabled}
+        label={label}
       />
     )
   }
   renderDeadlineInfo = props => {
-    const { field, deadlines } = this.props
-
-    projectUtils.checkDeadline(props, deadlines)
+    const { field } = this.props
 
     return (
       <DeadlineInfoText

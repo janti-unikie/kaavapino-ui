@@ -110,3 +110,13 @@ export const selectedPhaseSelector = createSelector(
   selectProject,
   project => project.selectedPhase
 )
+
+export const onHoldProjectSelector = createSelector(
+  selectProject,
+  project => project.projects.filter(proj => proj.onhold)
+)
+
+export const archivedProjectSelector = createSelector(
+  selectProject,
+  project => project.projects.filter(proj => proj.archived)
+)

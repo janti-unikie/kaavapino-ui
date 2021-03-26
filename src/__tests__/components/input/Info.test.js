@@ -6,16 +6,10 @@ describe('<Info />', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(<Info content="test" />)
+    wrapper = mount(<Info className="test" content="test" />)
   })
 
   it('renders', () => {
-    expect(wrapper.find('.input-info').length).toBe(1)
-  })
-
-  it('shows content', () => {
-    wrapper.find('.input-info').simulate('click')
-    expect(wrapper.find('.content').length).toBe(1)
-    expect(wrapper.find('.content').text()).toBe('test')
+    expect(wrapper.find('.test').length).toBe(1)
   })
 })

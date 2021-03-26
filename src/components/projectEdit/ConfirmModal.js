@@ -1,7 +1,8 @@
 import React from 'react'
-import { Modal, Button } from 'semantic-ui-react'
+import { Modal } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { currentProjectSelector } from '../../selectors/projectSelector'
+import { Button } from 'hds-react'
 
 const ConfirmModal = ({ open, callback, notLastPhase, currentProject }) => {
   return (
@@ -26,10 +27,10 @@ const ConfirmModal = ({ open, callback, notLastPhase, currentProject }) => {
         )}
       </Modal.Content>
       <Modal.Actions>
-        <Button secondary onClick={() => callback(false)}>
+        <Button variant="secondary" onClick={() => callback(false)}>
           Peruuta
         </Button>
-        <Button primary onClick={() => callback(true)}>
+        <Button variant="primary" onClick={() => callback(true)}>
           OK
         </Button>
       </Modal.Actions>

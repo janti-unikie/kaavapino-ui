@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Modal, Form } from 'semantic-ui-react'
+import { Modal, Form } from 'semantic-ui-react'
 import { reduxForm, getFormSubmitErrors, getFormValues } from 'redux-form'
-import projectUtils from '../../utils/projectUtils'
+import projectUtils from '../../../utils/projectUtils'
 import './NewProjectFormModal.scss'
 import { connect } from 'react-redux'
-import { NEW_PROJECT_FORM } from '../../constants'
-import { newProjectSubtypeSelector } from '../../selectors/formSelector'
-import FormField from '../input/FormField'
+import { NEW_PROJECT_FORM } from '../../../constants'
+import { newProjectSubtypeSelector } from '../../../selectors/formSelector'
+import FormField from '../../input/FormField'
+import { Button } from 'hds-react'
 
 const PROJECT_NAME = 'name'
 const USER = 'user'
@@ -27,7 +28,7 @@ class NewProjectFormModal extends Component {
   componentDidMount() {
     const { initialize, currentProject } = this.props
 
-    if ( !currentProject ) {
+    if (!currentProject) {
       return
     }
     initialize({
@@ -74,20 +75,18 @@ class NewProjectFormModal extends Component {
     this.props.handleClose()
     this.setState({ loading: false })
   }
-  getError = (error, fieldName ) => {
-
+  getError = (error, fieldName) => {
     // In case that there are field related errors, show errors.
     // Required field error is handled differently
-    if  (error) {
-       if ( fieldName === USER ) {
-         return error.user
-       }
+    if (error) {
+      if (fieldName === USER) {
+        return error.user
+      }
     }
     return error
-
   }
 
-  getFormField = ( fieldProps )  => {
+  getFormField = fieldProps => {
     const { formSubmitErrors, formValues } = this.props
 
     const error =
@@ -96,7 +95,13 @@ class NewProjectFormModal extends Component {
       fieldProps.field &&
       formSubmitErrors[fieldProps.field.name]
 
-    return <FormField {...fieldProps} error={this.getError( error, fieldProps.field.name)} formValues={formValues} />
+    return (
+      <FormField
+        {...fieldProps}
+        error={this.getError(error, fieldProps.field.name)}
+        formValues={formValues}
+      />
+    )
   }
 
   render() {
@@ -105,14 +110,15 @@ class NewProjectFormModal extends Component {
     const showXLProjectOptions = selectedSubType === 5
     const isEdit = !!currentProject
 
-    const isValidXLProject =  formValues && (formValues.create_principles || formValues.create_draft)
+    const isValidXLProject =
+      formValues && (formValues.create_principles || formValues.create_draft)
 
     const hideSaveButton = () => {
-      if ( !formValues ) {
+      if (!formValues) {
         return true
       }
-      if ( formValues.name && formValues.user && formValues.subtype ) {
-        if ( selectedSubType === 5 ) {
+      if (formValues.name && formValues.user && formValues.subtype) {
+        if (selectedSubType === 5) {
           return !isValidXLProject
         }
         return false
@@ -124,13 +130,15 @@ class NewProjectFormModal extends Component {
 
     return (
       <Modal
-        className="form-modal"
+        className="form-modal project-edit"
         size={'small'}
         onClose={this.props.handleClose}
-        open={this.props.open}
+        open={this.props.modalOpen}
         closeIcon
       >
-        <Modal.Header> {isEdit ? 'Muokkaa luontitietoja' : 'Luo uusi projekti'}</Modal.Header>
+        <Modal.Header>
+          {isEdit ? 'Muokkaa luontitietoja' : 'Luo uusi projekti'}
+        </Modal.Header>
         <Modal.Content>
           <Form>
             <Form.Group widths="equal">
@@ -211,18 +219,20 @@ class NewProjectFormModal extends Component {
           </Form>
         </Modal.Content>
         <Modal.Actions>
-          <Button secondary disabled={loading} onClick={this.handleClose}>
-            Peruuta
-          </Button>
-          <Button
-            primary
-            disabled={loading || hideSave}
-            loading={loading}
-            type="submit"
-            onClick={this.handleSubmit}
-          >
-            {isEdit ? 'Tallenna' : 'Luo projekti'}
-          </Button>
+          <div className="form-buttons">
+            <Button variant="secondary" disabled={loading} onClick={this.handleClose}>
+              Peruuta
+            </Button>
+            <Button
+              variant="primary"
+              disabled={loading ? true : false || hideSave}
+              loading={loading.toString()}
+              type="submit"
+              onClick={this.handleSubmit}
+            >
+              {isEdit ? 'Tallenna' : 'Luo projekti'}
+            </Button>
+          </div>
         </Modal.Actions>
       </Modal>
     )
@@ -230,7 +240,7 @@ class NewProjectFormModal extends Component {
 }
 
 NewProjectFormModal.propTypes = {
-  open: PropTypes.bool.isRequired,
+  modalOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired
 }
 

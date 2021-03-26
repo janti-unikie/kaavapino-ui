@@ -95,6 +95,18 @@ function createStartAndEndPoints(inputMonths, deadlines) {
               }
               firstDeadline = true
             }
+            if (deadline.deadline.deadline_types.length > 1) {
+              if (deadline.deadline.deadline_types[0] === 'phase_start' && deadline.deadline.deadline_types[1] === 'phase_end') {
+                monthDates[monthIndex][deadline.deadline.abbreviation] = {
+                  abbreviation: deadline.deadline.abbreviation,
+                  deadline_type: ['start_end_point'],
+                  phase_id: deadline.deadline.phase_id,
+                  color_code: deadline.deadline.phase_color_code,
+                  phase_name: deadline.deadline.phase_name,
+                  deadline_length: 1
+                }
+              }
+            } else {
             monthDates[monthIndex][deadline.deadline.abbreviation] = {
               abbreviation: deadline.deadline.abbreviation,
               deadline_type: deadline.deadline.deadline_types,
@@ -103,6 +115,7 @@ function createStartAndEndPoints(inputMonths, deadlines) {
               phase_name: deadline.deadline.phase_name,
               not_last_end_point: deadline.not_last_end_point,
               deadline_length: 2
+            }
             }
           }
         }

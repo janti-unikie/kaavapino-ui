@@ -24,12 +24,14 @@ import ProjectListPage from './projectList'
 import ProjectPage from './project'
 import ReportsPage from './reports'
 import ErrorPage from './error'
-import PageHeader from './common/PageHeader'
-import Footer from './common/Footer'
+import Header from './common/Header'
+import CustomFooter from './common/CustomFooter'
 import FakeLoginPage from './auth/FakeLogin'
 import Overview from './overview'
 import Terms from './common/Terms'
 import { withTranslation } from 'react-i18next'
+
+import { authUserSelector } from '../selectors/authSelector'
 
 class App extends Component {
   componentDidUpdate(prevProps) {
@@ -45,7 +47,7 @@ class App extends Component {
   }
 
   render() {
-    const { t } = this.props
+    const { t, user } = this.props
     if (
       this.props.loadingApiToken ||
       this.props.userLoading ||
@@ -70,7 +72,7 @@ class App extends Component {
           />
           <Route path="/logout/callback" render={() => <LogoutCallbackPage />} />
           <ProtectedRoute path="/" pred={this.props.apiToken !== null} redirect="/login">
-            <PageHeader />
+            <Header user={user} />
             <Switch>
               <Route exact path="/" render={() => <Overview />} />
               <Route exact path="/terms" render={() => <Terms />} />
@@ -94,7 +96,7 @@ class App extends Component {
               <Route exact path="/error/:code" component={ErrorPage} />
               <Redirect to="/error/404" />
             </Switch>
-            <Footer />
+            <CustomFooter />
           </ProtectedRoute>
         </Switch>
       </ConnectedRouter>
@@ -119,8 +121,9 @@ const mapStateToProps = state => {
     phases: phasesSelector(state),
     apiToken: apiTokenSelector(state),
     loadingApiToken: apiLoadingTokenSelector(state),
-    apiInitialized: apiInitializedSelector(state)
+    apiInitialized: apiInitializedSelector(state),
+    user: authUserSelector(state)
   }
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(withTranslation()(App)))
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(App))

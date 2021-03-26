@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { Dropdown, Popup } from 'semantic-ui-react'
+import {  Popup, Dropdown } from 'semantic-ui-react'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import parse from 'html-react-parser'
 import { isObject, isBoolean, isArray, isString, isNumber } from 'lodash'

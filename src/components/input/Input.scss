@@ -17,21 +17,15 @@
     display: flex;
     font-weight: bold;
     justify-content: space-between;
-    position: relative;
     z-index: 1;
   }
 
   .input-header-icons {
-    align-items: center;
     display: flex;
     margin-right: 8px;
 
     @media screen and (min-width: 600px) {
       margin-right: 0;
-    }
-
-    :nth-child(2) {
-      margin-left: 8px;
     }
 
     .input-info {
@@ -53,152 +47,7 @@
       }
     }
   }
-  .ui.checkbox.dropdown-checkbox label {
-    align-items: center;
-    display: flex;
-    min-height: 24px;
-    padding-left: 32px;
-
-    &:before {
-      border-color: $gray;
-      border-radius: 0px;
-      height: 24px;
-      width: 24px;
-    }
-
-    &:after {
-      align-items: center;
-      background-color: $color-primary;
-      border-radius: 0px;
-      color: $white !important;
-      display: flex;
-      font-size: 16px;
-      height: 24px;
-      justify-content: center;
-      width: 24px;
-    }
-  }
 }
-
-.ui.form .fields {
-  > .input-container {
-    flex: 0 1 auto;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-}
-
-.equal.width.fields {
-  .input-container {
-    width: 100%;
-  }
-}
-
-.ui.input {
-  height: 56px;
-  margin-top: 4px;
-
-  input {
-    border-radius: 2px;
-    transition: border 2s ease;
-
-    &:hover {
-      border-color: $color-input-emphasis;
-    }
-
-    /* Chrome, Safari, Edge, Opera */
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    /* Firefox */
-    &[type='number'] {
-      -moz-appearance: textfield;
-    }
-
-    &::placeholder {
-      font-family: 'Helsinki Grotesk Regular';
-    }
-  }
-}
-
-.ui.search.selection.dropdown {
-  border-radius: 2px;
-  min-height: 56px;
-  line-height: 32px;
-  padding: 12px 32px 12px 8px;
-  margin-top: 4px;
-  
-  &.multiple > .label {
-    margin-top: 8px;
-  }
-
-  > .delete.icon,
-  > .dropdown.icon,
-  > .search.icon {
-    line-height: 56px;
-    padding: 0;
-    right: 20px;
-  }
-
-  > input.search {
-    position: absolute;
-    height: 56px;
-    line-height: 56px;
-    padding: 0 32px 0 8px;
-    margin: 0;
-  }
-
-  .placeholder {
-    color: $gray;
-  }
-}
-
-.ui.selection.active.dropdown .menu,
-.ui.selection.active.dropdown:hover .menu {
-  border: 2px solid $black1;
-}
-
-.ui.label {
-  font-family: "Helsinki Grotesk Bold";
-  background-color: transparent;
-  color: $black1;
-  font-size: 14px;
-  font-weight: bold;
-  letter-spacing: 0;
-  line-height: 20px;
-  margin: 0;
-  padding: 0;
-  transition: none;
-}
-
-.ui.form .input input,
-.ui.selection.dropdown,
-.ui.form textarea {
-  border-radius: 2px;
-  border: 1px solid $border-gray;
-  font-size: 16px;
-  color: $black1;
-  line-height: 16px;
-  transition: border 0.2s ease;
-  padding: 8px 16px;
-
-  &:not(textarea) {
-    padding: 0 16px;
-  }
-
-  &:focus,
-  &:hover,
-  &:active,
-  &.active,
-  &.active:hover {
-    border-radius: 2px;
-    border: 1px solid $color-input-emphasis;
-    box-shadow: inset 0px 0px 0px 1px $color-input-emphasis;
-  }
-}
-
 .radio-input-container {
   display: flex;
   flex-direction: column;
@@ -282,6 +131,87 @@
     }
   }
 }
+
+
+
+
+
+.ui.search.selection.dropdown {
+  border-radius: 2px;
+  min-height: 56px;
+  line-height: 32px;
+  padding: 12px 32px 12px 8px;
+  margin-top: 4px;
+  
+  &.multiple > .label {
+    margin-top: 8px;
+  }
+
+  > .delete.icon,
+  > .dropdown.icon,
+  > .search.icon {
+    line-height: 56px;
+    padding: 0;
+    right: 20px;
+  }
+
+  > input.search {
+    position: absolute;
+    height: 56px;
+    line-height: 56px;
+    padding: 0 32px 0 8px;
+    margin: 0;
+  }
+
+  .placeholder {
+    color: $gray;
+  }
+}
+
+.ui.selection.active.dropdown .menu,
+.ui.selection.active.dropdown:hover .menu {
+  border: 2px solid $black1;
+}
+
+.ui.label {
+  font-family: "Helsinki Grotesk Bold";
+  background-color: transparent;
+  color: $black1;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 20px;
+  margin: 0;
+  padding: 0;
+  transition: none;
+}
+
+.ui.form .input input,
+.ui.selection.dropdown,
+.ui.form textarea {
+  border-radius: 2px;
+  border: 1px solid $border-gray;
+  font-size: 16px;
+  color: $black1;
+  line-height: 16px;
+  transition: border 0.2s ease;
+  padding: 8px 16px;
+
+  &:not(textarea) {
+    padding: 0 16px;
+  }
+
+  &:focus,
+  &:hover,
+  &:active,
+  &.active,
+  &.active:hover {
+    border-radius: 2px;
+    border: 1px solid $color-input-emphasis;
+    box-shadow: inset 0px 0px 0px 1px $color-input-emphasis;
+  }
+}
+
 
 .highlighted {
   background-color: yellow;
@@ -448,7 +378,7 @@
     cursor: pointer;
     position: absolute;
     right: 16px;
-    top: 16px;
+    top: 0;
   }
 }
 
@@ -466,6 +396,10 @@
   .link-button {
     margin-top: 10px;
   }
+  .link-status {
+    margin-top: 10px;
+    height: 49px;
+  }
 }
 
 .rdtPicker {
@@ -476,101 +410,18 @@
   position: relative;
 }
 
-.ui.button.fieldset-button-add {
-  background-color: transparent;
-  color: $black1;
-  border: 2px solid $black1;
-
-  &:hover {
-    opacity: 0.6;
-  }
+.fieldset-button-add {
+  margin-right: 3px;
 }
 
-.fieldset-button-remove.ui.button {
-  background-color: transparent;
-  color: $black1;
-
-  &:hover {
-    opacity: 0.6;
-  }
+.fieldset-button-remove {
+  margin-right: 3px;
 }
 .checkbox-container {
   .checkbox {
     padding-top: 3px;
     padding-right: 5px;
   }
-}
-
-/* Error styles. Semantic UI uses a lot of !important, thus these overrides became scetchier than I hoped.
- * Using #root selector to help with more specific selectors */
-.modal,
-#root {
-  .input-container.field.error,
-  .fieldset-container .input-container.error .field {
-    .ui.input input,
-    .ui.dropdown,
-    .ui.selection.dropdown,
-    .ui.dropdown .text,
-    .textarea-wrapper textarea {
-      background: white !important;
-      border-color: $color-error-border !important;
-      color: $color-error-border;
-
-      &:focus,
-      &:hover,
-      &:active,
-      &.active,
-      &.active:hover {
-        border-color: $color-error-border !important;
-        box-shadow: inset 0px 0px 0px 1px $color-error-border !important;
-      }
-    }
-
-    /* ::before can't be in the same list, sass does not undestand hovers then */
-    label::before {
-      background: white !important;
-      border-color: $color-error-border !important;
-
-      &:focus,
-      &:hover,
-      &:active,
-      &.active,
-      &.active:hover {
-        border-color: $color-error-border !important;
-        box-shadow: inset 0px 0px 0px 1px $color-error-border !important;
-      }
-    }
-
-    /* can't put ::before to an input element, thus selecting their wrappers */
-    .input,
-    .ui.selection.dropdown,
-    .textarea-wrapper {
-      input {
-        padding-right: 48px;
-      }
-
-      &::before {
-        content: '';
-        background: url('./assets/icons/alert-icon.svg') no-repeat center;
-        display: block;
-        top: 14px;
-        right: 20px;
-        position: absolute;
-        height: 24px;
-        width: 24px;
-      }
-    }
-
-    .input-title,
-    label {
-      color: $color-error-text !important;
-    }
-  }
-
-  .error-text {
-    color: $color-error-text;
-  }
-  
 }
 .deadline-info-text {
   margin-top: 10px;
@@ -588,4 +439,17 @@
 }
 .hidden {
   display: none;
+}
+.radio-button {
+  margin-top: 4px
+}
+.error-text {
+  color: $color-error-border;
+}
+.checkbox {
+  display: flex;
+}
+.checkbox-item {
+  margin-top: 0 !important;
+  margin-right: 10px;
 }

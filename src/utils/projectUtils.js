@@ -198,7 +198,6 @@ function getFieldsetAttributes(parent, sections) {
 }
 
 const checkDeadline = (props, currentDeadline) => {
-
   if (currentDeadline) {
     props.input.defaultValue = currentDeadline.date
     return

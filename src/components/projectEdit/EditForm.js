@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Form } from 'semantic-ui-react'
 import { reduxForm } from 'redux-form'
 import FormSection from './FormSection'
-import Button from '../common/Button'
+import FormButton from '../common/FormButton'
 import { EDIT_PROJECT_FORM } from '../../constants'
 import Shoutbox from '../shoutbox'
 
@@ -48,16 +48,16 @@ class EditForm extends Component {
         <h2 id="accordion-title">{title}</h2>
         <div className="edit-form-buttons">
           {showCreate && (
-            <Button
+            <FormButton
               value="Päivitä aikataulu"
-              secondary
+              variant='secondary'
               onClick={showEditProjectTimetableForm}
             />
           )}
           {showCreate && (
-            <Button
+            <FormButton
               value="Päivitä kerrosalatiedot"
-              secondary
+              variant='secondary'
               onClick={showEditFloorAreaForm}
             />
           )}

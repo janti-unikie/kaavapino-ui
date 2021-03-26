@@ -1,46 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React from 'react'
 import './styles.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { Accordion } from 'hds-react'
 
 const Collapse = props => {
-  const { children, title, ...rest } = props
-  const [open, setOpen] = useState(false)
-  const contentRef = useRef(null)
-
-  useEffect(() => {
-    let content = contentRef.current
-    if (open) {
-      if (content) {
-        content.style.maxHeight = content.scrollHeight + 'px'
-      }
-    }
-  })
-
-  const handleClick = () => {
-    setOpen(!open)
-    let content = contentRef.current
-    if (!content) {
-      return
-    }
-    if (content.style.maxHeight) {
-      content.style.maxHeight = null
-    } else {
-      content.style.maxHeight = content.scrollHeight + 'px'
-    }
-  }
+  const { children, title } = props
 
   return (
-    <div className={`collapse ${open ? 'open' : ''}`} {...rest}>
-      <h3 className="collapse-header" onClick={handleClick}>
-        <div>{title}</div>
-        <FontAwesomeIcon icon={open ? faChevronUp : faChevronDown} />
-      </h3>
-      <div ref={contentRef} className="collapse-content">
+    <Accordion heading={title} id={title} >
         {children}
-        <div className="bottom-padding-included-in-animation" />
-      </div>
-    </div>
+    </Accordion>
   )
 }
 
