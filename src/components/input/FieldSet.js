@@ -62,11 +62,14 @@ const FieldSet = ({
               <div className="fieldset-header">
                 <h3 className="fieldset-header-number">{i + 1}.</h3>
 
-                <IconCross
-                  className="fieldset-remove"
-                  color="red"
-                  size="l"
-                  onClick={() => sets.remove(i)} />
+                {i === sets.length - 1 && (
+                  <IconCross
+                    className="fieldset-remove"
+                    color="red"
+                    size="l"
+                    onClick={() => sets.remove(i)}
+                  />
+                )}
               </div>
               {fields.map((field, j) => {
                 const currentName = `${set}.${field.name}`
@@ -169,12 +172,11 @@ const FieldSet = ({
         className={`fieldset-button-add ${
           requiredError ? 'fieldset-internal-error' : null
         }`}
-        onClick={
-          () => {
-            sets.push({})
-            }}
+        onClick={() => {
+          sets.push({})
+        }}
         disabled={disabled}
-        variant='secondary'
+        variant="secondary"
       >
         Lisää
       </Button>
@@ -182,7 +184,7 @@ const FieldSet = ({
         className="fieldset-button-remove"
         disabled={sets.length < 1}
         onClick={() => sets.remove(sets.length - 1)}
-        variant='secondary'
+        variant="secondary"
       >
         Poista
       </Button>
