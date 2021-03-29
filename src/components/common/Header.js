@@ -69,7 +69,7 @@ const Header = props => {
       <Navigation.Actions>
         <Navigation.User authenticated={true}>
           <Navigation.Item
-            label={user.profile.name}
+            label={user && user.profile.name}
             href="/"
             target="_blank"
             variant="primary"

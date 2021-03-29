@@ -201,12 +201,14 @@ class ProjectListPage extends Component {
           </Tabs>
         )
       :  (
+        <Tabs>
           <Tab>
             <TabList onTabChange={this.handleTabChange}>
               <Tab>{getTotalProjectsTitle}</Tab>
             </TabList>
             <TabPanel>{getTotalProjectsPanel()}</TabPanel>
           </Tab>
+          </Tabs>
         )
 
     let headerActions = (

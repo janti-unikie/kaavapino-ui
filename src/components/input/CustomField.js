@@ -368,7 +368,8 @@ class CustomField extends Component {
       error,
       updated,
       defaultValue,
-      className
+      className,
+      handleSave
     } = this.props
     const type = field.type
     if (type === 'file' || type === 'image') {
@@ -401,6 +402,7 @@ class CustomField extends Component {
           description={description}
           formValues={formValues}
           attributeData={attributeData}
+          handleSave={handleSave}
         />
       )
     }

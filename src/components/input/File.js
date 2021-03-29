@@ -65,7 +65,8 @@ class File extends Component {
   reset = () => {
     const {
       projectFileRemove,
-      field: { name }
+      field: { name },
+      handleSave
     } = this.props
     const { current } = this.state
     const confirm = window.confirm(
@@ -75,6 +76,7 @@ class File extends Component {
       this.inputRef.current.value = ''
       this.setState({ current: null })
       projectFileRemove(name)
+      handleSave()
     }
   }
 
