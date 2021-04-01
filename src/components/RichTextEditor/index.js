@@ -36,12 +36,24 @@ import { ReactComponent as CommentIcon } from '../../assets/icons/comment-icon.s
  * Do not set the value to input.value - it will make the component lose focus after every letter
  * */
 
-const formats =
-  ['bold', 'italic', 'underline', 'strike', 'color', 'background', 'list', 'ordered', 'bullet', 'script', 'sub', 'super']
+const formats = [
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'color',
+  'background',
+  'list',
+  'ordered',
+  'bullet',
+  'script',
+  'sub',
+  'super'
+]
 
 function RichTextEditor(props) {
   const {
-    input: { value,...inputProps },
+    input: { value, ...inputProps },
     largeField,
     disabled,
     meta,
@@ -56,7 +68,6 @@ function RichTextEditor(props) {
   const userId = useSelector(userIdSelector)
   const projectId = useSelector(currentProjectIdSelector)
   const [showComments, setShowComments] = useState(false)
-  const comments = fieldComments[inputProps.name]
 
   const [toolbarVisible, setToolbarVisible] = useState(false)
   const editorRef = useRef(null)
@@ -65,21 +76,38 @@ function RichTextEditor(props) {
   const [currentTimeout, setCurrentTimeout] = useState(0)
   const fieldFormName = formName ? formName : EDIT_PROJECT_FORM
 
-  const handleChange = (_val, _delta, source) => {
+  const getFieldComments = () => {
+    const fieldName = inputProps.name
+    const lastIndex = fieldName.lastIndexOf('.')
 
-    if ( currentTimeout ) {
-      clearTimeout( currentTimeout )
-     setCurrentTimeout(0)
+    if (lastIndex !== -1) {
+      // TODO: Temporary fix to avoid crashing
+      const currentFieldName = fieldName.substring(lastIndex + 1, fieldName.length)
+      return fieldComments[currentFieldName]
+    } else {
+      return fieldComments[fieldName]
+    }
+  }
+  const comments = getFieldComments()
+
+  const handleChange = (_val, _delta, source) => {
+    if (currentTimeout) {
+      clearTimeout(currentTimeout)
+      setCurrentTimeout(0)
     }
     if (source === 'user') {
-
       /* Get the value from the editor - the delta provided to handlechange does not have complete state */
 
       const actualDeltaValue = editorRef.current.editor.getContents()
-      setCurrentTimeout( () => setTimeout( () => dispatch(change(fieldFormName, inputProps.name, actualDeltaValue)), 500) )
-      setCounter(actualDeltaValue.length() - 1 )
+      setCurrentTimeout(() =>
+        setTimeout(
+          () => dispatch(change(fieldFormName, inputProps.name, actualDeltaValue)),
+          500
+        )
+      )
+      setCounter(actualDeltaValue.length() - 1)
       setShowCounter(true)
-   }
+    }
   }
   const addComment = () => {
     /* If cursor position is needed, you can get it like this */
@@ -98,14 +126,14 @@ function RichTextEditor(props) {
 
   let reducedName = inputProps.name
 
-    const lastIndex = inputProps.name.lastIndexOf('.')
+  const lastIndex = inputProps.name.lastIndexOf('.')
 
-    let number = 0
+  let number = 0
 
-    if ( lastIndex !== -1) {
-      reducedName = inputProps.name.substring( lastIndex + 1, inputProps.name.length )
-      number = inputProps.name[lastIndex-2]
-    }
+  if (lastIndex !== -1) {
+    reducedName = inputProps.name.substring(lastIndex + 1, inputProps.name.length)
+    number = inputProps.name[lastIndex - 2]
+  }
   const toolbarName = `toolbar-${reducedName || ''}-${number}`
   const modules = {
     toolbar: `#${toolbarName}`
@@ -164,11 +192,11 @@ function RichTextEditor(props) {
           onBlur={(_range, _source, quill) => {
             setToolbarVisible(false)
             setShowCounter(false)
-            if ( onBlur ) {
+            if (onBlur) {
               onBlur(quill.getContents())
             }
           }}
-          meta = {meta}
+          meta={meta}
           placeholder={placeholder}
           className={className}
           onClick={() => setToolbarVisible(true)}
@@ -183,9 +211,7 @@ function RichTextEditor(props) {
               {...comment}
               editable={userId === comment.user}
               onSave={content =>
-                dispatch(
-                  editFieldComment(projectId, comment.id, content, reducedName)
-                )
+                dispatch(editFieldComment(projectId, comment.id, content, reducedName))
               }
               onDelete={() =>
                 dispatch(deleteFieldComment(projectId, comment.id, reducedName))
@@ -194,8 +220,15 @@ function RichTextEditor(props) {
           ))}
         </div>
       )}
-      {showCounter && props.maxSize ?
-      <p className={counter > props.maxSize ? 'quill-counter quill-warning' : 'quill-counter'}>{counter + '/' + props.maxSize  }</p> : null}
+      {showCounter && props.maxSize ? (
+        <p
+          className={
+            counter > props.maxSize ? 'quill-counter quill-warning' : 'quill-counter'
+          }
+        >
+          {counter + '/' + props.maxSize}
+        </p>
+      ) : null}
     </div>
   )
 }

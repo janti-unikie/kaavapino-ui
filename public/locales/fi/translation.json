@@ -1,6 +1,13 @@
 { 
     "title": "Kaavapino",
     "loading": "Ladataan....",
+    "header" : {
+        "overview": "Yleisnäkymä",
+        "projects": "Projektit",
+        "reports": "Raportit",
+        "sign-out": "Kirjaudu ulos",
+        "choices-label": "Valikko"
+    },
     "projects": {
         "own-short": "Omat",
         "all-short": "Kaikki",

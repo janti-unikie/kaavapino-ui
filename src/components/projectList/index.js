@@ -47,6 +47,7 @@ class ProjectListPage extends Component {
     this.props.fetchUsers()
     this.props.fetchProjectSubtypes()
     window.addEventListener('resize', this.handleWindowSizeChange)
+
   }
 
   componentWillUnmount() {
@@ -185,7 +186,8 @@ class ProjectListPage extends Component {
       this.props.history.push(`/${id}/edit`)
     }
 
-    const createTabPanes = () => showCreate
+    const createTabPanes = () => (
+      showCreate
       ? (
           <Tabs>
             <TabList onTabChange={this.handleTabChange}>
@@ -201,13 +203,14 @@ class ProjectListPage extends Component {
           </Tabs>
         )
       :  (
-          <Tab>
+        <Tabs>
             <TabList onTabChange={this.handleTabChange}>
               <Tab>{getTotalProjectsTitle}</Tab>
             </TabList>
             <TabPanel>{getTotalProjectsPanel()}</TabPanel>
-          </Tab>
+          </Tabs>
         )
+    )
 
     let headerActions = (
       <span className="header-buttons">

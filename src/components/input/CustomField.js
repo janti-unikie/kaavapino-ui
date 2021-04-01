@@ -126,14 +126,20 @@ class CustomField extends Component {
 
   renderRichText = props => {
     const { onBlur, meta, formName } = this.props
-    return <RichTextEditor onBlur={onBlur} meta={meta} {...props} formName={formName} largeField />
+    return (
+      <RichTextEditor
+        onBlur={onBlur}
+        meta={meta}
+        {...props}
+        formName={formName}
+        largeField
+      />
+    )
   }
 
   renderRichTextShort = props => {
     const { onBlur, meta } = this.props
-    return (
-      <RichTextEditor onBlur={onBlur} meta={meta} {...props} />
-    )
+    return <RichTextEditor onBlur={onBlur} meta={meta} {...props} />
   }
 
   renderDate = props => {
@@ -278,7 +284,7 @@ class CustomField extends Component {
 
     return (
       <OnHoldCheckbox
-       {...props}
+        {...props}
         projectOnhold={onhold}
         saveProjectBase={saveProjectBase}
         disabled={disabled}
@@ -362,11 +368,29 @@ class CustomField extends Component {
       error,
       updated,
       defaultValue,
-      className
+      className,
+      handleSave
     } = this.props
     const type = field.type
     if (type === 'file' || type === 'image') {
-      const file = attributeData[field.name]
+      const lastIndex = field.name.lastIndexOf('.')
+      let file = attributeData[field.name]
+
+      if (lastIndex !== -1) {
+        const firstBracket = field.name.indexOf('[')
+        const secondBracket = field.name.indexOf(']')
+
+        const fieldSet = field.name.substring(0, firstBracket)
+        const index = field.name.substring(firstBracket + 1, secondBracket)
+        const currentFieldName = field.name.substring(lastIndex + 1, field.name.length)
+
+        if ( !attributeData[fieldSet] || !attributeData[fieldSet][index]) {
+          file = null
+        } else {
+          file = attributeData[fieldSet][index][currentFieldName]
+        }
+      }
+
       const src = file ? file.link : null
       const description = file ? file.description : null
 
@@ -378,6 +402,7 @@ class CustomField extends Component {
           description={description}
           formValues={formValues}
           attributeData={attributeData}
+          handleSave={handleSave}
         />
       )
     }
