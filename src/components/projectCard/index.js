@@ -10,11 +10,21 @@ import FloorAreaInformation from './FloorAreaInformation'
 import StrategyConnection from './StrategyConnection'
 import Photo from './Photo'
 import Documents from './Documents'
-import { fieldsMockData } from './fieldsMockData'
-import projectUtils from '../../utils/projectUtils'
 import GeometryInformation from './GeometryInformation'
+import { get } from 'lodash'
 
-function ProjectCardPage( { attributeData, deadlines } ) {
+export const PROJECT_PICTURE = 'Projektikortin kuva'
+export const PROJECT_BASIC = 'Perustiedot'
+export const PROJECT_DESCRIPTION = 'Suunnittelualueen kuvaus'
+export const PROJECT_STRATEGY = 'Strategiakytkentä'
+export const PROJECT_CONTRACT = 'Maanomistus ja maankäyttösopimus'
+export const PROJECT_FLOOR_AREA = 'Kerrosalatiedot'
+export const PROJECT_TIMETABLE = 'Aikataulu'
+export const PROJECT_CONTACT = 'Yhteyshenkilöt'
+export const PROJECT_DOCUMENTS = 'Dokumentit'
+export const PROJECT_BORDER = 'Suunnittelualueen raja'
+
+function ProjectCardPage( { attributeData, deadlines, fields } ) {
 
   const [descriptionFields, setDescriptionDFields  ] = useState([])
   const [ basicInformationFields, setBasicInformationFields ] = useState([])
@@ -44,14 +54,14 @@ function ProjectCardPage( { attributeData, deadlines } ) {
     const currentDocumentFields = []
     let currentPlanningRestriction = null
 
-    fieldsMockData.forEach( field => {
-      const value = projectUtils.findValueFromObject( attributeData, field.name )
+    fields.forEach( field => {
+      const value = get( attributeData, field.name )
 
       let newField = {
         ...field,
         value: value === undefined ? null : value
       }
-      if ( field.display === 'photo') {
+      if ( field.section_name === PROJECT_PICTURE) {
         newField = {
           ...field,
           link: value === undefined ? null :  value.link,
@@ -60,31 +70,31 @@ function ProjectCardPage( { attributeData, deadlines } ) {
         }
        currentPhotoField = newField
       }
-      if ( field.display === 'basic') {
+      if ( field.section_name === PROJECT_BASIC) {
         currentBasicInformationFields.push( newField )
       }
-      if ( field.display === 'description') {
+      if ( field.section_name === PROJECT_DESCRIPTION) {
         currentDescriptionFields.push( newField )
       }
-      if ( field.display === 'strategy') {
+      if ( field.section_name === PROJECT_STRATEGY) {
         currentStrategyConnectionFields.push( newField )
       }
-      if ( field.display === 'contract') {
+      if ( field.section_name === PROJECT_CONTRACT) {
         currentContractFields.push( newField )
       }
-      if ( field.display === 'floor-area-information') {
+      if ( field.section_name === PROJECT_FLOOR_AREA) {
         currentFloorAreaFields.push( newField )
       }
-      if ( field.display === 'timetable') {
+      if ( field.section_name === PROJECT_TIMETABLE) {
         currentTimeTableFields.push( newField )
       }
-      if ( field.display === 'contact') {
+      if ( field.section_name === PROJECT_CONTACT) {
         currentContactsFields.push( newField )
       }
-      if ( field.display === 'documents') {
+      if ( field.section_name === PROJECT_DOCUMENTS) {
         currentDocumentFields.push( newField )
       }
-      if ( field.display === 'geometry') {
+      if ( field.section_name === PROJECT_BORDER) {
         currentPlanningRestriction = newField
       }
      })

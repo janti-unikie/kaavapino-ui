@@ -8,6 +8,8 @@ import {
   setSelectedPhaseId
 } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
+import { getProjectCardFields } from '../../actions/schemaActions'
+
 import {
   currentProjectSelector,
   currentProjectLoadedSelector,
@@ -15,7 +17,7 @@ import {
   selectedPhaseSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
-import { allEditFieldsSelector } from '../../selectors/schemaSelector'
+import { allEditFieldsSelector, projectCardFieldsSelector } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader } from '../common/NavHeader'
 import ProjectEditPage from '../projectEdit'
@@ -51,13 +53,15 @@ class ProjectPage extends Component {
   }
 
   componentDidMount() {
-    const { currentProjectLoaded, users } = this.props
+    const { currentProjectLoaded, users, getProjectCardFields } = this.props
     if (!currentProjectLoaded) {
       this.props.initializeProject(this.props.id)
     }
     if (!users || users.length === 0) {
       this.props.fetchUsers()
     }
+    getProjectCardFields()
+
   }
 
   componentDidUpdate(prevProps) {
@@ -118,7 +122,7 @@ class ProjectPage extends Component {
   }
 
   getProjectPageContent = () => {
-    const { edit, documents, currentProject, phases } = this.props
+    const { edit, documents, currentProject, phases, projectCardFields } = this.props
     const { selectedPhase } = this.props
     const currentPhases = this.getCurrentPhases()
 
@@ -143,6 +147,7 @@ class ProjectPage extends Component {
         name={currentProject.name}
         subtype={currentProject.subtype}
         phases={phases}
+        fields={projectCardFields}
       />
     )
   }
@@ -336,7 +341,8 @@ const mapDispatchToProps = {
   fetchUsers,
   changeProjectPhase,
   getProjectSnapshot,
-  setSelectedPhaseId
+  setSelectedPhaseId,
+  getProjectCardFields
 }
 
 const mapStateToProps = state => {
@@ -350,7 +356,8 @@ const mapStateToProps = state => {
     allEditFields: allEditFieldsSelector(state),
     formValues: getFormValues(DOWNLOAD_PROJECT_DATA_FORM)(state),
     currentUserId: userIdSelector(state),
-    selectedPhase: selectedPhaseSelector(state)
+    selectedPhase: selectedPhaseSelector(state),
+    projectCardFields: projectCardFieldsSelector(state)
   }
 }
 

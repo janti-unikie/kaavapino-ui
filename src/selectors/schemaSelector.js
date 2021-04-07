@@ -13,6 +13,10 @@ export const allEditFieldsSelector = createSelector(
   selectSchema,
   ({ allEditFields }) => allEditFields
 )
+export const projectCardFieldsSelector = createSelector(
+  selectSchema,
+  ({ projectCardFields }) => projectCardFields
+)
 
 export const floorAreaSectionsSelector = createSelector(
   selectSchema,
