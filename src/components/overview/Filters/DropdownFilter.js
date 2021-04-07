@@ -18,8 +18,6 @@ function DropdownFilter({ name, defaultValue, options, placeholder, onChange }) 
       multiselect={false}
       options={options}
       onChange={data => {
-      console.log('🚀 ~ file: DropdownFilter.js ~ line 22 ~ DropdownFilter ~ data', data)
-
         onChange(data.key)
       }}
       defaultValue={currentValue}
