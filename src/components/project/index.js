@@ -31,9 +31,11 @@ import { DOWNLOAD_PROJECT_DATA_FORM } from '../../constants'
 import { getFormValues } from 'redux-form'
 import moment from 'moment'
 import { userIdSelector } from '../../selectors/authSelector'
-import { Button, IconPen, IconPrinter, IconDownload, LoadingSpinner } from 'hds-react'
+import { IconPen, IconPrinter, IconDownload, LoadingSpinner, Button } from 'hds-react'
 import { withRouter } from 'react-router-dom'
+
 class ProjectPage extends Component {
+  test = React.createRef()
   constructor(props) {
     super(props)
     if (props.currentProject) {
@@ -146,64 +148,69 @@ class ProjectPage extends Component {
       />
     )
   }
-
-  getNavActions = () => {
-    const { edit, documents, users, t } = this.props
-
+  getProjectCardButtons = () => {
+    const { t, users } = this.props
     const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
 
-    return !(edit || documents) ? (
+    return (
       <span className="header-buttons">
         {showCreate && (
-          <Button
-            variant="secondary"
-            className="header-button"
-            onClick={this.modifyContent}
-            iconLeft={<IconPen/>}
-          >
+          <Button variant="secondary" onClick={this.modifyContent} iconLeft={<IconPen />}>
             {t('project.modify')}
           </Button>
         )}
-        <Button variant="secondary" iconLeft={<IconPen/>} onClick={this.createDocuments}>
+        <Button variant="secondary" iconLeft={<IconPen />} onClick={this.createDocuments}>
           {t('project.create-documents')}
         </Button>
-        <Button variant="secondary" iconLeft={<IconPrinter/>} onClick={() => window.print()}>
+        <Button
+          variant="secondary"
+          iconLeft={<IconPrinter />}
+          onClick={() => window.print()}
+        >
           {t('project.print-project-card')}
         </Button>
         <Button
           variant="secondary"
-          iconLeft={<IconPen/>}
+          iconLeft={<IconPen />}
           onClick={() => this.setState({ showDeadlineModal: true })}
         >
           Määräajat
         </Button>
       </span>
-    ) : (
+    )
+  }
+  getEditButtons = () => {
+    const { t, users } = this.props
+    const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
+
+    return (
       <span className="header-buttons">
         <Button
           variant="secondary"
-          className="header-button"
           onClick={this.openProjectDataModal}
-          iconLeft={<IconDownload/>}
+          iconLeft={<IconDownload />}
         >
           Tulosta projektin tiedot
         </Button>
         {showCreate && (
           <Button
             variant="secondary"
-            className="header-button"
             onClick={() => this.toggleBaseInformationForm(true)}
-            iconLeft={<IconPen/>}
+            iconLeft={<IconPen />}
           >
             {t('project.modify-project')}
           </Button>
-          )
-        }
-        <Button  variant="primary" iconLeft={<IconPen/>} onClick={this.checkProjectCard}>
+        )}
+        <Button variant="primary" iconLeft={<IconPen />} onClick={this.checkProjectCard}>
           {t('project.check-project-card')}
         </Button>
       </span>
     )
+  }
+
+  getNavActions = () => {
+    const { edit } = this.props
+    return !edit ? this.getProjectCardButtons() : this.getEditButtons()
   }
 
   modifyContent = () => {
@@ -229,7 +236,8 @@ class ProjectPage extends Component {
   }
   openProjectDataModal = () => this.togglePrintProjectDataModal(true)
 
-  toggleBaseInformationForm = opened => this.setState({ ...this.state, showBaseInformationForm: opened })
+  toggleBaseInformationForm = opened =>
+    this.setState({ ...this.state, showBaseInformationForm: opened })
 
   getAllChanges = () => {
     const { allEditFields, edit } = this.props
@@ -238,6 +246,8 @@ class ProjectPage extends Component {
     return allEditFields.map((f, i) => {
       const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.name} ${f.user_name}`
       return {
+        name: f.name,
+        label: f.label,
         text: value,
         value: `${value}-${i}`,
         key: `${value}-${i}`,
@@ -261,9 +271,7 @@ class ProjectPage extends Component {
           ]}
         />
         <div className="project-page-content">
-          <LoadingSpinner className="loader-icon">
-            {t('loading')}
-          </LoadingSpinner>
+          <LoadingSpinner className="loader-icon">{t('loading')}</LoadingSpinner>
         </div>
       </div>
     )
@@ -354,7 +362,6 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter( connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withTranslation()(ProjectPage)))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProjectPage))
+)
