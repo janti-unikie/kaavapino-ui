@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import {  Popup, Dropdown } from 'semantic-ui-react'
+import {  Popup, Dropdown, Grid } from 'semantic-ui-react'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import parse from 'html-react-parser'
 import { isObject, isBoolean, isArray, isString, isNumber } from 'lodash'
@@ -31,8 +31,7 @@ export const NavHeader = ({
   routeItems,
   actions,
   title,
-  infoOptions,
-  subTitle
+  infoOptions
 }) => {
   const { t } = useTranslation()
 
@@ -172,12 +171,15 @@ export const NavHeader = ({
         </div>
         <div className="nav-header-content">
           <div className="nav-header-titles">
-            <h1 className="nav-header-title">{title}</h1>
-            {subTitle && <h3 className="nav-header-subtitle">{subTitle}</h3>}
+            <Grid className="full-width" stackable padded={false} columns="equal">
+             <Grid.Column width={5}>
+               <h2 className="nav-header-title">{title}</h2>
+             </Grid.Column>
+             <Grid.Column textAlign="right">{actions && actions}</Grid.Column>
+          </Grid>
           </div>
          {renderDropdown}
         </div>
-        {actions && actions}
       </div>
     </div>
   )

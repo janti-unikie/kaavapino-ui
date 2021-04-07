@@ -1,22 +1,59 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+import { Grid, Segment } from 'semantic-ui-react'
+import CustomMap from './CustomMap'
+import FloorArea from './FloorAreaChart'
+import ProjectsChart from './ProjectsChart'
 
-class Overview extends Component {
-  constructor(props) {
-    super(props)
+import './styles.scss'
+import { NavHeader } from '../common/NavHeader'
+import {
+  mockData,
+  floorAreaFilters,
+  projectTypeData,
+  projectTypeFilters,
+  mapFilters
+} from './overViewMockData'
 
-    this.state = {}
-  }
+function Overview() {
+  const { t } = useTranslation()
 
-  componentDidMount() {
-    document.title = 'Kaavapino'
-  }
-  render() {
-    return (
-      <div>
-        <h1>Yleisnäkymä</h1>
-      </div>
-    )
-  }
+  return (
+    <div className="overview">
+      <NavHeader
+        routeItems={[{ value: 'Yleisnäkymä', path: '/' }]}
+        title={t('overview.title')}
+      />
+      <Grid stackable columns="equal">
+        <Grid.Column>
+          <Segment>
+            <CustomMap filters={mapFilters}/>
+          </Segment>
+        </Grid.Column>
+      </Grid>
+      <Grid stackable columns="equal">
+        <Grid.Column>
+          <Segment>
+            <FloorArea
+              filters={floorAreaFilters}
+              data={mockData}
+              current="360000"
+              total="700000"
+            />
+          </Segment>
+        </Grid.Column>
+      </Grid>
+
+      <Grid stackable columns="equal">
+        <Grid.Column width={8}>
+          <Segment>
+            <ProjectsChart filters={projectTypeFilters} data={projectTypeData} />
+          </Segment>
+        </Grid.Column>
+
+      </Grid>
+    </div>
+  )
 }
-export default connect(null)(Overview)
+
+export default Overview

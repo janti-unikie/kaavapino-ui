@@ -93,14 +93,6 @@ class ProjectPage extends Component {
     return path
   }
 
-  getSubTitle = () => {
-    const { edit } = this.props
-    if (edit) {
-      return 'Tietojen muokkaus'
-    }
-    return null
-  }
-
   getCurrentPhases() {
     let { currentProject, phases } = this.props
     const { type, subtype } = currentProject
@@ -298,7 +290,6 @@ class ProjectPage extends Component {
         <NavHeader
           routeItems={this.getRouteItems()}
           title={currentProject.name}
-          subTitle={this.getSubTitle()}
           actions={this.getNavActions()}
           infoOptions={this.getAllChanges()}
         />
