@@ -54,12 +54,6 @@ function ProjectCardPage( { attributeData, deadlines, fields } ) {
     const currentDocumentFields = []
     let currentPlanningRestriction = null
 
-    fields.push(  {
-      label: 'Aloituskokouksen päivämäärä',
-      name: 'aloituskokous_suunniteltu_pvm',
-      section_name: 'Aikataulu',
-      type: 'date'
-  },)
     fields.forEach( field => {
 
       let value = projectUtils.findValueFromObject( attributeData, field.name )
