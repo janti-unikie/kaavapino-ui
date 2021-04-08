@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import moment from 'moment'
+import { isArray } from 'lodash'
 
 function TimeTable({ fields }) {
-
   const { t } = useTranslation()
 
   const renderField = (field, index) => {
@@ -13,12 +13,21 @@ function TimeTable({ fields }) {
     }
     let value = field.value
 
-    if (field.choices) {
-      const foundValue =
-        field.choices && field.choices.find(current => current.value === field.value)
-      value = foundValue.label
+    let completeValue = ''
+
+    if (isArray(field.value)) {
+      field.value.forEach(current => {
+        completeValue = completeValue + ' ' + moment(current).format('DD.MM.YYYY')
+      })
+      value = completeValue
     } else {
-      value = moment(field.value).format('DD.MM.YYYY')
+      if (field.choices) {
+        const foundValue =
+          field.choices && field.choices.find(current => current.value === field.value)
+        value = foundValue.label
+      } else {
+        value = moment(field.value).format('DD.MM.YYYY')
+      }
     }
 
     return <div key={field.label + index}>{renderFieldValue(field, index, value)}</div>

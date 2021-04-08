@@ -11,7 +11,7 @@ import StrategyConnection from './StrategyConnection'
 import Photo from './Photo'
 import Documents from './Documents'
 import GeometryInformation from './GeometryInformation'
-import { get } from 'lodash'
+import projectUtils from './../../utils/projectUtils'
 
 export const PROJECT_PICTURE = 'Projektikortin kuva'
 export const PROJECT_BASIC = 'Perustiedot'
@@ -54,8 +54,27 @@ function ProjectCardPage( { attributeData, deadlines, fields } ) {
     const currentDocumentFields = []
     let currentPlanningRestriction = null
 
+    fields.push(  {
+      label: 'Aloituskokouksen päivämäärä',
+      name: 'aloituskokous_suunniteltu_pvm',
+      section_name: 'Aikataulu',
+      type: 'date'
+  },)
     fields.forEach( field => {
-      const value = get( attributeData, field.name )
+
+      let value = projectUtils.findValueFromObject( attributeData, field.name )
+
+      const returnValues = []
+      projectUtils.findValuesFromObject( attributeData, field.name, returnValues )
+
+      if ( returnValues.length > 1) {
+
+        let currentValues = []
+        returnValues.forEach( current => {
+          currentValues.push(current)
+        })
+        value = currentValues
+      }
 
       let newField = {
         ...field,

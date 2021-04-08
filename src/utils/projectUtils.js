@@ -238,6 +238,21 @@ const findValueFromObject = (object, key) => {
   })
   return value
 }
+const findValuesFromObject = (object, key, returnArray) => {
+  let value
+  Object.keys(object).some(currentKey => {
+    if (currentKey === key) {
+      returnArray.push(object[currentKey])
+      return true
+    }
+    if (object[currentKey] && typeof object[currentKey] === 'object') {
+      value = findValuesFromObject(object[currentKey], key, returnArray)
+      return value !== undefined
+    }
+    return false
+  })
+  return value
+}
 const isUserPrivileged = (currentUserId, users) => {
   const getUserRole = () => {
     let privilege
@@ -276,5 +291,6 @@ export default {
   generateArrayOfYears,
   getFieldsetAttributes,
   findValueFromObject,
-  isUserPrivileged
+  isUserPrivileged,
+  findValuesFromObject
 }
