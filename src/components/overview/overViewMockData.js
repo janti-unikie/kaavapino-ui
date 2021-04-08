@@ -351,9 +351,9 @@ export const mockData = {
       defaultValue: 'Kaavan vaihe',
       type: 'choices',
       options: [
-        { label: 'Käynnistys', key: 'yksikko_a', value: 'yksikko_a' },
-        { label: 'Periaatteet', key: 'yksikko_b', value: 'yksikko_b' },
-        { label: 'OAS', key: 'yksikko_c', value: 'yksikko_c' }
+        { label: 'Käynnistys', key: 'Käynnistys', value: 'Käynnistys' },
+        { label: 'Periaatteet', key: 'Periaatteet', value: 'Periaatteet' },
+        { label: 'OAS', key: 'OAS', value: 'OAS' }
       ]
     },
     {
@@ -362,9 +362,9 @@ export const mockData = {
       defaultValue: 'Prosessin koko',
       type: 'choices',
       options: [
-        { label: 'S', key: 'yksikko_a', value: 'yksikko_a' },
-        { label: 'M', key: 'yksikko_b', value: 'yksikko_b' },
-        { label: 'L', key: 'yksikko_c', value: 'yksikko_c' }
+        { label: 'S', key: 'S', value: 'S' },
+        { label: 'M', key: 'M', value: 'M' },
+        { label: 'L', key: 'L', value: 'L' }
       ]
     },
     {
@@ -373,9 +373,9 @@ export const mockData = {
       defaultValue: 'Maankäyttösopimus',
       type: 'choices',
       options: [
-        { label: 'liittyy', key: 'yksikko_a', value: 'yksikko_a' },
-        { label: 'ei liity', key: 'yksikko_b', value: 'yksikko_b' },
-        { label: 'liittyy moneen', key: 'yksikko_c', value: 'yksikko_c' }
+        { label: 'liittyy', key: 'liittyy', value: 'liittyy' },
+        { label: 'ei liity', key: 'ei liity', value: 'ei liity' },
+        { label: 'liittyy moneen', key: 'liittyy moneen', value: 'liittyy moneen' }
       ]
     },
     {
@@ -384,9 +384,9 @@ export const mockData = {
       defaultValue: 'Henkilö',
       type: 'choices',
       options: [
-        { label: 'Jaska Jokunen', key: 'yksikko_a', value: 'yksikko_a' },
-        { label: 'Repe Sorsa', key: 'yksikko_b', value: 'yksikko_b' },
-        { label: 'Aku Ankka', key: 'yksikko_c', value: 'yksikko_c' }
+        { label: 'Jaska Jokunen', key: 'Jaska Jokunen', value: 'Jaska Jokunen' },
+        { label: 'Repe Sorsa', key: 'Repe Sorsa', value: 'Repe Sorsa' },
+        { label: 'Aku Ankka', key: 'Aku Ankka', value: 'Aku Ankka' }
       ]
     }
   ]

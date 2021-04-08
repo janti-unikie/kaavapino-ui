@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import DropdownFilter from './DropdownFilter'
 import projectUtils from '../../../utils/projectUtils'
@@ -7,6 +7,8 @@ import { Grid } from 'semantic-ui-react'
 import { useTranslation } from 'react-i18next'
 function FilterList({ filterList, currentFilter, onChange, showClearButton, onClear }) {
   const { t } = useTranslation()
+
+  const [filters, setFilters] = useState( currentFilter )
 
   const formatOptions = field => {
     let options = field.options
@@ -24,6 +26,10 @@ function FilterList({ filterList, currentFilter, onChange, showClearButton, onCl
       }
     })
   }
+  useEffect(() => {
+    setFilters(currentFilter)
+  }, [currentFilter])
+
   const clearFilters = () => {
     onClear()
   }
@@ -38,15 +44,15 @@ function FilterList({ filterList, currentFilter, onChange, showClearButton, onCl
         <DropdownFilter
           key={field + index}
           name={field.name}
-          defaultValue={currentFilter[field.name] ? currentFilter[field.name] : ''}
-          value={currentFilter[field.name] ? currentFilter[field.name] : ''}
+          defaultValue={filters[field.name] ? filters[field.name] : null}
           options={formatOptions(field)}
           placeholder={field.placeholder}
           onChange={onChange}
           type={field.type}
         />
       </Grid.Column>
-    ))
+      )
+    )
   }
 
   return (

@@ -6,7 +6,7 @@
     "@sentry/browser": "^4.4.1",
     "axios": "^0.21.1",
     "connected-react-router": "^6.9.1",
-    "hds-react": "^0.23.1",
+    "hds-react": "^0.24.0",
     "html-react-parser": "^0.14.3",
     "i18next": "^19.9.2",
     "i18next-browser-languagedetector": "^6.1.0",

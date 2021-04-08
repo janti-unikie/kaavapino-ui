@@ -14,11 +14,12 @@ function DropdownFilter({ name, defaultValue, options, placeholder, onChange }) 
   return (
     <Select
       name={name}
+      clearable={true}
       id={name}
       multiselect={false}
       options={options}
       onChange={data => {
-        onChange(data.key)
+        onChange(data.value, name)
       }}
       defaultValue={currentValue}
       className="filter-dropdown"
