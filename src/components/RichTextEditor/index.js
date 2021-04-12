@@ -68,7 +68,6 @@ function RichTextEditor(props) {
   const userId = useSelector(userIdSelector)
   const projectId = useSelector(currentProjectIdSelector)
   const [showComments, setShowComments] = useState(false)
-  const comments = fieldComments[inputProps.name]
 
   const [toolbarVisible, setToolbarVisible] = useState(false)
   const editorRef = useRef(null)
@@ -76,6 +75,20 @@ function RichTextEditor(props) {
   const [showCounter, setShowCounter] = useState(false)
   const [currentTimeout, setCurrentTimeout] = useState(0)
   const fieldFormName = formName ? formName : EDIT_PROJECT_FORM
+
+  const getFieldComments = () => {
+    const fieldName = inputProps.name
+    const lastIndex = fieldName.lastIndexOf('.')
+
+    if (lastIndex !== -1) {
+      // TODO: Temporary fix to avoid crashing
+      const currentFieldName = fieldName.substring(lastIndex + 1, fieldName.length)
+      return fieldComments[currentFieldName]
+    } else {
+      return fieldComments[fieldName]
+    }
+  }
+  const comments = getFieldComments()
 
   const handleChange = (_val, _delta, source) => {
     if (currentTimeout) {

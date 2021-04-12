@@ -55,7 +55,6 @@ import {
   validateProjectFieldsSuccessful,
   PROJECT_FILE_UPLOAD,
   PROJECT_FILE_REMOVE,
-  projectFileUploadSuccessful,
   projectFileRemoveSuccessful,
   saveProject as saveProjectAction,
   PROJECT_SET_DEADLINES,
@@ -593,17 +592,47 @@ function* projectFileUpload({
 }) {
   try {
     const currentProjectId = yield select(currentProjectIdSelector)
+
+    let fieldSetIndex = []
+    let currentFieldName = attribute
+
+    const lastIndex = attribute.lastIndexOf('.')
+    if (lastIndex !== -1 ) {
+      const splitted = attribute.split('.')
+
+      splitted.forEach(value => {
+        const firstBracket = value.indexOf('[')
+        const secondBracket = value.indexOf(']')
+
+        const fieldSet = attribute.substring(0, firstBracket)
+        const index = attribute.substring(firstBracket + 1, secondBracket)
+        currentFieldName = attribute.substring(lastIndex + 1, attribute.length)
+
+        if (fieldSet !== '' && index !== '') {
+          const returnObject = {
+            parent: fieldSet,
+            index: index
+          }
+          fieldSetIndex.push(returnObject)
+        }
+      })
+    }
+
     // Create formdata
     const formData = new FormData()
-    formData.append('attribute', attribute)
+    formData.append('attribute', currentFieldName)
     formData.append('file', file)
     formData.append('description', description)
+
+    if (fieldSetIndex && fieldSetIndex.length > 0) {
+      formData.append('fieldset_path', JSON.stringify(fieldSetIndex))
+    }
     // Set cancel token
     const CancelToken = axios.CancelToken
     const src = CancelToken.source()
     setCancelToken(src)
     // Upload file
-    const newFile = yield call(
+    yield call(
       projectApi.put,
       formData,
       { path: { id: currentProjectId } },
@@ -614,7 +643,6 @@ function* projectFileUpload({
         cancelToken: src.token
       }
     )
-    yield put(projectFileUploadSuccessful(newFile))
     yield put(saveProjectAction())
   } catch (e) {
     if (!axios.isCancel(e)) {
