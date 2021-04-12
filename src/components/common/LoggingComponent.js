@@ -1,44 +1,43 @@
 import React from 'react'
 import { Popup, Dropdown } from 'semantic-ui-react'
-import { isBoolean, isObject, isString, isNumber } from 'lodash'
+import { isBoolean, isObject } from 'lodash'
 
 //import { diff } from 'deep-object-diff'
 import { useTranslation } from 'react-i18next'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import parse from 'html-react-parser'
+import { diff } from 'deep-object-diff'
+import { IconTrash } from 'hds-react'
 
 function LoggingComponent(props) {
   const { t } = useTranslation()
 
   const { infoOptions } = props
 
- /* const isSameValue = (oldValue, newValue) => {
-    const difference = diff(oldValue, newValue)
-
-    return difference && difference.length === 0
-  }*/
+  const isSameValue = (oldValue, newValue) => {
+    // TODO
+    console.log(diff(oldValue, newValue))
+    return false
+  }
 
   const latestUpdate =
     infoOptions &&
     infoOptions[0] &&
     t('nav-header.latest-update', { latestUpdate: infoOptions[0].text })
 
-  const getFormattedValues = (values, name) => {
-    if (isFieldset(name)) {
-      return getFormattedValue(values, true)
-    }
-    return getFormattedValue(values, false)
-  }
-
   const isFieldset = value => value && value.search && value.search('fieldset') !== -1
 
-  const getFormattedValue = (value, isFieldSet) => {
+  const getFormattedValue = (value, isFieldSet, name) => {
     // Fieldset
     if (isFieldSet) {
-      return getFieldSetContent(value)
+      const fieldSetContent = getFieldSetContent(value, name)
+
+      const hasContent =
+        fieldSetContent.length > 0 && fieldSetContent[0] && fieldSetContent[0].length > 0
+      return fieldSetContent && hasContent ? fieldSetContent : '-'
     }
 
-    // Normal richtext
+    // Normal rich text
     if (value && value.ops) {
       return getRichTextContent(value.ops)
     }
@@ -47,67 +46,104 @@ function LoggingComponent(props) {
       return value ? 'Kyllä' : 'Ei'
     }
     if (isObject(value)) {
-      if (value[0] && (isString(value[0]) || isNumber(value[0]))) {
-        return value.toString()
-      }
+      return value.toString()
     }
-
-    return value ? value.toString() : '-'
+    return  value ? value.toString() : '-'
   }
-  const getRichTextContent = value => {
-    console.log('🚀 ~ file: NavHeader.js ~ line 67 ~ NavHeader ~ value', value)
 
+  const getRichTextContent = value => {
     const cfg = { encodeHtml: false }
     const converter = new QuillDeltaToHtmlConverter(value, cfg)
 
     return parse(converter.convert())
   }
-  const getFieldSetContent = value => {
+
+  const getFieldSetContent = (value, name) => {
     if (!isObject(value) || value.ops) {
-      return getFormattedValue(value)
+      return getFormattedValue(value, false, name)
     }
     const returnValues = []
 
     const valueKeys = Object.keys(value)
-    console.log('🚀 ~ file: NavHeader.js ~ line 79 ~ NavHeader ~ valueKeys', valueKeys)
 
     valueKeys &&
-      valueKeys.map(current => {
-        const currentValue = value[current]
+      valueKeys.map(currentIndex => {
+        const currentValue = value[currentIndex]
 
         if (isObject(currentValue)) {
-       //   const fieldSetData = []
-          const keys = Object.keys(currentValue)
-          console.log('🚀 ~ file: NavHeader.js ~ line 88 ~ NavHeader ~ keys', keys)
-
-          console.log(
-            '🚀 ~ file: NavHeader.js ~ line 93 ~ NavHeader ~ currentValue',
-            currentValue
-          )
-          returnValues.push(getFieldsetValues(currentValue))
+          returnValues.push(getFieldsetValues(currentValue, currentIndex, name))
         } else {
-          console.log(
-            '🚀 ~ file: NavHeader.js ~ line 108 ~ NavHeader ~ currentValue',
-            currentValue
-          )
-          returnValues.push(currentValue ? getFormattedValue(currentValue) : 'Tyhjä')
+          returnValues.push(currentValue ? getFormattedValue(currentValue, isFieldset, name) : 'Tyhjä')
         }
+        return null
       })
-
     return returnValues
   }
 
-  const getFieldsetValues = fieldset => {
-    const returnValue = []
+  const getFieldsetValues = (fieldset, currentIndex, name) => {
+    let deleted = false
+    if (fieldset['_deleted']) {
+      deleted = true
+    }
+    const returnValues = []
+
+    let fixedIndex = currentIndex
+    fixedIndex++
 
     const keys = Object.keys(fieldset)
-    keys.forEach(key => {
-      if (key !== '_deleted') {
-        returnValue.push(key + ' ')
-        returnValue.push(getFormattedValue(fieldset[key], isFieldset(key)))
-      }
-    })
-    return returnValue
+
+    returnValues.push(
+      <div key={0} className={`log-item ${deleted ? 'deleted' : ''}`}>
+       {deleted && <IconTrash size="s"/> }
+
+        <b>
+          {fixedIndex}: {name}
+        </b>
+        <br />
+      </div>
+    )
+
+    if (keys.length === 0) {
+      returnValues.push('Tyhjä')
+    } else {
+      keys.forEach((key, index) => {
+        let component
+        let deleted = false
+
+        if (key !== '_deleted') {
+          let value = getFormattedValue(fieldset[key], isFieldset(key), key)
+
+          component = (
+            <div key={key + index} className={`log-item ${deleted ? 'deleted' : ''} `}>
+              <div>
+              {deleted && <IconTrash /> }
+                <b>{key}</b>
+              </div>
+              <div>{value}</div>
+            </div>
+          )
+
+          returnValues.push(component)
+        } else {
+          const value = getFormattedValue(fieldset[key], isFieldset(key), key)
+
+          if (value === true) {
+            component = (
+              <div key={key + index} className={`log-item ${deleted ? 'deleted' : ''} `}>
+                <div>
+                {deleted && <IconTrash /> }
+                  <b>Deleted: </b>
+                </div>
+                <div>{value}</div>
+              </div>
+            )
+          }
+
+          returnValues.push(component)
+        }
+      })
+    }
+    return returnValues.length === 0 ? null : returnValues
   }
 
   return (
@@ -118,9 +154,9 @@ function LoggingComponent(props) {
             <Dropdown.Menu>
               {infoOptions &&
                 infoOptions.map(option => {
-                 /* if (isSameValue(option.oldValue, option.newValue)) {
+                  if (isSameValue(option.oldValue, option.newValue)) {
                     return null
-                  }*/
+                  }
                   return (
                     <Popup
                       hideOnScroll={false}
@@ -129,8 +165,7 @@ function LoggingComponent(props) {
                       className="popup-logger"
                       position="right center"
                       wide="very"
-                      trigger={
-                        (
+                      trigger={(
                         <Dropdown.Item
                           key={option.key}
                           className="changelog-item"
@@ -138,8 +173,7 @@ function LoggingComponent(props) {
                         >
                           {option.text}
                         </Dropdown.Item>
-                        )
-                      }
+                      )}
                     >
                       <div className="show-value">{option.text}</div>
                       <div className="show-value">
@@ -147,7 +181,11 @@ function LoggingComponent(props) {
                           <b>Uusi arvo</b>
                         </div>
                         <div className="field-value">
-                          {getFormattedValues(option.newValue, option.key)}
+                          {getFormattedValue(
+                            option.newValue,
+                            isFieldset(option.name),
+                            option.name
+                          )}
                         </div>
                       </div>
                       <div>
@@ -155,7 +193,11 @@ function LoggingComponent(props) {
                           <b>Vanha arvo</b>
                         </div>
                         <div className="field-value">
-                          {getFormattedValues(option.oldValue, option.key)}
+                          {getFormattedValue(
+                            option.oldValue,
+                            isFieldset(option.name),
+                            option.name
+                          )}
                         </div>
                       </div>
                     </Popup>
@@ -172,28 +214,4 @@ function LoggingComponent(props) {
 LoggingComponent.propTypes = {}
 
 export default LoggingComponent
-/*keys.forEach(firstKey => {
-            if (firstKey !== '_deleted') {
-              let value = getFormattedValue(currentValue[firstKey])
 
-              if (value[0]) {
-                fieldSetData.push(`${firstKey}: ${value[0]}`)
-              } else {
-                fieldSetData.push(`${firstKey}: ${value}`)
-              }
-            }
-          })
-          const fieldsetKeys = Object.keys(fieldSetData)
-          const fieldsetFields = []
-
-          fieldsetKeys.forEach(fieldsetKey => {
-            const currentValue = fieldSetData[fieldsetKey]
-
-            if (isObject(currentValue)) {
-              fieldsetFields.push(`${fieldsetKey}: ${getFieldsetValues(currentValue)} `)
-              console.log(
-                '🚀 ~ file: NavHeader.js ~ line 114 ~ NavHeader ~ fieldsetFields',
-                fieldsetFields
-              )
-            }
-          })*/

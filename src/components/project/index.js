@@ -244,7 +244,7 @@ class ProjectPage extends Component {
 
     if (!edit) return []
     return allEditFields.map((f, i) => {
-      const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.name} ${f.user_name}`
+      const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.label} ${f.user_name}`
       return {
         name: f.name,
         label: f.label,

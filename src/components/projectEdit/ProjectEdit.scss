@@ -13,6 +13,7 @@
 .hightlight-asiantuntija {
   .Asiantuntijat {
     outline: 20px $yellow solid;
+    z-index: 0;
   }
   .checkbox.Asiantuntijat {
     outline: none;

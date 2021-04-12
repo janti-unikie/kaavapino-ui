@@ -42,6 +42,7 @@ function* allEditedFieldsSaga() {
   schema.phases.forEach(({ sections }) =>
     sections.forEach(({ fields }) => {
       fields.forEach(({ name, label, autofill_readonly }, i) => {
+
         if (!autofill_readonly) {
           return updates[name]
             ? result.push({
