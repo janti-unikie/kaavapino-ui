@@ -2,6 +2,7 @@ import projectUtils from './projectUtils'
 import { isBoolean } from 'lodash'
 import toPlaintext from 'quill-delta-to-plaintext'
 import { EDIT_PROJECT_TIMETABLE_FORM } from '../constants'
+import { get } from 'lodash'
 
 /* Field returns info whether field given as a parameter should be shown or not.
  *
@@ -12,7 +13,7 @@ import { EDIT_PROJECT_TIMETABLE_FORM } from '../constants'
 export const getFieldAutofillValue = (
   autofill_rule,
   formValues,
-  name,
+  fieldName,
   callerFormName
 ) => {
   let returnValue
@@ -39,54 +40,25 @@ export const getFieldAutofillValue = (
       const comparisonValueType = condition.comparison_value_type
       const extraVariables = autofill.variables
 
-      const lastIndex = name ? name.lastIndexOf('.') : -1
-      let formValue = formValues[variable]
+      const lastIndex = fieldName ? fieldName.lastIndexOf('.') : -1
+      const fieldNameFieldsetPart = fieldName ? fieldName.substring( 0, lastIndex ) + '.': ''
+
+      let formValue = get( formValues, `${fieldNameFieldsetPart}${variable}` )
+
       let formExtraValue
       if (extraVariables && extraVariables[0]) {
+
+        // Check first if value is not inside fieldset
         formExtraValue = formValues[extraVariables[0]]
-      }
 
-      if (lastIndex !== -1) {
-        const testChar = name.length > 3 && name[lastIndex - 4]
-        let fieldSet
-        let currentFieldSet
-
-        // Support for fieldset bigger than 9.
-        // Eg. if value is test[11] then substring one more
-        if (testChar === '[') {
-          fieldSet = name.substring(0, lastIndex -4)
-          // Get current fieldset number
-          currentFieldSet = name.substring(lastIndex - 3, lastIndex - 1)
-        } else {
-          fieldSet = name.substring(0, lastIndex - 3)
-          // Get current fieldset number
-          currentFieldSet = name.substring(lastIndex - 2, lastIndex - 1)
+        if ( formExtraValue === undefined ) {
+         formExtraValue = get( formValues, `${fieldNameFieldsetPart}${extraVariables[0]}` )
         }
-        let currentValue
-        if (formValues && formValues[fieldSet] && formValues[fieldSet][currentFieldSet]) {
-          currentValue = formValues[fieldSet][currentFieldSet][variable]
-        }
-
-        let currentExtraValue
-
-        if (
-          extraVariables &&
-          extraVariables[0] &&
-          formValues &&
-          formValues[fieldSet] &&
-          formValues[fieldSet][currentFieldSet]
-        ) {
-          currentExtraValue = formValues[fieldSet][currentFieldSet][extraVariables[0]]
-        }
-
-        formValue = !currentValue && currentValue !== false ? '' : currentValue
-        formExtraValue = currentExtraValue !== undefined ? currentExtraValue : ''
       }
 
       if (!formExtraValue) {
         formExtraValue = ''
       }
-
       // Special case to check "Aloituspäivä" for timetable modal
       if (!formValue && callerFormName === EDIT_PROJECT_TIMETABLE_FORM) {
         formValue =
