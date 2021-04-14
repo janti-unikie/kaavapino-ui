@@ -45,6 +45,8 @@ export const GET_PROJECT_SNAPSHOT = 'Get project snapshot'
 export const GET_PROJECT_SNAPSHOT_SUCCESSFUL = 'Get project snapshot successful'
 export const RESET_PROJECT_SNAPSHOT = 'Reset project snapshot'
 export const SET_SELECTED_PHASE_ID = 'Set selected phase id'
+export const GET_EXTERNAL_DOCUMENTS = 'Get external documents'
+export const GET_EXTERNAL_DOCUMENTS_SUCCESSFUL = 'Get external documents successful'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -82,7 +84,10 @@ export const setTotalOwnProjects = count => ({
   payload: count
 })
 
-export const setSelectedPhaseId = phaseId => ({ type: SET_SELECTED_PHASE_ID, payload: phaseId })
+export const setSelectedPhaseId = phaseId => ({
+  type: SET_SELECTED_PHASE_ID,
+  payload: phaseId
+})
 
 export const sortProjects = options => ({ type: SORT_PROJECTS, payload: options })
 
@@ -204,3 +209,12 @@ export const resetProjectSnapshot = () => ({
   type: RESET_PROJECT_SNAPSHOT
 })
 
+export const getExternalDocuments = projectId => ({
+  type: GET_EXTERNAL_DOCUMENTS,
+  payload: projectId
+})
+
+export const getExternalDocumentsSuccessful = documents => ({
+  type: GET_EXTERNAL_DOCUMENTS_SUCCESSFUL,
+  payload: documents
+})

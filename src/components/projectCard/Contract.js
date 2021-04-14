@@ -9,6 +9,10 @@ function Contract({ fields }) {
     const renderField = ( field, index ) => {
         let value = field.value
 
+        if ( value === null ) {
+            return null
+        }
+
         if ( value === undefined ) {
             value = null
         }

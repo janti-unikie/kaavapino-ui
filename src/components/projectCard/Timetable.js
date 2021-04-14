@@ -17,7 +17,9 @@ function TimeTable({ fields }) {
 
     if (isArray(field.value)) {
       field.value.forEach(current => {
-        completeValue = completeValue + ' ' + moment(current).format('DD.MM.YYYY')
+        if (current) {
+          completeValue = completeValue + ' ' + moment(current).format('DD.MM.YYYY')
+        }
       })
       value = completeValue
     } else {

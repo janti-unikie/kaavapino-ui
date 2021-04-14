@@ -240,9 +240,13 @@ const findValueFromObject = (object, key) => {
 }
 const findValuesFromObject = (object, key, returnArray) => {
   let value
+
   Object.keys(object).some(currentKey => {
     if (currentKey === key) {
-      returnArray.push(object[currentKey])
+        if ( !object['_deleted' ]) {
+          returnArray.push(object[currentKey])
+        }
+
       return true
     }
     if (object[currentKey] && typeof object[currentKey] === 'object') {

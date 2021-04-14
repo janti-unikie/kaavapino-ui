@@ -59,6 +59,10 @@
 .project-card .documents {
   min-height: 200px;
   overflow: auto;
+  
+  .section {
+    margin-bottom: 10px;
+  }
 }
 .project-card .timetable {
   min-height: 200px;
