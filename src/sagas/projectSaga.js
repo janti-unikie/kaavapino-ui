@@ -66,13 +66,15 @@ import {
   getProjectSuccessful,
   RESET_PROJECT_DEADLINES,
   getProjectSnapshotSuccessful,
-  GET_PROJECT_SNAPSHOT
+  GET_PROJECT_SNAPSHOT,
+  getProjectsOverviewSuccessful,
+  GET_PROJECTS_OVERVIEW
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
 import { setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
-import { projectApi, projectDeadlinesApi } from '../utils/api'
+import { projectApi, projectDeadlinesApi, overviewApi } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
 import {
   NEW_PROJECT_FORM,
@@ -104,7 +106,8 @@ export default function* projectSaga() {
     takeLatest(SET_AMOUNT_OF_PROJECTS_TO_INCREASE, setAmountOfProjectsToIncreaseSaga),
     takeEvery(GET_PROJECT, getProject),
     takeLatest(RESET_PROJECT_DEADLINES, resetProjectDeadlines),
-    takeLatest(GET_PROJECT_SNAPSHOT, getProjectSnapshot)
+    takeLatest(GET_PROJECT_SNAPSHOT, getProjectSnapshot),
+    takeLatest(GET_PROJECTS_OVERVIEW, getProjectsOverview )
   ])
 }
 
@@ -694,5 +697,14 @@ function* projectSetDeadlinesSaga() {
     } else {
       yield put(error(e))
     }
+  }
+}
+function* getProjectsOverview() {
+  try {
+    const timelineProject = yield call(
+      overviewApi.get)
+    yield put(getProjectsOverviewSuccessful(timelineProject))
+  } catch (e) {
+    yield put(error(e))
   }
 }

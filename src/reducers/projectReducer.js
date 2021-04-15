@@ -32,7 +32,8 @@ import {
   GET_PROJECT_SUCCESSFUL,
   GET_PROJECT_SNAPSHOT_SUCCESSFUL,
   RESET_PROJECT_SNAPSHOT,
-  SET_SELECTED_PHASE_ID
+  SET_SELECTED_PHASE_ID,
+  GET_PROJECTS_OVERVIEW_SUCCESSFUL
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -53,7 +54,8 @@ export const initialState = {
   checking: false,
   pollingProjects: false,
   timelineProject: [],
-  selectedPhase: 0
+  selectedPhase: 0,
+  overview: []
 }
 
 export const reducer = (state = initialState, action) => {
@@ -310,6 +312,12 @@ export const reducer = (state = initialState, action) => {
           ...state.currentProject,
           projectSnapshot: null
         }
+      }
+    }
+    case GET_PROJECTS_OVERVIEW_SUCCESSFUL: {
+      return {
+        ...state,
+        overview: action.payload
       }
     }
 

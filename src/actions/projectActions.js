@@ -42,9 +42,11 @@ export const GET_PROJECT = 'Get project'
 export const GET_PROJECT_SUCCESSFUL = 'Get project successful'
 export const RESET_PROJECT_DEADLINES = 'Reset project deadlines'
 export const GET_PROJECT_SNAPSHOT = 'Get project snapshot'
-export const GET_PROJECT_SNAPSHOT_SUCCESSFUL = 'Get project snapshot succesful'
+export const GET_PROJECT_SNAPSHOT_SUCCESSFUL = 'Get project snapshot successful'
 export const RESET_PROJECT_SNAPSHOT = 'Reset project snapshot'
 export const SET_SELECTED_PHASE_ID = 'Set selected phase id'
+export const GET_PROJECTS_OVERVIEW = 'Get projects overview'
+export const GET_PROJECTS_OVERVIEW_SUCCESSFUL = 'Get projects overview successful'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -202,4 +204,12 @@ export const getProjectSnapshotSuccessful = project => ({
 })
 export const resetProjectSnapshot = () => ({
   type: RESET_PROJECT_SNAPSHOT
+})
+
+export const getProjectsOverview = () => ({
+  type: GET_PROJECTS_OVERVIEW
+})
+export const getProjectsOverviewSuccessful = overview => ({
+  type: GET_PROJECTS_OVERVIEW_SUCCESSFUL,
+  payload: overview
 })

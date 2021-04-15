@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Grid, Segment } from 'semantic-ui-react'
 import CustomMap from './CustomMap'
-import FloorArea from './FloorAreaChart'
+import FloorAreaChart from './FloorAreaChart'
 import ProjectsChart from './ProjectsChart'
 
 import './styles.scss'
@@ -15,9 +15,8 @@ import {
   mapFilters
 } from './overViewMockData'
 
-function Overview() {
+const Overview = () => {
   const { t } = useTranslation()
-
   return (
     <div className="overview">
       <NavHeader
@@ -34,7 +33,7 @@ function Overview() {
       <Grid stackable columns="equal">
         <Grid.Column>
           <Segment>
-            <FloorArea
+            <FloorAreaChart
               filters={floorAreaFilters}
               data={mockData}
               current="360000"
@@ -57,3 +56,4 @@ function Overview() {
 }
 
 export default Overview
+

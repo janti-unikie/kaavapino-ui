@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import {
   YAxis,
@@ -15,11 +15,30 @@ import { useTranslation } from 'react-i18next'
 import FilterList from './Filters/FilterList'
 import { Grid, GridColumn, Popup } from 'semantic-ui-react'
 import { isNaN } from 'lodash'
+import { getChartData, BUSINESS_PREMISES, OTHER, OVERALL, PREDICTION, PUBLIC } from './chartUtils'
+import { projectOverviewSelector } from '../../selectors/projectSelector'
 
-function FloorAreaChart({ current, total, data, filters }) {
+import { getProjectsOverview } from '../../actions/projectActions'
+import { connect } from 'react-redux'
+import { LoadingSpinner } from 'hds-react'
+
+function FloorAreaChart({ current, total, data, filters, chartData, getProjectsOverview }) {
   const { t } = useTranslation()
 
   const [filter, setFilter] = useState({})
+
+  const [overallData, setOverallData] = useState(data)
+  const [currentChartData, setCurrentChartData ]= useState( getChartData(chartData))
+
+  useEffect(() => {
+    getProjectsOverview()
+  }, [])
+
+  useEffect(() => {
+    setCurrentChartData( getChartData(chartData))
+    setOverallData( data )
+
+  }, [data, chartData])
 
   const onFilterChange = (value, name) => {
     setFilter({
@@ -78,16 +97,15 @@ function FloorAreaChart({ current, total, data, filters }) {
 
     return <svg>{rects}</svg>
   }
-
-  if ( !data || !data.floorAreas ) {
-    return null
+  if ( !currentChartData ) {
+   return  <LoadingSpinner className="center" />
   }
 
   return (
     <div className="floor-area">
       <Grid stackable columns="equal">
         <Grid.Column>
-          <h3>{t('floor-area.title', { date: data.currentDate })}</h3>
+          <h3>{t('floor-area.title', { date: overallData.currentDate })}</h3>
         </Grid.Column>
         <GridColumn textAlign="right">
           <FilterList currentFilter={filter} onChange={onFilterChange} filterList={filters} />
@@ -101,7 +119,7 @@ function FloorAreaChart({ current, total, data, filters }) {
         <span>{t('floor-area.total-number', { total })}</span>
       </div>
       <ResponsiveContainer width="100%" height={350}>
-        <ComposedChart data={data.floorAreas}>
+        <ComposedChart data={currentChartData.floorAreas}>
           <XAxis dataKey="date" interval={0} angle={-45} textAnchor="end" />
           <YAxis yAxisId="left">
             <Label
@@ -141,7 +159,7 @@ function FloorAreaChart({ current, total, data, filters }) {
             legendType="plainline"
             name={t('floor-area.all-area')}
             type="monotone"
-            dataKey="kokonaiskerrosala"
+            dataKey={OVERALL}
             stroke="grey"
             strokeWidth="2px"
             dot={false}
@@ -152,7 +170,7 @@ function FloorAreaChart({ current, total, data, filters }) {
             isAnimationActive={false}
             legendType="none"
             type="monotone"
-            dataKey="kokonaiskerrosala_prediction"
+            dataKey={OVERALL+PREDICTION}
             stroke="grey"
             strokeDasharray="3 3"
             strokeWidth="2px"
@@ -164,7 +182,7 @@ function FloorAreaChart({ current, total, data, filters }) {
             legendType="plainline"
             name={t('floor-area.living-area')}
             type="monotone"
-            dataKey="asuinkerrosala"
+            dataKey={PUBLIC}
             stroke="blue"
             strokeWidth="2px"
             dot={false}
@@ -174,7 +192,7 @@ function FloorAreaChart({ current, total, data, filters }) {
             isAnimationActive={false}
             legendType="none"
             type="monotone"
-            dataKey="asuinkerrosala_prediction"
+            dataKey={PUBLIC+PREDICTION}
             stroke="blue"
             strokeWidth="2px"
             strokeDasharray="3 3"
@@ -187,7 +205,7 @@ function FloorAreaChart({ current, total, data, filters }) {
             legendType="plainline"
             name={t('floor-area.business-area')}
             type="monotone"
-            dataKey="toimitilakerrosala"
+            dataKey={BUSINESS_PREMISES}
             stroke="green"
             strokeWidth="2px"
             dot={false}
@@ -197,7 +215,29 @@ function FloorAreaChart({ current, total, data, filters }) {
             isAnimationActive={false}
             legendType="none"
             type="monotone"
-            dataKey="toimitilakerrosala_prediction"
+            dataKey={BUSINESS_PREMISES+PREDICTION}
+            stroke="green"
+            strokeDasharray="3 3"
+            strokeWidth="2px"
+            dot={false}
+            yAxisId="left"
+          />
+           <Line
+            isAnimationActive={false}
+            legendType="plainline"
+            name={t('floor-area.business-area')}
+            type="monotone"
+            dataKey={OTHER}
+            stroke="green"
+            strokeWidth="2px"
+            dot={false}
+            yAxisId="left"
+          />
+          <Line
+            isAnimationActive={false}
+            legendType="none"
+            type="monotone"
+            dataKey={OTHER+PREDICTION}
             stroke="green"
             strokeDasharray="3 3"
             strokeWidth="2px"
@@ -213,8 +253,21 @@ function FloorAreaChart({ current, total, data, filters }) {
 FloorAreaChart.propTypes = {
   current: PropTypes.string.isRequired,
   total: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.object.isRequired,
   filters: PropTypes.array.isRequired
 }
 
-export default FloorAreaChart
+const mapDispatchToProps = {
+  getProjectsOverview
+}
+
+const mapStateToProps = state => {
+  return {
+   chartData: projectOverviewSelector(state)
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FloorAreaChart)
