@@ -1,24 +1,16 @@
 import React from 'react'
 import { Popup, Dropdown } from 'semantic-ui-react'
-import { isBoolean, isObject } from 'lodash'
+import { isBoolean, isObject, isArray } from 'lodash'
 
 //import { diff } from 'deep-object-diff'
 import { useTranslation } from 'react-i18next'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import parse from 'html-react-parser'
-import { diff } from 'deep-object-diff'
 import { IconTrash } from 'hds-react'
-
 function LoggingComponent(props) {
   const { t } = useTranslation()
 
   const { infoOptions } = props
-
-  const isSameValue = (oldValue, newValue) => {
-    // TODO
-    console.log(diff(oldValue, newValue))
-    return false
-  }
 
   const latestUpdate =
     infoOptions &&
@@ -27,7 +19,7 @@ function LoggingComponent(props) {
 
   const isFieldset = value => value && value.search && value.search('fieldset') !== -1
 
-  const getFormattedValue = (value, isFieldSet, name) => {
+  const getFormattedValue = (value, isFieldSet, name, labels) => {
     // Fieldset
     if (isFieldSet) {
       const fieldSetContent = getFieldSetContent(value, name)
@@ -46,9 +38,40 @@ function LoggingComponent(props) {
       return value ? 'Kyllä' : 'Ei'
     }
     if (isObject(value)) {
+      const returnValue = []
+
+      if (isArray(value)) {
+        value.forEach(current => {
+          if (labels) {
+            returnValue.push(labels[current])
+          } else {
+            returnValue.push(value)
+          }
+        })
+        return returnValue.toString()
+      }
+      if (value && value.link) {
+        const keys = Object.keys(value)
+        keys.forEach(key => {
+          returnValue.push(
+            <div key={key}>
+              <b>{key}</b>
+            </div>
+          )
+          returnValue.push(<div key={key + value}>{value[key]}</div>)
+        })
+        return returnValue
+      }
       return value.toString()
     }
-    return  value ? value.toString() : '-'
+
+    if (labels) {
+      const foundValue = labels[value]
+
+      return foundValue ? foundValue.toString() : '-'
+    }
+
+    return value ? value.toString() : '-'
   }
 
   const getRichTextContent = value => {
@@ -73,7 +96,9 @@ function LoggingComponent(props) {
         if (isObject(currentValue)) {
           returnValues.push(getFieldsetValues(currentValue, currentIndex, name))
         } else {
-          returnValues.push(currentValue ? getFormattedValue(currentValue, isFieldset, name) : 'Tyhjä')
+          returnValues.push(
+            currentValue ? getFormattedValue(currentValue, isFieldset, name) : 'Tyhjä'
+          )
         }
         return null
       })
@@ -94,7 +119,7 @@ function LoggingComponent(props) {
 
     returnValues.push(
       <div key={0} className={`log-item ${deleted ? 'deleted' : ''}`}>
-       {deleted && <IconTrash size="s"/> }
+        {deleted && <IconTrash size="s" />}
 
         <b>
           {fixedIndex}: {name}
@@ -116,7 +141,7 @@ function LoggingComponent(props) {
           component = (
             <div key={key + index} className={`log-item ${deleted ? 'deleted' : ''} `}>
               <div>
-              {deleted && <IconTrash /> }
+                {deleted && <IconTrash />}
                 <b>{key}</b>
               </div>
               <div>{value}</div>
@@ -131,7 +156,7 @@ function LoggingComponent(props) {
             component = (
               <div key={key + index} className={`log-item ${deleted ? 'deleted' : ''} `}>
                 <div>
-                {deleted && <IconTrash /> }
+                  {deleted && <IconTrash />}
                   <b>Deleted: </b>
                 </div>
                 <div>{value}</div>
@@ -154,9 +179,6 @@ function LoggingComponent(props) {
             <Dropdown.Menu>
               {infoOptions &&
                 infoOptions.map(option => {
-                  if (isSameValue(option.oldValue, option.newValue)) {
-                    return null
-                  }
                   return (
                     <Popup
                       hideOnScroll={false}
@@ -184,7 +206,8 @@ function LoggingComponent(props) {
                           {getFormattedValue(
                             option.newValue,
                             isFieldset(option.name),
-                            option.name
+                            option.name,
+                            option.labels
                           )}
                         </div>
                       </div>
@@ -196,7 +219,8 @@ function LoggingComponent(props) {
                           {getFormattedValue(
                             option.oldValue,
                             isFieldset(option.name),
-                            option.name
+                            option.name,
+                            option.labels
                           )}
                         </div>
                       </div>
@@ -214,4 +238,3 @@ function LoggingComponent(props) {
 LoggingComponent.propTypes = {}
 
 export default LoggingComponent
-

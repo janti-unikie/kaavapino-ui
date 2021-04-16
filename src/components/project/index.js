@@ -252,7 +252,8 @@ class ProjectPage extends Component {
         value: `${value}-${i}`,
         key: `${value}-${i}`,
         oldValue: f.old_value,
-        newValue: f.new_value
+        newValue: f.new_value,
+        labels: f.labels
       }
     })
   }

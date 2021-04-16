@@ -10,8 +10,6 @@ const Link = props => {
   const [currentValue, setCurrentValue] = useState(props.input.value)
   const isValid = value => isUrl(value) || ipRegex({ exact: true }).test(value)
 
-  console.log( ipRegex({ exact: true }).test('www.tut.fi'))
-
   const multipleLinks = props.type === 'select-multiple'
 
   const isLinkValid = currentValue && isValid(currentValue)
