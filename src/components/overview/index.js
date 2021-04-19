@@ -10,7 +10,6 @@ import { NavHeader } from '../common/NavHeader'
 import {
   mockData,
   floorAreaFilters,
-  projectTypeData,
   projectTypeFilters,
   mapFilters
 } from './overViewMockData'
@@ -46,7 +45,7 @@ const Overview = () => {
       <Grid stackable columns="equal">
         <Grid.Column width={8}>
           <Segment>
-            <ProjectsChart filters={projectTypeFilters} data={projectTypeData} />
+            <ProjectsChart filters={projectTypeFilters} />
           </Segment>
         </Grid.Column>
 

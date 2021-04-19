@@ -1,15 +1,51 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BarChart, YAxis, XAxis, CartesianGrid, Bar, Tooltip } from 'recharts'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import FilterList from './Filters/FilterList'
 import { Grid, GridColumn } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import { projectOverviewBySubtypeSelector } from '../../selectors/projectSelector'
 
-function ProjectsChart({ filters, data }) {
+import { getProjectsOverviewBySubtype } from '../../actions/projectActions'
+import { LoadingSpinner } from 'hds-react'
+import {
+  ACCEPTANCE_COLOR,
+  CHECKED_PROPOSITION_COLOR,
+  DRAFT,
+  DRAFT_COLOR,
+  getSubtypeChartData,
+  INCEPTION_COLOR,
+  OAS_COLOR,
+  PRINCIPLES_COLOR,
+  PROPOSITION_COLOR,
+  START_COLOR
+} from './bySubtypeChartUtils'
+
+import {
+  START,
+  INCEPTION,
+  OAS,
+  PRINCIPLES,
+  PROPOSITION,
+  CHECKED_PROPOSITION,
+  ACCEPTANCE
+} from './bySubtypeChartUtils'
+
+function ProjectsChart({ filters, chartData, getProjectsOverviewBySubtype }) {
   const { t } = useTranslation()
 
   const [filter, setFilter] = useState({})
   const [selectedPhase, setSelectedPhase] = useState({})
+
+  const [currentChartData, setCurrentChartData] = useState(getSubtypeChartData(chartData))
+  useEffect(() => {
+    getProjectsOverviewBySubtype()
+  }, [])
+
+  useEffect(() => {
+    setCurrentChartData(getSubtypeChartData(chartData))
+  }, [chartData])
 
   const onFilterChange = (value, name) => {
     setFilter({
@@ -17,6 +53,7 @@ function ProjectsChart({ filters, data }) {
       [name]: value
     })
   }
+
   const CustomizedTooltip = props => {
     if (!selectedPhase.phase || !props.payload) {
       return null
@@ -30,7 +67,7 @@ function ProjectsChart({ filters, data }) {
     const currentAmount =
       currentPhase.payload && currentPhase.payload[selectedPhase.phase]
 
-    const localizationText = t('project-types.' + selectedPhase.phase)
+    const localizationText = t('project-types.' + currentPhase.name)
 
     return (
       <div className="projects-tooltip">
@@ -38,8 +75,11 @@ function ProjectsChart({ filters, data }) {
         <div className="number">{currentAmount}</div>
       </div>
     )
-  }
+    }
 
+  if (!currentChartData ) {
+    return <LoadingSpinner className="center" />
+  }
   return (
     <div className="projects-size">
       <div className="header">
@@ -56,12 +96,11 @@ function ProjectsChart({ filters, data }) {
           </GridColumn>
         </Grid>
       </div>
-
       <BarChart
         layout="vertical"
         width={500}
         height={250}
-        data={data}
+        data={currentChartData.phases}
         minTickGap={0}
         margin={{
           top: 20,
@@ -76,59 +115,67 @@ function ProjectsChart({ filters, data }) {
         <YAxis dataKey="name" type="category" minTickGap={1} />
 
         <Bar
-          dataKey="käynnistys"
+          dataKey={START}
+          name="kaynnistys"
           stackId="a"
-          fill="#02d7a7"
-          onMouseOver={() => setSelectedPhase({ phase: 'käynnistys' })}
+          fill={currentChartData[START_COLOR]}
+          onMouseOver={() => setSelectedPhase({ phase: START })}
           onMouseLeave={() => setSelectedPhase({})}
         />
         <Bar
-          dataKey="luonnos"
+          dataKey={DRAFT}
+          name="luonnos"
           stackId="a"
-          fill="#ffc61e"
-          onMouseOver={() => setSelectedPhase({ phase: 'luonnos' })}
+          fill={currentChartData[DRAFT_COLOR]}
+          onMouseOver={() => setSelectedPhase({ phase: DRAFT })}
           onMouseLeave={() => setSelectedPhase({})}
         />
         <Bar
-          dataKey="OAS"
+          dataKey={OAS}
+          name="OAS"
           stackId="a"
-          fill="#ffc61e"
-          onMouseOver={() => setSelectedPhase({ phase: 'OAS' })}
+          fill={currentChartData[OAS_COLOR]}
+          onMouseOver={() => setSelectedPhase({ phase: OAS })}
           onMouseLeave={() => setSelectedPhase({})}
         />
         <Bar
-          dataKey="periaatteet"
+          dataKey={PRINCIPLES}
+          name="periaatteet"
           stackId="a"
-          fill="#009142"
-          onMouseOver={() => setSelectedPhase({ phase: 'periaatteet' })}
+          fill={currentChartData[PRINCIPLES_COLOR]}
+          onMouseOver={() => setSelectedPhase({ phase: PRINCIPLES })}
           onMouseLeave={() => setSelectedPhase({})}
         />
         <Bar
-          dataKey="ehdotus"
+          dataKey={PROPOSITION}
+          name="ehdotus"
           stackId="a"
-          fill="#fd4f00"
-          onMouseOver={() => setSelectedPhase({ phase: 'ehdotus' })}
+          fill={currentChartData[PROPOSITION_COLOR]}
+          onMouseOver={() => setSelectedPhase({ phase: PROPOSITION })}
           onMouseLeave={() => setSelectedPhase({})}
         />
         <Bar
-          dataKey="tarkastettuEhdotus"
+          dataKey={CHECKED_PROPOSITION}
+          name="tarkastettuEhdotus"
           stackId="a"
-          fill="#0000bf"
-          onMouseOver={() => setSelectedPhase({ phase: 'tarkastettuEhdotus' })}
+          fill={currentChartData[CHECKED_PROPOSITION_COLOR]}
+          onMouseOver={() => setSelectedPhase({ phase: CHECKED_PROPOSITION })}
           onMouseLeave={() => setSelectedPhase({})}
         />
         <Bar
-          dataKey="hyvaksyminen"
+          dataKey={ACCEPTANCE}
+          name="hyvaksyminen"
           stackId="a"
-          fill="#bd9650"
-          onMouseOver={() => setSelectedPhase({ phase: 'hyvaksyminen' })}
+          fill={currentChartData[ACCEPTANCE_COLOR]}
+          onMouseOver={() => setSelectedPhase({ phase: ACCEPTANCE })}
           onMouseLeave={() => setSelectedPhase({})}
         />
         <Bar
-          dataKey="voimaantulo"
+          dataKey={INCEPTION}
+          name="voimaantulo"
           stackId="a"
-          fill="#9ec8eb"
-          onMouseOver={() => setSelectedPhase({ phase: 'voimaantulo' })}
+          fill={currentChartData[INCEPTION_COLOR]}
+          onMouseOver={() => setSelectedPhase({ phase: INCEPTION })}
           onMouseLeave={() => setSelectedPhase({})}
         />
       </BarChart>
@@ -137,8 +184,18 @@ function ProjectsChart({ filters, data }) {
 }
 
 ProjectsChart.propTypes = {
-  data: PropTypes.array.isRequired,
+  chartData: PropTypes.object,
   filters: PropTypes.array
 }
 
-export default ProjectsChart
+const mapDispatchToProps = {
+  getProjectsOverviewBySubtype
+}
+
+const mapStateToProps = state => {
+  return {
+    chartData: projectOverviewBySubtypeSelector(state)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectsChart)

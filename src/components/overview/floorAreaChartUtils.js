@@ -7,7 +7,7 @@ export const FLOOR_AREAS = 'floorAreas'
 export const MEETINGS = 'meetings'
 export const DATE = 'date'
 
-export const getChartData = data => {
+export const getFloorAreaChartData = data => {
   const modifiedData = {}
 
   if (!data || !data.daily_stats) {

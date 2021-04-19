@@ -45,8 +45,10 @@ export const GET_PROJECT_SNAPSHOT = 'Get project snapshot'
 export const GET_PROJECT_SNAPSHOT_SUCCESSFUL = 'Get project snapshot successful'
 export const RESET_PROJECT_SNAPSHOT = 'Reset project snapshot'
 export const SET_SELECTED_PHASE_ID = 'Set selected phase id'
-export const GET_PROJECTS_OVERVIEW = 'Get projects overview'
-export const GET_PROJECTS_OVERVIEW_SUCCESSFUL = 'Get projects overview successful'
+export const GET_PROJECTS_OVERVIEW_FLOOR_AREA = 'Get projects overview floor-area'
+export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL = 'Get projects overview floor-area successful'
+export const GET_PROJECTS_OVERVIEW_BY_SUBTYPE = 'Get projects overview by subtype'
+export const GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL = 'Get projects overview by subtype successful'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -206,10 +208,18 @@ export const resetProjectSnapshot = () => ({
   type: RESET_PROJECT_SNAPSHOT
 })
 
-export const getProjectsOverview = () => ({
-  type: GET_PROJECTS_OVERVIEW
+export const getProjectsOverviewFloorArea = () => ({
+  type: GET_PROJECTS_OVERVIEW_FLOOR_AREA
 })
-export const getProjectsOverviewSuccessful = overview => ({
-  type: GET_PROJECTS_OVERVIEW_SUCCESSFUL,
-  payload: overview
+export const getProjectsOverviewFloorAreaSuccessful = floorArea => ({
+  type: GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL,
+  payload: floorArea
+})
+
+export const getProjectsOverviewBySubtype = () => ({
+  type: GET_PROJECTS_OVERVIEW_BY_SUBTYPE
+})
+export const getProjectsOverviewBySubtypeSuccessful = bySubtype => ({
+  type: GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL,
+  payload: bySubtype
 })

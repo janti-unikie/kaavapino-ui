@@ -67,14 +67,16 @@ import {
   RESET_PROJECT_DEADLINES,
   getProjectSnapshotSuccessful,
   GET_PROJECT_SNAPSHOT,
-  getProjectsOverviewSuccessful,
-  GET_PROJECTS_OVERVIEW
+  getProjectsOverviewFloorAreaSuccessful,
+  GET_PROJECTS_OVERVIEW_FLOOR_AREA,
+  getProjectsOverviewBySubtypeSuccessful,
+  GET_PROJECTS_OVERVIEW_BY_SUBTYPE
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
 import { setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
-import { projectApi, projectDeadlinesApi, overviewApi } from '../utils/api'
+import { projectApi, projectDeadlinesApi, overviewFloorAreaApi, overviewBySubtypeApi } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
 import {
   NEW_PROJECT_FORM,
@@ -107,7 +109,9 @@ export default function* projectSaga() {
     takeEvery(GET_PROJECT, getProject),
     takeLatest(RESET_PROJECT_DEADLINES, resetProjectDeadlines),
     takeLatest(GET_PROJECT_SNAPSHOT, getProjectSnapshot),
-    takeLatest(GET_PROJECTS_OVERVIEW, getProjectsOverview )
+    takeLatest(GET_PROJECTS_OVERVIEW_FLOOR_AREA, getProjectsOverviewFloorArea),
+    takeLatest(GET_PROJECTS_OVERVIEW_BY_SUBTYPE, getProjectsOverviewBySubtype)
+
   ])
 }
 
@@ -699,11 +703,20 @@ function* projectSetDeadlinesSaga() {
     }
   }
 }
-function* getProjectsOverview() {
+function* getProjectsOverviewFloorArea() {
   try {
-    const timelineProject = yield call(
-      overviewApi.get)
-    yield put(getProjectsOverviewSuccessful(timelineProject))
+    const floorArea = yield call(
+      overviewFloorAreaApi.get)
+    yield put(getProjectsOverviewFloorAreaSuccessful(floorArea))
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+function* getProjectsOverviewBySubtype() {
+  try {
+    const bySubtype = yield call(
+      overviewBySubtypeApi.get)
+    yield put(getProjectsOverviewBySubtypeSuccessful(bySubtype))
   } catch (e) {
     yield put(error(e))
   }

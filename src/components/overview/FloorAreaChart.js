@@ -15,27 +15,27 @@ import { useTranslation } from 'react-i18next'
 import FilterList from './Filters/FilterList'
 import { Grid, GridColumn, Popup } from 'semantic-ui-react'
 import { isNaN } from 'lodash'
-import { getChartData, BUSINESS_PREMISES, OTHER, OVERALL, PREDICTION, PUBLIC } from './chartUtils'
-import { projectOverviewSelector } from '../../selectors/projectSelector'
+import { getFloorAreaChartData, BUSINESS_PREMISES, OTHER, OVERALL, PREDICTION, PUBLIC } from './floorAreaChartUtils'
+import { projectOverviewFloorAreaSelector } from '../../selectors/projectSelector'
 
-import { getProjectsOverview } from '../../actions/projectActions'
+import { getProjectsOverviewFloorArea } from '../../actions/projectActions'
 import { connect } from 'react-redux'
 import { LoadingSpinner } from 'hds-react'
 
-function FloorAreaChart({ current, total, data, filters, chartData, getProjectsOverview }) {
+function FloorAreaChart({ current, total, data, filters, chartData, getProjectsOverviewFloorArea }) {
   const { t } = useTranslation()
 
   const [filter, setFilter] = useState({})
 
   const [overallData, setOverallData] = useState(data)
-  const [currentChartData, setCurrentChartData ]= useState( getChartData(chartData))
+  const [currentChartData, setCurrentChartData ]= useState( getFloorAreaChartData(chartData))
 
   useEffect(() => {
-    getProjectsOverview()
+    getProjectsOverviewFloorArea()
   }, [])
 
   useEffect(() => {
-    setCurrentChartData( getChartData(chartData))
+    setCurrentChartData( getFloorAreaChartData(chartData))
     setOverallData( data )
 
   }, [data, chartData])
@@ -258,12 +258,12 @@ FloorAreaChart.propTypes = {
 }
 
 const mapDispatchToProps = {
-  getProjectsOverview
+  getProjectsOverviewFloorArea
 }
 
 const mapStateToProps = state => {
   return {
-   chartData: projectOverviewSelector(state)
+   chartData: projectOverviewFloorAreaSelector(state)
   }
 }
 
