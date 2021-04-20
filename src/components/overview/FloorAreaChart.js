@@ -9,7 +9,8 @@ import {
   Bar,
   ResponsiveContainer,
   ComposedChart,
-  Label
+  Label,
+  ReferenceLine
 } from 'recharts'
 import { useTranslation } from 'react-i18next'
 import FilterList from './Filters/FilterList'
@@ -21,6 +22,7 @@ import { projectOverviewFloorAreaSelector } from '../../selectors/projectSelecto
 import { getProjectsOverviewFloorArea } from '../../actions/projectActions'
 import { connect } from 'react-redux'
 import { LoadingSpinner } from 'hds-react'
+import moment from 'moment'
 
 function FloorAreaChart({ current, total, data, filters, chartData, getProjectsOverviewFloorArea }) {
   const { t } = useTranslation()
@@ -59,6 +61,10 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
       currentHeight = -currentHeight
     }
 
+    const formatDate = value => {
+      return moment( value ).format('DD.MM')
+    }
+
     const renderList = () => {
       const rects = []
       for (let index = 1; index <= value; index++) {
@@ -86,19 +92,27 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
              )
             }
           >
-            {index + props.payload.date}
+            {renderPopupValue(index)}
           </Popup>
         )
       }
 
       return rects
     }
+    const renderPopupValue = index => (
+      <div>{index}. {formatDate(props.payload.date)}</div>
+    )
+
     const rects = renderList()
 
     return <svg>{rects}</svg>
   }
   if ( !currentChartData ) {
    return  <LoadingSpinner className="center" />
+  }
+
+  const formatXAxis = tickItem => {
+    return moment( tickItem ).format('DD.MM')
   }
 
   return (
@@ -120,10 +134,12 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
       </div>
       <ResponsiveContainer width="100%" height={350}>
         <ComposedChart data={currentChartData.floorAreas}>
-          <XAxis dataKey="date" interval={0} angle={-45} textAnchor="end" />
+        <ReferenceLine label="Now" yAxisId="left" type="number" x={new Date().getTime()} stroke="red"  />
+
+          <XAxis interval={1} scale="time" tickCount={104} domain = {['auto', 'auto']} type="number" dataKey="date" angle={-45} textAnchor="end" tickFormatter={formatXAxis}/>
           <YAxis yAxisId="left">
             <Label
-              dx={-15}
+              dx={-31}
               angle={-90}
               position="centerTop"
               value={t('floor-area.y-axis-title')}
@@ -225,10 +241,10 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
            <Line
             isAnimationActive={false}
             legendType="plainline"
-            name={t('floor-area.business-area')}
+            name={t('floor-area.other-area')}
             type="monotone"
             dataKey={OTHER}
-            stroke="green"
+            stroke="black"
             strokeWidth="2px"
             dot={false}
             yAxisId="left"
@@ -238,7 +254,7 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
             legendType="none"
             type="monotone"
             dataKey={OTHER+PREDICTION}
-            stroke="green"
+            stroke="black"
             strokeDasharray="3 3"
             strokeWidth="2px"
             dot={false}

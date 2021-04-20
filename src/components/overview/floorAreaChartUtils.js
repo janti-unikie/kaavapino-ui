@@ -21,7 +21,10 @@ export const getFloorAreaChartData = data => {
   data.daily_stats.forEach(current => {
     const chartData = {}
 
-    const isPrediction = current.is_prediction
+    if ( !current || !current.floor_area ) {
+      return null
+    }
+    const isPrediction = current.floor_area.is_prediction
 
     const overallData = current.floor_area[OVERALL] ? current.floor_area[OVERALL] : 0
     const publicData = current.floor_area[PUBLIC] ? current.floor_area[PUBLIC] : 0
@@ -30,7 +33,8 @@ export const getFloorAreaChartData = data => {
       ? current.floor_area[BUSINESS_PREMISES]
       : 0
 
-    const date = current[DATE]
+    const date = new Date(current[DATE]).getTime()
+
     const meetings = current[MEETINGS]
 
     if (isPrediction) {

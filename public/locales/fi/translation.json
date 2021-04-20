@@ -101,6 +101,7 @@
         "all-area": "Kokonaiskerrosala",
         "living-area": "Asuinkerrosala",
         "business-area": "Toimitilakerrosala",
+        "other-area": "Muu kerrosala",
         "y-axis-title-projects-in-meeting": "Projekteja lautakunnan kokouksessa kpl"
     },
     "project-types": {
