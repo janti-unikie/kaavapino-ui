@@ -147,7 +147,7 @@ function RichTextEditor(props) {
         } ${largeField ? 'large' : ''}`}
         onFocus={() => setToolbarVisible(true)}
       >
-        <div id={toolbarName} className="ql-toolbar">
+        <div id={toolbarName} onMouseDown={e => e.preventDefault()} className="ql-toolbar">
           <span className="ql-formats">
             <button aria-label="bold" className="ql-bold" />
             <button aria-label="italic" className="ql-italic" />

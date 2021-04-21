@@ -9,20 +9,33 @@ function Contract({ fields }) {
     const renderField = ( field, index ) => {
         let value = field.value
 
+        if ( value === null ) {
+            return null
+        }
+
         if ( value === undefined ) {
             value = null
         }
+        if ( value === false ) {
+            value = t('project.no')
+        }
+        if ( value === true ) {
+            value = t('project.yes')
+        }
+
         if ( field.choices ) {
             const choice = field.choices.find( choice => choice.value === field.value)
 
-            if ( choice ) {
+            if ( choice !== undefined ) {
                 value = choice.label
+            } else {
+                value = null
             }
         }
         return (
             <div key={field.label + index}>
                 <div>{field.label}</div>
-                <div><b>{value}</b></div>
+                <div><b>{value }</b></div>
             </div>
         )
     }
