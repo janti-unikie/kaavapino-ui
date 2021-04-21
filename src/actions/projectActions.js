@@ -49,6 +49,8 @@ export const GET_PROJECTS_OVERVIEW_FLOOR_AREA = 'Get projects overview floor-are
 export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL = 'Get projects overview floor-area successful'
 export const GET_PROJECTS_OVERVIEW_BY_SUBTYPE = 'Get projects overview by subtype'
 export const GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL = 'Get projects overview by subtype successful'
+export const GET_PROJECTS_OVERVIEW_FILTERS = 'Get project overview filters'
+export const GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL = 'Get project overview filters successful'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -222,4 +224,11 @@ export const getProjectsOverviewBySubtype = () => ({
 export const getProjectsOverviewBySubtypeSuccessful = bySubtype => ({
   type: GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL,
   payload: bySubtype
+})
+export const getProjectsOverviewFilters = () => ({
+  type: GET_PROJECTS_OVERVIEW_FILTERS
+})
+export const getProjectsOverviewFiltersSuccessful = filters => ({
+  type: GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL,
+  payload: filters
 })

@@ -123,9 +123,13 @@ export const archivedProjectSelector = createSelector(
 
 export const projectOverviewFloorAreaSelector = createSelector(
   selectProject,
-  project => project.floorArea
+  project => project.overview.floorArea
 )
 export const projectOverviewBySubtypeSelector = createSelector(
   selectProject,
-  project => project.bySubtype
+  project => project.overview.bySubtype
+)
+export const projectOverviewFiltersSelector = createSelector(
+  selectProject,
+  project => project.overview.filters
 )

@@ -12,10 +12,10 @@ function CustomMap({ data, filters }) {
 
   const [filter, setFilter] = useState({})
 
-  const onFilterChange = (value, name) => {
+  const onFilterChange = value => {
     setFilter({
       ...filter,
-      [name]: value
+      [value.parameter]: value.key
     })
   }
   const onClear = () => {

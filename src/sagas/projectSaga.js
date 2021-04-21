@@ -70,13 +70,15 @@ import {
   getProjectsOverviewFloorAreaSuccessful,
   GET_PROJECTS_OVERVIEW_FLOOR_AREA,
   getProjectsOverviewBySubtypeSuccessful,
-  GET_PROJECTS_OVERVIEW_BY_SUBTYPE
+  GET_PROJECTS_OVERVIEW_BY_SUBTYPE,
+  getProjectsOverviewFiltersSuccessful,
+  GET_PROJECTS_OVERVIEW_FILTERS
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
 import { setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
-import { projectApi, projectDeadlinesApi, overviewFloorAreaApi, overviewBySubtypeApi } from '../utils/api'
+import { projectApi, projectDeadlinesApi, overviewFloorAreaApi, overviewBySubtypeApi, overviewFiltersApi } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
 import {
   NEW_PROJECT_FORM,
@@ -110,7 +112,8 @@ export default function* projectSaga() {
     takeLatest(RESET_PROJECT_DEADLINES, resetProjectDeadlines),
     takeLatest(GET_PROJECT_SNAPSHOT, getProjectSnapshot),
     takeLatest(GET_PROJECTS_OVERVIEW_FLOOR_AREA, getProjectsOverviewFloorArea),
-    takeLatest(GET_PROJECTS_OVERVIEW_BY_SUBTYPE, getProjectsOverviewBySubtype)
+    takeLatest(GET_PROJECTS_OVERVIEW_BY_SUBTYPE, getProjectsOverviewBySubtype),
+    takeLatest(GET_PROJECTS_OVERVIEW_FILTERS, getProjectsOverviewFilters)
 
   ])
 }
@@ -717,6 +720,15 @@ function* getProjectsOverviewBySubtype() {
     const bySubtype = yield call(
       overviewBySubtypeApi.get)
     yield put(getProjectsOverviewBySubtypeSuccessful(bySubtype))
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+function*getProjectsOverviewFilters() {
+  try {
+    const filters = yield call(
+      overviewFiltersApi.get)
+    yield put(getProjectsOverviewFiltersSuccessful(filters))
   } catch (e) {
     yield put(error(e))
   }

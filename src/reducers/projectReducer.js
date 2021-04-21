@@ -34,7 +34,8 @@ import {
   RESET_PROJECT_SNAPSHOT,
   SET_SELECTED_PHASE_ID,
   GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL,
-  GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL
+  GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL,
+  GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -56,8 +57,11 @@ export const initialState = {
   pollingProjects: false,
   timelineProject: [],
   selectedPhase: 0,
-  floorArea: {},
-  bySubtype: {}
+  overview: {
+    floorArea: {},
+    bySubtype: {},
+    filters: []
+  }
 }
 
 export const reducer = (state = initialState, action) => {
@@ -319,13 +323,28 @@ export const reducer = (state = initialState, action) => {
     case GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL: {
       return {
         ...state,
-        floorArea: action.payload
+        overview: {
+          ...state.overview,
+          floorArea: action.payload
+        }
       }
     }
     case GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL: {
       return {
         ...state,
-        bySubtype: action.payload
+        overview: {
+          ...state.overview,
+          bySubtype: action.payload
+        }
+      }
+    }
+    case GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          filters: action.payload
+        }
       }
     }
 

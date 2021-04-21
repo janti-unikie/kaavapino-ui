@@ -47,10 +47,10 @@ function ProjectsChart({ filters, chartData, getProjectsOverviewBySubtype }) {
     setCurrentChartData(getSubtypeChartData(chartData))
   }, [chartData])
 
-  const onFilterChange = (value, name) => {
+  const onFilterChange = value => {
     setFilter({
       ...filter,
-      [name]: value
+      [value.parameter]: value.key
     })
   }
 
@@ -84,10 +84,10 @@ function ProjectsChart({ filters, chartData, getProjectsOverviewBySubtype }) {
     <div className="projects-size">
       <div className="header">
         <Grid stackable columns="equal">
-          <Grid.Column>
+          <Grid.Column width={6}>
             <h3>{t('project-types.title')}</h3>
           </Grid.Column>
-          <GridColumn textAlign="right">
+          <GridColumn  className="filters" textAlign="left">
             <FilterList
               currentFilter={filter}
               onChange={onFilterChange}

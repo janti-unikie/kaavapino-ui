@@ -57,3 +57,5 @@ export const reportApi = new Api('/v1/reports/')
 export const footerApi = new Api('/v1/footer')
 export const overviewFloorAreaApi = new Api('v1/projects/overview/floor_area')
 export const overviewBySubtypeApi = new Api('v1/projects/overview/by_subtype')
+export const overviewFiltersApi = new Api('v1/projects/overview/filters')
+

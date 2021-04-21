@@ -6,7 +6,7 @@
     width: calc(100% - 32px);
 
     .floor-area {
-        height: 420px;
+        height: 440px;
         
     }
     .projects-size {
@@ -26,7 +26,9 @@
     }
     .filters {
         height: 100px;
-        background-color: orange;
+        text-align: left;
+        text-overflow: ellipsis;
+        width: auto;
     }
     .recharts-surface {
         width: 100%;
@@ -71,10 +73,7 @@
 .map-area {
     .filters-list {
         margin-bottom: 20px;
-       .filter-dropdown {
-            min-width: 12em !important;
-            height: 30px;
-       }
+
     }
 }
 .xAxis {

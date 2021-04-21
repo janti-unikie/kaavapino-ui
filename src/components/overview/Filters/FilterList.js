@@ -11,18 +11,19 @@ function FilterList({ filterList, currentFilter, onChange, showClearButton, onCl
   const [filters, setFilters] = useState( currentFilter )
 
   const formatOptions = field => {
-    let options = field.options
-    const type = field.type
-
-    if (type === 'years') {
+    let options = field.choices
+    if (field.accepts_year) {
       options = projectUtils.generateArrayOfYears()
     }
 
+    console.log( field)
+
     return options.map(option => {
       return {
-        key: option.value,
+        key: option.label,
         value: option.value,
-        label: option.label
+        label: option.label,
+        parameter: field.parameter
       }
     })
   }
@@ -46,7 +47,7 @@ function FilterList({ filterList, currentFilter, onChange, showClearButton, onCl
           name={field.name}
           defaultValue={filters[field.name] ? filters[field.name] : null}
           options={formatOptions(field)}
-          placeholder={field.placeholder}
+          placeholder={field.name}
           onChange={onChange}
           type={field.type}
         />

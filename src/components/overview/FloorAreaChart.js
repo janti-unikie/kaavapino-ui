@@ -16,7 +16,14 @@ import { useTranslation } from 'react-i18next'
 import FilterList from './Filters/FilterList'
 import { Grid, GridColumn, Popup } from 'semantic-ui-react'
 import { isNaN } from 'lodash'
-import { getFloorAreaChartData, BUSINESS_PREMISES, OTHER, OVERALL, PREDICTION, PUBLIC } from './floorAreaChartUtils'
+import {
+  getFloorAreaChartData,
+  BUSINESS_PREMISES,
+  OTHER,
+  OVERALL,
+  PREDICTION,
+  PUBLIC
+} from './floorAreaChartUtils'
 import { projectOverviewFloorAreaSelector } from '../../selectors/projectSelector'
 
 import { getProjectsOverviewFloorArea } from '../../actions/projectActions'
@@ -24,28 +31,36 @@ import { connect } from 'react-redux'
 import { LoadingSpinner } from 'hds-react'
 import moment from 'moment'
 
-function FloorAreaChart({ current, total, data, filters, chartData, getProjectsOverviewFloorArea }) {
+function FloorAreaChart({
+  current,
+  total,
+  filters,
+  chartData,
+  getProjectsOverviewFloorArea
+}) {
   const { t } = useTranslation()
 
   const [filter, setFilter] = useState({})
 
-  const [overallData, setOverallData] = useState(data)
-  const [currentChartData, setCurrentChartData ]= useState( getFloorAreaChartData(chartData))
+  const [currentChartData, setCurrentChartData] = useState(
+    getFloorAreaChartData(chartData)
+  )
 
   useEffect(() => {
     getProjectsOverviewFloorArea()
   }, [])
 
   useEffect(() => {
-    setCurrentChartData( getFloorAreaChartData(chartData))
-    setOverallData( data )
+  }, [filter])
 
-  }, [data, chartData])
+  useEffect(() => {
+    setCurrentChartData(getFloorAreaChartData(chartData))
+  }, [chartData])
 
-  const onFilterChange = (value, name) => {
+  const onFilterChange = value => {
     setFilter({
       ...filter,
-      [name]: value
+      [value.parameter]: value.key
     })
   }
   const CustomizedLabel = props => {
@@ -62,21 +77,19 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
     }
 
     const formatDate = value => {
-      return moment( value ).format('DD.MM')
+      return moment(value).format('DD.MM')
     }
 
     const renderList = () => {
       const rects = []
       for (let index = 1; index <= value; index++) {
-
-        let  currentY =  y + index * currentHeight - currentHeight
+        let currentY = y + index * currentHeight - currentHeight
         rects.push(
           <Popup
             on="click"
             key={index + props.payload.date}
-            trigger={
-             (
-             <g key={index}>
+            trigger={(
+              <g key={index}>
                 <rect
                   x={x}
                   y={currentY}
@@ -89,8 +102,7 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
                   data-for="test"
                 ></rect>
               </g>
-             )
-            }
+            )}
           >
             {renderPopupValue(index)}
           </Popup>
@@ -100,29 +112,35 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
       return rects
     }
     const renderPopupValue = index => (
-      <div>{index}. {formatDate(props.payload.date)}</div>
+      <div>
+        {index}. {formatDate(props.payload.date)}
+      </div>
     )
 
     const rects = renderList()
 
     return <svg>{rects}</svg>
   }
-  if ( !currentChartData ) {
-   return  <LoadingSpinner className="center" />
+  if (!currentChartData) {
+    return <LoadingSpinner className="center" />
   }
 
-  const formatXAxis = tickItem => {
-    return moment( tickItem ).format('DD.MM')
+  const getFormattedDate = date => {
+    return moment(date).format('DD.MM')
   }
 
   return (
     <div className="floor-area">
       <Grid stackable columns="equal">
-        <Grid.Column>
-          <h3>{t('floor-area.title', { date: overallData.currentDate })}</h3>
+        <Grid.Column width={6}>
+          <h3>{t('floor-area.title', { date: getFormattedDate(chartData.date) })}</h3>
         </Grid.Column>
-        <GridColumn textAlign="right">
-          <FilterList currentFilter={filter} onChange={onFilterChange} filterList={filters} />
+        <GridColumn className="filters" textAlign="left">
+          <FilterList
+            currentFilter={filter}
+            onChange={onFilterChange}
+            filterList={filters}
+          />
         </GridColumn>
       </Grid>
 
@@ -134,14 +152,31 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
       </div>
       <ResponsiveContainer width="100%" height={350}>
         <ComposedChart data={currentChartData.floorAreas}>
-        <ReferenceLine label="Now" yAxisId="left" type="number" x={new Date().getTime()} stroke="red"  />
+          <ReferenceLine
+            label="Now"
+            yAxisId="left"
+            type="number"
+            x={new Date().getTime()}
+            stroke="red"
+          />
 
-          <XAxis interval={1} scale="time" tickCount={104} domain = {['auto', 'auto']} type="number" dataKey="date" angle={-45} textAnchor="end" tickFormatter={formatXAxis}/>
+          <XAxis
+            interval={1}
+            scale="time"
+            tickCount={104}
+            domain={['auto', 'auto']}
+            type="number"
+            dataKey="date"
+            angle={-45}
+            textAnchor="end"
+            tickFormatter={getFormattedDate}
+          />
           <YAxis yAxisId="left">
             <Label
-              dx={-31}
+              dx={-30}
               angle={-90}
               position="centerTop"
+              style={{ fontSize: '12px' }}
               value={t('floor-area.y-axis-title')}
             ></Label>
           </YAxis>
@@ -186,7 +221,7 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
             isAnimationActive={false}
             legendType="none"
             type="monotone"
-            dataKey={OVERALL+PREDICTION}
+            dataKey={OVERALL + PREDICTION}
             stroke="grey"
             strokeDasharray="3 3"
             strokeWidth="2px"
@@ -208,7 +243,7 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
             isAnimationActive={false}
             legendType="none"
             type="monotone"
-            dataKey={PUBLIC+PREDICTION}
+            dataKey={PUBLIC + PREDICTION}
             stroke="blue"
             strokeWidth="2px"
             strokeDasharray="3 3"
@@ -231,14 +266,14 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
             isAnimationActive={false}
             legendType="none"
             type="monotone"
-            dataKey={BUSINESS_PREMISES+PREDICTION}
+            dataKey={BUSINESS_PREMISES + PREDICTION}
             stroke="green"
             strokeDasharray="3 3"
             strokeWidth="2px"
             dot={false}
             yAxisId="left"
           />
-           <Line
+          <Line
             isAnimationActive={false}
             legendType="plainline"
             name={t('floor-area.other-area')}
@@ -253,7 +288,7 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
             isAnimationActive={false}
             legendType="none"
             type="monotone"
-            dataKey={OTHER+PREDICTION}
+            dataKey={OTHER + PREDICTION}
             stroke="black"
             strokeDasharray="3 3"
             strokeWidth="2px"
@@ -269,7 +304,7 @@ function FloorAreaChart({ current, total, data, filters, chartData, getProjectsO
 FloorAreaChart.propTypes = {
   current: PropTypes.string.isRequired,
   total: PropTypes.string.isRequired,
-  data: PropTypes.object.isRequired,
+  chartData: PropTypes.object.isRequired,
   filters: PropTypes.array.isRequired
 }
 
@@ -279,11 +314,8 @@ const mapDispatchToProps = {
 
 const mapStateToProps = state => {
   return {
-   chartData: projectOverviewFloorAreaSelector(state)
+    chartData: projectOverviewFloorAreaSelector(state)
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FloorAreaChart)
+export default connect(mapStateToProps, mapDispatchToProps)(FloorAreaChart)

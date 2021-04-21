@@ -19,7 +19,7 @@ function DropdownFilter({ name, defaultValue, options, placeholder, onChange }) 
       multiselect={false}
       options={options}
       onChange={data => {
-        onChange(data.value, name)
+        onChange(data)
       }}
       defaultValue={currentValue}
       className="filter-dropdown"
