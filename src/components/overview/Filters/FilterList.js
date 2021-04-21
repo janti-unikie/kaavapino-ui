@@ -16,11 +16,9 @@ function FilterList({ filterList, currentFilter, onChange, showClearButton, onCl
       options = projectUtils.generateArrayOfYears()
     }
 
-    console.log( field)
-
     return options.map(option => {
       return {
-        key: option.label,
+        key: option.value,
         value: option.value,
         label: option.label,
         parameter: field.parameter

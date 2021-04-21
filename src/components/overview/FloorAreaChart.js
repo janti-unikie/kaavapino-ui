@@ -47,10 +47,11 @@ function FloorAreaChart({
   )
 
   useEffect(() => {
-    getProjectsOverviewFloorArea()
+    getProjectsOverviewFloorArea(filter)
   }, [])
 
   useEffect(() => {
+    getProjectsOverviewFloorArea(filter)
   }, [filter])
 
   useEffect(() => {

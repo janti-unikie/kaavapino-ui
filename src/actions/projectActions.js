@@ -210,16 +210,18 @@ export const resetProjectSnapshot = () => ({
   type: RESET_PROJECT_SNAPSHOT
 })
 
-export const getProjectsOverviewFloorArea = () => ({
-  type: GET_PROJECTS_OVERVIEW_FLOOR_AREA
+export const getProjectsOverviewFloorArea = payload => ({
+  type: GET_PROJECTS_OVERVIEW_FLOOR_AREA,
+  payload: payload
 })
 export const getProjectsOverviewFloorAreaSuccessful = floorArea => ({
   type: GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL,
   payload: floorArea
 })
 
-export const getProjectsOverviewBySubtype = () => ({
-  type: GET_PROJECTS_OVERVIEW_BY_SUBTYPE
+export const getProjectsOverviewBySubtype = payload => ({
+  type: GET_PROJECTS_OVERVIEW_BY_SUBTYPE,
+  payload: payload
 })
 export const getProjectsOverviewBySubtypeSuccessful = bySubtype => ({
   type: GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL,

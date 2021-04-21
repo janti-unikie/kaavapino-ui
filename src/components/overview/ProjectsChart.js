@@ -40,8 +40,12 @@ function ProjectsChart({ filters, chartData, getProjectsOverviewBySubtype }) {
 
   const [currentChartData, setCurrentChartData] = useState(getSubtypeChartData(chartData))
   useEffect(() => {
-    getProjectsOverviewBySubtype()
+    getProjectsOverviewBySubtype(filter)
   }, [])
+
+  useEffect(() => {
+    getProjectsOverviewBySubtype(filter)
+  }, [filter])
 
   useEffect(() => {
     setCurrentChartData(getSubtypeChartData(chartData))

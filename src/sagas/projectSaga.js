@@ -78,7 +78,13 @@ import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
 import { setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
-import { projectApi, projectDeadlinesApi, overviewFloorAreaApi, overviewBySubtypeApi, overviewFiltersApi } from '../utils/api'
+import {
+  projectApi,
+  projectDeadlinesApi,
+  overviewFloorAreaApi,
+  overviewBySubtypeApi,
+  overviewFiltersApi
+} from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
 import {
   NEW_PROJECT_FORM,
@@ -114,7 +120,6 @@ export default function* projectSaga() {
     takeLatest(GET_PROJECTS_OVERVIEW_FLOOR_AREA, getProjectsOverviewFloorArea),
     takeLatest(GET_PROJECTS_OVERVIEW_BY_SUBTYPE, getProjectsOverviewBySubtype),
     takeLatest(GET_PROJECTS_OVERVIEW_FILTERS, getProjectsOverviewFilters)
-
   ])
 }
 
@@ -607,7 +612,7 @@ function* projectFileUpload({
     let currentFieldName = attribute
 
     const lastIndex = attribute.lastIndexOf('.')
-    if (lastIndex !== -1 ) {
+    if (lastIndex !== -1) {
       const splitted = attribute.split('.')
 
       splitted.forEach(value => {
@@ -706,28 +711,67 @@ function* projectSetDeadlinesSaga() {
     }
   }
 }
-function* getProjectsOverviewFloorArea() {
+function* getProjectsOverviewFloorArea({ payload }) {
+  let query = {}
+
+  const keys = Object.keys(payload)
+
+  keys.forEach(key => {
+    if (key === 'vuosi') {
+      const startDate =  payload[key] + '-01-01'
+      const endDate = payload[key] + '-12-31'
+
+      query = {
+        ...query,
+        start_date: startDate,
+        end_date: endDate
+      }
+    } else {
+      query = {
+        ...query,
+        [key]: payload[key]
+      }
+    }
+  })
   try {
-    const floorArea = yield call(
-      overviewFloorAreaApi.get)
+    const floorArea = yield call(overviewFloorAreaApi.get, { query: query })
     yield put(getProjectsOverviewFloorAreaSuccessful(floorArea))
   } catch (e) {
     yield put(error(e))
   }
 }
-function* getProjectsOverviewBySubtype() {
+function* getProjectsOverviewBySubtype({ payload }) {
+  let query = {}
+
+  const keys = Object.keys(payload)
+
+  keys.forEach(key => {
+    if (key === 'vuosi') {
+      const startDate =  payload[key] + '-01-01'
+      const endDate = payload[key] + '-12-31'
+
+      query = {
+        ...query,
+        start_date: startDate,
+        end_date: endDate
+      }
+    } else {
+      query = {
+        ...query,
+        [key]: payload[key]
+      }
+    }
+  })
   try {
-    const bySubtype = yield call(
-      overviewBySubtypeApi.get)
+    const bySubtype = yield call(overviewBySubtypeApi.get, { query: query })
     yield put(getProjectsOverviewBySubtypeSuccessful(bySubtype))
   } catch (e) {
     yield put(error(e))
   }
 }
-function*getProjectsOverviewFilters() {
+function* getProjectsOverviewFilters() {
   try {
-    const filters = yield call(
-      overviewFiltersApi.get)
+    const filters = yield call(overviewFiltersApi.get)
     yield put(getProjectsOverviewFiltersSuccessful(filters))
   } catch (e) {
     yield put(error(e))
