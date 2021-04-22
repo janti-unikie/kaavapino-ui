@@ -5,7 +5,6 @@ import { fetchProjectSubtypes } from '../../actions/projectTypeActions'
 import { fetchUsers } from '../../actions/userActions'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
 import { usersSelector } from '../../selectors/userSelector'
-import { Responsive } from 'semantic-ui-react'
 import { createProject } from '../../actions/projectActions'
 import {
   ownProjectsSelector,
@@ -236,8 +235,7 @@ class ProjectListPage extends Component {
             </Button>
           </>
         )}
-        <Responsive
-          as={SearchBar}
+        <SearchBar
           minWidth={601}
           toggleSearch={this.toggleSearch}
           searchOpen={searchOpen}
