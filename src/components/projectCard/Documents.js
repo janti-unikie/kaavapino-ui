@@ -52,7 +52,7 @@ function Documents({ documentFields }) {
 }
 
 Documents.propTypes = {
-    documentFields: PropTypes.array
+    documentFields: PropTypes.object
 }
 
 export default Documents
