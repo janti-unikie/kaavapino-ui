@@ -35,7 +35,8 @@ import {
   SET_SELECTED_PHASE_ID,
   GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL,
   GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL,
-  GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL
+  GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL,
+  GET_EXTERNAL_DOCUMENTS_SUCCESSFUL
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -347,6 +348,12 @@ export const reducer = (state = initialState, action) => {
         }
       }
     }
+    case GET_EXTERNAL_DOCUMENTS_SUCCESSFUL: {
+      return {
+        ...state,
+          currentProjectExternalDocuments: action.payload
+        }
+      }
 
     default: {
       return state

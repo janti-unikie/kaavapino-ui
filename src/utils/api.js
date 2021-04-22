@@ -59,3 +59,5 @@ export const overviewFloorAreaApi = new Api('v1/projects/overview/floor_area/')
 export const overviewBySubtypeApi = new Api('v1/projects/overview/by_subtype/')
 export const overviewFiltersApi = new Api('v1/projects/overview/filters')
 
+export const cardSchemaApi = new Api('/v1/cardschema')
+export const externalDocumentsApi = new Api('/v1/projects/:id/external_documents/')

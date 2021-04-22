@@ -72,7 +72,9 @@ import {
   getProjectsOverviewBySubtypeSuccessful,
   GET_PROJECTS_OVERVIEW_BY_SUBTYPE,
   getProjectsOverviewFiltersSuccessful,
-  GET_PROJECTS_OVERVIEW_FILTERS
+  GET_PROJECTS_OVERVIEW_FILTERS,
+  getExternalDocumentsSuccessful,
+  GET_EXTERNAL_DOCUMENTS
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
@@ -83,7 +85,8 @@ import {
   projectDeadlinesApi,
   overviewFloorAreaApi,
   overviewBySubtypeApi,
-  overviewFiltersApi
+  overviewFiltersApi,
+  externalDocumentsApi
 } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
 import {
@@ -120,7 +123,8 @@ export default function* projectSaga() {
     takeLatest(GET_PROJECT_SNAPSHOT, getProjectSnapshot),
     takeLatest(GET_PROJECTS_OVERVIEW_FLOOR_AREA, getProjectsOverviewFloorArea),
     takeLatest(GET_PROJECTS_OVERVIEW_BY_SUBTYPE, getProjectsOverviewBySubtype),
-    takeLatest(GET_PROJECTS_OVERVIEW_FILTERS, getProjectsOverviewFilters)
+    takeLatest(GET_PROJECTS_OVERVIEW_FILTERS, getProjectsOverviewFilters),
+    takeLatest(GET_EXTERNAL_DOCUMENTS, getExternalDocumentsSaga)
   ])
 }
 
@@ -778,3 +782,11 @@ function* getProjectsOverviewFilters() {
     yield put(error(e))
   }
 }
+  function* getExternalDocumentsSaga({ payload: projectId }) {
+    try {
+      const documents = yield call(externalDocumentsApi.get, { path: { id: projectId } })
+      yield put(getExternalDocumentsSuccessful(documents))
+    } catch (e) {
+      yield put(error(e))
+    }
+  }

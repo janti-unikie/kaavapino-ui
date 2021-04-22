@@ -3,18 +3,21 @@ import {
   FETCH_SCHEMAS,
   fetchSchemasSuccessful,
   SET_ALL_EDIT_FIELDS,
-  setAllEditFieldsSuccessful
+  setAllEditFieldsSuccessful,
+  GET_PROJECT_CARD_FIELDS,
+  getProjectCardFieldsSuccessful
 } from '../actions/schemaActions'
 import { updatesSelector } from '../selectors/projectSelector'
 import { schemaSelector } from '../selectors/schemaSelector'
 import { error } from '../actions/apiActions'
-import { schemaApi } from '../utils/api'
+import { schemaApi, cardSchemaApi } from '../utils/api'
 import projectUtils from '../utils/projectUtils'
 
 export default function* schemaSaga() {
   yield all([
     takeLatest(FETCH_SCHEMAS, fetchSchemas),
-    takeLatest(SET_ALL_EDIT_FIELDS, allEditedFieldsSaga)
+    takeLatest(SET_ALL_EDIT_FIELDS, allEditedFieldsSaga),
+    takeLatest(GET_PROJECT_CARD_FIELDS, getProjectCardFields)
   ])
 }
 
@@ -56,4 +59,13 @@ function* allEditedFieldsSaga() {
     )
   )
   yield put(setAllEditFieldsSuccessful(uniques))
+}
+
+function* getProjectCardFields() {
+  try {
+    const projectFields = yield call(cardSchemaApi.get)
+    yield put(getProjectCardFieldsSuccessful(projectFields))
+  } catch (e) {
+    yield put(error(e))
+  }
 }

@@ -5,17 +5,24 @@ import {
   saveProjectBase,
   changeProjectPhase,
   getProjectSnapshot,
-  setSelectedPhaseId
+  setSelectedPhaseId,
+  getExternalDocuments
 } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
+import { getProjectCardFields } from '../../actions/schemaActions'
+
 import {
   currentProjectSelector,
   currentProjectLoadedSelector,
   changingPhaseSelector,
-  selectedPhaseSelector
+  selectedPhaseSelector,
+  externalDocumentsSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
-import { allEditFieldsSelector } from '../../selectors/schemaSelector'
+import {
+  allEditFieldsSelector,
+  projectCardFieldsSelector
+} from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader } from '../common/NavHeader'
 import ProjectEditPage from '../projectEdit'
@@ -51,13 +58,17 @@ class ProjectPage extends Component {
   }
 
   componentDidMount() {
-    const { currentProjectLoaded, users } = this.props
+    const {
+      currentProjectLoaded,
+      users
+    } = this.props
     if (!currentProjectLoaded) {
       this.props.initializeProject(this.props.id)
     }
     if (!users || users.length === 0) {
       this.props.fetchUsers()
     }
+
   }
 
   componentDidUpdate(prevProps) {
@@ -71,6 +82,8 @@ class ProjectPage extends Component {
       document.title = currentProject.name
     }
     if (prevProps.edit && !edit) this.props.setSelectedPhaseId(currentProject.phase)
+
+    getExternalDocuments(this.props.id)
   }
 
   switchDisplayedPhase = phase => {
@@ -110,7 +123,12 @@ class ProjectPage extends Component {
   }
 
   getProjectPageContent = () => {
-    const { edit, documents, currentProject, phases } = this.props
+    const {
+      edit,
+      documents,
+      currentProject,
+      externalDocuments
+    } = this.props
     const { selectedPhase } = this.props
     const currentPhases = this.getCurrentPhases()
 
@@ -129,12 +147,10 @@ class ProjectPage extends Component {
     }
     return (
       <ProjectCardPage
+        projectId={this.props.id}
         attributeData={currentProject.attribute_data}
-        type={currentProject.type}
         deadlines={currentProject.deadlines}
-        name={currentProject.name}
-        subtype={currentProject.subtype}
-        phases={phases}
+        documents={externalDocuments}
       />
     )
   }
@@ -151,23 +167,20 @@ class ProjectPage extends Component {
             variant="secondary"
             className="header-button"
             onClick={this.modifyContent}
-            iconLeft={<IconPen/>}
+            iconLeft={<IconPen />}
           >
             {t('project.modify')}
           </Button>
         )}
-        <Button variant="secondary" iconLeft={<IconPen/>} onClick={this.createDocuments}>
+        <Button variant="secondary" iconLeft={<IconPen />} onClick={this.createDocuments}>
           {t('project.create-documents')}
-        </Button>
-        <Button variant="secondary" iconLeft={<IconPrinter/>} onClick={() => window.print()}>
-          {t('project.print-project-card')}
         </Button>
         <Button
           variant="secondary"
-          iconLeft={<IconPen/>}
-          onClick={() => this.setState({ showDeadlineModal: true })}
+          iconLeft={<IconPrinter />}
+          onClick={() => window.print()}
         >
-          Määräajat
+          {t('project.print-project-card')}
         </Button>
       </span>
     ) : (
@@ -176,7 +189,7 @@ class ProjectPage extends Component {
           variant="secondary"
           className="header-button"
           onClick={this.openProjectDataModal}
-          iconLeft={<IconDownload/>}
+          iconLeft={<IconDownload />}
         >
           Tulosta projektin tiedot
         </Button>
@@ -185,13 +198,12 @@ class ProjectPage extends Component {
             variant="secondary"
             className="header-button"
             onClick={() => this.toggleBaseInformationForm(true)}
-            iconLeft={<IconPen/>}
+            iconLeft={<IconPen />}
           >
             {t('project.modify-project')}
           </Button>
-          )
-        }
-        <Button  variant="primary" iconLeft={<IconPen/>} onClick={this.checkProjectCard}>
+        )}
+        <Button variant="primary" iconLeft={<IconPen />} onClick={this.checkProjectCard}>
           {t('project.check-project-card')}
         </Button>
       </span>
@@ -221,7 +233,8 @@ class ProjectPage extends Component {
   }
   openProjectDataModal = () => this.togglePrintProjectDataModal(true)
 
-  toggleBaseInformationForm = opened => this.setState({ ...this.state, showBaseInformationForm: opened })
+  toggleBaseInformationForm = opened =>
+    this.setState({ ...this.state, showBaseInformationForm: opened })
 
   getAllChanges = () => {
     const { allEditFields, edit } = this.props
@@ -253,9 +266,7 @@ class ProjectPage extends Component {
           ]}
         />
         <div className="project-page-content">
-          <LoadingSpinner className="loader-icon">
-            {t('loading')}
-          </LoadingSpinner>
+          <LoadingSpinner className="loader-icon">{t('loading')}</LoadingSpinner>
         </div>
       </div>
     )
@@ -327,7 +338,9 @@ const mapDispatchToProps = {
   fetchUsers,
   changeProjectPhase,
   getProjectSnapshot,
-  setSelectedPhaseId
+  setSelectedPhaseId,
+  getProjectCardFields,
+  getExternalDocuments
 }
 
 const mapStateToProps = state => {
@@ -341,11 +354,12 @@ const mapStateToProps = state => {
     allEditFields: allEditFieldsSelector(state),
     formValues: getFormValues(DOWNLOAD_PROJECT_DATA_FORM)(state),
     currentUserId: userIdSelector(state),
-    selectedPhase: selectedPhaseSelector(state)
+    selectedPhase: selectedPhaseSelector(state),
+    projectCardFields: projectCardFieldsSelector(state),
+    externalDocuments: externalDocumentsSelector(state)
   }
 }
 
-export default withRouter( connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withTranslation()(ProjectPage)))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProjectPage))
+)

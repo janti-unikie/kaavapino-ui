@@ -51,6 +51,8 @@ export const GET_PROJECTS_OVERVIEW_BY_SUBTYPE = 'Get projects overview by subtyp
 export const GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL = 'Get projects overview by subtype successful'
 export const GET_PROJECTS_OVERVIEW_FILTERS = 'Get project overview filters'
 export const GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL = 'Get project overview filters successful'
+export const GET_EXTERNAL_DOCUMENTS = 'Get external documents'
+export const GET_EXTERNAL_DOCUMENTS_SUCCESSFUL = 'Get external documents successful'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -88,7 +90,10 @@ export const setTotalOwnProjects = count => ({
   payload: count
 })
 
-export const setSelectedPhaseId = phaseId => ({ type: SET_SELECTED_PHASE_ID, payload: phaseId })
+export const setSelectedPhaseId = phaseId => ({
+  type: SET_SELECTED_PHASE_ID,
+  payload: phaseId
+})
 
 export const sortProjects = options => ({ type: SORT_PROJECTS, payload: options })
 
@@ -233,4 +238,13 @@ export const getProjectsOverviewFilters = () => ({
 export const getProjectsOverviewFiltersSuccessful = filters => ({
   type: GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL,
   payload: filters
+})
+export const getExternalDocuments = projectId => ({
+  type: GET_EXTERNAL_DOCUMENTS,
+  payload: projectId
+})
+
+export const getExternalDocumentsSuccessful = documents => ({
+  type: GET_EXTERNAL_DOCUMENTS_SUCCESSFUL,
+  payload: documents
 })

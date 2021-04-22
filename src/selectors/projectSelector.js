@@ -133,3 +133,7 @@ export const projectOverviewFiltersSelector = createSelector(
   selectProject,
   project => project.overview.filters
 )
+export const externalDocumentsSelector = createSelector(
+  selectProject,
+  project => project.currentProjectExternalDocuments
+)
