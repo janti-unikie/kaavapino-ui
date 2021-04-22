@@ -145,159 +145,161 @@ function FloorAreaChart({
         </GridColumn>
       </Grid>
 
-      <div className="total-floor-area">
-        <span className="current-number">
-          {t('floor-area.current-number', { current })}
-        </span>
-        <span>{t('floor-area.total-number', { total })}</span>
+      <div className="chart-area">
+        <div className="total-floor-area">
+          <span className="current-number">
+            {t('floor-area.current-number', { current })}
+          </span>
+          <span>{t('floor-area.total-number', { total })}</span>
+        </div>
+        <ResponsiveContainer width="100%" height={350}>
+          <ComposedChart data={currentChartData.floorAreas}>
+            <ReferenceLine
+              label="Now"
+              yAxisId="left"
+              type="number"
+              x={new Date().getTime()}
+              stroke="red"
+            />
+
+            <XAxis
+              interval={1}
+              scale="time"
+              tickCount={104}
+              domain={['auto', 'auto']}
+              type="number"
+              dataKey="date"
+              angle={-45}
+              textAnchor="end"
+              tickFormatter={getFormattedDate}
+            />
+            <YAxis yAxisId="left">
+              <Label
+                dx={-30}
+                angle={-90}
+                position="centerTop"
+                style={{ fontSize: '12px' }}
+                value={t('floor-area.y-axis-title')}
+              ></Label>
+            </YAxis>
+            <YAxis
+              yAxisId="right"
+              orientation="right"
+              domain={[0, 20]}
+              scale="linear"
+              hide={false}
+            >
+              <Label
+                angle={-90}
+                position="centerTop"
+                style={{ fontSize: '12px' }}
+                value={t('floor-area.y-axis-title-projects-in-meeting')}
+              ></Label>
+            </YAxis>
+            <Bar
+              shape={<CustomizedLabel />}
+              isAnimationActive={false}
+              yAxisId="right"
+              dataKey="meetings"
+              fill="lightBlue"
+              legendType="none"
+            />
+            <Legend />
+            <CartesianGrid yAxisId="left" vertical={false} opacity={0.4} />
+
+            <Line
+              isAnimationActive={false}
+              legendType="plainline"
+              name={t('floor-area.all-area')}
+              type="monotone"
+              dataKey={OVERALL}
+              stroke="grey"
+              strokeWidth="2px"
+              dot={false}
+              yAxisId="left"
+            />
+
+            <Line
+              isAnimationActive={false}
+              legendType="none"
+              type="monotone"
+              dataKey={OVERALL + PREDICTION}
+              stroke="grey"
+              strokeDasharray="3 3"
+              strokeWidth="2px"
+              dot={false}
+              yAxisId="left"
+            />
+            <Line
+              isAnimationActive={false}
+              legendType="plainline"
+              name={t('floor-area.living-area')}
+              type="monotone"
+              dataKey={PUBLIC}
+              stroke="blue"
+              strokeWidth="2px"
+              dot={false}
+              yAxisId="left"
+            />
+            <Line
+              isAnimationActive={false}
+              legendType="none"
+              type="monotone"
+              dataKey={PUBLIC + PREDICTION}
+              stroke="blue"
+              strokeWidth="2px"
+              strokeDasharray="3 3"
+              dot={false}
+              yAxisId="left"
+            />
+
+            <Line
+              isAnimationActive={false}
+              legendType="plainline"
+              name={t('floor-area.business-area')}
+              type="monotone"
+              dataKey={BUSINESS_PREMISES}
+              stroke="green"
+              strokeWidth="2px"
+              dot={false}
+              yAxisId="left"
+            />
+            <Line
+              isAnimationActive={false}
+              legendType="none"
+              type="monotone"
+              dataKey={BUSINESS_PREMISES + PREDICTION}
+              stroke="green"
+              strokeDasharray="3 3"
+              strokeWidth="2px"
+              dot={false}
+              yAxisId="left"
+            />
+            <Line
+              isAnimationActive={false}
+              legendType="plainline"
+              name={t('floor-area.other-area')}
+              type="monotone"
+              dataKey={OTHER}
+              stroke="black"
+              strokeWidth="2px"
+              dot={false}
+              yAxisId="left"
+            />
+            <Line
+              isAnimationActive={false}
+              legendType="none"
+              type="monotone"
+              dataKey={OTHER + PREDICTION}
+              stroke="black"
+              strokeDasharray="3 3"
+              strokeWidth="2px"
+              dot={false}
+              yAxisId="left"
+            />
+          </ComposedChart>
+        </ResponsiveContainer>
       </div>
-      <ResponsiveContainer width="100%" height={350}>
-        <ComposedChart data={currentChartData.floorAreas}>
-          <ReferenceLine
-            label="Now"
-            yAxisId="left"
-            type="number"
-            x={new Date().getTime()}
-            stroke="red"
-          />
-
-          <XAxis
-            interval={1}
-            scale="time"
-            tickCount={104}
-            domain={['auto', 'auto']}
-            type="number"
-            dataKey="date"
-            angle={-45}
-            textAnchor="end"
-            tickFormatter={getFormattedDate}
-          />
-          <YAxis yAxisId="left">
-            <Label
-              dx={-30}
-              angle={-90}
-              position="centerTop"
-              style={{ fontSize: '12px' }}
-              value={t('floor-area.y-axis-title')}
-            ></Label>
-          </YAxis>
-          <YAxis
-            yAxisId="right"
-            orientation="right"
-            domain={[0, 20]}
-            scale="linear"
-            hide={false}
-          >
-            <Label
-              angle={-90}
-              position="centerTop"
-              style={{ fontSize: '12px' }}
-              value={t('floor-area.y-axis-title-projects-in-meeting')}
-            ></Label>
-          </YAxis>
-          <Bar
-            shape={<CustomizedLabel />}
-            isAnimationActive={false}
-            yAxisId="right"
-            dataKey="meetings"
-            fill="lightBlue"
-            legendType="none"
-          />
-          <Legend />
-          <CartesianGrid yAxisId="left" vertical={false} opacity={0.4} />
-
-          <Line
-            isAnimationActive={false}
-            legendType="plainline"
-            name={t('floor-area.all-area')}
-            type="monotone"
-            dataKey={OVERALL}
-            stroke="grey"
-            strokeWidth="2px"
-            dot={false}
-            yAxisId="left"
-          />
-
-          <Line
-            isAnimationActive={false}
-            legendType="none"
-            type="monotone"
-            dataKey={OVERALL + PREDICTION}
-            stroke="grey"
-            strokeDasharray="3 3"
-            strokeWidth="2px"
-            dot={false}
-            yAxisId="left"
-          />
-          <Line
-            isAnimationActive={false}
-            legendType="plainline"
-            name={t('floor-area.living-area')}
-            type="monotone"
-            dataKey={PUBLIC}
-            stroke="blue"
-            strokeWidth="2px"
-            dot={false}
-            yAxisId="left"
-          />
-          <Line
-            isAnimationActive={false}
-            legendType="none"
-            type="monotone"
-            dataKey={PUBLIC + PREDICTION}
-            stroke="blue"
-            strokeWidth="2px"
-            strokeDasharray="3 3"
-            dot={false}
-            yAxisId="left"
-          />
-
-          <Line
-            isAnimationActive={false}
-            legendType="plainline"
-            name={t('floor-area.business-area')}
-            type="monotone"
-            dataKey={BUSINESS_PREMISES}
-            stroke="green"
-            strokeWidth="2px"
-            dot={false}
-            yAxisId="left"
-          />
-          <Line
-            isAnimationActive={false}
-            legendType="none"
-            type="monotone"
-            dataKey={BUSINESS_PREMISES + PREDICTION}
-            stroke="green"
-            strokeDasharray="3 3"
-            strokeWidth="2px"
-            dot={false}
-            yAxisId="left"
-          />
-          <Line
-            isAnimationActive={false}
-            legendType="plainline"
-            name={t('floor-area.other-area')}
-            type="monotone"
-            dataKey={OTHER}
-            stroke="black"
-            strokeWidth="2px"
-            dot={false}
-            yAxisId="left"
-          />
-          <Line
-            isAnimationActive={false}
-            legendType="none"
-            type="monotone"
-            dataKey={OTHER + PREDICTION}
-            stroke="black"
-            strokeDasharray="3 3"
-            strokeWidth="2px"
-            dot={false}
-            yAxisId="left"
-          />
-        </ComposedChart>
-      </ResponsiveContainer>
     </div>
   )
 }

@@ -3,17 +3,18 @@
     flex: 1 1;
     margin: 0 auto;
     max-width: 1148px;
-    width: calc(100% - 32px);
+    width: 100%;
 
     .floor-area {
-        height: 440px;
-        
+        .chart-area {
+            margin-top: 40px
+        }
     }
     .projects-size {
-        height: 300px;
+        min-height: 300px;
 
         .header {
-            height: 56px;
+            min-height: 56px;
         }
     }
     .committee-diagram {
@@ -25,7 +26,6 @@
         background-color: blue;
     }
     .filters {
-        height: 100px;
         text-align: left;
         text-overflow: ellipsis;
         width: auto;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { BarChart, YAxis, XAxis, CartesianGrid, Bar, Tooltip } from 'recharts'
+import { BarChart, YAxis, XAxis, CartesianGrid, Bar, Tooltip, ResponsiveContainer } from 'recharts'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import FilterList from './Filters/FilterList'
@@ -100,6 +100,7 @@ function ProjectsChart({ filters, chartData, getProjectsOverviewBySubtype }) {
           </GridColumn>
         </Grid>
       </div>
+      <ResponsiveContainer width="100%" height={350}>
       <BarChart
         layout="vertical"
         width={500}
@@ -183,6 +184,7 @@ function ProjectsChart({ filters, chartData, getProjectsOverviewBySubtype }) {
           onMouseLeave={() => setSelectedPhase({})}
         />
       </BarChart>
+      </ResponsiveContainer>
     </div>
   )
 }
