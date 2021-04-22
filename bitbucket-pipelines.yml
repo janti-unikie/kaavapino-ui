@@ -11,7 +11,7 @@ pipelines:
         caches:
           - node
         script: # Modify the commands below to build your repository.
-          - apk add python2 make
+          - apk add python2 make g++
           - yarn install
           - yarn lint
           - yarn test
