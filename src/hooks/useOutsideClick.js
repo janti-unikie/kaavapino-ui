@@ -12,7 +12,7 @@ export function useOutsideClick(ref, callback) {
   const refs = useRef(refsArr)
 
   const handleOutsideClick = useCallback(
-    (event: MouseEvent) => {
+    event => {
       if (!callback) {
         return null
       }

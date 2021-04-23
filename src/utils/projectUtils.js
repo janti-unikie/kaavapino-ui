@@ -46,7 +46,7 @@ const formatDeadlines = ({ name, deadlines, subtype }, phases) => {
 const isFieldMissing = (fieldName, isFieldRequired, attributeData) => {
   return (
     isFieldRequired &&
-    (!attributeData.hasOwnProperty(fieldName) ||
+    ( attributeData[fieldName] === undefined ||
       attributeData[fieldName] === null ||
       attributeData[fieldName] === '')
   )
