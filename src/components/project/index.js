@@ -9,7 +9,7 @@ import {
   getExternalDocuments
 } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
-import { getProjectCardFields } from '../../actions/schemaActions'
+import { getProjectCardFields, getAttributes } from '../../actions/schemaActions'
 
 import {
   currentProjectSelector,
@@ -21,7 +21,8 @@ import {
 import { phasesSelector } from '../../selectors/phaseSelector'
 import {
   allEditFieldsSelector,
-  projectCardFieldsSelector
+  projectCardFieldsSelector,
+  attributesSelector
 } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader } from '../common/NavHeader'
@@ -57,20 +58,24 @@ class ProjectPage extends Component {
       showPrintProjectDataModal: false,
       deadlines: null
     }
+
   }
 
   componentDidMount() {
     const {
       currentProjectLoaded,
-      users
+      users,
+      getAttributes
     } = this.props
+    getAttributes()
     if (!currentProjectLoaded) {
       this.props.initializeProject(this.props.id)
     }
     if (!users || users.length === 0) {
       this.props.fetchUsers()
     }
-
+    
+    
   }
 
   componentDidUpdate(prevProps) {
@@ -86,6 +91,8 @@ class ProjectPage extends Component {
     if (prevProps.edit && !edit) this.props.setSelectedPhaseId(currentProject.phase)
 
     getExternalDocuments(this.props.id)
+
+   
   }
 
   switchDisplayedPhase = phase => {
@@ -257,11 +264,12 @@ class ProjectPage extends Component {
     const { allEditFields, edit } = this.props
 
     if (!edit) return []
+
     return allEditFields.map((f, i) => {
       const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.label} ${f.user_name}`
       return {
         name: f.name,
-        label: f.label,
+        label: f.attribute_label,
         text: value,
         value: `${value}-${i}`,
         key: `${value}-${i}`,
@@ -307,9 +315,10 @@ class ProjectPage extends Component {
       phases,
       currentProjectLoaded,
       users,
-      projectSubtypes
+      projectSubtypes,
+      attributes
     } = this.props
-
+    
     const loading = !currentProjectLoaded || !phases
 
     if (loading) {
@@ -324,6 +333,7 @@ class ProjectPage extends Component {
           subTitle={this.getSubTitle()}
           actions={this.getNavActions()}
           infoOptions={this.getAllChanges()}
+          attributes={attributes}
         />
         <NewProjectFormModal
           currentProject={currentProject}
@@ -361,7 +371,8 @@ const mapDispatchToProps = {
   getProjectSnapshot,
   setSelectedPhaseId,
   getProjectCardFields,
-  getExternalDocuments
+  getExternalDocuments,
+  getAttributes
 }
 
 const mapStateToProps = state => {
@@ -377,7 +388,8 @@ const mapStateToProps = state => {
     currentUserId: userIdSelector(state),
     selectedPhase: selectedPhaseSelector(state),
     projectCardFields: projectCardFieldsSelector(state),
-    externalDocuments: externalDocumentsSelector(state)
+    externalDocuments: externalDocumentsSelector(state),
+    attributes: attributesSelector(state)
   }
 }
 

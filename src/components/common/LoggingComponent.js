@@ -20,7 +20,7 @@ function LoggingComponent(props) {
   const isFieldset = value => value && value.search && value.search('fieldset') !== -1
 
   const getFormattedValue = (value, isFieldSet, name, labels) => {
-    // Fieldset
+
     if (isFieldSet) {
       const fieldSetContent = getFieldSetContent(value, name)
 
@@ -42,6 +42,7 @@ function LoggingComponent(props) {
 
       if (isArray(value)) {
         value.forEach(current => {
+          
           if (labels) {
             returnValue.push(labels[current])
           } else {
@@ -65,7 +66,7 @@ function LoggingComponent(props) {
       return value.toString()
     }
 
-    if (labels) {
+    if (labels && Object.keys(labels).length > 0) {
       const foundValue = labels[value]
 
       return foundValue ? foundValue.toString() : '-'
@@ -104,8 +105,10 @@ function LoggingComponent(props) {
       })
     return returnValues
   }
+  const findAttribute = key => props?.attributes.find( attribute => attribute.name === key )
 
   const getFieldsetValues = (fieldset, currentIndex, name) => {
+
     let deleted = false
     if (fieldset['_deleted']) {
       deleted = true
@@ -117,12 +120,16 @@ function LoggingComponent(props) {
 
     const keys = Object.keys(fieldset)
 
+    const foundValue = findAttribute( name )
+    const current = foundValue !== undefined ? foundValue.label :name
+
+
     returnValues.push(
       <div key={0} className={`log-item ${deleted ? 'deleted' : ''}`}>
         {deleted && <IconTrash size="s" />}
 
         <b>
-          {fixedIndex}: {name}
+          {current} {fixedIndex}
         </b>
         <br />
       </div>
@@ -138,11 +145,15 @@ function LoggingComponent(props) {
         if (key !== '_deleted') {
           let value = getFormattedValue(fieldset[key], isFieldset(key), key)
 
+          const foundValue = findAttribute(key)
+
+          const current = foundValue !== undefined ? foundValue.label : key
+
           component = (
             <div key={key + index} className={`log-item ${deleted ? 'deleted' : ''} `}>
               <div>
                 {deleted && <IconTrash />}
-                <b>{key}</b>
+                <b>{current}</b>
               </div>
               <div>{value}</div>
             </div>

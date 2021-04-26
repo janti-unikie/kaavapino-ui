@@ -27,3 +27,7 @@ export const deadlineSectionsSelector = createSelector(
   selectSchema,
   ({ schema }) => (schema && schema.deadline_sections) || []
 )
+export const attributesSelector = createSelector(
+  selectSchema,
+  ({ attributes }) => attributes
+)

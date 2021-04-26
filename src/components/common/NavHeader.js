@@ -22,7 +22,7 @@ NavAction.propTypes = {
 
 export const NavActions = props => <div className="nav-header-actions" {...props} />
 
-export const NavHeader = ({ routeItems, actions, title, infoOptions, subTitle }) => {
+export const NavHeader = ({ routeItems, actions, title, infoOptions, subTitle, attributes }) => {
 
   return (
     <div className="nav-header-container">
@@ -43,7 +43,7 @@ export const NavHeader = ({ routeItems, actions, title, infoOptions, subTitle })
             <h1 className="nav-header-title">{title}</h1>
             {subTitle && <h3 className="nav-header-subtitle">{subTitle}</h3>}
           </div>
-          <LoggingComponent infoOptions={infoOptions}/>
+          <LoggingComponent infoOptions={infoOptions} attributes={attributes}/>
 
         </div>
         {actions && actions}
