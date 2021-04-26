@@ -44,9 +44,7 @@
   overflow: auto;
 }
 .project-card .description {
-  height: 300px;
-  overflow: auto;
-  
+  min-height: 300px;
 }
 .project-card .floor-area-information {
   height: 120px;
