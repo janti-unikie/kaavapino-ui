@@ -5,17 +5,24 @@ import {
   saveProjectBase,
   changeProjectPhase,
   getProjectSnapshot,
-  setSelectedPhaseId
+  setSelectedPhaseId,
+  getExternalDocuments
 } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
+import { getProjectCardFields } from '../../actions/schemaActions'
+
 import {
   currentProjectSelector,
   currentProjectLoadedSelector,
   changingPhaseSelector,
-  selectedPhaseSelector
+  selectedPhaseSelector,
+  externalDocumentsSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
-import { allEditFieldsSelector } from '../../selectors/schemaSelector'
+import {
+  allEditFieldsSelector,
+  projectCardFieldsSelector
+} from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader } from '../common/NavHeader'
 import ProjectEditPage from '../projectEdit'
@@ -53,13 +60,17 @@ class ProjectPage extends Component {
   }
 
   componentDidMount() {
-    const { currentProjectLoaded, users } = this.props
+    const {
+      currentProjectLoaded,
+      users
+    } = this.props
     if (!currentProjectLoaded) {
       this.props.initializeProject(this.props.id)
     }
     if (!users || users.length === 0) {
       this.props.fetchUsers()
     }
+
   }
 
   componentDidUpdate(prevProps) {
@@ -73,6 +84,8 @@ class ProjectPage extends Component {
       document.title = currentProject.name
     }
     if (prevProps.edit && !edit) this.props.setSelectedPhaseId(currentProject.phase)
+
+    getExternalDocuments(this.props.id)
   }
 
   switchDisplayedPhase = phase => {
@@ -120,7 +133,12 @@ class ProjectPage extends Component {
   }
 
   getProjectPageContent = () => {
-    const { edit, documents, currentProject, phases } = this.props
+    const {
+      edit,
+      documents,
+      currentProject,
+      externalDocuments
+    } = this.props
     const { selectedPhase } = this.props
     const currentPhases = this.getCurrentPhases()
 
@@ -139,12 +157,10 @@ class ProjectPage extends Component {
     }
     return (
       <ProjectCardPage
+        projectId={this.props.id}
         attributeData={currentProject.attribute_data}
-        type={currentProject.type}
         deadlines={currentProject.deadlines}
-        name={currentProject.name}
-        subtype={currentProject.subtype}
-        phases={phases}
+        documents={externalDocuments}
       />
     )
   }
@@ -155,7 +171,12 @@ class ProjectPage extends Component {
     return (
       <span className="header-buttons">
         {showCreate && (
-          <Button variant="secondary" onClick={this.modifyContent} iconLeft={<IconPen />}>
+          <Button
+            variant="secondary"
+            className="header-button"
+            onClick={this.modifyContent}
+            iconLeft={<IconPen />}
+          >
             {t('project.modify')}
           </Button>
         )}
@@ -168,13 +189,6 @@ class ProjectPage extends Component {
           onClick={() => window.print()}
         >
           {t('project.print-project-card')}
-        </Button>
-        <Button
-          variant="secondary"
-          iconLeft={<IconPen />}
-          onClick={() => this.setState({ showDeadlineModal: true })}
-        >
-          Määräajat
         </Button>
       </span>
     )
@@ -345,7 +359,9 @@ const mapDispatchToProps = {
   fetchUsers,
   changeProjectPhase,
   getProjectSnapshot,
-  setSelectedPhaseId
+  setSelectedPhaseId,
+  getProjectCardFields,
+  getExternalDocuments
 }
 
 const mapStateToProps = state => {
@@ -359,7 +375,9 @@ const mapStateToProps = state => {
     allEditFields: allEditFieldsSelector(state),
     formValues: getFormValues(DOWNLOAD_PROJECT_DATA_FORM)(state),
     currentUserId: userIdSelector(state),
-    selectedPhase: selectedPhaseSelector(state)
+    selectedPhase: selectedPhaseSelector(state),
+    projectCardFields: projectCardFieldsSelector(state),
+    externalDocuments: externalDocumentsSelector(state)
   }
 }
 

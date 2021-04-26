@@ -120,3 +120,8 @@ export const archivedProjectSelector = createSelector(
   selectProject,
   project => project.projects.filter(proj => proj.archived)
 )
+
+export const externalDocumentsSelector = createSelector(
+  selectProject,
+  project => project.currentProjectExternalDocuments
+)

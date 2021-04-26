@@ -466,7 +466,7 @@ class CustomField extends Component {
         ...fieldProps,
         type: 'fieldset'
       }
-      return <FieldArray component={this.renderFieldset} {...newProps} />
+      return <FieldArray  component={this.renderFieldset} {...newProps} />
     }
 
     return (
