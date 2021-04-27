@@ -464,3 +464,17 @@ h4 {
    background-color: red;
   }
 }
+.log-card {
+  max-height: 200px;
+  overflow: auto;
+  .ui.grid>.column:not(.row) {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
+.inline {
+  display: inline;
+}
+.latest-update {
+  text-align: left;
+}

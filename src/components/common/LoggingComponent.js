@@ -1,14 +1,25 @@
 import React from 'react'
-import { Popup, Dropdown } from 'semantic-ui-react'
 import { isBoolean, isObject, isArray } from 'lodash'
-
+import { Popup, Grid } from 'semantic-ui-react'
 //import { diff } from 'deep-object-diff'
 import { useTranslation } from 'react-i18next'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import parse from 'html-react-parser'
-import { IconTrash } from 'hds-react'
+import {
+  IconTrash,
+  Button,
+  Card,
+  useAccordion,
+  IconAngleUp,
+  IconAngleDown,
+  IconInfoCircle
+} from 'hds-react'
+import moment from 'moment'
 function LoggingComponent(props) {
   const { t } = useTranslation()
+
+  const { isOpen, buttonProps, contentProps } = useAccordion({ initiallyOpen: false })
+  const icon = isOpen ? <IconAngleUp aria-hidden /> : <IconAngleDown aria-hidden />
 
   const { infoOptions } = props
 
@@ -20,7 +31,8 @@ function LoggingComponent(props) {
   const isFieldset = value => value && value.search && value.search('fieldset') !== -1
 
   const getFormattedValue = (value, isFieldSet, name, labels) => {
-
+  
+    // Fieldset
     if (isFieldSet) {
       const fieldSetContent = getFieldSetContent(value, name)
 
@@ -33,24 +45,26 @@ function LoggingComponent(props) {
     if (value && value.ops) {
       return getRichTextContent(value.ops)
     }
-
+    // Boolean
     if (isBoolean(value)) {
       return value ? 'Kyllä' : 'Ei'
     }
+    // Object which is not fieldset
     if (isObject(value)) {
       const returnValue = []
 
+      // Array
       if (isArray(value)) {
         value.forEach(current => {
-          
-          if (labels) {
+          if (labels && Object.keys(labels).length > 0) {
             returnValue.push(labels[current])
           } else {
-            returnValue.push(value)
+            returnValue.push(current)
           }
         })
         return returnValue.toString()
       }
+      // Image
       if (value && value.link) {
         const keys = Object.keys(value)
         keys.forEach(key => {
@@ -63,6 +77,7 @@ function LoggingComponent(props) {
         })
         return returnValue
       }
+      // General
       return value.toString()
     }
 
@@ -71,7 +86,6 @@ function LoggingComponent(props) {
 
       return foundValue ? foundValue.toString() : '-'
     }
-
     return value ? value.toString() : '-'
   }
 
@@ -83,7 +97,9 @@ function LoggingComponent(props) {
   }
 
   const getFieldSetContent = (value, name) => {
-    if (!isObject(value) || value.ops) {
+    
+    // If value is not fieldset
+    if (!isObject(value) || value.ops || value.link) {
       return getFormattedValue(value, false, name)
     }
     const returnValues = []
@@ -95,8 +111,9 @@ function LoggingComponent(props) {
         const currentValue = value[currentIndex]
 
         if (isObject(currentValue)) {
-          returnValues.push(getFieldsetValues(currentValue, currentIndex, name))
+          returnValues.push(getFieldsetValues(currentValue, currentIndex, name, isFieldset(name)))
         } else {
+          
           returnValues.push(
             currentValue ? getFormattedValue(currentValue, isFieldset, name) : 'Tyhjä'
           )
@@ -105,10 +122,12 @@ function LoggingComponent(props) {
       })
     return returnValues
   }
-  const findAttribute = key => props?.attributes.find( attribute => attribute.name === key )
+  const findAttribute = key => props?.attributes.find(attribute => attribute.name === key)
+
+  // Check from field names
+  const isValidDate = name => name.lastIndexOf('pvm') !== -1 || name.lastIndexOf('paivamaara') !== -1
 
   const getFieldsetValues = (fieldset, currentIndex, name) => {
-
     let deleted = false
     if (fieldset['_deleted']) {
       deleted = true
@@ -120,14 +139,12 @@ function LoggingComponent(props) {
 
     const keys = Object.keys(fieldset)
 
-    const foundValue = findAttribute( name )
-    const current = foundValue !== undefined ? foundValue.label :name
-
+    const foundValue = findAttribute(name)
+    const current = foundValue !== undefined ? foundValue.label : name
 
     returnValues.push(
-      <div key={0} className={`log-item ${deleted ? 'deleted' : ''}`}>
+      <div key={0} className='log-item'>
         {deleted && <IconTrash size="s" />}
-
         <b>
           {current} {fixedIndex}
         </b>
@@ -145,17 +162,18 @@ function LoggingComponent(props) {
         if (key !== '_deleted') {
           let value = getFormattedValue(fieldset[key], isFieldset(key), key)
 
+          const date = moment(value).format('DD.MM.YYYY')
           const foundValue = findAttribute(key)
 
           const current = foundValue !== undefined ? foundValue.label : key
 
           component = (
-            <div key={key + index} className={`log-item ${deleted ? 'deleted' : ''} `}>
-              <div>
+            <div key={key + index} className='log-item'>
+              <>
                 {deleted && <IconTrash />}
-                <b>{current}</b>
-              </div>
-              <div>{value}</div>
+                {!isFieldset(key) && current}
+              </>
+              <div>{isValidDate(key) ? date !== 'Invalid date' ? date : 'deleted' : value}</div>
             </div>
           )
 
@@ -165,16 +183,14 @@ function LoggingComponent(props) {
 
           if (value === true) {
             component = (
-              <div key={key + index} className={`log-item ${deleted ? 'deleted' : ''} `}>
+              <div key={key + index} className='log-item'>
                 <div>
                   {deleted && <IconTrash />}
-                  <b>Deleted: </b>
                 </div>
                 <div>{value}</div>
               </div>
             )
           }
-
           returnValues.push(component)
         }
       })
@@ -184,64 +200,60 @@ function LoggingComponent(props) {
 
   return (
     <div className="nav-header-info">
-      <div>
-        {latestUpdate && (
-          <Dropdown text={latestUpdate} scrolling icon="angle down">
-            <Dropdown.Menu>
-              {infoOptions &&
-                infoOptions.map(option => {
-                  return (
-                    <Popup
-                      hideOnScroll={false}
-                      offset={[50, 50]}
-                      key={option.key}
-                      className="popup-logger"
-                      position="right center"
-                      wide="very"
-                      trigger={(
-                        <Dropdown.Item
-                          key={option.key}
-                          className="changelog-item"
-                          value={option.value}
-                        >
-                          {option.text}
-                        </Dropdown.Item>
+      {latestUpdate && <Button className="latest-update" variant="supplementary" iconLeft={icon} {...buttonProps}>
+        {latestUpdate}
+      </Button>}
+      <Card border aria-label="Loki" className="log-card" {...contentProps}>
+        <Grid stackable columns="equal">
+        {infoOptions &&
+          infoOptions.map(option => {
+            return (
+              <>
+                <Grid.Column width={14}> 
+                  <div className="show-value">{option.text}</div>
+                </Grid.Column>
+                <Popup
+                  hideOnScroll={false}
+                  offset={[50, 50]}
+                  key={option.key}
+                  on='click'
+                  className="popup-logger"
+                  position="right center"
+                  wide="very"
+                  trigger={  <Grid.Column> <IconInfoCircle /> </Grid.Column> }
+                >
+                  <div className="show-value">
+                    <div>
+                      <b>{t('projects.logging.modified')}</b>
+                    </div>
+                    <div className="field-value">
+                      {getFormattedValue(
+                        option.newValue,
+                        isFieldset(option.name),
+                        option.name,
+                        option.labels
                       )}
-                    >
-                      <div className="show-value">{option.text}</div>
-                      <div className="show-value">
-                        <div>
-                          <b>Uusi arvo</b>
-                        </div>
-                        <div className="field-value">
-                          {getFormattedValue(
-                            option.newValue,
-                            isFieldset(option.name),
-                            option.name,
-                            option.labels
-                          )}
-                        </div>
-                      </div>
-                      <div>
-                        <div>
-                          <b>Vanha arvo</b>
-                        </div>
-                        <div className="field-value">
-                          {getFormattedValue(
-                            option.oldValue,
-                            isFieldset(option.name),
-                            option.name,
-                            option.labels
-                          )}
-                        </div>
-                      </div>
-                    </Popup>
-                  )
-                })}
-            </Dropdown.Menu>
-          </Dropdown>
-        )}
-      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div>
+                      <b>{t('projects.logging.old')}</b>
+                    </div>
+                    <div className="field-value">
+                      {getFormattedValue(
+                        option.oldValue,
+                        isFieldset(option.name),
+                        option.name,
+                        option.labels
+                      )}
+                    </div>
+                  </div>
+                </Popup>      
+                </>
+            )
+          })}
+          </Grid>
+      </Card>
     </div>
   )
 }

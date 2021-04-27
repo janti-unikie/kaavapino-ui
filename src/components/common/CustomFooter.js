@@ -31,7 +31,7 @@ class CustomFooter extends Component {
   }
   renderFooterLinks = links => {
     const returnValue = []
-    links.forEach(link => {
+    links.forEach( link => {
       returnValue.push(
         <Footer.Item
           as="a"
@@ -39,6 +39,7 @@ class CustomFooter extends Component {
           label={link.link_text}
           onClick={function noRefCheck() {}}
           subItem
+          key={link.url}
         />
 
       )
@@ -54,7 +55,7 @@ class CustomFooter extends Component {
     }
    this.props.footerData.forEach(current => {
       returnValue.push(
-          <Footer.ItemGroup>{this.renderHeader(current)}</Footer.ItemGroup>
+          <Footer.ItemGroup key={current.title}>{this.renderHeader(current)}</Footer.ItemGroup>
       )
     })
 
