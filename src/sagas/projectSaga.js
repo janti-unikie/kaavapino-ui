@@ -628,7 +628,7 @@ function* projectFileUpload({
     formData.append('description', description)
 
     if (fieldSetIndex && fieldSetIndex.length > 0) {
-   //   formData.append('fieldset_path', JSON.stringify(fieldSetIndex))
+      formData.append('fieldset_path', JSON.stringify(fieldSetIndex))
     }
     // Set cancel token
     const CancelToken = axios.CancelToken
