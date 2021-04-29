@@ -2,10 +2,10 @@ stages:
 - name: Build
   steps:
   - runScriptConfig:
-      image: node:12-alpine
+      image: node:14.16.1-alpine3.13
       shellScript: |-
         env
-        apk update && apk upgrade && apk add git
+        apk update && apk upgrade && apk add python2 make g++ git
         yarn install
         yarn lint
         yarn build

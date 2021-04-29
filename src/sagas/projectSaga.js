@@ -357,7 +357,7 @@ const getChangedAttributeData = (values, initial, sections) => {
   let attribute_data = {}
 
   Object.keys(values).forEach(key => {
-    if (initial.hasOwnProperty(key) && isEqual(values[key], initial[key])) {
+    if (initial[key] !== undefined && isEqual(values[key], initial[key])) {
       return
     }
 

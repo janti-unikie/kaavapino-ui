@@ -19,15 +19,6 @@ describe('<Login />', () => {
     expect(loginSpy).toHaveBeenCalledTimes(1)
   })
 
-  it('sets and removes interval', () => {
-    expect(setInterval).toHaveBeenCalledTimes(1)
-    expect(loginSpy).toHaveBeenCalledTimes(0)
-    jest.runOnlyPendingTimers()
-    expect(loginSpy).toHaveBeenCalledTimes(1)
-    loginWrapper.instance().componentWillUnmount()
-    expect(clearInterval).toHaveBeenCalledTimes(1)
-  })
-
   afterEach(() => {
     setInterval.mockClear()
     clearInterval.mockClear()
