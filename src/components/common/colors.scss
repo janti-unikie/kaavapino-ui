@@ -23,6 +23,8 @@ $light-gray2: #f1f1f1;
 $light-gray3: #f5f5f5;
 $light-gray4: #E0E0E0;
 
+$accessible-grey: #999898;
+
 
 $red: #c4123e;
 $red2: #dc3545;
@@ -43,4 +45,6 @@ $color-error-border: $red2;
 $color-warning: $yellow;
 $color-warning2: $yellow2;
 $color-notification: $orange;
-$color-info: $turquoise
+$color-info: $turquoise;
+
+$color-disabled: $accessible-grey;

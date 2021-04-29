@@ -125,9 +125,9 @@
     grid-template-columns: repeat(13, 1fr);
 
     .timeline-month {
-      border-bottom: 2px solid $gray;
-      border-left: 2px solid $gray;
-      color: $gray;
+      border-bottom: 2px solid $color-disabled;
+      border-left: 2px solid $color-disabled;
+      color: $color-disabled;
       text-align: center;
       position: relative;
       height: 10px;
@@ -156,5 +156,5 @@
   }
 }
 .timeline-error {
-  filter: opacity(0.2);
+  color: 	$color-disabled
 }

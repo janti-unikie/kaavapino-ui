@@ -23,6 +23,7 @@ import projectUtils from '../../utils/projectUtils'
 import AutofillInput from './AutofillInput/AutofillInput'
 import _ from 'lodash'
 import DeadlineInfoText from './DeadlineInfoText'
+import { get } from 'lodash'
 class CustomField extends Component {
   yearOptions = []
   shouldComponentUpdate(p) {
@@ -373,24 +374,7 @@ class CustomField extends Component {
     } = this.props
     const type = field.type
     if (type === 'file' || type === 'image') {
-      const lastIndex = field.name.lastIndexOf('.')
-      let file = attributeData[field.name]
-
-      if (lastIndex !== -1) {
-        const firstBracket = field.name.indexOf('[')
-        const secondBracket = field.name.indexOf(']')
-
-        const fieldSet = field.name.substring(0, firstBracket)
-        const index = field.name.substring(firstBracket + 1, secondBracket)
-        const currentFieldName = field.name.substring(lastIndex + 1, field.name.length)
-
-        if ( !attributeData[fieldSet] || !attributeData[fieldSet][index]) {
-          file = null
-        } else {
-          file = attributeData[fieldSet][index][currentFieldName]
-        }
-      }
-
+      let file = get(attributeData, field.name)
       const src = file ? file.link : null
       const description = file ? file.description : null
 

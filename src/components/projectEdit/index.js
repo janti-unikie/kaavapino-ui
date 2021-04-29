@@ -48,6 +48,7 @@ class ProjectEditPage extends Component {
   componentDidMount() {
     const { project } = this.props
     this.props.fetchSchemas(project.id, project.subtype)
+
   }
 
   changePhase = () => {

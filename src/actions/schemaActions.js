@@ -4,6 +4,9 @@ export const SET_ALL_EDIT_FIELDS = 'Set all edit fields'
 export const SET_ALL_EDIT_FIELDS_SUCCESSFUL = 'Set all edit fields successful'
 export const GET_PROJECT_CARD_FIELDS = 'Get project card fields'
 export const GET_PROJECT_CARD_FIELDS_SUCCESSFUL = 'Get project card fields successful'
+export const GET_ATTRIBUTES = 'Get attributes'
+export const GET_ATTRIBUTES_SUCCESSFUL = 'Get attributes successful'
+
 
 export const fetchSchemas = (project, subtype) => ({ type: FETCH_SCHEMAS, payload: { project, subtype } })
 export const fetchSchemasSuccessful = schemas => ({
@@ -20,4 +23,10 @@ export const getProjectCardFields = projectId => ({ type: GET_PROJECT_CARD_FIELD
 export const getProjectCardFieldsSuccessful = fields => ({
   type: GET_PROJECT_CARD_FIELDS_SUCCESSFUL,
   payload: fields
+})
+export const getAttributes = () => ({ type: GET_ATTRIBUTES })
+
+export const getAttributesSuccessful = attributes => ({
+  type: GET_ATTRIBUTES_SUCCESSFUL,
+  payload: attributes
 })

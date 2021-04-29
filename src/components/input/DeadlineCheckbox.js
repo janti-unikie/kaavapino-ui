@@ -19,7 +19,7 @@ const DeadlineCheckbox = ({
   let inputValue = value
 
   if (autofillRule) {
-    inputValue = getFieldAutofillValue(autofillRule, formValues)
+    inputValue = getFieldAutofillValue(autofillRule, formValues, name)
   }
   const [checked, setChecked] = useState(inputValue)
 
