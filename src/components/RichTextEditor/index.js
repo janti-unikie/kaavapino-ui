@@ -123,7 +123,6 @@ function RichTextEditor(props) {
     ...inputProps,
     defaultValue: value
   }
-
   let reducedName = inputProps.name
 
   const lastIndex = inputProps.name.lastIndexOf('.')
@@ -140,12 +139,16 @@ function RichTextEditor(props) {
   }
 
   return (
-    <div  role='textbox' className={`rich-text-editor-wrapper ${disabled ? 'rich-text-disabled' : ''}`}>
+    <div
+      role="textbox"
+      className={`rich-text-editor-wrapper ${disabled ? 'rich-text-disabled' : ''}`}
+    >
       <div
         className={`rich-text-editor ${
           toolbarVisible || showComments ? 'toolbar-visible' : ''
         } ${largeField ? 'large' : ''}`}
         onFocus={() => setToolbarVisible(true)}
+
       >
         <div id={toolbarName} onMouseDown={e => e.preventDefault()} className="ql-toolbar">
           <span className="ql-formats">
@@ -155,7 +158,7 @@ function RichTextEditor(props) {
             <button aria-label="strike" className="ql-strike" />
           </span>
           <span className="ql-formats">
-            <select aria-label="color" className="ql-color" />
+            <select aria-label="color"  className="ql-color" />
             <select aria-label="background" className="ql-background" />
           </span>
           <span className="ql-formats">
@@ -167,7 +170,11 @@ function RichTextEditor(props) {
             <button aria-label="sub" className="ql-script" value="sub" />
           </span>
           <span className="ql-formats">
-            <button aria-label="Lisää kommentti" className="quill-toolbar-comment-button" onClick={addComment}>
+            <button
+              aria-label="Lisää kommentti"
+              className="quill-toolbar-comment-button"
+              onClick={addComment}
+            >
               <CommentIcon className="comment-icon" />
             </button>
             <button
@@ -184,6 +191,7 @@ function RichTextEditor(props) {
         <ReactQuill
           ref={editorRef}
           modules={modules}
+          theme="snow"
           formats={formats}
           {...newInputProps}
           // default value initialized, after that quill handles internal state

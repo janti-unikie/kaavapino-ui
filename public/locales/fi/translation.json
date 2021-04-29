@@ -20,7 +20,11 @@
         "onhold-short": "Keskeytyneet",
         "archived-short": "Arkistoidut",
         "onhold-long": "Keskeytyneet projektit",
-        "archived-long": "Arkistoidut projektit"
+        "archived-long": "Arkistoidut projektit",
+        "logging" : {
+            "modified": "Muokattu",
+            "old": "Vanha"
+        }
     },
     "deadlines": {
         "title": "Päivitä aikataulut",
