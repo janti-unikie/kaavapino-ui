@@ -91,5 +91,35 @@
         "set-onhold-lable": "Aseta projekti toistaiseksi keskeytyneeksi",
         "change-phase-error": "Vaihetta ei voida vielä lopettaa",
         "change-phase-error-message": "Täytä puuttuvat kentät"
+    },
+    "map-area": {
+        "title": "Kaavaprojektit kartalla"
+    },
+    "overview": {
+        "title": "Yleisnäkymä",
+        "clear-selections": "Tyhjennä valinnat"
+    },
+    "floor-area": {
+        "title": "Tarkistettujen kaavaehdotusten kerrosala {{date}}",
+        "total-number": " / {{total}} k-m²",
+        "current-number": " {{current}} k-m²",
+        "y-axis-title": "Tuhatta k-m²",
+        "all-area": "Kokonaiskerrosala",
+        "living-area": "Asuinkerrosala",
+        "business-area": "Toimitilakerrosala",
+        "other-area": "Muu kerrosala",
+        "y-axis-title-projects-in-meeting": "Projekteja lautakunnan kokouksessa kpl"
+    },
+    "project-types": {
+        "title": "Kaavaprojektien jakauma",
+        "kaynnistys" : "Käynnistys-vaihe",
+        "OAS": "OAS-vaihe",
+        "ehdotus": "Ehdotus-vaihe",
+        "hyvaksyminen": "Hyväksyminen-vaihe",
+        "luonnos": "Luonnos-vaihe",
+        "tarkastettuEhdotus": "Tarkastettu ehdotus -vaihe",
+        "voimaantulo": "Voimaantulo-vaihe",
+        "periaatteet": "Periaatteet-vaihe"
     }
+    
 }

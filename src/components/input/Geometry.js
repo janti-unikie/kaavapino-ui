@@ -79,8 +79,10 @@ class Geometry extends Component {
   render() {
     const { userActions } = this.state
     const { coordinates } = this.props.input.value
-    const { disabled } = this.props
+    //const { disabled } = this.props
     const crs = EPSG3879()
+
+    const disabled = false
     return (
       <div className="geometry-input-container">
         <Map

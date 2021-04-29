@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import {  Grid } from 'semantic-ui-react'
 import LoggingComponent from './LoggingComponent'
 
 export const NavAction = ({ children, to, primary, ...rest }) => {
@@ -22,7 +23,7 @@ NavAction.propTypes = {
 
 export const NavActions = props => <div className="nav-header-actions" {...props} />
 
-export const NavHeader = ({ routeItems, actions, title, infoOptions, subTitle, attributes }) => {
+export const NavHeader = ({ routeItems, actions, title, infoOptions, attributes }) => {
 
   return (
     <div className="nav-header-container">
@@ -40,14 +41,16 @@ export const NavHeader = ({ routeItems, actions, title, infoOptions, subTitle, a
         </div>
         <div className="nav-header-content">
           <div className="nav-header-titles">
-            <h1 className="nav-header-title">{title}</h1>
-            {subTitle && <h3 className="nav-header-subtitle">{subTitle}</h3>}
+            <Grid className="full-width" stackable padded={false} columns="equal">
+             <Grid.Column width={5}>
+               <h2 className="nav-header-title">{title}</h2>
+             </Grid.Column>
+             <Grid.Column textAlign="right">{actions && actions}</Grid.Column>
+          </Grid>
           </div>
           <LoggingComponent infoOptions={infoOptions} attributes={attributes}/>
 
         </div>
-        {actions && actions}
-
       </div>
     </div>
   )

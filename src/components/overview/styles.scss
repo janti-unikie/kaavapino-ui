@@ -1,0 +1,85 @@
+
+.overview {
+    flex: 1 1;
+    margin: 0 auto;
+    max-width: 1148px;
+    width: 100%;
+
+    .floor-area {
+        .chart-area {
+            margin-top: 40px
+        }
+    }
+    .projects-size {
+        min-height: 300px;
+
+        .header {
+            min-height: 56px;
+        }
+    }
+    .committee-diagram {
+        height: 200px;
+        background-color: grey;
+    }
+    .map {
+        height: 300px;
+        background-color: blue;
+    }
+    .filters {
+        text-align: left;
+        text-overflow: ellipsis;
+        width: auto;
+    }
+    .recharts-surface {
+        width: 100%;
+    }
+    .recharts-legend-wrapper {
+        bottom: -5px !important;
+    }
+    .border {
+        border: 1px solid black;
+    }
+    .value-border {
+        border: 1px solid black;
+    }
+    .projects-tooltip {
+        width: 175px;
+        height: 50px;
+        background-color: white;
+        text-align: center;
+        .title {
+            padding: 2px;
+        }
+        .number {
+            padding: 2px;
+        }
+    }
+    .bar:hover {
+        fill: darkgrey;
+    }
+}
+.floor-area {
+    margin-bottom: 20px;
+    .total-floor-area {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .current-number {
+        font-size: large;
+        font-weight: bold;
+    }
+   
+}
+.map-area {
+    .filters-list {
+        margin-bottom: 20px;
+
+    }
+}
+.xAxis {
+    margin-right: 10px;
+}
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
