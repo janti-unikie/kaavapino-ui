@@ -122,7 +122,7 @@ function LoggingComponent(props) {
       })
     return returnValues
   }
-  const findAttribute = key => props && props.attributes.find(attribute => attribute.name === key)
+  const findAttribute = key => props && props.attributes && props.attributes.find(attribute => attribute.name === key)
 
   // Check from field names
   const isValidDate = name => name.lastIndexOf('pvm') !== -1 || name.lastIndexOf('paivamaara') !== -1
