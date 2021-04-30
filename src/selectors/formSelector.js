@@ -16,7 +16,7 @@ export const newProjectSubtypeSelector = createSelector(
 
 export const editFormSelector = createSelector(
   selectForm,
-  form => form[EDIT_PROJECT_FORM]
+  form => form && form[EDIT_PROJECT_FORM]
 )
 
 export const editFloorAreaFormSelector = createSelector(

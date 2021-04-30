@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { fetchDocuments } from '../../actions/documentActions'
 import {
@@ -9,15 +9,14 @@ import { currentProjectIdSelector } from '../../selectors/projectSelector'
 import { LoadingSpinner } from 'hds-react'
 import DocumentGroup from './DocumentGroup'
 
-class ProjectDocumentsPage extends Component {
-  componentDidMount() {
-    const { currentProjectId } = this.props
+function ProjectDocumentsPage(props) {
+  useEffect(() => {
+    const { currentProjectId } = props
     if (currentProjectId) {
-      this.props.fetchDocuments(currentProjectId)
+      props.fetchDocuments(currentProjectId)
     }
-  }
-
-  groupDocuments = documents => {
+  }, [])
+  const groupDocuments = documents => {
     const result = {}
     documents.forEach(doc => {
       if (!result[doc.phase]) {
@@ -27,28 +26,24 @@ class ProjectDocumentsPage extends Component {
     })
     return result
   }
+  const { documents, documentsLoading } = props
+  const groupedDocuments = groupDocuments(documents)
 
-  render() {
-    const { documents, documentsLoading } = this.props
-    const groupedDocuments = this.groupDocuments(documents)
-    return (
-      <div className="documents-page-container">
-        {documentsLoading && (
-          <LoadingSpinner className="loader-icon" />
-        )}
-        {!documentsLoading && Object.keys(groupedDocuments).length === 0 && (
-          <p className="no-documents">Ei dokumentteja.</p>
-        )}
-        {Object.keys(groupedDocuments).map(key => (
-          <DocumentGroup
-            key={key}
-            title={groupedDocuments[key].title}
-            documents={groupedDocuments[key].documents}
-          />
-        ))}
-      </div>
-    )
-  }
+  return (
+    <div className="documents-page-container">
+      {documentsLoading && <LoadingSpinner className="loader-icon" />}
+      {!documentsLoading && Object.keys(groupedDocuments).length === 0 && (
+        <p className="no-documents">Ei dokumentteja.</p>
+      )}
+      {Object.keys(groupedDocuments).map(key => (
+        <DocumentGroup
+          key={key}
+          title={groupedDocuments[key].title}
+          documents={groupedDocuments[key].documents}
+        />
+      ))}
+    </div>
+  )
 }
 
 const mapStateToProps = state => {

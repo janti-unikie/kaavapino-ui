@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Radio } from 'semantic-ui-react'
-import SearchBar from '../SearchBar'
 import { IconAngleUp, IconAngleDown } from 'hds-react'
 
 const ListHeader = ({
@@ -10,11 +9,7 @@ const ListHeader = ({
   selected,
   dir,
   toggleGraph,
-  toggleSearch,
-  searchOpen,
-  graphToggled,
-  buttonAction
-}) => {
+  graphToggled}) => {
   const getArrowIcon = () => {
     return dir === 0 ? (
       <IconAngleUp size="xs" display="none" />
@@ -48,11 +43,6 @@ const ListHeader = ({
             label="Näytä aikajanat"
           />
         </span>
-        <SearchBar
-          toggleSearch={toggleSearch}
-          searchOpen={searchOpen}
-          buttonAction={buttonAction}
-        />
       </div>
     </div>
   )

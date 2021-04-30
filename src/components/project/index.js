@@ -62,11 +62,7 @@ class ProjectPage extends Component {
   }
 
   componentDidMount() {
-    const {
-      currentProjectLoaded,
-      users,
-      getAttributes
-    } = this.props
+    const { currentProjectLoaded, users, getAttributes } = this.props
     getAttributes()
     if (!currentProjectLoaded) {
       this.props.initializeProject(this.props.id)
@@ -74,8 +70,6 @@ class ProjectPage extends Component {
     if (!users || users.length === 0) {
       this.props.fetchUsers()
     }
-    
-    
   }
 
   componentDidUpdate(prevProps) {
@@ -131,40 +125,143 @@ class ProjectPage extends Component {
     })
   }
 
-  getProjectPageContent = () => {
-    const {
-      edit,
-      documents,
-      currentProject,
-      externalDocuments
-    } = this.props
-    const { selectedPhase } = this.props
-    const currentPhases = this.getCurrentPhases()
+  getProjectEditContent = () => {
+    const { currentProject, users, projectSubtypes, selectedPhase } = this.props
 
-    if (edit) {
-      return (
+    const currentPhases = this.getCurrentPhases()
+    return (
+      <div key="edit">
+        <NavHeader
+          routeItems={this.getRouteItems()}
+          title={currentProject.name}
+          actions={this.getEditNavActions()}
+          infoOptions={this.getAllChanges()}
+        />
+        <NewProjectFormModal
+          currentProject={currentProject}
+          modalOpen={this.state.showBaseInformationForm}
+          initialValues={{
+            name: currentProject.name,
+            public: currentProject.public,
+            subtype: currentProject.subtype,
+            user: currentProject.user,
+            create_principles: currentProject.create_principles,
+            create_draft: currentProject.create_draft
+          }}
+          handleSubmit={this.props.saveProjectBase}
+          handleClose={() => this.toggleBaseInformationForm(false)}
+          users={users}
+          projectSubtypes={projectSubtypes}
+        />
+        <DownloadProjectDataModal
+          currentProject={currentProject}
+          open={this.state.showPrintProjectDataModal}
+          initialValues={{}}
+          handleClose={() => this.togglePrintProjectDataModal(false)}
+        />
         <ProjectEditPage
           currentPhases={currentPhases}
           selectedPhase={selectedPhase}
           switchDisplayedPhase={this.switchDisplayedPhase}
           project={currentProject}
         />
-      )
-    }
-    if (documents) {
-      return <ProjectDocumentsPage />
-    }
-    return (
-      <ProjectCardPage
-        projectId={this.props.id}
-        attributeData={currentProject.attribute_data}
-        deadlines={currentProject.deadlines}
-        documents={externalDocuments}
-      />
+      </div>
     )
   }
-  getProjectCardButtons = () => {
-    const { t, users } = this.props
+  getProjectDocumentsContent = () => {
+    const { currentProject, users, projectSubtypes } = this.props
+
+    return (
+      <div key="documents">
+        <NavHeader
+          routeItems={this.getRouteItems()}
+          title={currentProject.name}
+          actions={this.getDocumentsNavActions()}
+          infoOptions={this.getAllChanges()}
+        />
+        <NewProjectFormModal
+          currentProject={currentProject}
+          modalOpen={this.state.showBaseInformationForm}
+          initialValues={{
+            name: currentProject.name,
+            public: currentProject.public,
+            subtype: currentProject.subtype,
+            user: currentProject.user,
+            create_principles: currentProject.create_principles,
+            create_draft: currentProject.create_draft
+          }}
+          handleSubmit={this.props.saveProjectBase}
+          handleClose={() => this.toggleBaseInformationForm(false)}
+          users={users}
+          projectSubtypes={projectSubtypes}
+        />
+        <DownloadProjectDataModal
+          currentProject={currentProject}
+          open={this.state.showPrintProjectDataModal}
+          initialValues={{}}
+          handleClose={() => this.togglePrintProjectDataModal(false)}
+        />
+        <ProjectDocumentsPage />
+      </div>
+    )
+  }
+
+  getProjectCardContent = () => {
+    const { currentProject, externalDocuments, users, projectSubtypes } = this.props
+
+    return (
+      <div key="project-card">
+        <NavHeader
+          routeItems={this.getRouteItems()}
+          title={currentProject.name}
+          actions={this.getProjectCardNavActions()}
+          infoOptions={this.getAllChanges()}
+        />
+        <NewProjectFormModal
+          currentProject={currentProject}
+          modalOpen={this.state.showBaseInformationForm}
+          initialValues={{
+            name: currentProject.name,
+            public: currentProject.public,
+            subtype: currentProject.subtype,
+            user: currentProject.user,
+            create_principles: currentProject.create_principles,
+            create_draft: currentProject.create_draft
+          }}
+          handleSubmit={this.props.saveProjectBase}
+          handleClose={() => this.toggleBaseInformationForm(false)}
+          users={users}
+          projectSubtypes={projectSubtypes}
+        />
+        <DownloadProjectDataModal
+          currentProject={currentProject}
+          open={this.state.showPrintProjectDataModal}
+          initialValues={{}}
+          handleClose={() => this.togglePrintProjectDataModal(false)}
+        />
+        <ProjectCardPage
+          projectId={this.props.id}
+          attributeData={currentProject.attribute_data}
+          deadlines={currentProject.deadlines}
+          documents={externalDocuments}
+        />
+      </div>
+    )
+  }
+
+  getProjectPageContent = () => {
+    const { edit, documents } = this.props
+    if (edit) {
+      return this.getProjectEditContent()
+    }
+    if (documents) {
+      return this.getProjectDocumentsContent()
+    }
+    return this.getProjectCardContent()
+  }
+  getProjectCardNavActions = () => {
+    const { users, t } = this.props
+
     const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
 
     return (
@@ -192,8 +289,41 @@ class ProjectPage extends Component {
       </span>
     )
   }
-  getEditButtons = () => {
-    const { t, users } = this.props
+  getEditNavActions = () => {
+    const { users, t } = this.props
+
+    const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
+
+    return (
+      <span className="header-buttons">
+        <Button
+          variant="secondary"
+          className="header-button"
+          onClick={this.openProjectDataModal}
+          iconLeft={<IconDownload />}
+        >
+          Tulosta projektin tiedot
+        </Button>
+        {showCreate && (
+          <Button
+            variant="secondary"
+            className="header-button"
+            onClick={() => this.toggleBaseInformationForm(true)}
+            iconLeft={<IconPen />}
+          >
+            {t('project.modify-project')}
+          </Button>
+        )}
+        <Button variant="primary" iconLeft={<IconPen />} onClick={this.checkProjectCard}>
+          {t('project.check-project-card')}
+        </Button>
+      </span>
+    )
+  }
+
+  getDocumentsNavActions = () => {
+    const { users, t } = this.props
+
     const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
 
     return (
@@ -302,15 +432,8 @@ class ProjectPage extends Component {
   }
 
   render() {
-    const {
-      currentProject,
-      phases,
-      currentProjectLoaded,
-      users,
-      projectSubtypes,
-      attributes
-    } = this.props
-    
+    const { phases, currentProjectLoaded } = this.props
+
     const loading = !currentProjectLoaded || !phases
 
     if (loading) {
@@ -319,35 +442,6 @@ class ProjectPage extends Component {
 
     return (
       <div className="project-container">
-        <NavHeader
-          routeItems={this.getRouteItems()}
-          title={currentProject.name}
-          actions={this.getNavActions()}
-          infoOptions={this.getAllChanges()}
-          attributes={attributes}
-        />
-        <NewProjectFormModal
-          currentProject={currentProject}
-          modalOpen={this.state.showBaseInformationForm}
-          initialValues={{
-            name: currentProject.name,
-            public: currentProject.public,
-            subtype: currentProject.subtype,
-            user: currentProject.user,
-            create_principles: currentProject.create_principles,
-            create_draft: currentProject.create_draft
-          }}
-          handleSubmit={this.props.saveProjectBase}
-          handleClose={() => this.toggleBaseInformationForm(false)}
-          users={users}
-          projectSubtypes={projectSubtypes}
-        />
-        <DownloadProjectDataModal
-          currentProject={currentProject}
-          open={this.state.showPrintProjectDataModal}
-          initialValues={{}}
-          handleClose={() => this.togglePrintProjectDataModal(false)}
-        />
         <div className="project-page-content">{this.getProjectPageContent()}</div>
       </div>
     )
