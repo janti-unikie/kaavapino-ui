@@ -12,7 +12,10 @@ class SearchBar extends Component {
     const { buttonAction, toggleSearch } = this.props
 
     toggleSearch(false)
+
+    if ( buttonAction ) {
     buttonAction('')
+    }
   }
   render() {
     const { searchOpen, toggleSearch } = this.props

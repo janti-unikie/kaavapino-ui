@@ -274,9 +274,7 @@ h4 {
     border: 1px solid #a3a3a3;
     padding: 2px;
   }
-}
-.changelog-item {
-  color: #a3a3a3 !important;
+  width: 500px;
 }
 
 .header {
@@ -393,7 +391,6 @@ h4 {
       }
 
       .nav-header-info {
-        color: $gray3;
         font-size: 14px;
         line-height: 24px;
         margin-top: 32px;
@@ -458,4 +455,29 @@ h4 {
   margin-left: auto;
   margin-right: auto;
 }
+.full-width {
+  width: 100%;
+}
 
+.log-item:not(:last-child) {
+  padding-bottom: 10px;
+}
+.log-item {
+  &.deleted {
+   background-color: red;
+  }
+}
+.log-card {
+  max-height: 200px;
+  overflow: auto;
+  .ui.grid>.column:not(.row) {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
+.inline {
+  display: inline;
+}
+.latest-update {
+  text-align: left;
+}

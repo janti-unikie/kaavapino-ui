@@ -121,6 +121,18 @@ export const archivedProjectSelector = createSelector(
   project => project.projects.filter(proj => proj.archived)
 )
 
+export const projectOverviewFloorAreaSelector = createSelector(
+  selectProject,
+  project => project.overview.floorArea
+)
+export const projectOverviewBySubtypeSelector = createSelector(
+  selectProject,
+  project => project.overview.bySubtype
+)
+export const projectOverviewFiltersSelector = createSelector(
+  selectProject,
+  project => project.overview.filters
+)
 export const externalDocumentsSelector = createSelector(
   selectProject,
   project => project.currentProjectExternalDocuments

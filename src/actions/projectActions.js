@@ -45,6 +45,12 @@ export const GET_PROJECT_SNAPSHOT = 'Get project snapshot'
 export const GET_PROJECT_SNAPSHOT_SUCCESSFUL = 'Get project snapshot successful'
 export const RESET_PROJECT_SNAPSHOT = 'Reset project snapshot'
 export const SET_SELECTED_PHASE_ID = 'Set selected phase id'
+export const GET_PROJECTS_OVERVIEW_FLOOR_AREA = 'Get projects overview floor-area'
+export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL = 'Get projects overview floor-area successful'
+export const GET_PROJECTS_OVERVIEW_BY_SUBTYPE = 'Get projects overview by subtype'
+export const GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL = 'Get projects overview by subtype successful'
+export const GET_PROJECTS_OVERVIEW_FILTERS = 'Get project overview filters'
+export const GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL = 'Get project overview filters successful'
 export const GET_EXTERNAL_DOCUMENTS = 'Get external documents'
 export const GET_EXTERNAL_DOCUMENTS_SUCCESSFUL = 'Get external documents successful'
 
@@ -209,6 +215,30 @@ export const resetProjectSnapshot = () => ({
   type: RESET_PROJECT_SNAPSHOT
 })
 
+export const getProjectsOverviewFloorArea = payload => ({
+  type: GET_PROJECTS_OVERVIEW_FLOOR_AREA,
+  payload: payload
+})
+export const getProjectsOverviewFloorAreaSuccessful = floorArea => ({
+  type: GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL,
+  payload: floorArea
+})
+
+export const getProjectsOverviewBySubtype = payload => ({
+  type: GET_PROJECTS_OVERVIEW_BY_SUBTYPE,
+  payload: payload
+})
+export const getProjectsOverviewBySubtypeSuccessful = bySubtype => ({
+  type: GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL,
+  payload: bySubtype
+})
+export const getProjectsOverviewFilters = () => ({
+  type: GET_PROJECTS_OVERVIEW_FILTERS
+})
+export const getProjectsOverviewFiltersSuccessful = filters => ({
+  type: GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL,
+  payload: filters
+})
 export const getExternalDocuments = projectId => ({
   type: GET_EXTERNAL_DOCUMENTS,
   payload: projectId

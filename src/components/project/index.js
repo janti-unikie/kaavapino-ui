@@ -9,7 +9,7 @@ import {
   getExternalDocuments
 } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
-import { getProjectCardFields } from '../../actions/schemaActions'
+import { getProjectCardFields, getAttributes } from '../../actions/schemaActions'
 
 import {
   currentProjectSelector,
@@ -21,7 +21,8 @@ import {
 import { phasesSelector } from '../../selectors/phaseSelector'
 import {
   allEditFieldsSelector,
-  projectCardFieldsSelector
+  projectCardFieldsSelector,
+  attributesSelector
 } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader } from '../common/NavHeader'
@@ -38,9 +39,11 @@ import { DOWNLOAD_PROJECT_DATA_FORM } from '../../constants'
 import { getFormValues } from 'redux-form'
 import moment from 'moment'
 import { userIdSelector } from '../../selectors/authSelector'
-import { Button, IconPen, IconPrinter, IconDownload, LoadingSpinner } from 'hds-react'
+import { IconPen, IconPrinter, IconDownload, LoadingSpinner, Button } from 'hds-react'
 import { withRouter } from 'react-router-dom'
+
 class ProjectPage extends Component {
+  test = React.createRef()
   constructor(props) {
     super(props)
     if (props.currentProject) {
@@ -55,10 +58,12 @@ class ProjectPage extends Component {
       showPrintProjectDataModal: false,
       deadlines: null
     }
+
   }
 
   componentDidMount() {
-    const { currentProjectLoaded, users } = this.props
+    const { currentProjectLoaded, users, getAttributes } = this.props
+    getAttributes()
     if (!currentProjectLoaded) {
       this.props.initializeProject(this.props.id)
     }
@@ -80,6 +85,8 @@ class ProjectPage extends Component {
     if (prevProps.edit && !edit) this.props.setSelectedPhaseId(currentProject.phase)
 
     getExternalDocuments(this.props.id)
+
+   
   }
 
   switchDisplayedPhase = phase => {
@@ -100,14 +107,6 @@ class ProjectPage extends Component {
       path.push({ value: 'Dokumentit', path: `/${currentProject.id}/documents` })
     }
     return path
-  }
-
-  getSubTitle = () => {
-    const { edit } = this.props
-    if (edit) {
-      return 'Tietojen muokkaus'
-    }
-    return null
   }
 
   getCurrentPhases() {
@@ -135,7 +134,6 @@ class ProjectPage extends Component {
         <NavHeader
           routeItems={this.getRouteItems()}
           title={currentProject.name}
-          subTitle={this.getSubTitle()}
           actions={this.getEditNavActions()}
           infoOptions={this.getAllChanges()}
         />
@@ -178,7 +176,6 @@ class ProjectPage extends Component {
         <NavHeader
           routeItems={this.getRouteItems()}
           title={currentProject.name}
-          subTitle={this.getSubTitle()}
           actions={this.getDocumentsNavActions()}
           infoOptions={this.getAllChanges()}
         />
@@ -217,7 +214,6 @@ class ProjectPage extends Component {
         <NavHeader
           routeItems={this.getRouteItems()}
           title={currentProject.name}
-          subTitle={this.getSubTitle()}
           actions={this.getProjectCardNavActions()}
           infoOptions={this.getAllChanges()}
         />
@@ -334,7 +330,6 @@ class ProjectPage extends Component {
       <span className="header-buttons">
         <Button
           variant="secondary"
-          className="header-button"
           onClick={this.openProjectDataModal}
           iconLeft={<IconDownload />}
         >
@@ -343,7 +338,6 @@ class ProjectPage extends Component {
         {showCreate && (
           <Button
             variant="secondary"
-            className="header-button"
             onClick={() => this.toggleBaseInformationForm(true)}
             iconLeft={<IconPen />}
           >
@@ -355,6 +349,11 @@ class ProjectPage extends Component {
         </Button>
       </span>
     )
+  }
+
+  getNavActions = () => {
+    const { edit } = this.props
+    return !edit ? this.getProjectCardButtons() : this.getEditButtons()
   }
 
   modifyContent = () => {
@@ -387,14 +386,18 @@ class ProjectPage extends Component {
     const { allEditFields, edit } = this.props
 
     if (!edit) return []
+
     return allEditFields.map((f, i) => {
-      const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.name} ${f.user_name}`
+      const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.label} ${f.user_name}`
       return {
+        name: f.name,
+        label: f.attribute_label,
         text: value,
         value: `${value}-${i}`,
         key: `${value}-${i}`,
         oldValue: f.old_value,
-        newValue: f.new_value
+        newValue: f.new_value,
+        labels: f.labels
       }
     })
   }
@@ -453,7 +456,8 @@ const mapDispatchToProps = {
   getProjectSnapshot,
   setSelectedPhaseId,
   getProjectCardFields,
-  getExternalDocuments
+  getExternalDocuments,
+  getAttributes
 }
 
 const mapStateToProps = state => {
@@ -469,7 +473,8 @@ const mapStateToProps = state => {
     currentUserId: userIdSelector(state),
     selectedPhase: selectedPhaseSelector(state),
     projectCardFields: projectCardFieldsSelector(state),
-    externalDocuments: externalDocumentsSelector(state)
+    externalDocuments: externalDocumentsSelector(state),
+    attributes: attributesSelector(state)
   }
 }
 

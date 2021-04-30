@@ -67,6 +67,12 @@ import {
   RESET_PROJECT_DEADLINES,
   getProjectSnapshotSuccessful,
   GET_PROJECT_SNAPSHOT,
+  getProjectsOverviewFloorAreaSuccessful,
+  GET_PROJECTS_OVERVIEW_FLOOR_AREA,
+  getProjectsOverviewBySubtypeSuccessful,
+  GET_PROJECTS_OVERVIEW_BY_SUBTYPE,
+  getProjectsOverviewFiltersSuccessful,
+  GET_PROJECTS_OVERVIEW_FILTERS,
   getExternalDocumentsSuccessful,
   GET_EXTERNAL_DOCUMENTS
 } from '../actions/projectActions'
@@ -74,7 +80,14 @@ import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
 import { setAllEditFields } from '../actions/schemaActions'
 import projectUtils from '../utils/projectUtils'
-import { projectApi, projectDeadlinesApi, externalDocumentsApi } from '../utils/api'
+import {
+  projectApi,
+  projectDeadlinesApi,
+  overviewFloorAreaApi,
+  overviewBySubtypeApi,
+  overviewFiltersApi,
+  externalDocumentsApi
+} from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
 import {
   NEW_PROJECT_FORM,
@@ -85,6 +98,7 @@ import {
 import i18 from 'i18next'
 import { showField } from '../utils/projectVisibilityUtils'
 import { checkDeadlines } from '../components/ProjectTimeline/helpers/helpers'
+import moment from 'moment'
 
 export default function* projectSaga() {
   yield all([
@@ -107,6 +121,9 @@ export default function* projectSaga() {
     takeEvery(GET_PROJECT, getProject),
     takeLatest(RESET_PROJECT_DEADLINES, resetProjectDeadlines),
     takeLatest(GET_PROJECT_SNAPSHOT, getProjectSnapshot),
+    takeLatest(GET_PROJECTS_OVERVIEW_FLOOR_AREA, getProjectsOverviewFloorArea),
+    takeLatest(GET_PROJECTS_OVERVIEW_BY_SUBTYPE, getProjectsOverviewBySubtype),
+    takeLatest(GET_PROJECTS_OVERVIEW_FILTERS, getProjectsOverviewFilters),
     takeLatest(GET_EXTERNAL_DOCUMENTS, getExternalDocumentsSaga)
   ])
 }
@@ -600,7 +617,7 @@ function* projectFileUpload({
     let currentFieldName = attribute
 
     const lastIndex = attribute.lastIndexOf('.')
-    if (lastIndex !== -1 ) {
+    if (lastIndex !== -1) {
       const splitted = attribute.split('.')
 
       splitted.forEach(value => {
@@ -697,6 +714,72 @@ function* projectSetDeadlinesSaga() {
     } else {
       yield put(error(e))
     }
+  }
+}
+function* getProjectsOverviewFloorArea({ payload }) {
+  let query = {}
+
+  const keys = Object.keys(payload)
+
+  keys.forEach(key => {
+    if (key === 'vuosi') {
+      const startDate = moment(new Date(payload[key], 0, 1)).format('YYYY-MM-DD')
+      const endDate = moment(new Date(payload[key], 11, 31)).format('YYYY-MM-DD')
+
+      query = {
+        ...query,
+        start_date: startDate,
+        end_date: endDate
+      }
+    } else {
+      query = {
+        ...query,
+        [key]: payload[key]
+      }
+    }
+  })
+  try {
+    const floorArea = yield call(overviewFloorAreaApi.get, { query: query })
+    yield put(getProjectsOverviewFloorAreaSuccessful(floorArea))
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+function* getProjectsOverviewBySubtype({ payload }) {
+  let query = {}
+
+  const keys = Object.keys(payload)
+
+  keys.forEach(key => {
+    if (key === 'vuosi') {
+      const startDate = moment(new Date(payload[key], 0, 1)).format('YYYY-MM-DD')
+      const endDate = moment(new Date(payload[key], 11, 31)).format('YYYY-MM-DD')
+
+      query = {
+        ...query,
+        start_date: startDate,
+        end_date: endDate
+      }
+    } else {
+      query = {
+        ...query,
+        [key]: payload[key]
+      }
+    }
+  })
+  try {
+    const bySubtype = yield call(overviewBySubtypeApi.get, { query: query })
+    yield put(getProjectsOverviewBySubtypeSuccessful(bySubtype))
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+function* getProjectsOverviewFilters() {
+  try {
+    const filters = yield call(overviewFiltersApi.get)
+    yield put(getProjectsOverviewFiltersSuccessful(filters))
+  } catch (e) {
+    yield put(error(e))
   }
 }
   function* getExternalDocumentsSaga({ payload: projectId }) {

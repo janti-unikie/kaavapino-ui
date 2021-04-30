@@ -386,6 +386,7 @@
 .geometry-input-container {
   .geometry-input {
     height: 300px;
+    z-index: 0;
   }
 
   .geometry-input-actions {
@@ -454,4 +455,7 @@
 .checkbox-item {
   margin-top: 0 !important;
   margin-right: 10px;
+}
+.error {
+  outline: 2px solid $color-error-border;
 }
