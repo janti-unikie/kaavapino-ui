@@ -29,8 +29,7 @@ import { projectOverviewFloorAreaSelector } from '../../selectors/projectSelecto
 import { getProjectsOverviewFloorArea } from '../../actions/projectActions'
 import { connect } from 'react-redux'
 import { LoadingSpinner } from 'hds-react'
-import moment from 'moment'
-
+import dayjs from 'dayjs'
 function FloorAreaChart({
   current,
   total,
@@ -78,7 +77,7 @@ function FloorAreaChart({
     }
 
     const formatDate = value => {
-      return moment(value).format('DD.MM')
+      return dayjs(value).format('DD.MM')
     }
 
     const renderList = () => {
@@ -127,7 +126,7 @@ function FloorAreaChart({
   }
 
   const getFormattedDate = date => {
-    return moment(date).format('DD.MM')
+    return dayjs(date).format('DD.MM')
   }
 
   return (

@@ -16,7 +16,7 @@ function DropdownFilter({ name, defaultValue, options, placeholder, onChange }) 
       name={name}
       clearable={true}
       id={name}
-      multiselect={false}
+      multiselect={true}
       options={options}
       onChange={data => {
         onChange(data)

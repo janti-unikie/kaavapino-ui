@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { isArray } from 'lodash'
 
 function TimeTable({ fields }) {
@@ -18,7 +18,7 @@ function TimeTable({ fields }) {
     if (isArray(field.value)) {
       field.value.forEach(current => {
         if (current) {
-          completeValue = completeValue + ' ' + moment(current).format('DD.MM.YYYY')
+          completeValue = completeValue + ' ' + dayjs(current).format('DD.MM.YYYY')
         }
       })
       value = completeValue
@@ -28,7 +28,7 @@ function TimeTable({ fields }) {
           field.choices && field.choices.find(current => current.value === field.value)
         value = foundValue.label
       } else {
-        value = moment(field.value).format('DD.MM.YYYY')
+        value = dayjs(field.value).format('DD.MM.YYYY')
       }
     }
 

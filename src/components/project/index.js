@@ -37,10 +37,10 @@ import { withTranslation } from 'react-i18next'
 import DownloadProjectDataModal from './DownloadProjectDataModal'
 import { DOWNLOAD_PROJECT_DATA_FORM } from '../../constants'
 import { getFormValues } from 'redux-form'
-import moment from 'moment'
 import { userIdSelector } from '../../selectors/authSelector'
 import { IconPen, IconPrinter, IconDownload, LoadingSpinner, Button } from 'hds-react'
 import { withRouter } from 'react-router-dom'
+import dayjs from 'dayjs'
 
 class ProjectPage extends Component {
   test = React.createRef()
@@ -428,7 +428,7 @@ class ProjectPage extends Component {
     const phase = formValues['phase']
     const date = formValues['date']
 
-    getProjectSnapshot(currentProject.id, moment(date).format(), phase)
+    getProjectSnapshot(currentProject.id, dayjs(date), phase)
   }
 
   render() {

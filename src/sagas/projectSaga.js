@@ -98,7 +98,7 @@ import {
 import i18 from 'i18next'
 import { showField } from '../utils/projectVisibilityUtils'
 import { checkDeadlines } from '../components/ProjectTimeline/helpers/helpers'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 export default function* projectSaga() {
   yield all([
@@ -723,8 +723,8 @@ function* getProjectsOverviewFloorArea({ payload }) {
 
   keys.forEach(key => {
     if (key === 'vuosi') {
-      const startDate = moment(new Date(payload[key], 0, 1)).format('YYYY-MM-DD')
-      const endDate = moment(new Date(payload[key], 11, 31)).format('YYYY-MM-DD')
+      const startDate = dayjs(new Date(payload[key], 0, 1)).format('YYYY-MM-DD')
+      const endDate = dayjs(new Date(payload[key], 11, 31)).format('YYYY-MM-DD')
 
       query = {
         ...query,
@@ -752,8 +752,8 @@ function* getProjectsOverviewBySubtype({ payload }) {
 
   keys.forEach(key => {
     if (key === 'vuosi') {
-      const startDate = moment(new Date(payload[key], 0, 1)).format('YYYY-MM-DD')
-      const endDate = moment(new Date(payload[key], 11, 31)).format('YYYY-MM-DD')
+      const startDate = dayjs(new Date(payload[key], 0, 1)).format('YYYY-MM-DD')
+      const endDate = dayjs(new Date(payload[key], 11, 31)).format('YYYY-MM-DD')
 
       query = {
         ...query,
