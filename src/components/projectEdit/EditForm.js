@@ -5,6 +5,7 @@ import FormSection from './FormSection'
 import FormButton from '../common/FormButton'
 import { EDIT_PROJECT_FORM } from '../../constants'
 import Shoutbox from '../shoutbox'
+import {Button, IconArrowUp } from 'hds-react'
 
 class EditForm extends Component {
   componentDidMount() {
@@ -75,13 +76,13 @@ class EditForm extends Component {
             attributeData={attributeData}
           />
         ))}
-        <div
+        <Button variant="supplementary"
+          iconRight={<IconArrowUp/>}
           className="scroll-to-top"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           <div>Sivun alkuun</div>
-          <div className="arrow-up-icon" />
-        </div>
+        </Button>
       </Form>
     )
   }

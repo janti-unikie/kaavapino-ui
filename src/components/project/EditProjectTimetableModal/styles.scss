@@ -7,6 +7,9 @@
   }
   .modal-field {
     max-width: 80%;
+    input[type=checkbox] {
+      opacity: initial !important;
+    } 
   }
   .input-header {
     width: 80%;
