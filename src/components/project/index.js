@@ -62,14 +62,16 @@ class ProjectPage extends Component {
   }
 
   componentDidMount() {
-    const { currentProjectLoaded, users, getAttributes } = this.props
+    const { currentProjectLoaded, users, getAttributes, currentProject } = this.props
+
     getAttributes()
-    if (!currentProjectLoaded) {
+    if (!currentProjectLoaded || !currentProject || currentProject.id !== +this.props.id ) {
       this.props.initializeProject(this.props.id)
     }
     if (!users || users.length === 0) {
       this.props.fetchUsers()
     }
+    window.scrollTo({ top: 0, behavior: 'auto' })
   }
 
   componentDidUpdate(prevProps) {
@@ -241,8 +243,6 @@ class ProjectPage extends Component {
         />
         <ProjectCardPage
           projectId={this.props.id}
-          attributeData={currentProject.attribute_data}
-          deadlines={currentProject.deadlines}
           documents={externalDocuments}
         />
       </div>

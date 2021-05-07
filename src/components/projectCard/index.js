@@ -12,8 +12,8 @@ import Photo from './Photo'
 import Documents from './Documents'
 import GeometryInformation from './GeometryInformation'
 import projectUtils from './../../utils/projectUtils'
-import { getExternalDocuments } from '../../actions/projectActions'
-import { externalDocumentsSelector } from '../../selectors/projectSelector'
+import { getExternalDocuments, initializeProject } from '../../actions/projectActions'
+import { externalDocumentsSelector, currentProjectSelector } from '../../selectors/projectSelector'
 import { connect } from 'react-redux'
 import { getProjectCardFields } from '../../actions/schemaActions'
 import {
@@ -33,12 +33,12 @@ export const PROJECT_BORDER = 'Suunnittelualueen raja'
 
 function ProjectCardPage({
   projectId,
-  attributeData,
-  deadlines,
   getExternalDocuments,
   getProjectCardFields,
   externalDocuments,
-  projectCardFields
+  projectCardFields,
+  currentProject,
+  initializeProject
 }) {
   const [descriptionFields, setDescriptionDFields] = useState([])
   const [basicInformationFields, setBasicInformationFields] = useState([])
@@ -49,6 +49,7 @@ function ProjectCardPage({
   const [floorAreaFields, setFloorAreaFields] = useState([])
   const [contractFields, setContractFields] = useState([])
   const [planningRestriction, setPlanningRestriction] = useState(null)
+  const [currentProjectId, setCurrentProjectId] = useState( projectId )
 
   useEffect(() => {
     getProjectCardFields()
@@ -58,6 +59,20 @@ function ProjectCardPage({
   useEffect(() => {
     buildPage()
   }, [projectCardFields, externalDocuments])
+
+  useEffect(() => {
+    setCurrentProjectId( projectId )
+  }, [projectId])
+
+  useEffect(() => {
+    if ( currentProject.id.toString() !== projectId.toString() ) {
+      initializeProject( currentProjectId )   
+    }
+  }, [currentProjectId])
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }, [])
 
   const buildPage = () => {
     const currentDescriptionFields = []
@@ -71,10 +86,10 @@ function ProjectCardPage({
     let currentPlanningRestriction = null
 
     projectCardFields && projectCardFields.forEach(field => {
-      let value = projectUtils.findValueFromObject(attributeData, field.name)
+      let value = projectUtils.findValueFromObject(currentProject && currentProject.attribute_data, field.name)
 
       const returnValues = []
-      projectUtils.findValuesFromObject(attributeData, field.name, returnValues)
+      projectUtils.findValuesFromObject(currentProject && currentProject.attribute_data, field.name, returnValues)
 
       if (returnValues.length > 1) {
         let currentValues = []
@@ -152,7 +167,7 @@ function ProjectCardPage({
       <Grid stackable columns="equal">
         <Grid.Column>
           <Segment>
-            <ProjectTimeline deadlines={deadlines} projectView={true} />
+            <ProjectTimeline deadlines={currentProject && currentProject.deadlines} projectView={true} />
           </Segment>
         </Grid.Column>
       </Grid>
@@ -212,13 +227,15 @@ function ProjectCardPage({
 }
 const mapDispatchToProps = {
   getExternalDocuments,
-  getProjectCardFields
+  getProjectCardFields,
+  initializeProject
 }
 
 const mapStateToProps = state => {
   return {
     externalDocuments: externalDocumentsSelector(state),
-    projectCardFields: projectCardFieldsSelector(state)
+    projectCardFields: projectCardFieldsSelector(state),
+    currentProject: currentProjectSelector(state)
   }
 }
 
