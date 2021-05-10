@@ -28,18 +28,17 @@ import { projectOverviewFloorAreaSelector } from '../../selectors/projectSelecto
 
 import { getProjectsOverviewFloorArea } from '../../actions/projectActions'
 import { connect } from 'react-redux'
-import { LoadingSpinner } from 'hds-react'
+import { LoadingSpinner, Button } from 'hds-react'
+import moment from 'moment'
+import { withRouter } from 'react-router-dom'
 import dayjs from 'dayjs'
-function FloorAreaChart({
-  current,
-  total,
-  filters,
-  chartData,
-  getProjectsOverviewFloorArea
-}) {
+function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, history, isPrivileged }) {
   const { t } = useTranslation()
 
   const [filter, setFilter] = useState({})
+
+  const [current, setCurrent] = useState(0)
+  const [total, setTotal] = useState(0)
 
   const [currentChartData, setCurrentChartData] = useState(
     getFloorAreaChartData(chartData)
@@ -57,14 +56,31 @@ function FloorAreaChart({
     setCurrentChartData(getFloorAreaChartData(chartData))
   }, [chartData])
 
+  useEffect(() => {
+    setCurrent(chartData.total_to_date)
+    setTotal(chartData.total_predicted)
+  }, [chartData])
+
   const onFilterChange = value => {
     setFilter({
       ...filter,
       [value.parameter]: value.key
     })
   }
+
+  const goToProjectCard = id => {
+    if (history) {
+      history.push(`/${id}`)
+    }
+  }
+  const goToProjectEdit = id => {
+    if (history) {
+      history.push(`/${id}/edit`)
+    }
+  }
+
   const CustomizedLabel = props => {
-    const { fill, x, y, width, height, value } = props
+    const { x, y, width, height, value } = props
 
     if (isNaN(height)) {
       return null
@@ -76,10 +92,6 @@ function FloorAreaChart({
       currentHeight = -currentHeight
     }
 
-    const formatDate = value => {
-      return dayjs(value).format('DD.MM')
-    }
-
     const renderList = () => {
       const rects = []
       for (let index = 1; index <= value; index++) {
@@ -88,7 +100,7 @@ function FloorAreaChart({
           <Popup
             on="click"
             key={index + props.payload.date}
-            trigger={(
+            trigger={
               <g key={index}>
                 <rect
                   x={x}
@@ -96,13 +108,13 @@ function FloorAreaChart({
                   width={width}
                   height={currentHeight - 3}
                   stroke="none"
-                  fill={fill}
+                  fill={getProjectColour(index)}
                   className="bar"
                   style={{ stroke: 'black', strokeWidth: 1 }}
                   data-for="test"
                 ></rect>
               </g>
-            )}
+            }
           >
             {renderPopupValue(index)}
           </Popup>
@@ -111,11 +123,93 @@ function FloorAreaChart({
 
       return rects
     }
-    const renderPopupValue = index => (
-      <div>
-        {index}. {formatDate(props.payload.date)}
-      </div>
-    )
+    const getProjectInformation = index => {
+      const dailyStats = chartData && chartData.daily_stats
+
+      const current = getFormattedDate2(props.payload.date)
+      const currentDate = dailyStats.find(stats => {
+        if (stats.date === current) return stats
+      })
+
+      return currentDate && currentDate.projects && currentDate.projects[index - 1]
+    }
+
+    const getProjectColour = index => {
+      const dailyStats = chartData && chartData.daily_stats
+
+      const current = getFormattedDate2(props.payload.date)
+      const currentDate = dailyStats.find(stats => {
+        if (stats.date === current) return stats
+      })
+
+      const project =
+        currentDate && currentDate.projects && currentDate.projects[index - 1]
+
+      return project && project.phase.color_code
+    }
+
+    const renderPopupValue = index => {
+      const project = getProjectInformation(index)
+
+      if (!project) {
+        return null
+      }
+
+      return (
+        <Grid columns="equal" className="tooltip">
+          <Grid.Row>
+            <Grid.Column>{project.pino_number}</Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column className="header">{project.name}</Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>{t('floor-area.tooltip.phase')}</Grid.Column>
+            <Grid.Column textAlign="right">
+              <span
+                style={{ backgroundColor: project.phase.color }}
+                className="dot"
+              ></span>
+              <span className="value">{project.phase.name}</span>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>{t('floor-area.tooltip.process-size')}</Grid.Column>
+            <Grid.Column className="value" textAlign="right">
+              {project.subtype.name}
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>{t('floor-area.tooltip.responsible-person')}</Grid.Column>
+            <Grid.Column className="value" textAlign="right">
+              {project.user_name}
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column className="button-area">
+              <Button
+                onClick={() => goToProjectCard(project.id)}
+                className="tooltip-button"
+                variant="supplementary"
+              >
+                {t('floor-area.tooltip.show-project-card')}
+              </Button>
+            </Grid.Column>
+            <Grid.Column className="button-area" textAlign="right">
+              {isPrivileged && (
+                <Button
+                  onClick={() => goToProjectEdit(project.id)}
+                  className="tooltip-button"
+                  variant="supplementary"
+                >
+                  {t('floor-area.tooltip.modify')}
+                </Button>
+              )}
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      )
+    }
 
     const rects = renderList()
 
@@ -127,6 +221,9 @@ function FloorAreaChart({
 
   const getFormattedDate = date => {
     return dayjs(date).format('DD.MM')
+  }
+  const getFormattedDate2 = date => {
+    return moment(date).format('YYYY-MM-DD')
   }
 
   return (
@@ -304,8 +401,6 @@ function FloorAreaChart({
 }
 
 FloorAreaChart.propTypes = {
-  current: PropTypes.string.isRequired,
-  total: PropTypes.string.isRequired,
   chartData: PropTypes.object.isRequired,
   filters: PropTypes.array.isRequired
 }
@@ -320,4 +415,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FloorAreaChart)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FloorAreaChart))

@@ -10,13 +10,19 @@ import { NavHeader } from '../common/NavHeader'
 import { connect } from 'react-redux'
 import { getProjectsOverviewFilters } from '../../actions/projectActions'
 import { projectOverviewFiltersSelector } from '../../selectors/projectSelector'
+import { fetchUsers } from '../../actions/userActions'
+import { usersSelector } from '../../selectors/userSelector'
+import { userIdSelector } from '../../selectors/authSelector'
+import projectUtils from '../../utils/projectUtils'
 
-const Overview = ({ getProjectsOverviewFilters, filterData }) => {
+
+const Overview = ({ getProjectsOverviewFilters, filterData, fetchUsers, currentUserId, users }) => {
   const { t } = useTranslation()
   const [currentFilterData, setCurrentFilterData] = useState(filterData)
 
   useEffect(() => {
     getProjectsOverviewFilters()
+    fetchUsers()
   }, [])
 
   useEffect(() => {
@@ -33,6 +39,9 @@ const Overview = ({ getProjectsOverviewFilters, filterData }) => {
     })
     return filters
   }
+  const isPrivileged = projectUtils.isUserPrivileged( currentUserId, users )
+
+  console.log( isPrivileged)
 
   return (
     <div className="overview">
@@ -52,8 +61,7 @@ const Overview = ({ getProjectsOverviewFilters, filterData }) => {
           <Segment>
             <FloorAreaChart
               filters={getFilters('filters_floor_area')}
-              current="360000"
-              total="700000"
+              isPrivileged={isPrivileged}
             />
           </Segment>
         </Grid.Column>
@@ -70,12 +78,15 @@ const Overview = ({ getProjectsOverviewFilters, filterData }) => {
   )
 }
 const mapDispatchToProps = {
-  getProjectsOverviewFilters
+  getProjectsOverviewFilters,
+  fetchUsers
 }
 
 const mapStateToProps = state => {
   return {
-    filterData: projectOverviewFiltersSelector(state)
+    filterData: projectOverviewFiltersSelector(state),
+    users: usersSelector(state),
+    currentUserId: userIdSelector(state),
   }
 }
 
