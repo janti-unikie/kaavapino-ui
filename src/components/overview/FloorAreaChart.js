@@ -20,18 +20,25 @@ import {
   getFloorAreaChartData,
   BUSINESS_PREMISES,
   OTHER,
-  OVERALL,
+  LIVING,
   PREDICTION,
   PUBLIC
 } from './floorAreaChartUtils'
 import { projectOverviewFloorAreaSelector } from '../../selectors/projectSelector'
 
-import { getProjectsOverviewFloorArea } from '../../actions/projectActions'
+import { getProjectsOverviewFloorArea, clearProjectsOverviewFloorArea } from '../../actions/projectActions'
 import { connect } from 'react-redux'
 import { LoadingSpinner, Button } from 'hds-react'
 import moment from 'moment'
 import { withRouter } from 'react-router-dom'
-function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, history, isPrivileged }) {
+function FloorAreaChart({
+  filters,
+  chartData,
+  getProjectsOverviewFloorArea,
+  history,
+  isPrivileged,
+  clearProjectsOverviewFloorArea
+}) {
   const { t } = useTranslation()
 
   const [filter, setFilter] = useState({})
@@ -39,12 +46,11 @@ function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, hist
   const [current, setCurrent] = useState(0)
   const [total, setTotal] = useState(0)
 
-  const [currentChartData, setCurrentChartData] = useState(
-    getFloorAreaChartData(chartData)
-  )
+  const [currentChartData, setCurrentChartData] = useState(null)
 
   useEffect(() => {
     getProjectsOverviewFloorArea(filter)
+    setCurrentChartData(getFloorAreaChartData(chartData))
   }, [])
 
   useEffect(() => {
@@ -60,10 +66,25 @@ function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, hist
     setTotal(chartData.total_predicted)
   }, [chartData])
 
-  const onFilterChange = value => {
+  const onFilterChange = values => {
+
+    clearProjectsOverviewFloorArea()
+    setCurrentChartData(null)
+    if ( !values || values.length === 0 ) {
+      setFilter({})
+      return 
+    }
+    const valueArray = []
+    let parameter
+   
+    values.forEach(value => {
+      valueArray.push(value.value)
+      parameter = value.parameter
+    })
+
     setFilter({
       ...filter,
-      [value.parameter]: value.key
+      [parameter]: valueArray
     })
   }
 
@@ -134,10 +155,14 @@ function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, hist
     }
 
     const getProjectColour = index => {
+
+      if ( !chartData ) {
+        return
+      }
       const dailyStats = chartData && chartData.daily_stats
 
       const current = getFormattedDate2(props.payload.date)
-      const currentDate = dailyStats.find(stats => {
+      const currentDate = dailyStats.find && dailyStats.find(stats => {
         if (stats.date === current) return stats
       })
 
@@ -214,9 +239,7 @@ function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, hist
 
     return <svg>{rects}</svg>
   }
-  if (!currentChartData) {
-    return <LoadingSpinner className="center" />
-  }
+ 
 
   const getFormattedDate = date => {
     return moment(date).format('DD.MM')
@@ -239,8 +262,8 @@ function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, hist
           />
         </GridColumn>
       </Grid>
-
-      <div className="chart-area">
+      {!currentChartData &&  <LoadingSpinner className="center" />}
+      { currentChartData && <div className="chart-area">
         <div className="total-floor-area">
           <span className="current-number">
             {t('floor-area.current-number', { current })}
@@ -250,7 +273,7 @@ function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, hist
         <ResponsiveContainer width="100%" height={350}>
           <ComposedChart data={currentChartData.floorAreas}>
             <ReferenceLine
-              label="Now"
+              label={t('floor-area.now')}
               yAxisId="left"
               type="number"
               x={new Date().getTime()}
@@ -305,9 +328,9 @@ function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, hist
             <Line
               isAnimationActive={false}
               legendType="plainline"
-              name={t('floor-area.all-area')}
+              name={t('floor-area.living-area')}
               type="monotone"
-              dataKey={OVERALL}
+              dataKey={LIVING}
               stroke="grey"
               strokeWidth="2px"
               dot={false}
@@ -318,7 +341,7 @@ function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, hist
               isAnimationActive={false}
               legendType="none"
               type="monotone"
-              dataKey={OVERALL + PREDICTION}
+              dataKey={LIVING + PREDICTION}
               stroke="grey"
               strokeDasharray="3 3"
               strokeWidth="2px"
@@ -328,7 +351,7 @@ function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, hist
             <Line
               isAnimationActive={false}
               legendType="plainline"
-              name={t('floor-area.living-area')}
+              name={t('floor-area.public-area')}
               type="monotone"
               dataKey={PUBLIC}
               stroke="blue"
@@ -394,7 +417,7 @@ function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, hist
             />
           </ComposedChart>
         </ResponsiveContainer>
-      </div>
+      </div>}
     </div>
   )
 }
@@ -405,7 +428,8 @@ FloorAreaChart.propTypes = {
 }
 
 const mapDispatchToProps = {
-  getProjectsOverviewFloorArea
+  getProjectsOverviewFloorArea,
+  clearProjectsOverviewFloorArea
 }
 
 const mapStateToProps = state => {

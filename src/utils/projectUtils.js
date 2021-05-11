@@ -222,6 +222,17 @@ const generateArrayOfYears = () => {
   }
   return years
 }
+const generateArrayOfYearsForChart = () => {
+  const max = new Date().getFullYear() + 10
+  const min =new Date().getFullYear() - 5
+  const years = []
+
+  // eslint-disable-next-line for-direction
+  for (let year = max; year >= min; year--) {
+    years.push({ key: year.toString(), label: year.toString(), value: year })
+  }
+  return years
+}
 
 const findValueFromObject = (object, key) => {
   let value
@@ -296,5 +307,6 @@ export default {
   getFieldsetAttributes,
   findValueFromObject,
   isUserPrivileged,
-  findValuesFromObject
+  findValuesFromObject,
+  generateArrayOfYearsForChart
 }

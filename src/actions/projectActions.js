@@ -53,6 +53,7 @@ export const GET_PROJECTS_OVERVIEW_FILTERS = 'Get project overview filters'
 export const GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL = 'Get project overview filters successful'
 export const GET_EXTERNAL_DOCUMENTS = 'Get external documents'
 export const GET_EXTERNAL_DOCUMENTS_SUCCESSFUL = 'Get external documents successful'
+export const CLEAR_PROJECTS_OVERVIEW_FLOOR_AREA= 'Clear current data'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -218,6 +219,9 @@ export const resetProjectSnapshot = () => ({
 export const getProjectsOverviewFloorArea = payload => ({
   type: GET_PROJECTS_OVERVIEW_FLOOR_AREA,
   payload: payload
+})
+export const clearProjectsOverviewFloorArea = () => ({
+  type: CLEAR_PROJECTS_OVERVIEW_FLOOR_AREA
 })
 export const getProjectsOverviewFloorAreaSuccessful = floorArea => ({
   type: GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL,

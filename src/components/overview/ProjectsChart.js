@@ -51,10 +51,23 @@ function ProjectsChart({ filters, chartData, getProjectsOverviewBySubtype }) {
     setCurrentChartData(getSubtypeChartData(chartData))
   }, [chartData])
 
-  const onFilterChange = value => {
+  const onFilterChange = values => {
+    
+    if ( !values || values.length === 0 ) {
+      setFilter({})
+      return 
+    }
+    const valueArray = []
+    let parameter
+   
+    values.forEach(value => {
+      valueArray.push(value.value)
+      parameter = value.parameter
+    })
+
     setFilter({
       ...filter,
-      [value.parameter]: value.key
+      [parameter]: valueArray
     })
   }
 

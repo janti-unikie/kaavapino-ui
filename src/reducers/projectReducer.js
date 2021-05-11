@@ -36,7 +36,8 @@ import {
   GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL,
   GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL,
   GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL,
-  GET_EXTERNAL_DOCUMENTS_SUCCESSFUL
+  GET_EXTERNAL_DOCUMENTS_SUCCESSFUL,
+  CLEAR_PROJECTS_OVERVIEW_FLOOR_AREA
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -354,6 +355,15 @@ export const reducer = (state = initialState, action) => {
           currentProjectExternalDocuments: action.payload
         }
       }
+      case CLEAR_PROJECTS_OVERVIEW_FLOOR_AREA: {
+        return {
+          ...state,
+          overview: {
+            ...state.overview,
+            floorArea: {}
+          }
+        }
+        }
 
     default: {
       return state

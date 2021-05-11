@@ -13,7 +13,7 @@ function FilterList({ filterList, currentFilter, onChange, showClearButton, onCl
   const formatOptions = field => {
     let options = field.choices
     if (field.accepts_year) {
-      options = projectUtils.generateArrayOfYears()
+      options = projectUtils.generateArrayOfYearsForChart()
     }
 
     return options.map(option => {

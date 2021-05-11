@@ -723,8 +723,9 @@ function* getProjectsOverviewFloorArea({ payload }) {
 
   keys.forEach(key => {
     if (key === 'vuosi') {
-      const startDate = moment(new Date(payload[key], 0, 1)).format('YYYY-MM-DD')
-      const endDate = moment(new Date(payload[key], 11, 31)).format('YYYY-MM-DD')
+      const values = payload[key].sort()
+      const startDate = moment(new Date(values[0], 0, 1)).format('YYYY-MM-DD')
+      const endDate = moment(new Date(values[0], 11, 31)).format('YYYY-MM-DD')
 
       query = {
         ...query,
@@ -738,6 +739,7 @@ function* getProjectsOverviewFloorArea({ payload }) {
       }
     }
   })
+ 
   try {
     const floorArea = yield call(overviewFloorAreaApi.get, { query: query })
     yield put(getProjectsOverviewFloorAreaSuccessful(floorArea))
@@ -752,9 +754,10 @@ function* getProjectsOverviewBySubtype({ payload }) {
 
   keys.forEach(key => {
     if (key === 'vuosi') {
-      const startDate = moment(new Date(payload[key], 0, 1)).format('YYYY-MM-DD')
-      const endDate = moment(new Date(payload[key], 11, 31)).format('YYYY-MM-DD')
-
+      const values = payload[key].sort()
+      const startDate = moment(new Date(values[0], 0, 1)).format('YYYY-MM-DD')
+      const endDate = moment(new Date(values[0], 11, 31)).format('YYYY-MM-DD')
+      
       query = {
         ...query,
         start_date: startDate,
@@ -765,6 +768,7 @@ function* getProjectsOverviewBySubtype({ payload }) {
         ...query,
         [key]: payload[key]
       }
+      
     }
   })
   try {
