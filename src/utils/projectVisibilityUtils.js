@@ -17,7 +17,7 @@ export const showField = (field, formValues, currentName) => {
 
     let currentValue = get(formValues, `${fieldsetPart}${variable}`)
     
-    if  ( !currentValue ) {
+    if  ( currentValue === undefined ) {
       currentValue = get( formValues, variable)
     }
 
