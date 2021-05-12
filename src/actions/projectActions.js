@@ -53,6 +53,8 @@ export const GET_PROJECTS_OVERVIEW_FILTERS = 'Get project overview filters'
 export const GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL = 'Get project overview filters successful'
 export const GET_EXTERNAL_DOCUMENTS = 'Get external documents'
 export const GET_EXTERNAL_DOCUMENTS_SUCCESSFUL = 'Get external documents successful'
+export const GET_PROJECTS_OVERVIEW_MAP_DATA = 'Get projects overview map data'
+export const GET_PROJECTS_OVERVIEW_MAP_DATA_SUCCESSFUL = 'Get projects overview map data successful'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -247,4 +249,13 @@ export const getExternalDocuments = projectId => ({
 export const getExternalDocumentsSuccessful = documents => ({
   type: GET_EXTERNAL_DOCUMENTS_SUCCESSFUL,
   payload: documents
+})
+
+export const getProjectsOverviewMapData = () => ({
+  type: GET_PROJECTS_OVERVIEW_MAP_DATA
+})
+
+export const getProjectsOverviewMapDataSuccessful = mapData => ({
+  type: GET_PROJECTS_OVERVIEW_MAP_DATA_SUCCESSFUL,
+  payload: mapData
 })

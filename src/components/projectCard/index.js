@@ -13,12 +13,15 @@ import Photo from './Photo'
 import Documents from './Documents'
 import projectUtils from './../../utils/projectUtils'
 import { getExternalDocuments, initializeProject } from '../../actions/projectActions'
-import { externalDocumentsSelector, currentProjectSelector } from '../../selectors/projectSelector'
+import {
+  externalDocumentsSelector,
+  currentProjectSelector
+} from '../../selectors/projectSelector'
 import { connect } from 'react-redux'
 import { getProjectCardFields } from '../../actions/schemaActions'
-import {
-  projectCardFieldsSelector
-} from '../../selectors/schemaSelector'
+import { projectCardFieldsSelector } from '../../selectors/schemaSelector'
+import { Accordion } from 'hds-react'
+import { useTranslation } from 'react-i18next'
 
 export const PROJECT_PICTURE = 'Projektikortin kuva'
 export const PROJECT_BASIC = 'Perustiedot'
@@ -49,7 +52,9 @@ function ProjectCardPage({
   const [floorAreaFields, setFloorAreaFields] = useState([])
   const [contractFields, setContractFields] = useState([])
   const [planningRestriction, setPlanningRestriction] = useState(null)
-  const [currentProjectId, setCurrentProjectId] = useState( projectId )
+  const [currentProjectId, setCurrentProjectId] = useState(projectId)
+
+  const { t } = useTranslation()
 
   useEffect(() => {
     getProjectCardFields()
@@ -61,12 +66,12 @@ function ProjectCardPage({
   }, [projectCardFields, externalDocuments])
 
   useEffect(() => {
-    setCurrentProjectId( projectId )
+    setCurrentProjectId(projectId)
   }, [projectId])
 
   useEffect(() => {
-    if ( currentProject.id.toString() !== projectId.toString() ) {
-      initializeProject( currentProjectId )   
+    if (currentProject.id.toString() !== projectId.toString()) {
+      initializeProject(currentProjectId)
     }
   }, [currentProjectId])
 
@@ -85,57 +90,65 @@ function ProjectCardPage({
     const currentContractFields = []
     let currentPlanningRestriction = null
 
-    projectCardFields && projectCardFields.forEach(field => {
-      let value = projectUtils.findValueFromObject(currentProject && currentProject.attribute_data, field.name)
+    projectCardFields &&
+      projectCardFields.forEach(field => {
+        let value = projectUtils.findValueFromObject(
+          currentProject && currentProject.attribute_data,
+          field.name
+        )
 
-      const returnValues = []
-      projectUtils.findValuesFromObject(currentProject && currentProject.attribute_data, field.name, returnValues)
+        const returnValues = []
+        projectUtils.findValuesFromObject(
+          currentProject && currentProject.attribute_data,
+          field.name,
+          returnValues
+        )
 
-      if (returnValues.length > 1) {
-        let currentValues = []
-        returnValues.forEach(current => {
-          currentValues.push(current)
-        })
-        value = currentValues
-      }
-
-      let newField = {
-        ...field,
-        value: value === undefined ? null : value
-      }
-      if (field.section_name === PROJECT_PICTURE) {
-        newField = {
-          ...field,
-          link: value === undefined ? null : value.link,
-          description: value === undefined ? null : value.description
+        if (returnValues.length > 1) {
+          let currentValues = []
+          returnValues.forEach(current => {
+            currentValues.push(current)
+          })
+          value = currentValues
         }
-        currentPhotoField = newField
-      }
-      if (field.section_name === PROJECT_BASIC) {
-        currentBasicInformationFields.push(newField)
-      }
-      if (field.section_name === PROJECT_DESCRIPTION) {
-        currentDescriptionFields.push(newField)
-      }
-      if (field.section_name === PROJECT_STRATEGY) {
-        currentStrategyConnectionFields.push(newField)
-      }
-      if (field.section_name === PROJECT_CONTRACT) {
-        currentContractFields.push(newField)
-      }
-      if (field.section_name === PROJECT_FLOOR_AREA) {
-        currentFloorAreaFields.push(newField)
-      }
-      if (field.section_name === PROJECT_TIMETABLE) {
-        currentTimeTableFields.push(newField)
-      }
-      if (field.section_name === PROJECT_CONTACT) {
-        currentContactsFields.push(newField)
-      }
-      if (field.section_name === PROJECT_BORDER) {
-        currentPlanningRestriction = newField
-      }
-    })
+
+        let newField = {
+          ...field,
+          value: value === undefined ? null : value
+        }
+        if (field.section_name === PROJECT_PICTURE) {
+          newField = {
+            ...field,
+            link: value === undefined ? null : value.link,
+            description: value === undefined ? null : value.description
+          }
+          currentPhotoField = newField
+        }
+        if (field.section_name === PROJECT_BASIC) {
+          currentBasicInformationFields.push(newField)
+        }
+        if (field.section_name === PROJECT_DESCRIPTION) {
+          currentDescriptionFields.push(newField)
+        }
+        if (field.section_name === PROJECT_STRATEGY) {
+          currentStrategyConnectionFields.push(newField)
+        }
+        if (field.section_name === PROJECT_CONTRACT) {
+          currentContractFields.push(newField)
+        }
+        if (field.section_name === PROJECT_FLOOR_AREA) {
+          currentFloorAreaFields.push(newField)
+        }
+        if (field.section_name === PROJECT_TIMETABLE) {
+          currentTimeTableFields.push(newField)
+        }
+        if (field.section_name === PROJECT_CONTACT) {
+          currentContactsFields.push(newField)
+        }
+        if (field.section_name === PROJECT_BORDER) {
+          currentPlanningRestriction = newField
+        }
+      })
 
     setDescriptionDFields(currentDescriptionFields)
     setBasicInformationFields(currentBasicInformationFields)
@@ -167,7 +180,10 @@ function ProjectCardPage({
       <Grid stackable columns="equal">
         <Grid.Column>
           <Segment>
-            <ProjectTimeline deadlines={currentProject && currentProject.deadlines} projectView={true} />
+            <ProjectTimeline
+              deadlines={currentProject && currentProject.deadlines}
+              projectView={true}
+            />
           </Segment>
         </Grid.Column>
       </Grid>
@@ -213,16 +229,104 @@ function ProjectCardPage({
       </Grid>
     )
   }
+
+  const renderFirstRowMobile = () => (
+    <>
+      <Accordion
+        card
+        heading={t('project.description-title')}
+        headingLevel={2}
+        style={{
+          marginBottom: 'var(--spacing-m)',
+          maxWidth: '360px'
+        }}
+      >
+        <Description fields={descriptionFields} />
+      </Accordion>
+
+      <Accordion
+        card
+        heading="How to publish data?"
+        headingLevel={2}
+        style={{
+          marginBottom: 'var(--spacing-m)',
+          maxWidth: '360px'
+        }}
+      >
+        <Photo field={photoField} />
+      </Accordion>
+    </>
+  )
+  /*const renderTimeLineRow = () => {
+    return (
+      <Grid stackable columns="equal">
+        <Grid.Column>
+          <Segment>
+            <ProjectTimeline
+              deadlines={currentProject && currentProject.deadlines}
+              projectView={true}
+            />
+          </Segment>
+        </Grid.Column>
+      </Grid>
+    )
+  }
+  const renderSecondRow = () => {
+    return (
+      <Grid stackable columns="equal">
+        <Grid.Column width={5}>
+          <Segment>
+            <Contacts fields={contactsFields} />
+          </Segment>
+          <Segment key="basic-information">
+            <StrategyConnection fields={strategyConnectionFields} />
+          </Segment>
+          <Segment>
+            <TimeTable fields={timeTableFields} />
+          </Segment>
+        </Grid.Column>
+        <Grid.Column>
+          <Segment>
+            <FloorAreaInformation fields={floorAreaFields} />
+          </Segment>
+          <Grid columns="equal">
+            <Grid.Column className="inner-left-column">
+              <Segment key="basic-information">
+                <BasicInformation fields={basicInformationFields} />
+              </Segment>
+            </Grid.Column>
+            <Grid.Column className="inner-right-column">
+              <Segment>
+                <Contract fields={contractFields} />
+              </Segment>
+            </Grid.Column>
+          </Grid>
+          <Segment>
+            <GeometryInformation field={planningRestriction} />
+          </Segment>
+          <Segment>
+            <Documents documentFields={externalDocuments} />
+          </Segment>
+        </Grid.Column>
+      </Grid>
+    )
+  }*/
   const firstRow = renderFirstRow()
   const secondRow = renderSecondRow()
   const timelineRow = renderTimeLineRow()
+  const firstRowMobile = renderFirstRowMobile()
 
   return (
-    <div className="project-card">
+    <>
+    <div className="project-card mobile-hidden">
       {firstRow}
       {timelineRow}
       {secondRow}
     </div>
+    <div className="mobile">
+      {firstRowMobile}
+    </div>
+    </>
   )
 }
 const mapDispatchToProps = {

@@ -36,7 +36,8 @@ import {
   GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL,
   GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL,
   GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL,
-  GET_EXTERNAL_DOCUMENTS_SUCCESSFUL
+  GET_EXTERNAL_DOCUMENTS_SUCCESSFUL,
+  GET_PROJECTS_OVERVIEW_MAP_DATA_SUCCESSFUL
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -61,7 +62,8 @@ export const initialState = {
   overview: {
     floorArea: {},
     bySubtype: {},
-    filters: []
+    filters: [],
+    mapData: {}
   }
 }
 
@@ -351,9 +353,18 @@ export const reducer = (state = initialState, action) => {
     case GET_EXTERNAL_DOCUMENTS_SUCCESSFUL: {
       return {
         ...state,
-          currentProjectExternalDocuments: action.payload
+        currentProjectExternalDocuments: action.payload
+      }
+    }
+    case GET_PROJECTS_OVERVIEW_MAP_DATA_SUCCESSFUL: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          mapData: action.payload
         }
       }
+    }
 
     default: {
       return state
