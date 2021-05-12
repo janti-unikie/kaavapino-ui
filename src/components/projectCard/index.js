@@ -20,8 +20,6 @@ import {
 import { connect } from 'react-redux'
 import { getProjectCardFields } from '../../actions/schemaActions'
 import { projectCardFieldsSelector } from '../../selectors/schemaSelector'
-import { Accordion } from 'hds-react'
-import { useTranslation } from 'react-i18next'
 
 export const PROJECT_PICTURE = 'Projektikortin kuva'
 export const PROJECT_BASIC = 'Perustiedot'
@@ -53,8 +51,6 @@ function ProjectCardPage({
   const [contractFields, setContractFields] = useState([])
   const [planningRestriction, setPlanningRestriction] = useState(null)
   const [currentProjectId, setCurrentProjectId] = useState(projectId)
-
-  const { t } = useTranslation()
 
   useEffect(() => {
     getProjectCardFields()
@@ -230,103 +226,17 @@ function ProjectCardPage({
     )
   }
 
-  const renderFirstRowMobile = () => (
-    <>
-      <Accordion
-        card
-        heading={t('project.description-title')}
-        headingLevel={2}
-        style={{
-          marginBottom: 'var(--spacing-m)',
-          maxWidth: '360px'
-        }}
-      >
-        <Description fields={descriptionFields} />
-      </Accordion>
-
-      <Accordion
-        card
-        heading="How to publish data?"
-        headingLevel={2}
-        style={{
-          marginBottom: 'var(--spacing-m)',
-          maxWidth: '360px'
-        }}
-      >
-        <Photo field={photoField} />
-      </Accordion>
-    </>
-  )
-  /*const renderTimeLineRow = () => {
-    return (
-      <Grid stackable columns="equal">
-        <Grid.Column>
-          <Segment>
-            <ProjectTimeline
-              deadlines={currentProject && currentProject.deadlines}
-              projectView={true}
-            />
-          </Segment>
-        </Grid.Column>
-      </Grid>
-    )
-  }
-  const renderSecondRow = () => {
-    return (
-      <Grid stackable columns="equal">
-        <Grid.Column width={5}>
-          <Segment>
-            <Contacts fields={contactsFields} />
-          </Segment>
-          <Segment key="basic-information">
-            <StrategyConnection fields={strategyConnectionFields} />
-          </Segment>
-          <Segment>
-            <TimeTable fields={timeTableFields} />
-          </Segment>
-        </Grid.Column>
-        <Grid.Column>
-          <Segment>
-            <FloorAreaInformation fields={floorAreaFields} />
-          </Segment>
-          <Grid columns="equal">
-            <Grid.Column className="inner-left-column">
-              <Segment key="basic-information">
-                <BasicInformation fields={basicInformationFields} />
-              </Segment>
-            </Grid.Column>
-            <Grid.Column className="inner-right-column">
-              <Segment>
-                <Contract fields={contractFields} />
-              </Segment>
-            </Grid.Column>
-          </Grid>
-          <Segment>
-            <GeometryInformation field={planningRestriction} />
-          </Segment>
-          <Segment>
-            <Documents documentFields={externalDocuments} />
-          </Segment>
-        </Grid.Column>
-      </Grid>
-    )
-  }*/
+  
   const firstRow = renderFirstRow()
   const secondRow = renderSecondRow()
   const timelineRow = renderTimeLineRow()
-  const firstRowMobile = renderFirstRowMobile()
-
+  
   return (
-    <>
-    <div className="project-card mobile-hidden">
+    <div className="project-card">
       {firstRow}
       {timelineRow}
       {secondRow}
     </div>
-    <div className="mobile">
-      {firstRowMobile}
-    </div>
-    </>
   )
 }
 const mapDispatchToProps = {

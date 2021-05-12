@@ -7,19 +7,29 @@ import { formatGeoJSONToPositions, helsinkiCenter } from '../../utils/mapUtils'
 import { projectOverviewMapDataSelector } from '../../selectors/projectSelector'
 import { connect } from 'react-redux'
 
-import { getProjectsOverviewMapData } from '../../actions/projectActions'
+import {
+  getProjectsOverviewMapData,
+  clearProjectsOverviewMapData
+} from '../../actions/projectActions'
 import { LoadingSpinner } from 'hds-react'
 import { isEmpty } from 'lodash'
 import { EPSG3879 } from '../../utils/mapUtils'
 
-function CustomMap({ filters, getProjectsOverviewMapData, mapData }) {
+function CustomMap({ filters, getProjectsOverviewMapData, mapData, clearProjectsOverviewMapData }) {
   const crs = EPSG3879()
 
+  const [currentMapData, setCurrentMapData] = useState(null)
+  const [filter, setFilter] = useState({})
+
   useEffect(() => {
-    getProjectsOverviewMapData()
+    getProjectsOverviewMapData(filter)
+    setCurrentMapData(mapData)
   }, [])
 
-  const [currentMapData, setCurrentMapData] = useState(mapData)
+  useEffect(() => {
+    getProjectsOverviewMapData(filter)
+    setCurrentMapData(mapData)
+  }, [filter])
 
   useEffect(() => {
     setCurrentMapData(mapData)
@@ -45,12 +55,25 @@ function CustomMap({ filters, getProjectsOverviewMapData, mapData }) {
 
   const [current] = useState(helsinkiCenter)
 
-  const [filter, setFilter] = useState({})
+  const onFilterChange = values => {
+    clearProjectsOverviewMapData()
+    setCurrentMapData(null)
+    
+    if (!values || values.length === 0) {
+      setFilter({})
+      return
+    }
+    const valueArray = []
+    let parameter
 
-  const onFilterChange = value => {
+    values.forEach(value => {
+      valueArray.push(value.value)
+      parameter = value.parameter
+    })
+
     setFilter({
       ...filter,
-      [value.parameter]: value.key
+      [parameter]: valueArray
     })
   }
   const onClear = () => {
@@ -71,14 +94,14 @@ function CustomMap({ filters, getProjectsOverviewMapData, mapData }) {
   return (
     <div className="map-area">
       <div className="geometry-input-container">
-          <h3>{t('map-area.title')}{' '}</h3>
-          {isEmpty(mapData) && (
-            <span className="loading-info">
+        <h3>{t('map-area.title')} </h3>
+        {isEmpty(mapData) && (
+          <span className="loading-info">
             <LoadingSpinner small={true} className="loader-icon header-spinner" />
             {t('map-area.loading-data')}
-            </span>
-          )}
-         
+          </span>
+        )}
+
         <FilterList
           currentFilter={filter}
           onChange={onFilterChange}
@@ -105,7 +128,8 @@ function CustomMap({ filters, getProjectsOverviewMapData, mapData }) {
   )
 }
 const mapDispatchToProps = {
-  getProjectsOverviewMapData
+  getProjectsOverviewMapData,
+  clearProjectsOverviewMapData
 }
 
 const mapStateToProps = state => {

@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import DropdownFilter from './DropdownFilter'
 import projectUtils from '../../../utils/projectUtils'
-import { Button } from 'hds-react'
 import { Grid } from 'semantic-ui-react'
-import { useTranslation } from 'react-i18next'
-function FilterList({ filterList, currentFilter, onChange, showClearButton, onClear }) {
-  const { t } = useTranslation()
-
+function FilterList({ filterList, currentFilter, onChange }) {
   const [filters, setFilters] = useState( currentFilter )
+
+  useEffect(() => {
+   setFilters(currentFilter)
+  }, [currentFilter])
 
   const formatOptions = field => {
     let options = field.choices
@@ -25,32 +25,25 @@ function FilterList({ filterList, currentFilter, onChange, showClearButton, onCl
       }
     })
   }
-  useEffect(() => {
-    setFilters(currentFilter)
-  }, [currentFilter])
-
-  const clearFilters = () => {
-    onClear()
-  }
 
   const getFiltersList = () => {
     if (!filterList) {
       return null
     }
-
-    return filterList.map((field, index) => (
-      <Grid.Column key={index}>
+    return filterList.map((field, index) => {
+     
+      return <Grid.Column key={index}>
         <DropdownFilter
           key={field + index}
           name={field.name}
-          defaultValue={filters[field.name] ? filters[field.name] : null}
+          defaultValue={filters && filters[field.parameter] ? filters[field.parameter] : null}
           options={formatOptions(field)}
           placeholder={field.name}
           onChange={onChange}
           type={field.type}
         />
       </Grid.Column>
-      )
+    }
     )
   }
 
@@ -58,14 +51,14 @@ function FilterList({ filterList, currentFilter, onChange, showClearButton, onCl
     <div className="filters-list">
       <Grid stackable columns="equal">
         {getFiltersList()}
-        {showClearButton && (
-        <Grid.Column>
+        {/*showClearButton && !isEmpty(filterList) && (
+       <Grid.Column>
 
           <Button variant="secondary" onClick={clearFilters} className="filter-button">
             {t('overview.clear-selections')}
           </Button>
         </Grid.Column>
-        )}
+        )*/}
       </Grid>
 
       <span>

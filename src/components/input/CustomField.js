@@ -167,8 +167,8 @@ class CustomField extends Component {
   }
 
   renderGeometry = props => {
-    const { attributeData, onBlur } = this.props
-    return <Geometry onBlur={onBlur} attributeData={attributeData} {...props} />
+    const { onBlur } = this.props
+    return <Geometry onBlur={onBlur} {...props} />
   }
 
   renderSelect = props => {

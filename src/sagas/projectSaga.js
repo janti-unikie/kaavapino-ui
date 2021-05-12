@@ -795,9 +795,21 @@ function* getProjectsOverviewFilters() {
     }
   }
 
-  function* getProjectOverviewMapDataSaga() {
+  function* getProjectOverviewMapDataSaga({payload}) {
+
+    let query = {}
+
+    const keys = Object.keys(payload)
+  
+    keys.forEach(key => {
+        query = {
+          ...query,
+          [key]: payload[key]
+        }
+      }
+    )
     try {
-      const mapData = yield call(overviewMapApi.get)
+      const mapData = yield call(overviewMapApi.get,  { query: query })
       yield put(getProjectsOverviewMapDataSuccessful(mapData))
     } catch (e) {
       yield put(error(e))
