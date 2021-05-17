@@ -19,7 +19,6 @@ import { isNaN } from 'lodash'
 import {
   getFloorAreaChartData,
   BUSINESS_PREMISES,
-  OTHER,
   LIVING,
   PREDICTION,
   PUBLIC
@@ -244,6 +243,10 @@ function FloorAreaChart({
   const getFormattedDate = date => {
     return moment(date).format('DD.MM')
   }
+
+  const getFormattedHeaderDate = date => {
+    return moment(date).format('DD.MM.YYYY')
+  }
   const getFormattedDate2 = date => {
     return moment(date).format('YYYY-MM-DD')
   }
@@ -251,8 +254,8 @@ function FloorAreaChart({
   return (
     <div className="floor-area">
       <Grid stackable columns="equal">
-        <Grid.Column width={6}>
-          <h3>{t('floor-area.title', { date: getFormattedDate(chartData.date) })}</h3>
+        <Grid.Column width={7}>
+          <h3>{t('floor-area.title', { date: getFormattedHeaderDate(chartData.date) })}</h3>
         </Grid.Column>
         <GridColumn className="filters" textAlign="left">
           <FilterList
@@ -393,28 +396,7 @@ function FloorAreaChart({
               dot={false}
               yAxisId="left"
             />
-            <Line
-              isAnimationActive={false}
-              legendType="plainline"
-              name={t('floor-area.other-area')}
-              type="monotone"
-              dataKey={OTHER}
-              stroke="black"
-              strokeWidth="2px"
-              dot={false}
-              yAxisId="left"
-            />
-            <Line
-              isAnimationActive={false}
-              legendType="none"
-              type="monotone"
-              dataKey={OTHER + PREDICTION}
-              stroke="black"
-              strokeDasharray="3 3"
-              strokeWidth="2px"
-              dot={false}
-              yAxisId="left"
-            />
+            
           </ComposedChart>
         </ResponsiveContainer>
       </div>}

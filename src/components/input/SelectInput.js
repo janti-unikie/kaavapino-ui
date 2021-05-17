@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import inputUtils from '../../utils/inputUtils'
 import { Select } from 'hds-react'
+import { isArray } from 'lodash'
 
 const SelectInput = ({
   input,
@@ -21,9 +22,13 @@ const SelectInput = ({
   let currentSingleValue
 
   if (multiple) {
-    input.value.forEach(value =>
-      currentValue.push({ label: getValue(value), value: value })
-    )
+
+    if ( isArray( input.value )) {
+      input.value.forEach(value =>
+        currentValue.push({ label: getValue(value), value: value })
+    )} else {
+      currentValue.push( input.value )
+    }
   } else {
     const current = options.find(option => option.value === input.value)
     currentSingleValue = {
