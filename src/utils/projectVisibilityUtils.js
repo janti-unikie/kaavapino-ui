@@ -14,7 +14,14 @@ export const showField = (field, formValues, currentName) => {
     const lastIndex = currentName ? currentName.lastIndexOf('.') : -1
 
     const fieldsetPart = currentName ? currentName.substring(0, lastIndex) + '.' : ''
-    return get(formValues, `${fieldsetPart}${variable}`)
+
+    let currentValue = get(formValues, `${fieldsetPart}${variable}`)
+    
+    if  ( currentValue === undefined ) {
+      currentValue = get( formValues, variable)
+    }
+
+    return currentValue
   }
 
   if (field.hide_conditions && field.hide_conditions.length > 0) {

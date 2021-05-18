@@ -40,8 +40,6 @@ const Overview = ({ getProjectsOverviewFilters, filterData, fetchUsers, currentU
     return filters
   }
   const isPrivileged = projectUtils.isUserPrivileged( currentUserId, users )
-
- 
   return (
     <div className="overview">
       <NavHeader

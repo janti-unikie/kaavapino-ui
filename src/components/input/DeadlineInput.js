@@ -3,6 +3,10 @@ import PropTypes from 'prop-types'
 import inputUtils from '../../utils/inputUtils'
 import { useTranslation } from 'react-i18next'
 import { TextInput, IconAlertCircle } from 'hds-react'
+import { getFieldAutofillValue } from '../../utils/projectAutofillUtils'
+import { useSelector } from 'react-redux'
+import { getFormValues } from 'redux-form'
+import { EDIT_PROJECT_TIMETABLE_FORM } from '../../constants'
 
 const DeadLineInput = ({
   input,
@@ -12,16 +16,32 @@ const DeadLineInput = ({
   type,
   disabled,
   placeholder,
-  className
+  className,
+  autofillRule
 }) => {
   const { t } = useTranslation()
+  let inputValue = input.value
+  if (autofillRule) {
+    const formValues = useSelector(getFormValues(EDIT_PROJECT_TIMETABLE_FORM))
+    
+    if (autofillRule && autofillRule.length > 0) {
+      inputValue = getFieldAutofillValue(
+        autofillRule,
+        formValues,
+        null,
+        EDIT_PROJECT_TIMETABLE_FORM
+      )
+    }
+  }
+  const [currentValue, setCurrentValue] = useState(
+    currentDeadline ? currentDeadline.date : inputValue
+  )
 
+  
   let currentError
   const generated = currentDeadline && currentDeadline.generated
 
-  const [currentValue, setCurrentValue] = useState(
-    currentDeadline ? currentDeadline.date : input.value
-  )
+ 
 
   const [valueGenerated, setValueGenerated] = useState(generated)
 

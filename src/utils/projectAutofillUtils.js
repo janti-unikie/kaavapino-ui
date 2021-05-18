@@ -30,7 +30,6 @@ export const getFieldAutofillValue = (
       const autofill = autofill_rule[index]
       const condition = autofill.condition
       const thenBranch = autofill.then_branch
-
       if (!condition) {
         continue
       }
@@ -173,11 +172,11 @@ export const getFieldAutofillValue = (
           formValues[thenBranch] === undefined
             ? projectUtils.findValueFromObject(formValues, thenBranch)
             : formValues[thenBranch]
-
-        if (!formValue && formValue !== false && formValue !== '') {
+        if (!formValue && formValue !== false && formValue !== '' && comparisonValueType === 'number') {
           returnValue = false
           continue
         }
+    
         if (operator === EQUAL && comparisonValue === formValue) {
           returnValue = thenFormValue || thenBranch
           continue

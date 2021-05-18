@@ -154,11 +154,13 @@ class CustomField extends Component {
     }
 
     if (deadlines && deadlines.length > 0) {
+
       return (
         <DeadLineInput
           type="date"
           editable={field.editable}
           currentDeadline={current}
+          autofillRule={field.autofill_rule}
           {...props}
         />
       )
