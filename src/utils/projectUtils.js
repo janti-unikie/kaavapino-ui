@@ -211,14 +211,14 @@ const getDefaultValue = (parentName, attributeData, name) => {
   }
 }
 
-const generateArrayOfYears = () => {
+const generateArrayOfYears = parameter => {
   const max = new Date().getFullYear()
   const min = max - 20
   const years = []
 
   // eslint-disable-next-line for-direction
   for (let year = max; year >= min; year--) {
-    years.push({ key: year.toString(), label: year.toString(), value: year })
+    years.push({ parameter, key: year.toString(), label: year.toString(), value: year })
   }
   return years
 }

@@ -141,3 +141,15 @@ export const projectOverviewMapDataSelector = createSelector(
   selectProject,
   project => project.overview.mapData
 )
+export const projectOverviewMapFiltersSelector = createSelector(
+  selectProject,
+  project => project.overview.mapFilters
+)
+export const projectOverviewFloorAreaFiltersSelector = createSelector(
+  selectProject,
+  project => project.overview.floorAreaFilters
+)
+export const projectOverviewProjectTypeFiltersSelector = createSelector(
+  selectProject,
+  project => project.overview.projectTypeFilters
+)

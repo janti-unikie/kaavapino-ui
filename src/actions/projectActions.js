@@ -57,6 +57,10 @@ export const CLEAR_PROJECTS_OVERVIEW_FLOOR_AREA= 'Clear current data'
 export const GET_PROJECTS_OVERVIEW_MAP_DATA = 'Get projects overview map data'
 export const GET_PROJECTS_OVERVIEW_MAP_DATA_SUCCESSFUL = 'Get projects overview map data successful'
 export const CLEAR_PROJECTS_OVERVIEW_MAP_DATA ='Clear projects overview map data'
+export const SET_OVERVIEW_MAP_FILTERS = "Set overview map filters"
+export const SET_OVERVIEW_FLOOR_AREA_FILTERS = "Set overview floor area filters"
+export const SET_OVERVIEW_PROJECT_TYPE_FILTERS = "Set overview project type filters"
+export const CLEAR_PROJECTS_OVERVIEW_PROJECT_TYPE_DATA = "Clear projects data"
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -268,4 +272,19 @@ export const getProjectsOverviewMapDataSuccessful = mapData => ({
 
 export const clearProjectsOverviewMapData = () => ({
     type: CLEAR_PROJECTS_OVERVIEW_MAP_DATA
-  })
+})
+export const setProjectsOverviewMapFilter = filter => ({
+  type: SET_OVERVIEW_MAP_FILTERS,
+  payload: filter
+})
+export const setProjectsOverviewFloorAreaFilter = filter => ({
+  type: SET_OVERVIEW_FLOOR_AREA_FILTERS,
+  payload: filter
+})
+export const setProjectsOverviewProjectTypeFilter = filter => ({
+  type: SET_OVERVIEW_PROJECT_TYPE_FILTERS,
+  payload: filter
+})
+export const clearProjectsOverviewProjectTypeData = () => ({
+  type: CLEAR_PROJECTS_OVERVIEW_PROJECT_TYPE_DATA
+})

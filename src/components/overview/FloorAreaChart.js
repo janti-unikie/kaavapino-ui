@@ -15,7 +15,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import FilterList from './Filters/FilterList'
 import { Grid, GridColumn, Popup } from 'semantic-ui-react'
-import { isNaN } from 'lodash'
+import { isNaN, isEqual } from 'lodash'
 import {
   getFloorAreaChartData,
   BUSINESS_PREMISES,
@@ -23,9 +23,16 @@ import {
   PREDICTION,
   PUBLIC
 } from './floorAreaChartUtils'
-import { projectOverviewFloorAreaSelector } from '../../selectors/projectSelector'
+import {
+  projectOverviewFloorAreaSelector,
+  projectOverviewFloorAreaFiltersSelector
+} from '../../selectors/projectSelector'
 
-import { getProjectsOverviewFloorArea, clearProjectsOverviewFloorArea } from '../../actions/projectActions'
+import {
+  getProjectsOverviewFloorArea,
+  clearProjectsOverviewFloorArea,
+  setProjectsOverviewFloorAreaFilter
+} from '../../actions/projectActions'
 import { connect } from 'react-redux'
 import { LoadingSpinner, Button } from 'hds-react'
 import moment from 'moment'
@@ -37,7 +44,9 @@ function FloorAreaChart({
   getProjectsOverviewFloorArea,
   history,
   isPrivileged,
-  clearProjectsOverviewFloorArea
+  clearProjectsOverviewFloorArea,
+  setProjectsOverviewFloorAreaFilter,
+  storedFilter
 }) {
   const { t } = useTranslation()
 
@@ -54,7 +63,13 @@ function FloorAreaChart({
   }, [])
 
   useEffect(() => {
-    getProjectsOverviewFloorArea(filter)
+    if (!storedFilter || !isEqual(storedFilter, filter)) {
+      clearProjectsOverviewFloorArea()
+      setCurrentChartData(null)
+      getProjectsOverviewFloorArea(filter)
+      setProjectsOverviewFloorAreaFilter(filter)
+    }
+   
   }, [filter])
 
   useEffect(() => {
@@ -66,17 +81,19 @@ function FloorAreaChart({
     setTotal(chartData.total_predicted)
   }, [chartData])
 
-  const onFilterChange = values => {
+  const onFilterChange = (values, currentParameter ) => {
+    if (!values || values.length === 0) {
 
-    clearProjectsOverviewFloorArea()
-    setCurrentChartData(null)
-    if ( !values || values.length === 0 ) {
-      setFilter({})
-      return 
+      const newFilter = Object.assign( {}, filter)
+      delete newFilter[currentParameter]
+      setFilter({
+       ...newFilter
+      })
+      return
     }
     const valueArray = []
     let parameter
-   
+
     values.forEach(value => {
       valueArray.push(value.value)
       parameter = value.parameter
@@ -155,16 +172,17 @@ function FloorAreaChart({
     }
 
     const getProjectColour = index => {
-
-      if ( !chartData ) {
+      if (!chartData) {
         return
       }
       const dailyStats = chartData && chartData.daily_stats
 
       const current = getFormattedDate2(props.payload.date)
-      const currentDate = dailyStats.find && dailyStats.find(stats => {
-        if (stats.date === current) return stats
-      })
+      const currentDate =
+        dailyStats.find &&
+        dailyStats.find(stats => {
+          if (stats.date === current) return stats
+        })
 
       const project =
         currentDate && currentDate.projects && currentDate.projects[index - 1]
@@ -239,7 +257,6 @@ function FloorAreaChart({
 
     return <svg>{rects}</svg>
   }
- 
 
   const getFormattedDate = date => {
     return dayjs(date).format('DD.MM')
@@ -252,155 +269,163 @@ function FloorAreaChart({
     return moment(date).format('YYYY-MM-DD')
   }
 
+  const onClear = () => {
+    setProjectsOverviewFloorAreaFilter({})
+  }
+
   return (
     <div className="floor-area">
       <Grid stackable columns="equal">
         <Grid.Column width={7}>
-          <h3>{t('floor-area.title', { date: getFormattedHeaderDate(chartData.date) })}</h3>
+          <h3>
+            {t('floor-area.title', { date: getFormattedHeaderDate(chartData.date) })}
+          </h3>
         </Grid.Column>
         <GridColumn className="filters" textAlign="left">
           <FilterList
             currentFilter={filter}
             onChange={onFilterChange}
             filterList={filters}
+            onClear={onClear}
           />
         </GridColumn>
       </Grid>
-      {!currentChartData &&  <LoadingSpinner className="center" />}
-      { currentChartData && <div className="chart-area">
-        <div className="total-floor-area">
-          <span className="current-number">
-            {t('floor-area.current-number', { current })}
-          </span>
-          <span>{t('floor-area.total-number', { total })}</span>
+      {!currentChartData && <LoadingSpinner className="center" />}
+      {currentChartData && (
+        <div className="chart-area">
+          <div className="total-floor-area">
+            <span className="current-number">
+              {t('floor-area.current-number', { current })}
+            </span>
+            <span>{t('floor-area.total-number', { total })}</span>
+          </div>
+          <ResponsiveContainer width="100%" height={350}>
+            <ComposedChart data={currentChartData.floorAreas}>
+              <ReferenceLine
+                label={t('floor-area.now')}
+                yAxisId="left"
+                type="number"
+                x={new Date().getTime()}
+                stroke="red"
+              />
+
+              <XAxis
+                interval={1}
+                scale="time"
+                tickCount={104}
+                domain={['auto', 'auto']}
+                type="number"
+                dataKey="date"
+                angle={-45}
+                textAnchor="end"
+                tickFormatter={getFormattedDate}
+              />
+              <YAxis yAxisId="left">
+                <Label
+                  dx={-30}
+                  angle={-90}
+                  position="centerTop"
+                  style={{ fontSize: '12px' }}
+                  value={t('floor-area.y-axis-title')}
+                ></Label>
+              </YAxis>
+              <YAxis
+                yAxisId="right"
+                orientation="right"
+                domain={[0, 20]}
+                scale="linear"
+                hide={false}
+              >
+                <Label
+                  angle={-90}
+                  position="centerTop"
+                  style={{ fontSize: '12px' }}
+                  value={t('floor-area.y-axis-title-projects-in-meeting')}
+                ></Label>
+              </YAxis>
+              <Bar
+                shape={<CustomizedLabel />}
+                isAnimationActive={false}
+                yAxisId="right"
+                dataKey="meetings"
+                fill="lightBlue"
+                legendType="none"
+              />
+              <Legend />
+              <CartesianGrid yAxisId="left" vertical={false} opacity={0.4} />
+
+              <Line
+                isAnimationActive={false}
+                legendType="plainline"
+                name={t('floor-area.living-area')}
+                type="monotone"
+                dataKey={LIVING}
+                stroke="grey"
+                strokeWidth="2px"
+                dot={false}
+                yAxisId="left"
+              />
+
+              <Line
+                isAnimationActive={false}
+                legendType="none"
+                type="monotone"
+                dataKey={LIVING + PREDICTION}
+                stroke="grey"
+                strokeDasharray="3 3"
+                strokeWidth="2px"
+                dot={false}
+                yAxisId="left"
+              />
+              <Line
+                isAnimationActive={false}
+                legendType="plainline"
+                name={t('floor-area.public-area')}
+                type="monotone"
+                dataKey={PUBLIC}
+                stroke="blue"
+                strokeWidth="2px"
+                dot={false}
+                yAxisId="left"
+              />
+              <Line
+                isAnimationActive={false}
+                legendType="none"
+                type="monotone"
+                dataKey={PUBLIC + PREDICTION}
+                stroke="blue"
+                strokeWidth="2px"
+                strokeDasharray="3 3"
+                dot={false}
+                yAxisId="left"
+              />
+
+              <Line
+                isAnimationActive={false}
+                legendType="plainline"
+                name={t('floor-area.business-area')}
+                type="monotone"
+                dataKey={BUSINESS_PREMISES}
+                stroke="green"
+                strokeWidth="2px"
+                dot={false}
+                yAxisId="left"
+              />
+              <Line
+                isAnimationActive={false}
+                legendType="none"
+                type="monotone"
+                dataKey={BUSINESS_PREMISES + PREDICTION}
+                stroke="green"
+                strokeDasharray="3 3"
+                strokeWidth="2px"
+                dot={false}
+                yAxisId="left"
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
         </div>
-        <ResponsiveContainer width="100%" height={350}>
-          <ComposedChart data={currentChartData.floorAreas}>
-            <ReferenceLine
-              label={t('floor-area.now')}
-              yAxisId="left"
-              type="number"
-              x={new Date().getTime()}
-              stroke="red"
-            />
-
-            <XAxis
-              interval={1}
-              scale="time"
-              tickCount={104}
-              domain={['auto', 'auto']}
-              type="number"
-              dataKey="date"
-              angle={-45}
-              textAnchor="end"
-              tickFormatter={getFormattedDate}
-            />
-            <YAxis yAxisId="left">
-              <Label
-                dx={-30}
-                angle={-90}
-                position="centerTop"
-                style={{ fontSize: '12px' }}
-                value={t('floor-area.y-axis-title')}
-              ></Label>
-            </YAxis>
-            <YAxis
-              yAxisId="right"
-              orientation="right"
-              domain={[0, 20]}
-              scale="linear"
-              hide={false}
-            >
-              <Label
-                angle={-90}
-                position="centerTop"
-                style={{ fontSize: '12px' }}
-                value={t('floor-area.y-axis-title-projects-in-meeting')}
-              ></Label>
-            </YAxis>
-            <Bar
-              shape={<CustomizedLabel />}
-              isAnimationActive={false}
-              yAxisId="right"
-              dataKey="meetings"
-              fill="lightBlue"
-              legendType="none"
-            />
-            <Legend />
-            <CartesianGrid yAxisId="left" vertical={false} opacity={0.4} />
-
-            <Line
-              isAnimationActive={false}
-              legendType="plainline"
-              name={t('floor-area.living-area')}
-              type="monotone"
-              dataKey={LIVING}
-              stroke="grey"
-              strokeWidth="2px"
-              dot={false}
-              yAxisId="left"
-            />
-
-            <Line
-              isAnimationActive={false}
-              legendType="none"
-              type="monotone"
-              dataKey={LIVING + PREDICTION}
-              stroke="grey"
-              strokeDasharray="3 3"
-              strokeWidth="2px"
-              dot={false}
-              yAxisId="left"
-            />
-            <Line
-              isAnimationActive={false}
-              legendType="plainline"
-              name={t('floor-area.public-area')}
-              type="monotone"
-              dataKey={PUBLIC}
-              stroke="blue"
-              strokeWidth="2px"
-              dot={false}
-              yAxisId="left"
-            />
-            <Line
-              isAnimationActive={false}
-              legendType="none"
-              type="monotone"
-              dataKey={PUBLIC + PREDICTION}
-              stroke="blue"
-              strokeWidth="2px"
-              strokeDasharray="3 3"
-              dot={false}
-              yAxisId="left"
-            />
-
-            <Line
-              isAnimationActive={false}
-              legendType="plainline"
-              name={t('floor-area.business-area')}
-              type="monotone"
-              dataKey={BUSINESS_PREMISES}
-              stroke="green"
-              strokeWidth="2px"
-              dot={false}
-              yAxisId="left"
-            />
-            <Line
-              isAnimationActive={false}
-              legendType="none"
-              type="monotone"
-              dataKey={BUSINESS_PREMISES + PREDICTION}
-              stroke="green"
-              strokeDasharray="3 3"
-              strokeWidth="2px"
-              dot={false}
-              yAxisId="left"
-            />
-            
-          </ComposedChart>
-        </ResponsiveContainer>
-      </div>}
+      )}
     </div>
   )
 }
@@ -412,12 +437,14 @@ FloorAreaChart.propTypes = {
 
 const mapDispatchToProps = {
   getProjectsOverviewFloorArea,
-  clearProjectsOverviewFloorArea
+  clearProjectsOverviewFloorArea,
+  setProjectsOverviewFloorAreaFilter
 }
 
 const mapStateToProps = state => {
   return {
-    chartData: projectOverviewFloorAreaSelector(state)
+    chartData: projectOverviewFloorAreaSelector(state),
+    storedFilter: projectOverviewFloorAreaFiltersSelector(state)
   }
 }
 

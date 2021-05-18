@@ -4,18 +4,29 @@ import { useTranslation } from 'react-i18next'
 import FilterList from './Filters/FilterList'
 import Polygon from '../common/Polygon'
 import { formatGeoJSONToPositions, helsinkiCenter } from '../../utils/mapUtils'
-import { projectOverviewMapDataSelector } from '../../selectors/projectSelector'
+import {
+  projectOverviewMapDataSelector,
+  projectOverviewMapFiltersSelector
+} from '../../selectors/projectSelector'
 import { connect } from 'react-redux'
 
 import {
   getProjectsOverviewMapData,
-  clearProjectsOverviewMapData
+  clearProjectsOverviewMapData,
+  setProjectsOverviewMapFilter
 } from '../../actions/projectActions'
 import { LoadingSpinner } from 'hds-react'
-import { isEmpty } from 'lodash'
+import { isEmpty, isEqual } from 'lodash'
 import { EPSG3879 } from '../../utils/mapUtils'
 
-function CustomMap({ filters, getProjectsOverviewMapData, mapData, clearProjectsOverviewMapData }) {
+function CustomMap({
+  filters,
+  getProjectsOverviewMapData,
+  mapData,
+  clearProjectsOverviewMapData,
+  setProjectsOverviewMapFilter,
+  storedFilter
+}) {
   const crs = EPSG3879()
 
   const [currentMapData, setCurrentMapData] = useState(null)
@@ -27,8 +38,13 @@ function CustomMap({ filters, getProjectsOverviewMapData, mapData, clearProjects
   }, [])
 
   useEffect(() => {
-    getProjectsOverviewMapData(filter)
-    setCurrentMapData(mapData)
+    if (!storedFilter || !isEqual(storedFilter, filter)) {
+      clearProjectsOverviewMapData()
+      setCurrentMapData(null)
+      getProjectsOverviewMapData(filter)
+      setProjectsOverviewMapFilter(filter)
+      setCurrentMapData(mapData)
+    }
   }, [filter])
 
   useEffect(() => {
@@ -55,12 +71,14 @@ function CustomMap({ filters, getProjectsOverviewMapData, mapData, clearProjects
 
   const [current] = useState(helsinkiCenter)
 
-  const onFilterChange = values => {
-    clearProjectsOverviewMapData()
-    setCurrentMapData(null)
-    
+  const onFilterChange = (values, currentParameter) => {
+   
     if (!values || values.length === 0) {
-      setFilter({})
+      const newFilter = Object.assign( {}, filter)
+      delete newFilter[currentParameter]
+      setFilter({
+       ...newFilter
+      })
       return
     }
     const valueArray = []
@@ -77,6 +95,7 @@ function CustomMap({ filters, getProjectsOverviewMapData, mapData, clearProjects
     })
   }
   const onClear = () => {
+    setProjectsOverviewMapFilter({})
     setFilter({})
   }
 
@@ -129,12 +148,14 @@ function CustomMap({ filters, getProjectsOverviewMapData, mapData, clearProjects
 }
 const mapDispatchToProps = {
   getProjectsOverviewMapData,
-  clearProjectsOverviewMapData
+  clearProjectsOverviewMapData,
+  setProjectsOverviewMapFilter
 }
 
 const mapStateToProps = state => {
   return {
-    mapData: projectOverviewMapDataSelector(state)
+    mapData: projectOverviewMapDataSelector(state),
+    storedFilter: projectOverviewMapFiltersSelector(state)
   }
 }
 
