@@ -74,7 +74,9 @@ import {
   getProjectsOverviewFiltersSuccessful,
   GET_PROJECTS_OVERVIEW_FILTERS,
   getExternalDocumentsSuccessful,
-  GET_EXTERNAL_DOCUMENTS
+  GET_EXTERNAL_DOCUMENTS,
+  GET_PROJECTS_OVERVIEW_MAP_DATA,
+  getProjectsOverviewMapDataSuccessful
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
@@ -86,7 +88,8 @@ import {
   overviewFloorAreaApi,
   overviewBySubtypeApi,
   overviewFiltersApi,
-  externalDocumentsApi
+  externalDocumentsApi,
+  overviewMapApi
 } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
 import {
@@ -98,7 +101,7 @@ import {
 import i18 from 'i18next'
 import { showField } from '../utils/projectVisibilityUtils'
 import { checkDeadlines } from '../components/ProjectTimeline/helpers/helpers'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 export default function* projectSaga() {
   yield all([
@@ -124,7 +127,8 @@ export default function* projectSaga() {
     takeLatest(GET_PROJECTS_OVERVIEW_FLOOR_AREA, getProjectsOverviewFloorArea),
     takeLatest(GET_PROJECTS_OVERVIEW_BY_SUBTYPE, getProjectsOverviewBySubtype),
     takeLatest(GET_PROJECTS_OVERVIEW_FILTERS, getProjectsOverviewFilters),
-    takeLatest(GET_EXTERNAL_DOCUMENTS, getExternalDocumentsSaga)
+    takeLatest(GET_EXTERNAL_DOCUMENTS, getExternalDocumentsSaga),
+    takeLatest(GET_PROJECTS_OVERVIEW_MAP_DATA, getProjectOverviewMapDataSaga)
   ])
 }
 
@@ -723,8 +727,8 @@ function* getProjectsOverviewFloorArea({ payload }) {
 
   keys.forEach(key => {
     if (key === 'vuosi') {
-      const startDate = moment(new Date(payload[key], 0, 1)).format('YYYY-MM-DD')
-      const endDate = moment(new Date(payload[key], 11, 31)).format('YYYY-MM-DD')
+      const startDate = dayjs(new Date(payload[key], 0, 1)).format('YYYY-MM-DD')
+      const endDate = dayjs(new Date(payload[key], 11, 31)).format('YYYY-MM-DD')
 
       query = {
         ...query,
@@ -752,8 +756,8 @@ function* getProjectsOverviewBySubtype({ payload }) {
 
   keys.forEach(key => {
     if (key === 'vuosi') {
-      const startDate = moment(new Date(payload[key], 0, 1)).format('YYYY-MM-DD')
-      const endDate = moment(new Date(payload[key], 11, 31)).format('YYYY-MM-DD')
+      const startDate = dayjs(new Date(payload[key], 0, 1)).format('YYYY-MM-DD')
+      const endDate = dayjs(new Date(payload[key], 11, 31)).format('YYYY-MM-DD')
 
       query = {
         ...query,
@@ -786,6 +790,27 @@ function* getProjectsOverviewFilters() {
     try {
       const documents = yield call(externalDocumentsApi.get, { path: { id: projectId } })
       yield put(getExternalDocumentsSuccessful(documents))
+    } catch (e) {
+      yield put(error(e))
+    }
+  }
+
+  function* getProjectOverviewMapDataSaga({payload}) {
+
+    let query = {}
+
+    const keys = Object.keys(payload)
+  
+    keys.forEach(key => {
+        query = {
+          ...query,
+          [key]: payload[key]
+        }
+      }
+    )
+    try {
+      const mapData = yield call(overviewMapApi.get,  { query: query })
+      yield put(getProjectsOverviewMapDataSuccessful(mapData))
     } catch (e) {
       yield put(error(e))
     }

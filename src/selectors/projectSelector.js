@@ -137,3 +137,7 @@ export const externalDocumentsSelector = createSelector(
   selectProject,
   project => project.currentProjectExternalDocuments
 )
+export const projectOverviewMapDataSelector = createSelector(
+  selectProject,
+  project => project.overview.mapData
+)

@@ -31,6 +31,7 @@ import { connect } from 'react-redux'
 import { LoadingSpinner, Button } from 'hds-react'
 import moment from 'moment'
 import { withRouter } from 'react-router-dom'
+import dayjs from 'dayjs'
 function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, history, isPrivileged }) {
   const { t } = useTranslation()
 
@@ -219,7 +220,7 @@ function FloorAreaChart({ filters, chartData, getProjectsOverviewFloorArea, hist
   }
 
   const getFormattedDate = date => {
-    return moment(date).format('DD.MM')
+    return dayjs(date).format('DD.MM')
   }
   const getFormattedDate2 = date => {
     return moment(date).format('YYYY-MM-DD')
