@@ -93,7 +93,8 @@
         "change-phase-error-message": "Täytä puuttuvat kentät"
     },
     "map-area": {
-        "title": "Kaavaprojektit kartalla"
+        "title": "Kaavaprojektit kartalla",
+        "loading-data": "Ladataan kaavaprojektien rajauksia"
     },
     "overview": {
         "title": "Yleisnäkymä",

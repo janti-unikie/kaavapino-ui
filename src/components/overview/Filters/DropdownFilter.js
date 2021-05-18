@@ -22,7 +22,6 @@ function DropdownFilter({ name, defaultValue, options, placeholder, onChange }) 
       onChange={data => {
        setCurrentValue( data )
       }}
-      defaultValue={currentValue}
       className="filter-dropdown"
       placeholder={placeholder}
     />

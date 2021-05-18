@@ -5,22 +5,28 @@ import FormField from '../../input/FormField'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { phasesSelector } from '../../../selectors/phaseSelector'
-import {  Modal, Form } from 'semantic-ui-react'
+import { Modal, Form } from 'semantic-ui-react'
 import { getProjectSnapshot, resetProjectSnapshot } from '../../../actions/projectActions'
 import { getFormValues } from 'redux-form'
 import { currentProjectSelector } from '../../../selectors/projectSelector'
-import moment from 'moment'
 import { CSVLink } from 'react-csv'
 import { withTranslation } from 'react-i18next'
 import { isObject } from 'lodash'
 import toPlaintext from 'quill-delta-to-plaintext'
 import { Button } from 'hds-react'
+import dayjs from 'dayjs'
 
 import './styles.scss'
 
 class DownloadProjectDataModal extends Component {
   getFormField = fieldProps => {
-    return <FormField className="download-project-data-field" {...fieldProps} onChange={this.onChange} />
+    return (
+      <FormField
+        className="download-project-data-field"
+        {...fieldProps}
+        onChange={this.onChange}
+      />
+    )
   }
 
   onChange = () => {
@@ -57,7 +63,7 @@ class DownloadProjectDataModal extends Component {
     const phase = formValues['phase']
     const date = formValues['date']
 
-    await getProjectSnapshot(currentProject.id, moment(date).format(), phase)
+    await getProjectSnapshot(currentProject.id, dayjs(date).format(), phase)
   }
   getPhaseFileName = phaseId => {
     const { phases } = this.props
@@ -70,26 +76,24 @@ class DownloadProjectDataModal extends Component {
     return phaseFileName
   }
   getModifiedData = originalData => {
-
     const modifiedData = {}
-    const entries = Object.entries( originalData )
+    const entries = Object.entries(originalData)
 
     for (const [key, value] of entries) {
       let currentValue = value
-      if ( value && isObject( value )) {
-        if ( value.ops ) {
+      if (value && isObject(value)) {
+        if (value.ops) {
           currentValue = toPlaintext(value.ops)
           currentValue = currentValue.trim()
         }
-        if ( value.link ) {
+        if (value.link) {
           currentValue = `${value.description} ${value.link}`
         }
-        if ( value.coordinates ) {
+        if (value.coordinates) {
           currentValue = value.coordinates
         }
       }
       modifiedData[key] = currentValue
-
     }
     return modifiedData
   }
@@ -99,13 +103,15 @@ class DownloadProjectDataModal extends Component {
     const phaseId = formValues && formValues['phase']
     const date = formValues && formValues['date']
 
-   const modifiedData = this.getModifiedData(currentProject.projectSnapshot ? currentProject.projectSnapshot.attribute_data : [])
+    const modifiedData = this.getModifiedData(
+      currentProject.projectSnapshot ? currentProject.projectSnapshot.attribute_data : []
+    )
     const phaseFileName = this.getPhaseFileName(phaseId)
 
     const fileName = phaseFileName
       ? `${currentProject.name}_${phaseFileName}.csv`
       : date
-      ? `${currentProject.name}_${moment(date).format('YYYYMMDD_HHmmSS')}.csv`
+      ? `${currentProject.name}_${dayjs(date).format('YYYYMMDD_HHmmSS')}.csv`
       : null
 
     return (
@@ -142,7 +148,7 @@ class DownloadProjectDataModal extends Component {
               })}
             </Form.Group>
           </Form>
-          <Button variant='secondary' onClick={this.loadClicked}>
+          <Button variant="secondary" onClick={this.loadClicked}>
             {t('print-project-data.load-project-data')}
           </Button>
           <div className="download-csv">
@@ -150,11 +156,7 @@ class DownloadProjectDataModal extends Component {
               <div>
                 {t('print-project-data.project-data-loaded')}
                 <div>
-                  <CSVLink
-                    data={[modifiedData]}
-                    separator=";"
-                    filename={fileName}
-                  >
+                  <CSVLink data={[modifiedData]} separator=";" filename={fileName}>
                     {t('print-project-data.load-csv')} ({fileName})
                   </CSVLink>
                 </div>
@@ -163,7 +165,7 @@ class DownloadProjectDataModal extends Component {
           </div>
         </Modal.Content>
         <Modal.Actions>
-          <Button variant='secondary' onClick={this.handleClose}>
+          <Button variant="secondary" onClick={this.handleClose}>
             {t('print-project-data.button-close')}
           </Button>
         </Modal.Actions>

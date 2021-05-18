@@ -2,6 +2,8 @@ import L from 'leaflet'
 import 'proj4'
 import 'proj4leaflet'
 
+export const helsinkiCenter = [60.192059, 24.945831]
+
 export const EPSG3879 = () => {
   const crsName = 'EPSG:3879'
   const projDef =

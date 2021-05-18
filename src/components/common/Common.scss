@@ -470,7 +470,7 @@ h4 {
 .log-card {
   max-height: 200px;
   overflow: auto;
-  .ui.grid>.column:not(.row) {
+  .ui.grid>.row {
     padding-top: 5px;
     padding-bottom: 5px;
   }

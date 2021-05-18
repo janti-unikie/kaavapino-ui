@@ -30,7 +30,7 @@ import {
   FETCH_SINGLE_FIELD_COMMENTS,
   fetchSingleFieldCommentsSuccessful
 } from '../actions/commentActions'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { error } from '../actions/apiActions'
 import {
   totalCommentsSelector,
@@ -114,7 +114,7 @@ function* fetchUnreadCommentsCountSaga({ payload: projectId }) {
 }
 
 function* markCommentsAsReadSaga({ payload: projectId }) {
-  const timestamp = moment().format('YYYY-MM-DDTHH:mm:ss')
+  const timestamp = dayjs().format('YYYY-MM-DDTHH:mm:ss')
 
   try {
     yield call(

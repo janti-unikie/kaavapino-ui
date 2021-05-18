@@ -14,7 +14,7 @@ import {
   IconAngleDown,
   IconInfoCircle
 } from 'hds-react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 function LoggingComponent(props) {
   const { t } = useTranslation()
 
@@ -31,7 +31,6 @@ function LoggingComponent(props) {
   const isFieldset = value => value && value.search && value.search('fieldset') !== -1
 
   const getFormattedValue = (value, isFieldSet, name, labels) => {
-  
     // Fieldset
     if (isFieldSet) {
       const fieldSetContent = getFieldSetContent(value, name)
@@ -97,7 +96,6 @@ function LoggingComponent(props) {
   }
 
   const getFieldSetContent = (value, name) => {
-    
     // If value is not fieldset
     if (!isObject(value) || value.ops || value.link) {
       return getFormattedValue(value, false, name)
@@ -111,9 +109,10 @@ function LoggingComponent(props) {
         const currentValue = value[currentIndex]
 
         if (isObject(currentValue)) {
-          returnValues.push(getFieldsetValues(currentValue, currentIndex, name, isFieldset(name)))
+          returnValues.push(
+            getFieldsetValues(currentValue, currentIndex, name, isFieldset(name))
+          )
         } else {
-          
           returnValues.push(
             currentValue ? getFormattedValue(currentValue, isFieldset, name) : 'Tyhjä'
           )
@@ -122,10 +121,14 @@ function LoggingComponent(props) {
       })
     return returnValues
   }
-  const findAttribute = key => props && props.attributes && props.attributes.find(attribute => attribute.name === key)
+  const findAttribute = key =>
+    props &&
+    props.attributes &&
+    props.attributes.find(attribute => attribute.name === key)
 
   // Check from field names
-  const isValidDate = name => name.lastIndexOf('pvm') !== -1 || name.lastIndexOf('paivamaara') !== -1
+  const isValidDate = name =>
+    name.lastIndexOf('pvm') !== -1 || name.lastIndexOf('paivamaara') !== -1
 
   const getFieldsetValues = (fieldset, currentIndex, name) => {
     let deleted = false
@@ -143,7 +146,7 @@ function LoggingComponent(props) {
     const current = foundValue !== undefined ? foundValue.label : name
 
     returnValues.push(
-      <div key={0} className='log-item'>
+      <div key={0} className="log-item">
         {deleted && <IconTrash size="s" />}
         <b>
           {current} {fixedIndex}
@@ -162,18 +165,20 @@ function LoggingComponent(props) {
         if (key !== '_deleted') {
           let value = getFormattedValue(fieldset[key], isFieldset(key), key)
 
-          const date = moment(value).format('DD.MM.YYYY')
+          const date = dayjs(value).format('DD.MM.YYYY')
           const foundValue = findAttribute(key)
 
           const current = foundValue !== undefined ? foundValue.label : key
 
           component = (
-            <div key={key + index} className='log-item'>
+            <div key={key + index} className="log-item">
               <>
                 {deleted && <IconTrash />}
                 {!isFieldset(key) && current}
               </>
-              <div>{isValidDate(key) ? date !== 'Invalid date' ? date : 'deleted' : value}</div>
+              <div>
+                {isValidDate(key) ? (date !== 'Invalid date' ? date : 'deleted') : value}
+              </div>
             </div>
           )
 
@@ -183,10 +188,8 @@ function LoggingComponent(props) {
 
           if (value === true) {
             component = (
-              <div key={key + index} className='log-item'>
-                <div>
-                  {deleted && <IconTrash />}
-                </div>
+              <div key={key + index} className="log-item">
+                <div>{deleted && <IconTrash />}</div>
                 <div>{value}</div>
               </div>
             )
@@ -200,59 +203,73 @@ function LoggingComponent(props) {
 
   return (
     <div className="nav-header-info">
-      {latestUpdate && <Button className="latest-update" variant="supplementary" iconLeft={icon} {...buttonProps}>
-        {latestUpdate}
-      </Button>}
+      {latestUpdate && (
+        <Button
+          className="latest-update"
+          variant="supplementary"
+          iconLeft={icon}
+          {...buttonProps}
+        >
+          {latestUpdate}
+        </Button>
+      )}
       <Card border aria-label="Loki" className="log-card" {...contentProps}>
         <Grid stackable columns="equal">
-        {infoOptions &&
-          infoOptions.map(option => {
-            return (
-              <>
-                <Grid.Column width={14}> 
-                  <div className="show-value">{option.text}</div>
-                </Grid.Column>
-                <Popup
-                  hideOnScroll={false}
-                  offset={[50, 50]}
-                  key={option.key}
-                  on='click'
-                  className="popup-logger"
-                  position="right center"
-                  wide="very"
-                  trigger={  <Grid.Column> <IconInfoCircle /> </Grid.Column> }
-                >
-                  <div className="show-value">
-                    <div>
-                      <b>{t('projects.logging.modified')}</b>
-                    </div>
-                    <div className="field-value">
-                      {getFormattedValue(
-                        option.newValue,
-                        isFieldset(option.name),
-                        option.name,
-                        option.labels
-                      )}
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      <b>{t('projects.logging.old')}</b>
-                    </div>
-                    <div className="field-value">
-                      {getFormattedValue(
-                        option.oldValue,
-                        isFieldset(option.name),
-                        option.name,
-                        option.labels
-                      )}
-                    </div>
-                  </div>
-                </Popup>      
-                </>
-            )
-          })}
-          </Grid>
+          {infoOptions &&
+            infoOptions.map((option, index) => {
+              return (
+                <Grid.Row key={option + index} >
+                  <Grid.Column width={14}>
+                    <div className="show-value">{option.text}</div>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <Popup
+                      hideOnScroll={false}
+                      offset={[50, 50]}
+                      key={index}
+                      on="click"
+                      className="popup-logger"
+                      position="right center"
+                      wide="very"
+                      trigger={
+                        <Grid.Column>
+                          {' '}
+                          <IconInfoCircle />{' '}
+                        </Grid.Column>
+                      }
+                    >
+                      <div className="show-value">
+                        <div>
+                          <b>{t('projects.logging.modified')}</b>
+                        </div>
+                        <div className="field-value">
+                          {getFormattedValue(
+                            option.newValue,
+                            isFieldset(option.name),
+                            option.name,
+                            option.labels
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <div>
+                          <b>{t('projects.logging.old')}</b>
+                        </div>
+                        <div className="field-value">
+                          {getFormattedValue(
+                            option.oldValue,
+                            isFieldset(option.name),
+                            option.name,
+                            option.labels
+                          )}
+                        </div>
+                      </div>
+                    </Popup>
+                  </Grid.Column>
+                </Grid.Row>
+              )
+            })}
+        </Grid>
       </Card>
     </div>
   )

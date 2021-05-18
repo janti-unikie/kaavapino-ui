@@ -1,7 +1,7 @@
 import { EDIT_PROJECT_TIMETABLE_FORM } from '../../../constants'
 import { getFieldAutofillValue } from '../../../utils/projectAutofillUtils'
 describe('Autofill tests', () => {
-  it('Autofill rule succeeds (string)', () => {
+ it('Autofill rule succeeds (string)', () => {
     const field = {}
     const conditionObject = {}
     conditionObject.variable = 'a'
@@ -1482,10 +1482,10 @@ describe('Autofill tests', () => {
     conditionObject3.comparison_value_type = 'boolean'
 
     const conditionObject4 = {}
-    conditionObject3.variable = 'tehty_muutos_muistutusten_johdosta'
-    conditionObject3.operator = '!='
-    conditionObject3.comparison_value = true
-    conditionObject3.comparison_value_type = 'boolean'
+    conditionObject4.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject4.operator = '!='
+    conditionObject4.comparison_value = true
+    conditionObject4.comparison_value_type = 'boolean'
 
     const condition = { condition: conditionObject1, then_branch: 'True' }
     const condition2 = { condition: conditionObject2, then_branch: 'True' }
@@ -1499,4 +1499,123 @@ describe('Autofill tests', () => {
     }
     expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
   })
+})
+it('New autofill rule', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'lautakunta_paatti_tarkistettu_ehdotus_4'
+  conditionObject1.operator = '=='
+  conditionObject1.comparison_value = 'hyvaksytty'
+  conditionObject1.comparison_value_type = 'string'
+
+  const conditionObject2 = {}
+  conditionObject2.variable = 'lautakunta_paatti_tarkistettu_ehdotus_3'
+  conditionObject2.operator = '=='
+  conditionObject2.comparison_value = 'hyvaksytty'
+  conditionObject2.comparison_value_type = 'string'
+
+  const conditionObject3 = {}
+  conditionObject3.variable = 'lautakunta_paatti_tarkistettu_ehdotus_2'
+  conditionObject3.operator = '=='
+  conditionObject3.comparison_value = 'hyvaksytty'
+  conditionObject3.comparison_value_type = 'string'
+
+  const conditionObject4 = {}
+  conditionObject4.variable = 'lautakunta_paatti_tarkistettu_ehdotus'
+  conditionObject4.operator = '=='
+  conditionObject4.comparison_value = 'hyvaksytty'
+  conditionObject4.comparison_value_type = 'string'
+
+  const condition = { condition: conditionObject1, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_4' }
+  const condition2 = { condition: conditionObject2, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_3' }
+  const condition3 = { condition: conditionObject3, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_2' }
+  const condition4 = { condition: conditionObject4, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa' }
+
+  field.autofill_rule = [condition, condition2, condition3, condition4]
+
+  const formValues = {
+    lautakunta_paatti_tarkistettu_ehdotus_3: "hyvaksytty",
+    milloin_tarkistettu_ehdotus_lautakunnassa_3: "10-12-1977"
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe("10-12-1977")
+})
+
+it('New autofill rule', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'lautakunta_paatti_tarkistettu_ehdotus_4'
+  conditionObject1.operator = '=='
+  conditionObject1.comparison_value = 'hyvaksytty'
+  conditionObject1.comparison_value_type = 'string'
+
+  const conditionObject2 = {}
+  conditionObject2.variable = 'lautakunta_paatti_tarkistettu_ehdotus_3'
+  conditionObject2.operator = '=='
+  conditionObject2.comparison_value = 'hyvaksytty'
+  conditionObject2.comparison_value_type = 'string'
+
+  const conditionObject3 = {}
+  conditionObject3.variable = 'lautakunta_paatti_tarkistettu_ehdotus_2'
+  conditionObject3.operator = '=='
+  conditionObject3.comparison_value = 'hyvaksytty'
+  conditionObject3.comparison_value_type = 'string'
+
+  const conditionObject4 = {}
+  conditionObject4.variable = 'lautakunta_paatti_tarkistettu_ehdotus'
+  conditionObject4.operator = '=='
+  conditionObject4.comparison_value = 'hyvaksytty'
+  conditionObject4.comparison_value_type = 'string'
+
+  const condition = { condition: conditionObject1, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_4' }
+  const condition2 = { condition: conditionObject2, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_3' }
+  const condition3 = { condition: conditionObject3, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_2' }
+  const condition4 = { condition: conditionObject4, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa' }
+
+  field.autofill_rule = [condition, condition2, condition3, condition4]
+
+  const formValues = {
+    lautakunta_paatti_tarkistettu_ehdotus: "hyvaksytty",
+    milloin_tarkistettu_ehdotus_lautakunnassa: "10-12-2977"
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe("10-12-2977")
+})
+
+it('New autofill rule 2', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'lautakunta_paatti_tarkistettu_ehdotus_4'
+  conditionObject1.operator = '=='
+  conditionObject1.comparison_value = 'hyvaksytty'
+  conditionObject1.comparison_value_type = 'string'
+
+  const conditionObject2 = {}
+  conditionObject2.variable = 'lautakunta_paatti_tarkistettu_ehdotus_3'
+  conditionObject2.operator = '=='
+  conditionObject2.comparison_value = 'hyvaksytty'
+  conditionObject2.comparison_value_type = 'string'
+
+  const conditionObject3 = {}
+  conditionObject3.variable = 'lautakunta_paatti_tarkistettu_ehdotus_2'
+  conditionObject3.operator = '=='
+  conditionObject3.comparison_value = 'hyvaksytty'
+  conditionObject3.comparison_value_type = 'string'
+
+  const conditionObject4 = {}
+  conditionObject4.variable = 'lautakunta_paatti_tarkistettu_ehdotus'
+  conditionObject4.operator = '=='
+  conditionObject4.comparison_value = 'hyvaksytty'
+  conditionObject4.comparison_value_type = 'string'
+
+  const condition = { condition: conditionObject1, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_4' }
+  const condition2 = { condition: conditionObject2, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_3' }
+  const condition3 = { condition: conditionObject3, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_2' }
+  const condition4 = { condition: conditionObject4, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa' }
+
+  field.autofill_rule = [condition, condition2, condition3, condition4]
+
+  const formValues = {
+    lautakunta_paatti_tarkistettu_ehdotus_3: "jotain muuta",
+    milloin_tarkistettu_ehdotus_lautakunnassa_3: "10-12-1977"
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(undefined)
 })

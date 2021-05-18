@@ -1,9 +1,9 @@
 import React from 'react'
-import moment from 'moment'
 import { getFormValues } from 'redux-form'
 import { EDIT_PROJECT_TIMETABLE_FORM } from '../../constants'
 import { getFieldAutofillValue } from '../../utils/projectAutofillUtils'
 import { useSelector } from 'react-redux'
+import dayjs from 'dayjs'
 
 const DeadlineInfoText = props => {
   const formValues = useSelector(getFormValues(EDIT_PROJECT_TIMETABLE_FORM))
@@ -19,7 +19,7 @@ const DeadlineInfoText = props => {
   }
 
   // Expect date in value
-  let value = inputValue && moment(inputValue).format('DD.MM.YYYY')
+  let value = inputValue && dayjs(inputValue).format('DD.MM.YYYY')
   if (value === 'Invalid date') {
     value = inputValue
   }
