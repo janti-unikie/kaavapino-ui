@@ -735,3 +735,46 @@ describe('VisibilityCondition tests', () => {
     expect(showField(field, formValues)).toBe(true)
   })
 })
+
+it('Shows field with != 0', () => {
+  const field = {}
+  field.visibility_conditions = [{
+      variable: 'muistutusten_lukumaara',
+      operator: '!=',
+      comparison_value: 0,
+      comparison_value_type: 'number'
+    }]
+
+  const formValues = {
+    muistutusten_lukumaara: 1
+  }
+  expect(showField(field, formValues)).toBe(true)
+})
+it('Shows field with != 0', () => {
+  const field = {}
+  field.visibility_conditions = [{
+      variable: 'muistutusten_lukumaara',
+      operator: '!=',
+      comparison_value: 0,
+      comparison_value_type: 'number'
+    }]
+
+  const formValues = {
+    muistutusten_lukumaara: 0
+  }
+  expect(showField(field, formValues, test.test)).toBe(false)
+})
+it('Shows field with != 0', () => {
+  const field = {}
+  field.visibility_conditions = [{
+      variable: 'muistutusten_lukumaara',
+      operator: '!=',
+      comparison_value: 0,
+      comparison_value_type: 'number'
+    }]
+
+  const formValues = {
+    muistutusten_lukumaara: 1
+  }
+  expect(showField(field, formValues, test.test)).toBe(true)
+})
