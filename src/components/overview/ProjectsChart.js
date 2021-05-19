@@ -69,7 +69,6 @@ function ProjectsChart({
 
   useEffect(() => {
 
-    console.log( storedFilter )
     if (!storedFilter || !isEqual(storedFilter, filter)) {
       clearProjectsOverviewProjectTypeData()
       setCurrentChartData(null)

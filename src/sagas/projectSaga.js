@@ -725,8 +725,6 @@ function* getProjectsOverviewFloorArea({ payload }) {
 
   const keys = Object.keys(payload)
 
-  console.log( payload )
-
   keys.forEach(key => {
     if (key === 'vuosi') {
       const value = payload[key]
