@@ -3,42 +3,58 @@ import PropTypes from 'prop-types'
 import { Select } from 'hds-react'
 import './styles.scss'
 
-function DropdownFilter({ name, defaultValue, options, placeholder, onChange, disabled }) {
-
+function DropdownFilter({
+  name,
+  defaultValue,
+  options,
+  placeholder,
+  onChange,
+  disabled,
+  multiSelect = true
+}) {
   const [currentValue, setCurrentValue] = useState()
   const [currentParameter, setCurrentParameter] = useState()
 
-
-   useEffect( () => {
-
+  useEffect(() => {
     const current = []
 
-    options && options.forEach(option => {
-     setCurrentParameter(option.parameter)
+    options &&
+      options.forEach(option => {
+        setCurrentParameter(option.parameter)
 
-      defaultValue && defaultValue.forEach( value => {
-       
-        if ( option.value === value ) {
-          current.push( option )
-        }
-      } )
-      
-    });
-    setCurrentValue( current )
+        if ( multiSelect ) {
+        defaultValue &&
+          defaultValue.forEach(value => {
+            if (option.value === value) {
+              current.push(option)
+              setCurrentValue(current)
+            }
+          })
+        } else {
+          if ( option.value === defaultValue ) {
+            setCurrentValue( option )
+          }
+        } 
+      })
+   
   }, [defaultValue])
-
 
   return (
     <Select
       name={name}
       clearable={false}
       id={name}
-      multiselect={true}
+      multiselect={multiSelect}
       options={options}
       onBlur={() => {
-        onChange( currentValue, currentParameter  )}}
+        onChange(currentValue, currentParameter)
+      }}
       onChange={data => {
-        setCurrentValue( data )
+        setCurrentValue(data)
+
+        if ( !multiSelect ) {
+          onChange(data, currentParameter)
+        }
       }}
       className="filter-dropdown"
       placeholder={placeholder}
@@ -50,7 +66,11 @@ function DropdownFilter({ name, defaultValue, options, placeholder, onChange, di
 DropdownFilter.propTypes = {
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
-  defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
+  defaultValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.array
+  ]),
   options: PropTypes.array.isRequired,
   noResultsMessage: PropTypes.string
 }

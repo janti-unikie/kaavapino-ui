@@ -725,11 +725,13 @@ function* getProjectsOverviewFloorArea({ payload }) {
 
   const keys = Object.keys(payload)
 
+  console.log( payload )
+
   keys.forEach(key => {
     if (key === 'vuosi') {
-      const values = payload[key].sort()
-      const startDate = dayjs(new Date(values[0], 0, 1)).format('YYYY-MM-DD')
-      const endDate = dayjs(new Date(values[0], 11, 31)).format('YYYY-MM-DD')
+      const value = payload[key]
+      const startDate = dayjs(new Date(value, 0, 1)).format('YYYY-MM-DD')
+      const endDate = dayjs(new Date(value, 11, 31)).format('YYYY-MM-DD')
 
       query = {
         ...query,
@@ -758,9 +760,9 @@ function* getProjectsOverviewBySubtype({ payload }) {
 
   keys.forEach(key => {
     if (key === 'vuosi') {
-      const values = payload[key].sort()
-      const startDate = dayjs(new Date(values[0], 0, 1)).format('YYYY-MM-DD')
-      const endDate = dayjs(new Date(values[0], 11, 31)).format('YYYY-MM-DD')
+      const value = payload[key]
+      const startDate = dayjs(new Date(value, 0, 1)).format('YYYY-MM-DD')
+      const endDate = dayjs(new Date(value, 11, 31)).format('YYYY-MM-DD')
       
       query = {
         ...query,

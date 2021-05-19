@@ -15,7 +15,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import FilterList from './Filters/FilterList'
 import { Grid, GridColumn, Popup } from 'semantic-ui-react'
-import { isNaN, isEqual } from 'lodash'
+import { isNaN, isEqual, isArray } from 'lodash'
 import {
   getFloorAreaChartData,
   BUSINESS_PREMISES,
@@ -69,7 +69,6 @@ function FloorAreaChart({
       getProjectsOverviewFloorArea(filter)
       setProjectsOverviewFloorAreaFilter(filter)
     }
-   
   }, [filter])
 
   useEffect(() => {
@@ -81,28 +80,34 @@ function FloorAreaChart({
     setTotal(chartData.total_predicted)
   }, [chartData])
 
-  const onFilterChange = (values, currentParameter ) => {
+  const onFilterChange = (values, currentParameter) => {
     if (!values || values.length === 0) {
-
-      const newFilter = Object.assign( {}, filter)
+      const newFilter = Object.assign({}, filter)
       delete newFilter[currentParameter]
       setFilter({
-       ...newFilter
+        ...newFilter
       })
       return
     }
-    const valueArray = []
-    let parameter
+    if (isArray(values)) {
+      const valueArray = []
+      let parameter
 
-    values.forEach(value => {
-      valueArray.push(value.value)
-      parameter = value.parameter
-    })
+      values.forEach(value => {
+        valueArray.push(value.value)
+        parameter = value.parameter
+      })
 
-    setFilter({
-      ...filter,
-      [parameter]: valueArray
-    })
+      setFilter({
+        ...filter,
+        [parameter]: valueArray
+      })
+    } else {
+      setFilter({
+        ...filter,
+        [values.parameter]: values.value
+      })
+    }
   }
 
   const goToProjectCard = id => {
@@ -163,7 +168,7 @@ function FloorAreaChart({
     const getProjectInformation = index => {
       const dailyStats = chartData && chartData.daily_stats
 
-      const current = getFormattedDate2(props.payload.date)
+      const current = getFormattedDataToOriginal(props.payload.date)
       const currentDate = dailyStats.find(stats => {
         if (stats.date === current) return stats
       })
@@ -177,7 +182,7 @@ function FloorAreaChart({
       }
       const dailyStats = chartData && chartData.daily_stats
 
-      const current = getFormattedDate2(props.payload.date)
+      const current = getFormattedDataToOriginal(props.payload.date)
       const currentDate =
         dailyStats.find &&
         dailyStats.find(stats => {
@@ -265,7 +270,7 @@ function FloorAreaChart({
   const getFormattedHeaderDate = date => {
     return moment(date).format('DD.MM.YYYY')
   }
-  const getFormattedDate2 = date => {
+  const getFormattedDataToOriginal = date => {
     return moment(date).format('YYYY-MM-DD')
   }
 

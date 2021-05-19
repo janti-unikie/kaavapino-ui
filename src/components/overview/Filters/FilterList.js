@@ -3,11 +3,7 @@ import PropTypes from 'prop-types'
 import DropdownFilter from './DropdownFilter'
 import projectUtils from '../../../utils/projectUtils'
 import { Grid } from 'semantic-ui-react'
-function FilterList({
-  filterList,
-  currentFilter,
-  onChange
-}) {
+function FilterList({ filterList, currentFilter, onChange }) {
   const [filters, setFilters] = useState(currentFilter)
 
   useEffect(() => {
@@ -29,7 +25,6 @@ function FilterList({
       }
     })
   }
-
   const getFiltersList = () => {
     if (!filterList) {
       return null
@@ -47,6 +42,7 @@ function FilterList({
             placeholder={field.name}
             onChange={onChange}
             type={field.type}
+            multiSelect={!field.accepts_year}
           />
         </Grid.Column>
       )
