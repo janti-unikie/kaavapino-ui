@@ -20,8 +20,7 @@ import {
   getFloorAreaChartData,
   BUSINESS_PREMISES,
   LIVING,
-  PREDICTION,
-  PUBLIC
+  PREDICTION
 } from './floorAreaChartUtils'
 import {
   projectOverviewFloorAreaSelector,
@@ -379,28 +378,6 @@ function FloorAreaChart({
                 stroke="grey"
                 strokeDasharray="3 3"
                 strokeWidth="2px"
-                dot={false}
-                yAxisId="left"
-              />
-              <Line
-                isAnimationActive={false}
-                legendType="plainline"
-                name={t('floor-area.public-area')}
-                type="monotone"
-                dataKey={PUBLIC}
-                stroke="blue"
-                strokeWidth="2px"
-                dot={false}
-                yAxisId="left"
-              />
-              <Line
-                isAnimationActive={false}
-                legendType="none"
-                type="monotone"
-                dataKey={PUBLIC + PREDICTION}
-                stroke="blue"
-                strokeWidth="2px"
-                strokeDasharray="3 3"
                 dot={false}
                 yAxisId="left"
               />
