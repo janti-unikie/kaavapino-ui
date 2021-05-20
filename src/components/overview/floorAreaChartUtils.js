@@ -1,4 +1,4 @@
-export const OVERALL = 'kerrosalan_lisays_yhteensa_asuminen'
+export const LIVING = 'kerrosalan_lisays_yhteensa_asuminen'
 export const PUBLIC = 'kerrosalan_lisays_yhteensa_julkinen'
 export const OTHER = 'kerrosalan_lisays_yhteensa_muut'
 export const BUSINESS_PREMISES = 'kerrosalan_lisays_yhteensa_toimitila'
@@ -26,7 +26,7 @@ export const getFloorAreaChartData = data => {
     }
     const isPrediction = current.floor_area.is_prediction
 
-    const overallData = current.floor_area[OVERALL] ? current.floor_area[OVERALL] : 0
+    const overallData = current.floor_area[LIVING] ? current.floor_area[LIVING] : 0
     const publicData = current.floor_area[PUBLIC] ? current.floor_area[PUBLIC] : 0
     const otherData = current.floor_area[OTHER] ? current.floor_area[OTHER] : 0
     const businessPremisesData = current.floor_area[BUSINESS_PREMISES]
@@ -38,22 +38,22 @@ export const getFloorAreaChartData = data => {
     const meetings = current[MEETINGS]
 
     if (isPrediction) {
-      chartData[OVERALL] = 0
+      chartData[LIVING] = 0
       chartData[PUBLIC] = 0
       chartData[OTHER] = 0
       chartData[BUSINESS_PREMISES] = 0
 
-      chartData[OVERALL + PREDICTION] = overallData
+      chartData[LIVING + PREDICTION] = overallData
       chartData[PUBLIC + PREDICTION] = publicData
       chartData[OTHER + PREDICTION] = otherData
       chartData[BUSINESS_PREMISES + PREDICTION] = businessPremisesData
     } else {
-      chartData[OVERALL] = overallData
+      chartData[LIVING] = overallData
       chartData[PUBLIC] = publicData
       chartData[OTHER] = otherData
       chartData[BUSINESS_PREMISES] = businessPremisesData
 
-      chartData[OVERALL + PREDICTION] = 0
+      chartData[LIVING + PREDICTION] = 0
       chartData[PUBLIC + PREDICTION] = 0
       chartData[OTHER + PREDICTION] = 0
       chartData[BUSINESS_PREMISES + PREDICTION] = 0

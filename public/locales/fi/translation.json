@@ -105,7 +105,7 @@
         "total-number": " / {{total}} k-m²",
         "current-number": " {{current}} k-m²",
         "y-axis-title": "Tuhatta k-m²",
-        "all-area": "Kokonaiskerrosala",
+        "public-area": "Julkinen kerrosala",
         "living-area": "Asuinkerrosala",
         "business-area": "Toimitilakerrosala",
         "other-area": "Muu kerrosala",
@@ -116,7 +116,8 @@
             "phase": "Vaihe",
             "process-size": "Prosessin koko",
             "responsible-person": "Vastuuhenkilö"
-        }
+        },
+        "now": "Nyt"
     },
     "project-types": {
         "title": "Kaavaprojektien jakauma",

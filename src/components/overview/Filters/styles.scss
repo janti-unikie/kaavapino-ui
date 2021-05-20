@@ -10,4 +10,10 @@
  ul {
    overflow: hidden;
  }
+ .filter-dropdown > div > button {
+   font-size: 12px;
+ }
+ .filter-dropdown > div > ul > li {
+  font-size: 12px;
+}
 }

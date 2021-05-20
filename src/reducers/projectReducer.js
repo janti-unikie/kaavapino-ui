@@ -37,8 +37,13 @@ import {
   GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL,
   GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL,
   GET_EXTERNAL_DOCUMENTS_SUCCESSFUL,
+  CLEAR_PROJECTS_OVERVIEW_FLOOR_AREA,
   GET_PROJECTS_OVERVIEW_MAP_DATA_SUCCESSFUL,
-  CLEAR_PROJECTS_OVERVIEW_MAP_DATA
+  CLEAR_PROJECTS_OVERVIEW_MAP_DATA,
+  CLEAR_PROJECTS_OVERVIEW_PROJECT_TYPE_DATA,
+  SET_OVERVIEW_MAP_FILTERS,
+  SET_OVERVIEW_FLOOR_AREA_FILTERS,
+  SET_OVERVIEW_PROJECT_TYPE_FILTERS
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -372,6 +377,51 @@ export const reducer = (state = initialState, action) => {
         overview: {
           ...state.overview,
           mapData: {}
+        }
+      }
+    }
+    case CLEAR_PROJECTS_OVERVIEW_FLOOR_AREA: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          floorArea: {}
+        }
+      }
+    }
+    case CLEAR_PROJECTS_OVERVIEW_PROJECT_TYPE_DATA: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          bySubtype: {}
+        }
+      }
+    }
+    case SET_OVERVIEW_MAP_FILTERS: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          mapFilters: action.payload
+        }
+      }
+    }
+    case SET_OVERVIEW_FLOOR_AREA_FILTERS: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          floorAreaFilters: action.payload
+        }
+      }
+    }
+    case SET_OVERVIEW_PROJECT_TYPE_FILTERS: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          projectTypeFilters: action.payload
         }
       }
     }
