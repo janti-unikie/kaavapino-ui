@@ -153,3 +153,7 @@ export const projectOverviewProjectTypeFiltersSelector = createSelector(
   selectProject,
   project => project.overview.projectTypeFilters
 )
+export const projectOverviewFloorAreaTargetsSelector = createSelector(
+  selectProject,
+  project => project.overview.floorAreaTargets
+)
