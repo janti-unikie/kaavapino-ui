@@ -26,7 +26,7 @@ export const getFloorAreaChartData = data => {
     }
     const isPrediction = current.floor_area.is_prediction
 
-    const overallData = current.floor_area[LIVING] ? current.floor_area[LIVING] : 0
+    const livingData = current.floor_area[LIVING] ? current.floor_area[LIVING] : 0
     const publicData = current.floor_area[PUBLIC] ? current.floor_area[PUBLIC] : 0
     const otherData = current.floor_area[OTHER] ? current.floor_area[OTHER] : 0
     const businessPremisesData = current.floor_area[BUSINESS_PREMISES]
@@ -38,29 +38,22 @@ export const getFloorAreaChartData = data => {
     const meetings = current[MEETINGS]
 
     if (isPrediction) {
-      chartData[LIVING] = 0
-      chartData[PUBLIC] = 0
-      chartData[OTHER] = 0
-      chartData[BUSINESS_PREMISES] = 0
-
-      chartData[LIVING + PREDICTION] = overallData
-      chartData[PUBLIC + PREDICTION] = publicData
-      chartData[OTHER + PREDICTION] = otherData
-      chartData[BUSINESS_PREMISES + PREDICTION] = businessPremisesData
+     
+      chartData[LIVING + PREDICTION] = livingData !== 0 ? livingData : undefined
+      chartData[PUBLIC + PREDICTION] = publicData !== 0 ? publicData : undefined
+      chartData[OTHER + PREDICTION] = otherData !== 0 ? otherData : undefined
+      chartData[BUSINESS_PREMISES + PREDICTION] = businessPremisesData !== 0 ? businessPremisesData : undefined
     } else {
-      chartData[LIVING] = overallData
-      chartData[PUBLIC] = publicData
-      chartData[OTHER] = otherData
-      chartData[BUSINESS_PREMISES] = businessPremisesData
+      chartData[LIVING] = livingData !== 0 ? livingData : undefined
+      chartData[PUBLIC] = publicData !== 0 ? publicData : undefined
+      chartData[OTHER] = otherData !== 0 ? otherData : undefined
+      chartData[BUSINESS_PREMISES] = businessPremisesData !== 0 ? businessPremisesData : undefined
 
-      chartData[LIVING + PREDICTION] = 0
-      chartData[PUBLIC + PREDICTION] = 0
-      chartData[OTHER + PREDICTION] = 0
-      chartData[BUSINESS_PREMISES + PREDICTION] = 0
     }
     chartData[MEETINGS] = meetings
     chartData[DATE] = date
 
+    console.log( isPrediction, current.floor_area[BUSINESS_PREMISES] )
     floorAreas.push( chartData )
   })
 
