@@ -91,7 +91,7 @@ export const getFieldAutofillValue = (
             continue
           }
           returnValue = thenBranch
-          continue
+          break
         }
       }
       // Boolean type

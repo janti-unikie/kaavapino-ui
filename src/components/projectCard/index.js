@@ -30,7 +30,7 @@ export const PROJECT_FLOOR_AREA = 'Kerrosalatiedot'
 export const PROJECT_TIMETABLE = 'Aikataulu'
 export const PROJECT_CONTACT = 'Yhteyshenkilöt'
 export const PROJECT_DOCUMENTS = 'Dokumentit'
-export const PROJECT_BORDER = 'Suunnittelualueen raja'
+export const PROJECT_BORDER = 'Suunnittelualueen rajaus'
 
 function ProjectCardPage({
   projectId,
@@ -141,6 +141,7 @@ function ProjectCardPage({
         if (field.section_name === PROJECT_CONTACT) {
           currentContactsFields.push(newField)
         }
+         
         if (field.section_name === PROJECT_BORDER) {
           currentPlanningRestriction = newField
         }

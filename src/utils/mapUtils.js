@@ -42,7 +42,8 @@ export const formatGeoJSONToPositions = geoJSON => {
     return [[]]
   }
   geoJSON.forEach(polygon => {
-    if (polygon.length === 0) {
+
+    if (polygon === null || polygon.length === 0) {
       result.push([])
     } else {
       result.push(polygon[0].slice(0, -1).map(([lat, lng]) => ({ lat, lng })))

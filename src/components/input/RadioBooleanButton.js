@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { RadioButton } from 'hds-react'
 
 const RadioBooleanButton = ({
@@ -9,7 +9,7 @@ const RadioBooleanButton = ({
   disabled,
   className
 }) => {
-  const [radioValue, setRadioValue] = useState(value)
+  const [radioValue, setRadioValue] = useState(null)
 
   const handleOnChange = value => {
     setRadioValue(value)
@@ -18,6 +18,10 @@ const RadioBooleanButton = ({
       onRadioChange()
     }
   }
+
+  useEffect(() => {
+    setRadioValue(value)
+  }, [value])
 
   return (
     <div>

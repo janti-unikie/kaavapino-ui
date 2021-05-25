@@ -93,7 +93,7 @@ class ProjectEditPage extends Component {
       schema,
       selectedPhase,
       saveProjectFloorArea,
-      project: { name, attribute_data, phase, id },
+      project: { name, attribute_data, phase, id, geoserver_data },
       saving,
       changingPhase,
       switchDisplayedPhase,
@@ -184,9 +184,10 @@ class ProjectEditPage extends Component {
             handleSave={this.handleAutoSave}
             sections={currentSchema.sections}
             attributeData={attribute_data}
+            geoServerData={geoserver_data}
             saving={saving}
             // changingPhase={changingPhase}
-            initialValues={attribute_data}
+            initialValues={Object.assign(attribute_data, geoserver_data)}
             phase={phase}
             selectedPhase={selectedPhase}
             disabled={formDisabled}
