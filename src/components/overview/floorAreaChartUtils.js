@@ -39,25 +39,16 @@ export const getFloorAreaChartData = data => {
     const meetings = current[MEETINGS]
 
     if (isPrediction) {
-      chartData[LIVING] = 0
-      chartData[PUBLIC] = 0
-      chartData[OTHER] = 0
-      chartData[BUSINESS_PREMISES] = 0
-
-      chartData[LIVING + PREDICTION] = livingData
-      chartData[PUBLIC + PREDICTION] = publicData
-      chartData[OTHER + PREDICTION] = otherData
-      chartData[BUSINESS_PREMISES + PREDICTION] = businessPremisesData
+     
+      chartData[LIVING + PREDICTION] = livingData !== 0 ? livingData : undefined
+      chartData[PUBLIC + PREDICTION] = publicData !== 0 ? publicData : undefined
+      chartData[OTHER + PREDICTION] = otherData !== 0 ? otherData : undefined
+      chartData[BUSINESS_PREMISES + PREDICTION] = businessPremisesData !== 0 ? businessPremisesData : undefined
     } else {
-      chartData[LIVING] = livingData
-      chartData[PUBLIC] = publicData
-      chartData[OTHER] = otherData
-      chartData[BUSINESS_PREMISES] = businessPremisesData
-
-      chartData[LIVING + PREDICTION] = 0
-      chartData[PUBLIC + PREDICTION] = 0
-      chartData[OTHER + PREDICTION] = 0
-      chartData[BUSINESS_PREMISES + PREDICTION] = 0
+      chartData[LIVING] = livingData !== 0 ? livingData : undefined
+      chartData[PUBLIC] = publicData !== 0 ? publicData : undefined
+      chartData[OTHER] = otherData !== 0 ? otherData : undefined
+      chartData[BUSINESS_PREMISES] = businessPremisesData !== 0 ? businessPremisesData : undefined
 
     }
 
