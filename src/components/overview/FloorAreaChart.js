@@ -20,17 +20,20 @@ import {
   getFloorAreaChartData,
   BUSINESS_PREMISES,
   LIVING,
-  PREDICTION
+  PREDICTION,
+  LIVING_OVERALL
 } from './floorAreaChartUtils'
 import {
   projectOverviewFloorAreaSelector,
-  projectOverviewFloorAreaFiltersSelector
+  projectOverviewFloorAreaFiltersSelector,
+  projectOverviewFloorAreaTargetsSelector
 } from '../../selectors/projectSelector'
 
 import {
   getProjectsOverviewFloorArea,
   clearProjectsOverviewFloorArea,
-  setProjectsOverviewFloorAreaFilter
+  setProjectsOverviewFloorAreaFilter,
+  getProjectsOverviewFloorAreaTargets
 } from '../../actions/projectActions'
 import { connect } from 'react-redux'
 import { LoadingSpinner, Button } from 'hds-react'
@@ -45,7 +48,9 @@ function FloorAreaChart({
   isPrivileged,
   clearProjectsOverviewFloorArea,
   setProjectsOverviewFloorAreaFilter,
-  storedFilter
+  storedFilter,
+  getProjectsOverviewFloorAreaTargets,
+  floorAreaTargets
 }) {
   const { t } = useTranslation()
 
@@ -59,6 +64,7 @@ function FloorAreaChart({
   useEffect(() => {
     getProjectsOverviewFloorArea(filter)
     setCurrentChartData(getFloorAreaChartData(chartData))
+    getProjectsOverviewFloorAreaTargets()
   }, [])
 
   useEffect(() => {
@@ -72,12 +78,22 @@ function FloorAreaChart({
 
   useEffect(() => {
     setCurrentChartData(getFloorAreaChartData(chartData))
+    const currentValue = filter && filter['vuosi'] ? filter['vuosi'] : currentYear
+    
+    setTotal( floorAreaTargets[currentValue] ? floorAreaTargets[currentValue] : 0)
   }, [chartData])
 
   useEffect(() => {
-    setCurrent(chartData.total_to_date)
-    setTotal(chartData.total_predicted)
+    const graphData = getFloorAreaChartData(chartData)
+    const livingOverall = graphData && graphData[LIVING_OVERALL]
+    setCurrent(livingOverall ? livingOverall : 0 )
   }, [chartData])
+
+  useEffect(() => {
+    const currentValue = filter && filter['year'] ? filter['year'] : currentYear
+    
+    setTotal( floorAreaTargets[currentValue])
+  }, [floorAreaTargets])
 
   const onFilterChange = (values, currentParameter) => {
     if (!values || values.length === 0) {
@@ -277,6 +293,8 @@ function FloorAreaChart({
     setProjectsOverviewFloorAreaFilter({})
   }
 
+  const currentYear = moment(chartData.date).year()
+
   return (
     <div className="floor-area">
       <Grid stackable columns="equal">
@@ -291,6 +309,7 @@ function FloorAreaChart({
             onChange={onFilterChange}
             filterList={filters}
             onClear={onClear}
+            defaultYear={currentYear}
           />
         </GridColumn>
       </Grid>
@@ -420,13 +439,15 @@ FloorAreaChart.propTypes = {
 const mapDispatchToProps = {
   getProjectsOverviewFloorArea,
   clearProjectsOverviewFloorArea,
-  setProjectsOverviewFloorAreaFilter
+  setProjectsOverviewFloorAreaFilter,
+  getProjectsOverviewFloorAreaTargets
 }
 
 const mapStateToProps = state => {
   return {
     chartData: projectOverviewFloorAreaSelector(state),
-    storedFilter: projectOverviewFloorAreaFiltersSelector(state)
+    storedFilter: projectOverviewFloorAreaFiltersSelector(state),
+    floorAreaTargets: projectOverviewFloorAreaTargetsSelector(state)
   }
 }
 

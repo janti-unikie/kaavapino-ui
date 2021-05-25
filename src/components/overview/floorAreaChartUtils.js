@@ -6,6 +6,7 @@ export const PREDICTION = '_prediction'
 export const FLOOR_AREAS = 'floorAreas'
 export const MEETINGS = 'meetings'
 export const DATE = 'date'
+export const LIVING_OVERALL ='living_overall'
 
 export const getFloorAreaChartData = data => {
   const modifiedData = {}
@@ -18,7 +19,7 @@ export const getFloorAreaChartData = data => {
 
   const floorAreas = []
 
-  data.daily_stats.forEach(current => {
+  data.daily_stats.forEach( current => {
     const chartData = {}
 
     if ( !current || !current.floor_area ) {
@@ -50,14 +51,19 @@ export const getFloorAreaChartData = data => {
       chartData[BUSINESS_PREMISES] = businessPremisesData !== 0 ? businessPremisesData : undefined
 
     }
+
     chartData[MEETINGS] = meetings
     chartData[DATE] = date
-
-    console.log( isPrediction, current.floor_area[BUSINESS_PREMISES] )
+  
     floorAreas.push( chartData )
+
   })
 
+  const realValues = data.daily_stats.filter( value => !value.floor_area.is_prediction)
+  
+  const lastValue = realValues && realValues[realValues.length - 1]
   modifiedData[FLOOR_AREAS] = floorAreas
+  modifiedData[LIVING_OVERALL] = lastValue.floor_area[LIVING]
 
   return modifiedData
 }
