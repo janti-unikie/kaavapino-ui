@@ -131,9 +131,9 @@ function CustomMap({
         <Map
           className="geometry-input"
           center={current}
-          scrollWheelZoom={false}
+          scrollWheelZoom={true}
           zoom={8}
-          doubleClickZoom={false}
+          doubleClickZoom={true}
           crs={crs}
         >
           {getPolygonArea()}

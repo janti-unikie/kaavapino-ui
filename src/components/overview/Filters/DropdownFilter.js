@@ -10,7 +10,8 @@ function DropdownFilter({
   placeholder,
   onChange,
   disabled,
-  multiSelect = true
+  multiSelect = true,
+  yearSelect
 }) {
   const [currentValue, setCurrentValue] = useState()
   const [currentParameter, setCurrentParameter] = useState()
@@ -22,21 +23,20 @@ function DropdownFilter({
       options.forEach(option => {
         setCurrentParameter(option.parameter)
 
-        if ( multiSelect ) {
-        defaultValue &&
-          defaultValue.forEach(value => {
-            if (option.value === value) {
-              current.push(option)
-              setCurrentValue(current)
-            }
-          })
+        if (multiSelect) {
+          defaultValue &&
+            defaultValue.forEach(value => {
+              if (option.value === value) {
+                current.push(option)
+                setCurrentValue(current)
+              }
+            })
         } else {
-          if ( option.value === defaultValue ) {
-            setCurrentValue( option )
+          if (option.value === defaultValue) {
+            setCurrentValue(option)
           }
-        } 
+        }
       })
-   
   }, [defaultValue])
 
   return (
@@ -52,12 +52,12 @@ function DropdownFilter({
       onChange={data => {
         setCurrentValue(data)
 
-        if ( !multiSelect ) {
+        if (!multiSelect) {
           onChange(data, currentParameter)
         }
       }}
       className="filter-dropdown"
-      placeholder={placeholder}
+      placeholder={yearSelect ? defaultValue : placeholder}
       disabled={disabled}
     />
   )

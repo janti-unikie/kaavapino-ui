@@ -61,6 +61,8 @@ export const SET_OVERVIEW_MAP_FILTERS = "Set overview map filters"
 export const SET_OVERVIEW_FLOOR_AREA_FILTERS = "Set overview floor area filters"
 export const SET_OVERVIEW_PROJECT_TYPE_FILTERS = "Set overview project type filters"
 export const CLEAR_PROJECTS_OVERVIEW_PROJECT_TYPE_DATA = "Clear projects data"
+export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS = "get projects overview floor area targets"
+export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL = "get projects overview floor area targets successful"
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -287,4 +289,11 @@ export const setProjectsOverviewProjectTypeFilter = filter => ({
 })
 export const clearProjectsOverviewProjectTypeData = () => ({
   type: CLEAR_PROJECTS_OVERVIEW_PROJECT_TYPE_DATA
+})
+export const getProjectsOverviewFloorAreaTargetsSuccessful = targets => ({
+  type: GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL,
+  payload: targets
+})
+export const getProjectsOverviewFloorAreaTargets = () => ({
+  type: GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS
 })

@@ -101,7 +101,7 @@
         "clear-selections": "Tyhjennä valinnat"
     },
     "floor-area": {
-        "title": "Tarkistettujen kaavaehdotusten kerrosala {{date}}",
+        "title": "Tarkistettujen kaavaehdotusten asuinkerrosala {{date}}",
         "total-number": " / {{total}} k-m²",
         "current-number": " {{current}} k-m²",
         "y-axis-title": "k-m²",

@@ -76,7 +76,10 @@ import {
   getExternalDocumentsSuccessful,
   GET_EXTERNAL_DOCUMENTS,
   GET_PROJECTS_OVERVIEW_MAP_DATA,
-  getProjectsOverviewMapDataSuccessful
+  getProjectsOverviewMapDataSuccessful,
+  getProjectsOverviewFloorAreaTargetsSuccessful,
+  GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS
+
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
@@ -89,7 +92,8 @@ import {
   overviewBySubtypeApi,
   overviewFiltersApi,
   externalDocumentsApi,
-  overviewMapApi
+  overviewMapApi,
+  overviewFloorAreaTargetApi
 } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
 import {
@@ -128,7 +132,8 @@ export default function* projectSaga() {
     takeLatest(GET_PROJECTS_OVERVIEW_BY_SUBTYPE, getProjectsOverviewBySubtype),
     takeLatest(GET_PROJECTS_OVERVIEW_FILTERS, getProjectsOverviewFilters),
     takeLatest(GET_EXTERNAL_DOCUMENTS, getExternalDocumentsSaga),
-    takeLatest(GET_PROJECTS_OVERVIEW_MAP_DATA, getProjectOverviewMapDataSaga)
+    takeLatest(GET_PROJECTS_OVERVIEW_MAP_DATA, getProjectOverviewMapDataSaga),
+    takeLatest(GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS, getProjectsOverviewFloorAreaTargets)
   ])
 }
 
@@ -815,6 +820,14 @@ function* getProjectsOverviewFilters() {
     try {
       const mapData = yield call(overviewMapApi.get,  { query: query })
       yield put(getProjectsOverviewMapDataSuccessful(mapData))
+    } catch (e) {
+      yield put(error(e))
+    }
+  }
+  function* getProjectsOverviewFloorAreaTargets() {
+    try {
+      const targets = yield call(overviewFloorAreaTargetApi.get)
+      yield put(getProjectsOverviewFloorAreaTargetsSuccessful(targets))
     } catch (e) {
       yield put(error(e))
     }

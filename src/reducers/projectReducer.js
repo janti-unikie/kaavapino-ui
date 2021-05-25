@@ -43,7 +43,8 @@ import {
   CLEAR_PROJECTS_OVERVIEW_PROJECT_TYPE_DATA,
   SET_OVERVIEW_MAP_FILTERS,
   SET_OVERVIEW_FLOOR_AREA_FILTERS,
-  SET_OVERVIEW_PROJECT_TYPE_FILTERS
+  SET_OVERVIEW_PROJECT_TYPE_FILTERS,
+  GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -69,7 +70,8 @@ export const initialState = {
     floorArea: {},
     bySubtype: {},
     filters: [],
-    mapData: {}
+    mapData: {},
+    floorAreaTargets: {}
   }
 }
 
@@ -368,6 +370,15 @@ export const reducer = (state = initialState, action) => {
         overview: {
           ...state.overview,
           mapData: action.payload
+        }
+      }
+    }
+    case GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          floorAreaTargets: action.payload
         }
       }
     }
