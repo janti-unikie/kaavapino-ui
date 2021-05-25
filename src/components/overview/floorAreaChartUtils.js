@@ -62,8 +62,11 @@ export const getFloorAreaChartData = data => {
   const realValues = data.daily_stats.filter( value => !value.floor_area.is_prediction)
   
   const lastValue = realValues && realValues[realValues.length - 1]
-  modifiedData[FLOOR_AREAS] = floorAreas
-  modifiedData[LIVING_OVERALL] = lastValue.floor_area[LIVING]
 
+  if ( lastValue && Object.entries( lastValue ) > 0 ) {
+    modifiedData[LIVING_OVERALL] = lastValue.floor_area[LIVING]
+  }
+  modifiedData[FLOOR_AREAS] = floorAreas
+ 
   return modifiedData
 }
