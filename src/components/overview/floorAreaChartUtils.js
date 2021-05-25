@@ -63,7 +63,7 @@ export const getFloorAreaChartData = data => {
   
   const lastValue = realValues && realValues[realValues.length - 1]
 
-  if ( lastValue && Object.entries( lastValue ) > 0 ) {
+  if ( lastValue && Object.entries( lastValue ).length > 0 ) {
     modifiedData[LIVING_OVERALL] = lastValue.floor_area[LIVING]
   }
   modifiedData[FLOOR_AREAS] = floorAreas
