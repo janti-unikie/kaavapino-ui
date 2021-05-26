@@ -25,7 +25,10 @@ const FieldSet = ({
   syncronousErrors,
   handleSave,
   onRadioChange,
-  updated
+  updated,
+  field: {
+    disable_fieldset_delete_add
+  }
 }) => {
   const handleBlurSave = () => {
     setTimeout(function () {
@@ -83,7 +86,7 @@ const FieldSet = ({
                 <div className="fieldset-header">
                   <h3 className="fieldset-header-number">{i + 1}.</h3>
 
-                  <IconCross
+                  {!disable_fieldset_delete_add && <IconCross
                     className="fieldset-remove"
                     color="red"
                     size="l"
@@ -92,7 +95,7 @@ const FieldSet = ({
                       setHiddenIndex( i )
                       handleSave()
                     }}
-                  />
+                  />}
                 </div>
                 {fields.map((field, j) => {
                     const currentName = `${set}.${field.name}`
@@ -197,6 +200,8 @@ const FieldSet = ({
           </React.Fragment>
         )
       })}
+      {!disable_fieldset_delete_add &&
+      <>
       <Button
         className={`fieldset-button-add ${
           requiredError ? 'fieldset-internal-error' : null
@@ -230,6 +235,8 @@ const FieldSet = ({
       >
         Poista
       </Button>
+      </>
+      }
     </React.Fragment>
   )
 }

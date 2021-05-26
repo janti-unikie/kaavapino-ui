@@ -18,7 +18,7 @@ class EditForm extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, initialize, attributeData, submitErrors } = this.props
+    const { saving, initialize, attributeData, geoServerData, submitErrors } = this.props
 
     if (
       prevProps.saving &&
@@ -26,7 +26,9 @@ class EditForm extends Component {
       !submitErrors &&
       Object.keys(submitErrors).length > 0
     ) {
-      initialize(attributeData)
+      const newInitialize = Object.assign(attributeData, geoServerData )
+      
+      initialize( newInitialize )
     }
   }
 
@@ -43,7 +45,7 @@ class EditForm extends Component {
       submitErrors,
       showCreate
     } = this.props
-
+    
     return (
       <Form className="form-container" autoComplete="off">
         <h2 id="accordion-title">{title}</h2>

@@ -41,22 +41,18 @@ const Shoutbox = props => {
 
   return (
     <>
-      <ShoutBoxButton
-        onClick={toggleOpen}
-        unreadCommentsCount={countToShow}
-      />
       <div className={`shoutbox ${open ? 'open' : ''}`} ref={shoutboxRef}>
         <ShoutBoxButton
           onClick={toggleOpen}
           unreadCommentsCount={countToShow}
         />
         <div className="comment-list-wrapper">
-          <div
+          <button
             onClick={toggleOpen}
             className="shoutbox-close-icon"
           >
            <IconCross />
-          </div>
+          </button>
           <Comments project={project} />
         </div>
       </div>

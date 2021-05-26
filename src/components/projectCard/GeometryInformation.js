@@ -5,11 +5,19 @@ import Geometry from '../input/Geometry'
 function GeometryInformation(props) {
   const { t } = useTranslation()
 
+ const inputProps = {
+   ...props,
+   input: {
+     value: props.field && props.field.value
+   }
+ }
+ 
+
   return (
     <div>
       <h3>{t('project.planning-area-constraints')}</h3>
       <div className="geometry-input-container">
-        <Geometry {...props} />
+        <Geometry {...inputProps} />
       </div>
     </div>
   )
