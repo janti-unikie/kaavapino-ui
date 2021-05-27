@@ -112,8 +112,12 @@
 .map-area {
     .filters-list {
         margin-bottom: 20px;
-
     }
+    .leaflet-popup-content-wrapper {
+        font-size: 14px;
+        border-radius: 5px;
+    }
+
 }
 .xAxis {
     margin-right: 10px;

@@ -1,9 +1,9 @@
 import React from 'react'
 import { Polygon } from 'react-leaflet'
 
-const CustomPolygon = ({ positions, children, ...rest }) => {
+const CustomPolygon = ({ positions, children }) => {
   return (
-    <Polygon positions={positions} fillOpacity={0.3} {...rest}>
+    <Polygon  positions={positions} fillOpacity={0.4}>
       {children}
     </Polygon>
   )

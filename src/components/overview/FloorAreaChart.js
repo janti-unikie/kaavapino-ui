@@ -37,7 +37,6 @@ import {
 } from '../../actions/projectActions'
 import { connect } from 'react-redux'
 import { LoadingSpinner, Button } from 'hds-react'
-import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import dayjs from 'dayjs'
 function FloorAreaChart({
@@ -283,17 +282,17 @@ function FloorAreaChart({
   }
 
   const getFormattedHeaderDate = date => {
-    return moment(date).format('DD.MM.YYYY')
+    return dayjs(date).format('DD.MM.YYYY')
   }
   const getFormattedDataToOriginal = date => {
-    return moment(date).format('YYYY-MM-DD')
+    return dayjs(date).format('YYYY-MM-DD')
   }
 
   const onClear = () => {
     setProjectsOverviewFloorAreaFilter({})
   }
 
-  const currentYear = moment(chartData.date).year()
+  const currentYear = dayjs(chartData.date).year()
 
   return (
     <div className="floor-area">

@@ -15,8 +15,13 @@ import { usersSelector } from '../../selectors/userSelector'
 import { userIdSelector } from '../../selectors/authSelector'
 import projectUtils from '../../utils/projectUtils'
 
-
-const Overview = ({ getProjectsOverviewFilters, filterData, fetchUsers, currentUserId, users }) => {
+const Overview = ({
+  getProjectsOverviewFilters,
+  filterData,
+  fetchUsers,
+  currentUserId,
+  users
+}) => {
   const { t } = useTranslation()
   const [currentFilterData, setCurrentFilterData] = useState(filterData)
 
@@ -32,14 +37,15 @@ const Overview = ({ getProjectsOverviewFilters, filterData, fetchUsers, currentU
   const getFilters = key => {
     const filters = []
 
-    currentFilterData && currentFilterData.forEach(filter => {
-      if (filter[key]) {
-        filters.push(filter)
-      }
-    })
+    currentFilterData &&
+      currentFilterData.forEach(filter => {
+        if (filter[key]) {
+          filters.push(filter)
+        }
+      })
     return filters
   }
-  const isPrivileged = projectUtils.isUserPrivileged( currentUserId, users )
+  const isPrivileged = projectUtils.isUserPrivileged(currentUserId, users)
   return (
     <div className="overview">
       <NavHeader
@@ -49,7 +55,10 @@ const Overview = ({ getProjectsOverviewFilters, filterData, fetchUsers, currentU
       <Grid stackable columns="equal">
         <Grid.Column>
           <Segment>
-            <CustomMap filters={getFilters('filters_on_map')} />
+            <CustomMap
+              isPrivileged={isPrivileged}
+              filters={getFilters('filters_on_map')}
+            />
           </Segment>
         </Grid.Column>
       </Grid>
@@ -83,7 +92,7 @@ const mapStateToProps = state => {
   return {
     filterData: projectOverviewFiltersSelector(state),
     users: usersSelector(state),
-    currentUserId: userIdSelector(state),
+    currentUserId: userIdSelector(state)
   }
 }
 

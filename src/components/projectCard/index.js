@@ -86,16 +86,20 @@ function ProjectCardPage({
     const currentContractFields = []
     let currentPlanningRestriction = null
 
+    const projectData = Object.assign(
+      currentProject && currentProject.attribute_data,
+      currentProject && currentProject.geoserver_data
+    )
     projectCardFields &&
       projectCardFields.forEach(field => {
         let value = projectUtils.findValueFromObject(
-          currentProject && currentProject.attribute_data,
+          projectData,
           field.name
         )
 
         const returnValues = []
         projectUtils.findValuesFromObject(
-          currentProject && currentProject.attribute_data,
+          projectData,
           field.name,
           returnValues
         )
@@ -141,7 +145,7 @@ function ProjectCardPage({
         if (field.section_name === PROJECT_CONTACT) {
           currentContactsFields.push(newField)
         }
-         
+
         if (field.section_name === PROJECT_BORDER) {
           currentPlanningRestriction = newField
         }
@@ -227,11 +231,10 @@ function ProjectCardPage({
     )
   }
 
-  
   const firstRow = renderFirstRow()
   const secondRow = renderSecondRow()
   const timelineRow = renderTimeLineRow()
-  
+
   return (
     <div className="project-card">
       {firstRow}
