@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Map, TileLayer } from 'react-leaflet'
 import { useTranslation } from 'react-i18next'
 import FilterList from './Filters/FilterList'
-import Polygon from '../common/Polygon'
 import { formatGeoJSONToPositions, helsinkiCenter } from '../../utils/mapUtils'
 import {
   projectOverviewMapDataSelector,
@@ -18,6 +17,7 @@ import {
 import { LoadingSpinner } from 'hds-react'
 import { isEmpty, isEqual } from 'lodash'
 import { EPSG3879 } from '../../utils/mapUtils'
+import CustomMapPolygon from './CustomMapPolygon'
 
 function CustomMap({
   filters,
@@ -25,7 +25,8 @@ function CustomMap({
   mapData,
   clearProjectsOverviewMapData,
   setProjectsOverviewMapFilter,
-  storedFilter
+  storedFilter,
+  isPrivileged
 }) {
   const crs = EPSG3879()
 
@@ -66,18 +67,22 @@ function CustomMap({
     currentMapData.projects &&
     currentMapData.projects.forEach(value => {
       const coordinates = getCoordinates(value.geoserver_data)
-      coordinates && currentCoordinates.push([coordinates])
+      coordinates &&
+        currentCoordinates.push({
+          project: value,
+          color: value.phase_color,
+          coordinates: [coordinates]
+        })
     })
 
   const [current] = useState(helsinkiCenter)
 
   const onFilterChange = (values, currentParameter) => {
-   
     if (!values || values.length === 0) {
-      const newFilter = Object.assign( {}, filter)
+      const newFilter = Object.assign({}, filter)
       delete newFilter[currentParameter]
       setFilter({
-       ...newFilter
+        ...newFilter
       })
       return
     }
@@ -105,7 +110,17 @@ function CustomMap({
     return (
       currentCoordinates &&
       currentCoordinates.map((current, index) => {
-        return <Polygon key={index} positions={formatGeoJSONToPositions(current)} />
+        return (
+          <div key={index}>
+            <CustomMapPolygon
+              project={current.project}
+              color={current.color}
+              key={index}
+              positions={formatGeoJSONToPositions(current.coordinates)}
+              isPrivileged={isPrivileged}
+            />
+          </div>
+        )
       })
     )
   }
@@ -135,7 +150,7 @@ function CustomMap({
           zoom={8}
           doubleClickZoom={true}
           crs={crs}
-        >
+         >
           {getPolygonArea()}
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
