@@ -41,11 +41,13 @@ export const getFieldAutofillValue = (
 
       const lastIndex = fieldName ? fieldName.lastIndexOf('.') : -1
       const fieldNameFieldsetPart = fieldName
-        ? fieldName.substring(0, lastIndex) + '.'
+        ? fieldName.substring(0, lastIndex)
         : ''
+        let formValue = get(formValues, variable)
 
-      let formValue = get(formValues, `${fieldNameFieldsetPart}${variable}`)
-
+        if ( fieldNameFieldsetPart ) {
+          formValue = get(formValues, `${fieldNameFieldsetPart}.${variable}`)
+        }
       let formExtraValue
       if (extraVariables && extraVariables[0]) {
         // Check first if value is not inside fieldset

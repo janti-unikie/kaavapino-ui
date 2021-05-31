@@ -93,7 +93,7 @@ class CustomField extends Component {
   renderNumber = props => {
     const { onBlur } = this.props
 
-    return <CustomInput onBlur={onBlur} {...props} type="number" />
+    return <CustomInput min={0} onBlur={onBlur} {...props} type="number" />
   }
 
   renderYearSelect = props => {
@@ -176,7 +176,7 @@ class CustomField extends Component {
   renderSelect = props => {
     const { choices, multiple_choice, placeholder_text, formName } = this.props.field
     const { onBlur } = this.props
-
+ 
     return (
       <SelectInput
         {...props}
@@ -196,6 +196,7 @@ class CustomField extends Component {
 
   renderBooleanRadio = props => {
     const { input, onRadioChange, defaultValue } = this.props
+
     return (
       <BooleanRadio
         onBlur={props.onBlur}
@@ -308,15 +309,23 @@ class CustomField extends Component {
   }
 
   getInput = field => {
+
     // Since there might be rules which has boolean type and choices, avoid selecting select and select
     // boolean radiobutton intead
-    if (field.choices && field.type !== 'boolean') {
+    if (field.choices && field.type !== 'boolean' ) {
       /* Should perhaps check (field.type === 'select' && field.choices), but there were tests against it.
       Will get back to this. */
-      return this.renderSelect
+      if ( field.autofill_readonly) {
+       return this.renderString
+      } else {
+        return this.renderSelect
+      }
     }
     if (field.display === 'dropdown') {
       return this.renderYearSelect
+    }
+    if ( field.display === 'readonly_checkbox') {
+      return this.renderDeadlineCheckbox
     }
 
     if (field.type === 'radio' && field.options) {
@@ -430,7 +439,9 @@ class CustomField extends Component {
         />
       )
     }
-    if (field.autofill_rule && field.display !== 'readonly') {
+
+    if (field.autofill_rule ) {
+
       return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
     }
 
