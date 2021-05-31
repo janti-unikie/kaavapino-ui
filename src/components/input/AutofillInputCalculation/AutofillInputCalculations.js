@@ -80,7 +80,7 @@ const AutofillInputCalculations = ({
       {autofill_readonly && calculations ? (
         <div className="autofill-readonly-input">
           <div className="autofill-readonly-input-value">
-            {`${value && value.toFixed ? value.toFixed(2) : '0.00'}`} k-m&sup2;
+            {`${value ? value : 0}`} k-m&sup2;
           </div>
         </div>
       ) : (
@@ -94,7 +94,7 @@ const AutofillInputCalculations = ({
         <div className="autofill-readonly-input">
           <div className="autofill-readonly-input-value">
 
-          {`${value && value.toFixed ? value.toFixed(2) : '0.00'}${value && unit ? ` ${unit}` : ''}`}
+          {`${value ? value : 0}${value && unit ? ` ${unit}` : ''}`}
 
           </div>
         </div>
