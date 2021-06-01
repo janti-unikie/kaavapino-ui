@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { takeLatest, takeEvery, put, all, call, select } from 'redux-saga/effects'
+import { takeLatest, put, all, call, select } from 'redux-saga/effects'
 import { isEqual } from 'lodash'
 import { push } from 'connected-react-router'
 import { actions as toastrActions } from 'react-redux-toastr'
@@ -125,7 +125,7 @@ export default function* projectSaga() {
     takeLatest(INCREASE_AMOUNT_OF_PROJECTS_TO_SHOW, increaseAmountOfProjectsToShowSaga),
     takeLatest(SORT_PROJECTS, sortProjectsSaga),
     takeLatest(SET_AMOUNT_OF_PROJECTS_TO_INCREASE, setAmountOfProjectsToIncreaseSaga),
-    takeEvery(GET_PROJECT, getProject),
+    takeLatest(GET_PROJECT, getProject),
     takeLatest(RESET_PROJECT_DEADLINES, resetProjectDeadlines),
     takeLatest(GET_PROJECT_SNAPSHOT, getProjectSnapshot),
     takeLatest(GET_PROJECTS_OVERVIEW_FLOOR_AREA, getProjectsOverviewFloorArea),
