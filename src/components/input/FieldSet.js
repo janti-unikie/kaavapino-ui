@@ -208,6 +208,7 @@ const FieldSet = ({
         }`}
         onClick={() => {
           sets.push({})
+          handleBlurSave()
         }}
         disabled={disabled}
         variant="secondary"

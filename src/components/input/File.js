@@ -163,7 +163,7 @@ class File extends Component {
     )
 
     if (current) {
-      if (current.includes('.pdf')) {
+      if (current.includes('.pdf') && src ) {
         filePreview = (
           <Document
             style={{
