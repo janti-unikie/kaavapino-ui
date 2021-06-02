@@ -179,10 +179,6 @@ export const reducer = (state = initialState, action) => {
     case INITIALIZE_PROJECT: {
       return {
         ...state,
-        projects: [],
-        ownProjects: [],
-        amountOfProjectsToIncrease: 10,
-        amountOfProjectsToShow: 10,
         currentProject: null,
         currentProjectLoaded: false
       }

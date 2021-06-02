@@ -15,19 +15,19 @@ const SelectInput = ({
 }) => {
   const currentValue = []
 
-  const getValue = value => {
+  const getLabel = value => {
     const current = options.find(option => option.value === value)
     return current && current.label
   }
   let currentSingleValue
 
   if (multiple) {
-
-    if ( isArray( input.value )) {
+    if (isArray(input.value)) {
       input.value.forEach(value =>
-        currentValue.push({ label: getValue(value), value: value })
-    )} else {
-      currentValue.push( input.value )
+        currentValue.push({ label: getLabel(value), value: value })
+      )
+    } else {
+      currentValue.push(input.value)
     }
   } else {
     const current = options.find(option => option.value === input.value)
@@ -42,7 +42,7 @@ const SelectInput = ({
       placeholder={placeholder}
       className="selection"
       id={input.name}
-          name={input.name}
+      name={input.name}
       multiselect={multiple}
       error={inputUtils.hasError(error)}
       onBlur={onBlur}

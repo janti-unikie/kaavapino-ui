@@ -5,17 +5,18 @@ import { getFieldAutofillValue } from '../../utils/projectAutofillUtils'
 import { useSelector } from 'react-redux'
 import { Checkbox } from 'hds-react'
 
-const DeadlineCheckbox = ({
+const CustomCheckbox = ({
   input: { name, value, onChange },
   meta: { error },
   autofillRule,
   label,
   className,
   disabled,
-  updated
+  updated,
+  formName
 }) => {
-
-  const formValues = useSelector(getFormValues(EDIT_PROJECT_TIMETABLE_FORM))
+ 
+  const formValues = useSelector(getFormValues(formName ? formName : EDIT_PROJECT_TIMETABLE_FORM))
   let inputValue = value
 
   if (autofillRule) {
@@ -43,4 +44,4 @@ const DeadlineCheckbox = ({
   )
 }
 
-export default DeadlineCheckbox
+export default CustomCheckbox

@@ -14,7 +14,7 @@ import CustomRadioButton from './CustomRadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
 import OnHoldCheckbox from './OnholdCheckbox'
-import DeadlineCheckbox from './DeadlineCheckbox'
+import CustomCheckbox from './CustomCheckbox'
 
 import AutofillInputCalculations from './AutofillInputCalculation/AutofillInputCalculations'
 
@@ -273,12 +273,13 @@ class CustomField extends Component {
   }
 
   renderDeadlineCheckbox = props => {
-    const { field } = this.props
+    const { field, formName } = this.props
     return (
-      <DeadlineCheckbox
+      <CustomCheckbox
         {...props}
         label={field.label}
         autofillRule={field.autofill_rule}
+        formName={formName}
       />
     )
   }
