@@ -1939,4 +1939,47 @@ it('New autofill first false then true', () => {
   expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
 })
 
+it('Autofill rule project visibility check', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'luodaanko_nakyvaksi'
+  conditionObject1.operator = '=='
+  conditionObject1.comparison_value = true
+  conditionObject1.comparison_value_type = 'boolean'
+
+  const condition = {
+    condition: conditionObject1,
+    then_branch: '',
+    variables: ['luodaanko_nakyvaksi']
+  }
+  field.autofill_rule = [condition]
+
+  const formValues = {
+    luodaanko_nakyvaksi: true
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+})
+
+it('Autofill rule project visibility check 2', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'luodaanko_nakyvaksi'
+  conditionObject1.operator = '=='
+  conditionObject1.comparison_value = true
+  conditionObject1.comparison_value_type = 'boolean'
+
+  const condition = {
+    condition: conditionObject1,
+    then_branch: '',
+    variables: ['luodaanko_nakyvaksi']
+  }
+  field.autofill_rule = [condition]
+
+  const formValues = {
+    luodaanko_nakyvaksi: false
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+})
+
+
 

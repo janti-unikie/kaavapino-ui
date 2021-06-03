@@ -51,9 +51,9 @@ export const getFieldAutofillValue = (
       if (extraVariables && extraVariables[0]) {
         // Check first if value is not inside fieldset
         formExtraValue = formValues[extraVariables[0]]
-
+       
         if (formExtraValue === undefined) {
-          formExtraValue = formValues[extraVariables[0]]
+          formExtraValue = projectUtils.findValueFromObject( formValues, extraVariables[0] )
 
           if (formExtraValue === undefined) {
             formExtraValue = get(
@@ -64,13 +64,12 @@ export const getFieldAutofillValue = (
         }
       }
 
-      if (!formExtraValue) {
+      if (formExtraValue === undefined || formExtraValue === null) {
         formExtraValue = ''
       }
       // Special case to check "Aloituspäivä" for timetable modal
       if (callerFormName === EDIT_PROJECT_TIMETABLE_FORM) {
 
-        console.log( variable )
         formValue =
           formValues[variable] === undefined
             ? projectUtils.findValueFromObject(formValues, variable)
