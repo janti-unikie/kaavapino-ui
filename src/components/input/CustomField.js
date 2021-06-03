@@ -24,6 +24,7 @@ import AutofillInput from './AutofillInput/AutofillInput'
 import _ from 'lodash'
 import DeadlineInfoText from './DeadlineInfoText'
 import { get } from 'lodash'
+import { EDIT_PROJECT_TIMETABLE_FORM } from '../../constants'
 class CustomField extends Component {
   yearOptions = []
   shouldComponentUpdate(p) {
@@ -274,6 +275,7 @@ class CustomField extends Component {
 
   renderDeadlineCheckbox = props => {
     const { field, formName } = this.props
+
     return (
       <CustomCheckbox
         {...props}
@@ -325,7 +327,8 @@ class CustomField extends Component {
     if (field.display === 'dropdown') {
       return this.renderYearSelect
     }
-    if ( field.display === 'readonly_checkbox') {
+    if ( field.display === 'readonly_checkbox' 
+      && this.props.formName === EDIT_PROJECT_TIMETABLE_FORM) {
       return this.renderDeadlineCheckbox
     }
 
@@ -441,8 +444,7 @@ class CustomField extends Component {
       )
     }
 
-    if (field.autofill_rule ) {
-
+    if (field.autofill_rule && formName !== EDIT_PROJECT_TIMETABLE_FORM ) {
       return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
     }
 

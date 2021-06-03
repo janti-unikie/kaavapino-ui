@@ -33,6 +33,7 @@ export const getFieldAutofillValue = (
       if (!condition) {
         continue
       }
+
       const variable = condition.variable
       const operator = condition.operator
       const comparisonValue = condition.comparison_value
@@ -40,14 +41,12 @@ export const getFieldAutofillValue = (
       const extraVariables = autofill.variables
 
       const lastIndex = fieldName ? fieldName.lastIndexOf('.') : -1
-      const fieldNameFieldsetPart = fieldName
-        ? fieldName.substring(0, lastIndex)
-        : ''
-        let formValue = get(formValues, variable)
-
-        if ( fieldNameFieldsetPart ) {
-          formValue = get(formValues, `${fieldNameFieldsetPart}.${variable}`)
-        }
+      const fieldNameFieldsetPart = fieldName ? fieldName.substring(0, lastIndex) : ''
+      let formValue = projectUtils.findValueFromObject(formValues, variable)
+      
+      if (fieldNameFieldsetPart) {
+        formValue = get(formValues, `${fieldNameFieldsetPart}.${variable}`)
+      }
       let formExtraValue
       if (extraVariables && extraVariables[0]) {
         // Check first if value is not inside fieldset
@@ -69,12 +68,14 @@ export const getFieldAutofillValue = (
         formExtraValue = ''
       }
       // Special case to check "Aloituspäivä" for timetable modal
-      if (!formValue && callerFormName === EDIT_PROJECT_TIMETABLE_FORM) {
+      if (callerFormName === EDIT_PROJECT_TIMETABLE_FORM) {
+
+        console.log( variable )
         formValue =
           formValues[variable] === undefined
             ? projectUtils.findValueFromObject(formValues, variable)
             : formValues[variable]
-
+       
         // Now only one variable is expected
         formExtraValue = extraVariables
           ? projectUtils.findValueFromObject(formValues, extraVariables[0])
@@ -174,11 +175,16 @@ export const getFieldAutofillValue = (
           formValues[thenBranch] === undefined
             ? projectUtils.findValueFromObject(formValues, thenBranch)
             : formValues[thenBranch]
-        if (!formValue && formValue !== false && formValue !== '' && comparisonValueType === 'number') {
+        if (
+          !formValue &&
+          formValue !== false &&
+          formValue !== '' &&
+          comparisonValueType === 'number'
+        ) {
           returnValue = false
           continue
         }
-    
+
         if (operator === EQUAL && comparisonValue === formValue) {
           returnValue = thenFormValue || thenBranch
           continue

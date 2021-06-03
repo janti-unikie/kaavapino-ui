@@ -20,9 +20,6 @@ const AutofillInput = ({
     if (!formValues) {
       return
     }
-    if (formValues[name] === autoFillValue && formValues[name] !== undefined) {
-      return
-    }
 
     let currentValue = formValues[name]
 
@@ -51,6 +48,7 @@ const AutofillInput = ({
       }
       // To get field value
       const value = name.substring(lastIndex + 1, name.length)
+
       if (formValues && formValues[fieldSet] && formValues[fieldSet][currentFieldSet]) {
         currentValue = formValues[fieldSet][currentFieldSet][value]
       }
