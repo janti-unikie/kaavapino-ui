@@ -6,3 +6,4 @@ RUN apt-get install -y postgresql-client
 # Run the container in the background
 ENTRYPOINT ["tail"]
 CMD ["-f","/dev/null"]
+# Test
