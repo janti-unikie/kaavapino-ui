@@ -6,16 +6,13 @@ import { connect } from 'react-redux'
 import { getProject, getProjectSuccessful } from '../../actions/projectActions'
 import { timelineProjectSelector } from '../../selectors/projectSelector'
 import { findWeek } from './helpers/helpers'
-import { IconError, IconRefresh, Button, LoadingSpinner } from 'hds-react'
+import { IconError } from 'hds-react'
 
 function ProjectTimeline(props) {
   const { deadlines, projectView } = props
   const [showError, setShowError] = useState(false)
   const [drawMonths, setDrawMonths] = useState([])
   const [drawItems, setDrawItems] = useState([])
-  const [showLoadProject, setShowLoadProject] = useState(false)
-  const [loadingProject, setLoadingProject] = useState(false)
-  const [timelineLoaded, setTimelineLoaded] = useState(false)
   const monthNames = {
     0: 'Tammi',
     1: 'Helmi',
@@ -32,9 +29,7 @@ function ProjectTimeline(props) {
   }
   useEffect(() => {
     if (!projectView) {
-      if (!timelineLoaded) {
-        setShowLoadProject(true)
-      }
+      
       const months = createMonths(deadlines)
       createDrawMonths(months.months)
     } else {
@@ -42,11 +37,9 @@ function ProjectTimeline(props) {
     }
   }, [])
   useEffect(() => {
-    if (props.timelineProject && loadingProject) {
+    if (props.timelineProject) {
       props.timelineProject.forEach(timelineProject => {
         if (timelineProject.id === props.id) {
-          setLoadingProject(false)
-          setShowLoadProject(false)
           createTimelineItems(timelineProject.deadlines)
         }
       })
@@ -325,12 +318,7 @@ function ProjectTimeline(props) {
       return null
     }
   }
-  function loadProject() {
-    if (!loadingProject) {
-      props.getProject(props.id)
-      setLoadingProject(true)
-    }
-  }
+  
   function createTimelineItems(timelineDeadlines) {
     const months = createMonths(timelineDeadlines)
     const deadlineArray = createDeadlines(timelineDeadlines)
@@ -339,20 +327,7 @@ function ProjectTimeline(props) {
     }
     createDrawMonths(months.months)
     createDrawItems(deadlineArray.deadlines)
-    setTimelineLoaded(true)
   }
-
-  const showButtons = () =>
-    loadingProject ? (
-      <LoadingSpinner />
-    ) : (
-      <Button
-        variant="supplementary"
-        aria-label="Lataa aikajana"
-        onClick={() => loadProject()}
-        iconRight={loadingProject ? <LoadingSpinner /> : <IconRefresh />}
-      />
-    )
   return (
     <div className="timeline-graph-container">
       {showError ? (
@@ -360,9 +335,6 @@ function ProjectTimeline(props) {
           <IconError />
           <span>Projektin aikataulu ei ole ajan tasalla.</span>
         </div>
-      ) : null}
-      {showLoadProject ? (
-        <div className="timeline-load-project-message">{showButtons()} </div>
       ) : null}
       <div
         className={`timeline-item-container ${showError ? 'timeline-error' : null}`}
