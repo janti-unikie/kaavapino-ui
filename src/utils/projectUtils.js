@@ -230,7 +230,7 @@ const generateArrayOfYearsForChart = () => {
   const years = []
 
   // eslint-disable-next-line for-direction
-  for (let year = max; year >= min; year--) {
+  for (let year = min; year < max; year++) {
     years.push({ key: year.toString(), label: year.toString(), value: year })
   }
   return years
