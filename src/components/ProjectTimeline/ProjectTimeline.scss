@@ -10,7 +10,7 @@
 
   .timeline-error-message {
     position: absolute;
-    z-index: 1;
+    z-index: 10;
     margin-left: -160px;
     left: 50%;
     top: 10px;
@@ -28,8 +28,35 @@
       position: absolute;
       top: 18px;
       left: 68px;
+      opacity: 1;
     }
   }
+    .timeline-onhold-message {
+      position: absolute;
+      z-index: 10;
+      margin-left: -160px;
+      left: 50%;
+      top: 10px;
+      width: 320px;
+      height: 56px;
+      border-left: 4px solid $color-warning;
+      background-color: $color-warning2;
+      text-align: center;
+      
+      svg {
+        position: absolute;
+        top: 10px !important;
+        left: 26px !important;
+      }
+      span {
+        position: absolute;
+        top: 18px;
+        left: 68px;
+        opacity: 1;
+      }
+   
+  }
+ 
   .timeline-load-project-message {
     position: absolute;
     z-index: 1;
@@ -157,4 +184,7 @@
 }
 .timeline-error {
   color: 	$color-disabled
+}
+.hide-background {
+  opacity: 0.8;
 }

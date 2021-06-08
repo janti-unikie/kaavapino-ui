@@ -76,9 +76,10 @@ const sortProjects = (projects, options) => {
   return projects
     .slice(0, amountOfProjectsToShow)
     .sort((a, b) => {
-      const p1 = formatFilterProject(a, true, phases, users)[targetAttributes[sort]]
-      const p2 = formatFilterProject(b, true, phases, users)[targetAttributes[sort]]
-
+      const p1 = formatFilterProject(a, true, phases, users)[targetAttributes[sort]] 
+      const p2 = formatFilterProject(b, true, phases, users)[targetAttributes[sort]] 
+      
+      
       return dir === 0 ? (p1 > p2 ? 1 : -1) : p1 < p2 ? 1 : -1
     })
     .concat(projects.slice(amountOfProjectsToShow, projects.length))
@@ -93,7 +94,8 @@ const formatFilterProject = (project, sort = false, phases, users) => {
   const { subtype } = project
   const { name } = project
   const projectId = project.pino_number || '-'
-  const { hankenumero } = project.attribute_data
+  const hankenumero = project.attribute_data.hankenumero || '-' 
+
   return { name, hankenumero, user, modified_at, phase, subtype, projectId }
 }
 
@@ -228,7 +230,7 @@ const generateArrayOfYearsForChart = () => {
   const years = []
 
   // eslint-disable-next-line for-direction
-  for (let year = max; year >= min; year--) {
+  for (let year = min; year < max; year++) {
     years.push({ key: year.toString(), label: year.toString(), value: year })
   }
   return years

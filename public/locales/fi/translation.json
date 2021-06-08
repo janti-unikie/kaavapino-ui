@@ -30,7 +30,9 @@
         "title": "Päivitä aikataulut",
         "error": "Virhe: {{error}}",
         "warning": "Päivitettyjen aikataulutietojen tallentaminen saattaa kestää hieman pidempään kun Kaavapino tekee laskutoimituksia.",
-        "estimated": "Kaavapinon arvio"
+        "estimated": "Kaavapinon arvio",
+        "project-stopped": "Projekti on toistaikseksi keskeytetty.",
+        "timeline-error": "Projekti ei ole ajan tasalla."
     },
     "common": {
         "cancel": "Peruuta",

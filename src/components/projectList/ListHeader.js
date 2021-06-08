@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Radio } from 'semantic-ui-react'
-import { IconAngleUp, IconAngleDown } from 'hds-react'
+import { IconAngleUp, IconAngleDown, Button } from 'hds-react'
 
 const ListHeader = ({
   items,
@@ -23,10 +23,10 @@ const ListHeader = ({
       <div className="project-list-header">
         {items.map((item, index) => {
           return (
-            <span className="header-item" key={index} onClick={() => sort(index)}>
+            <Button variant="supplementary" className="header-item" key={index} onClick={() => sort(index)}>
               {item}
               {selected === index && getArrowIcon()}
-            </span>
+            </Button>
           )
         })}
         <span className="header-item project-timeline-toggle">
