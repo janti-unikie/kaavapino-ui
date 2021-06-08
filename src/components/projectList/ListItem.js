@@ -21,6 +21,7 @@ const ListItem = ({
   isUserPrivileged,
   modifyProject,
   deadlines,
+  onhold,
   item: {
     phaseName,
     phaseColor,
@@ -76,7 +77,7 @@ const ListItem = ({
         </span>
       </div>
       <div className="project-list-item-graph">
-        {showGraph && <ProjectTimeline deadlines={deadlines} projectView={true} />}
+        {showGraph && <ProjectTimeline deadlines={deadlines} projectView={true} onhold={onhold}/>}
       </div>
     </div>
   )

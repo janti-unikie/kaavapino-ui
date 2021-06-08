@@ -7,9 +7,10 @@ import { getProject, getProjectSuccessful } from '../../actions/projectActions'
 import { timelineProjectSelector } from '../../selectors/projectSelector'
 import { findWeek } from './helpers/helpers'
 import { IconError } from 'hds-react'
+import { useTranslation } from 'react-i18next'
 
 function ProjectTimeline(props) {
-  const { deadlines, projectView } = props
+  const { deadlines, projectView, onhold } = props
   const [showError, setShowError] = useState(false)
   const [drawMonths, setDrawMonths] = useState([])
   const [drawItems, setDrawItems] = useState([])
@@ -27,9 +28,11 @@ function ProjectTimeline(props) {
     10: 'Marras',
     11: 'Joulu'
   }
+
+  const { t } = useTranslation()
+
   useEffect(() => {
     if (!projectView) {
-      
       const months = createMonths(deadlines)
       createDrawMonths(months.months)
     } else {
@@ -318,7 +321,7 @@ function ProjectTimeline(props) {
       return null
     }
   }
-  
+
   function createTimelineItems(timelineDeadlines) {
     const months = createMonths(timelineDeadlines)
     const deadlineArray = createDeadlines(timelineDeadlines)
@@ -328,21 +331,31 @@ function ProjectTimeline(props) {
     createDrawMonths(months.months)
     createDrawItems(deadlineArray.deadlines)
   }
+  const containerClass =
+    onhold || showError
+      ? 'timeline-graph-container hide-background'
+      : 'timeline-graph-container'
   return (
-    <div className="timeline-graph-container">
-      {showError ? (
+    <div className={containerClass}>
+      {onhold ? (
+        <div className="timeline-onhold-message">
+          <IconError />
+          <span>{t('deadlines.project-stopped')}</span>
+        </div>
+      ) : null}
+      {showError && !onhold ? (
         <div className="timeline-error-message">
           <IconError />
-          <span>Projektin aikataulu ei ole ajan tasalla.</span>
+          <span>{t('deadlines.timeline-error')}</span>
         </div>
       ) : null}
       <div
-        className={`timeline-item-container ${showError ? 'timeline-error' : null}`}
+        className={`timeline-item-container ${showError ? 'timeline-error' : ''}`}
         style={{ gridTemplateColumns: `repeat(${drawItems.length}, 1fr)` }}
       >
         {drawItems}
       </div>
-      <div className={`timeline-months ${showError ? 'timeline-error' : null}`}>
+      <div className={`timeline-months ${showError ? 'timeline-error' : ''}`}>
         {drawMonths}
       </div>
     </div>

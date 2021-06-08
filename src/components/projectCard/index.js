@@ -184,6 +184,7 @@ function ProjectCardPage({
             <ProjectTimeline
               deadlines={currentProject && currentProject.deadlines}
               projectView={true}
+              onhold={currentProject && currentProject.onhold}
             />
           </Segment>
         </Grid.Column>

@@ -136,7 +136,7 @@ class ProjectEditPage extends Component {
     return (
       <div>
         <div className="timeline" onClick={() => showTimelineModal(true)}>
-          <ProjectTimeline deadlines={currentProject.deadlines} projectView={true} />
+          <ProjectTimeline deadlines={currentProject.deadlines} projectView={true} onhold={currentProject.onhold}/>
         </div>
         <div className={`project-input-container ${highlightGroup}`}>
           <div className="project-input-left">
