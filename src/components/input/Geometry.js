@@ -39,15 +39,22 @@ function Geometry(props) {
         maxZoom={18}
         zoomControl={!disabled}
         dragging={!disabled}
-        zoom={10}
-        minZoom={4}
         crs={crs}
         style={!disabled ? { cursor: 'pointer' } : {}}
+        zoom={9}
+        minZoom={9}
+        clusterPopupVisibility={11}
+        unitZoom={12}
+        mobileZoom={9}
+        detailZoom={14}
+        mapBounds={[
+          [60.402200415095926, 25.271114398151653],
+          [60.402200415095926, 24.49246149510767],
+          [60.00855312110063, 24.49246149510767],
+          [60.00855312110063, 25.271114398151653]
+        ]}
       >
-        <TileLayer
-          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://geoserver.hel.fi/mapproxy/wmts/osm-sm-hq/etrs_tm35fin_hq/{z}/{x}/{y}.png"
-        />
+        <TileLayer url="https://kartta.hel.fi/ws/geoserver/avoindata/gwc/service/wmts?layer=avoindata:Karttasarja_PKS&tilematrixset=ETRS-GK25&Service=WMTS&Request=GetTile&Version=1.0.0&TileMatrix=ETRS-GK25:{z}&TileCol={x}&TileRow={y}&Format=image%2Fpng" />
         <Polygon positions={formatGeoJSONToPositions([getCoordinates()])} />
       </Map>
     </div>

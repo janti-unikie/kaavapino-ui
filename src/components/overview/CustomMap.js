@@ -8,6 +8,7 @@ import {
   projectOverviewMapFiltersSelector
 } from '../../selectors/projectSelector'
 import { connect } from 'react-redux'
+import { Grid } from 'semantic-ui-react'
 
 import {
   getProjectsOverviewMapData,
@@ -15,7 +16,7 @@ import {
   setProjectsOverviewMapFilter
 } from '../../actions/projectActions'
 import { LoadingSpinner } from 'hds-react'
-import { isEmpty, isEqual } from 'lodash'
+import { isEqual, isEmpty } from 'lodash'
 import { EPSG3879 } from '../../utils/mapUtils'
 import CustomMapPolygon from './CustomMapPolygon'
 
@@ -128,14 +129,21 @@ function CustomMap({
   return (
     <div className="map-area">
       <div className="geometry-input-container">
-        <h3>{t('map-area.title')} </h3>
-        {isEmpty(mapData) && (
+        <Grid colums="equal" className="full-width" >
+          <Grid.Column width={4}>
+             <h3>{t('map-area.title')}</h3>
+          </Grid.Column>
+          <Grid.Column width={6}>
+          {isEmpty(mapData) && (
           <span className="loading-info">
             <LoadingSpinner small={true} className="loader-icon header-spinner" />
             {t('map-area.loading-data')}
           </span>
         )}
+          </Grid.Column>
 
+        </Grid>
+       
         <FilterList
           currentFilter={filter}
           onChange={onFilterChange}
@@ -147,15 +155,23 @@ function CustomMap({
           className="geometry-input"
           center={current}
           scrollWheelZoom={true}
-          zoom={8}
+          zoom={9}
+          minZoom={9}
+          clusterPopupVisibility={11}
+          unitZoom={12}
+          mobileZoom={9}
+          detailZoom={14}
+          mapBounds={[
+            [60.402200415095926, 25.271114398151653],
+            [60.402200415095926, 24.49246149510767],
+            [60.00855312110063, 24.49246149510767],
+            [60.00855312110063, 25.271114398151653]
+          ]}
           doubleClickZoom={true}
           crs={crs}
-         >
+        >
           {getPolygonArea()}
-          <TileLayer
-            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://geoserver.hel.fi/mapproxy/wmts/osm-sm-hq/etrs_tm35fin_hq/{z}/{x}/{y}.png"
-          />
+          <TileLayer url="https://kartta.hel.fi/ws/geoserver/avoindata/gwc/service/wmts?layer=avoindata:Karttasarja&tilematrixset=ETRS-GK25&Service=WMTS&Request=GetTile&Version=1.0.0&TileMatrix=ETRS-GK25:{z}&TileCol={x}&TileRow={y}&Format=image%2Fpng" />
         </Map>
       </div>
     </div>
