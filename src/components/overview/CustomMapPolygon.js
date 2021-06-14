@@ -87,7 +87,7 @@ const CustomMapPolygon = ({
   }
 
   return (
-    <Polygon color="red" fillColor={color} positions={positions} fillOpacity={0.8}>
+    <Polygon color={color} fillColor={color} positions={positions} fillOpacity={0.8}>
       {children}
       <Popup closeButton={false}>{renderPopupValue()}</Popup>
     </Polygon>

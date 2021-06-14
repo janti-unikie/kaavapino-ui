@@ -156,7 +156,7 @@ function CustomMap({
           center={current}
           scrollWheelZoom={true}
           zoom={9}
-          minZoom={9}
+          minZoom={6}
           clusterPopupVisibility={11}
           unitZoom={12}
           mobileZoom={9}
@@ -171,7 +171,7 @@ function CustomMap({
           crs={crs}
         >
           {getPolygonArea()}
-          <TileLayer url="https://kartta.hel.fi/ws/geoserver/avoindata/gwc/service/wmts?layer=avoindata:Karttasarja&tilematrixset=ETRS-GK25&Service=WMTS&Request=GetTile&Version=1.0.0&TileMatrix=ETRS-GK25:{z}&TileCol={x}&TileRow={y}&Format=image%2Fpng" />
+          <TileLayer url="https://kartta.hel.fi/ws/geoserver/avoindata/gwc/service/wmts?layer=avoindata:Karttasarja_harmaa&tilematrixset=ETRS-GK25&Service=WMTS&Request=GetTile&Version=1.0.0&TileMatrix=ETRS-GK25:{z}&TileCol={x}&TileRow={y}&Format=image%2Fpng" />
         </Map>
       </div>
     </div>
