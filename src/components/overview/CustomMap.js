@@ -129,21 +129,20 @@ function CustomMap({
   return (
     <div className="map-area">
       <div className="geometry-input-container">
-        <Grid colums="equal" className="full-width" >
+        <Grid colums="equal" className="full-width">
           <Grid.Column width={4}>
-             <h3>{t('map-area.title')}</h3>
+            <h3>{t('map-area.title')}</h3>
           </Grid.Column>
           <Grid.Column width={6}>
-          {isEmpty(mapData) && (
-          <span className="loading-info">
-            <LoadingSpinner small={true} className="loader-icon header-spinner" />
-            {t('map-area.loading-data')}
-          </span>
-        )}
+            {isEmpty(mapData) && (
+              <span className="loading-info">
+                <LoadingSpinner small={true} className="loader-icon header-spinner" />
+                {t('map-area.loading-data')}
+              </span>
+            )}
           </Grid.Column>
-
         </Grid>
-       
+
         <FilterList
           currentFilter={filter}
           onChange={onFilterChange}
@@ -171,7 +170,10 @@ function CustomMap({
           crs={crs}
         >
           {getPolygonArea()}
-          <TileLayer url="https://kartta.hel.fi/ws/geoserver/avoindata/gwc/service/wmts?layer=avoindata:Karttasarja_harmaa&tilematrixset=ETRS-GK25&Service=WMTS&Request=GetTile&Version=1.0.0&TileMatrix=ETRS-GK25:{z}&TileCol={x}&TileRow={y}&Format=image%2Fpng" />
+          <TileLayer
+            attribution="Leaflet | © Helsingin, Espoon, Vantaan ja Kauniaisen kaupungit, karttasarja"
+            url="https://kartta.hel.fi/ws/geoserver/avoindata/gwc/service/wmts?layer=avoindata:Karttasarja_harmaa&tilematrixset=ETRS-GK25&Service=WMTS&Request=GetTile&Version=1.0.0&TileMatrix=ETRS-GK25:{z}&TileCol={x}&TileRow={y}&Format=image%2Fpng"
+          />
         </Map>
       </div>
     </div>
