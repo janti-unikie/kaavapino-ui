@@ -1,8 +1,12 @@
-FROM ubuntu:20.04
-RUN apt-get update -y 
-RUN apt-get install -y telnet
-RUN apt-get install -y traceroute
-RUN apt-get install -y postgresql-client
-# Run the container in the background
-ENTRYPOINT ["tail"]
-CMD ["-f","/dev/null"]
+FROM node:10.6.0-alpine
+
+WORKDIR /kaavapino-ui
+
+ENV APP_NAME kaavapino-ui
+
+COPY package.json yarn.lock ./
+RUN yarn install && yarn cache clean --force
+
+COPY . .
+
+CMD ["yarn", "start"]
