@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Grid, Segment } from 'semantic-ui-react'
 import CustomMap from './CustomMap'
 import FloorAreaChart from './FloorAreaChart'
+import FloorAreaMobile from './FloorAreaMobile'
 import ProjectsChart from './ProjectsChart'
 
 import './styles.scss'
@@ -34,6 +35,23 @@ const Overview = ({
     setCurrentFilterData(filterData)
   }, [filterData])
 
+  const [isMobile, setIsMobile] = useState(false)
+
+  //choose the screen size
+  const handleResize = () => {
+    if (window.innerWidth < 720) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }
+  // create an event listener
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+    if (window.innerWidth < 720) {
+      setIsMobile(true)
+    }
+  })
   const getFilters = key => {
     const filters = []
 
@@ -45,8 +63,8 @@ const Overview = ({
       })
     return filters
   }
-  const isPrivileged = projectUtils.isUserPrivileged(currentUserId, users)
-  return (
+
+  const renderNormalView = () => (
     <div className="overview">
       <NavHeader
         routeItems={[{ value: 'Yleisnäkymä', path: '/' }]}
@@ -58,6 +76,7 @@ const Overview = ({
             <CustomMap
               isPrivileged={isPrivileged}
               filters={getFilters('filters_on_map')}
+              isMobile={isMobile}
             />
           </Segment>
         </Grid.Column>
@@ -72,7 +91,6 @@ const Overview = ({
           </Segment>
         </Grid.Column>
       </Grid>
-
       <Grid stackable columns="equal">
         <Grid.Column width={8}>
           <Segment>
@@ -82,6 +100,25 @@ const Overview = ({
       </Grid>
     </div>
   )
+
+  const renderMobileView = () => (
+    <div className="overview">
+    <h3 className="mobile-header">{t('overview.title')}</h3>
+      <Segment>
+        <CustomMap
+          isPrivileged={isPrivileged}
+          filters={getFilters('filters_on_map')}
+          isMobile={isMobile}
+        />
+      </Segment>
+      <Segment>
+        <FloorAreaMobile isPrivileged={isPrivileged} />
+      </Segment>
+    </div>
+  )
+
+  const isPrivileged = projectUtils.isUserPrivileged(currentUserId, users)
+  return isMobile ? renderMobileView() : renderNormalView()
 }
 const mapDispatchToProps = {
   getProjectsOverviewFilters,

@@ -332,17 +332,19 @@ function FloorAreaChart({
               />
 
               <XAxis
-                interval={1}
+                interval={0}
                 scale="time"
-                tickCount={104}
                 domain={['auto', 'auto']}
                 type="number"
                 dataKey="date"
-                angle={-45}
+                angle={-90}
                 textAnchor="end"
                 tickFormatter={getFormattedDate}
               />
+              <CartesianGrid strokeDasharray="3 3" />
+          
               <YAxis yAxisId="left">
+
                 <Label
                   dx={-30}
                   angle={-90}

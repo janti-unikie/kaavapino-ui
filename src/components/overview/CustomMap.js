@@ -27,7 +27,8 @@ function CustomMap({
   clearProjectsOverviewMapData,
   setProjectsOverviewMapFilter,
   storedFilter,
-  isPrivileged
+  isPrivileged,
+  isMobile
 }) {
   const crs = EPSG3879()
 
@@ -125,8 +126,35 @@ function CustomMap({
       })
     )
   }
+  const renderMap = () => (
+    <Map
+      className={isMobile ? 'geometry-input-mobile' : 'geometry-input'}
+      center={current}
+      scrollWheelZoom={true}
+      zoom={9}
+      minZoom={8}
+      clusterPopupVisibility={11}
+      unitZoom={12}
+      mobileZoom={8}
+      detailZoom={14}
+      mapBounds={[
+        [60.402200415095926, 25.271114398151653],
+        [60.402200415095926, 24.49246149510767],
+        [60.00855312110063, 24.49246149510767],
+        [60.00855312110063, 25.271114398151653]
+      ]}
+      doubleClickZoom={true}
+      crs={crs}
+    >
+      {getPolygonArea()}
+      <TileLayer
+        attribution="Leaflet | © Helsingin, Espoon, Vantaan ja Kauniaisen kaupungit, karttasarja"
+        url="https://kartta.hel.fi/ws/geoserver/avoindata/gwc/service/wmts?layer=avoindata:Karttasarja_harmaa&tilematrixset=ETRS-GK25&Service=WMTS&Request=GetTile&Version=1.0.0&TileMatrix=ETRS-GK25:{z}&TileCol={x}&TileRow={y}&Format=image%2Fpng"
+      />
+    </Map>
+  )
 
-  return (
+  const renderNormalView = () => (
     <div className="map-area">
       <div className="geometry-input-container">
         <Grid colums="equal" className="full-width">
@@ -150,34 +178,27 @@ function CustomMap({
           showClearButton={true}
           onClear={onClear}
         />
-        <Map
-          className="geometry-input"
-          center={current}
-          scrollWheelZoom={true}
-          zoom={9}
-          minZoom={6}
-          clusterPopupVisibility={11}
-          unitZoom={12}
-          mobileZoom={9}
-          detailZoom={14}
-          mapBounds={[
-            [60.402200415095926, 25.271114398151653],
-            [60.402200415095926, 24.49246149510767],
-            [60.00855312110063, 24.49246149510767],
-            [60.00855312110063, 25.271114398151653]
-          ]}
-          doubleClickZoom={true}
-          crs={crs}
-        >
-          {getPolygonArea()}
-          <TileLayer
-            attribution="Leaflet | © Helsingin, Espoon, Vantaan ja Kauniaisen kaupungit, karttasarja"
-            url="https://kartta.hel.fi/ws/geoserver/avoindata/gwc/service/wmts?layer=avoindata:Karttasarja_harmaa&tilematrixset=ETRS-GK25&Service=WMTS&Request=GetTile&Version=1.0.0&TileMatrix=ETRS-GK25:{z}&TileCol={x}&TileRow={y}&Format=image%2Fpng"
-          />
-        </Map>
+        {renderMap()}
       </div>
     </div>
   )
+
+  const renderMobileView = () => (
+    <div className="map-area">
+      <div className="geometry-input-container">
+        <h3 className="mobile-header">{t('map-area.title')}</h3>
+        {isEmpty(mapData) && (
+          <span className="loading-info">
+            <LoadingSpinner small={true} className="loader-icon header-spinner" />
+            {t('map-area.loading-data')}
+          </span>
+        )}
+        {renderMap()}
+      </div>
+    </div>
+  )
+
+  return isMobile ? renderMobileView() : renderNormalView()
 }
 const mapDispatchToProps = {
   getProjectsOverviewMapData,

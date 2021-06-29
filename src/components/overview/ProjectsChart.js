@@ -54,7 +54,8 @@ function ProjectsChart({
   getProjectsOverviewBySubtype,
   clearProjectsOverviewProjectTypeData,
   setProjectsOverviewProjectTypeFilter,
-  storedFilter
+  storedFilter,
+  isMobile
 }) {
   const { t } = useTranslation()
 
@@ -127,6 +128,10 @@ function ProjectsChart({
       </div>
     )
   }
+  if ( isMobile ) {
+    return null
+  }
+
   return (
     <div className="projects-size">
       <div className="header">

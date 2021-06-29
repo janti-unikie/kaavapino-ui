@@ -364,10 +364,17 @@ h4 {
         display: none;
       }
     }
+    
+
 
     .nav-header-content {
       margin-top: 32px;
 
+      @media screen and (max-width: 725px) { 
+        margin-top: 0;
+
+
+      }
       .nav-header-titles {
         align-items: flex-end;
         display: flex;
@@ -380,10 +387,9 @@ h4 {
           margin: 0 0 0 32px;
         }
 
-        @media screen and (max-width: 599px) {
+        @media screen and (max-width: 725px) {
           flex-direction: column;
           align-items: flex-start;
-
           .nav-header-subtitle {
             margin: 0;
           }

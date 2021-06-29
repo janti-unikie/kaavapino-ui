@@ -9,6 +9,9 @@
         .chart-area {
             margin-top: 40px
         }
+        .chart-area-mobile {
+            margin-left: 10px
+        }
     }
     .projects-size {
         min-height: 300px;
@@ -25,6 +28,12 @@
         .geometry-input {
           height: 500px;
         }
+        .geometry-input-mobile {
+            height: 300px;
+            margin-left: 10px;
+            margin-right: 10px;
+          }
+         
     }
     .map {
         height: 300px;
@@ -65,6 +74,15 @@
     .bar:hover {
         fill: darkgrey;
     }
+
+    .mobile-accordion {
+        max-width: 370px;
+
+        div {
+        font-size: 14px;
+        }
+    }
+    
 }
 .floor-area {
     margin-bottom: 20px;
@@ -98,14 +116,7 @@
     .value {
         font-weight: bold;
     }
-    .dot {
-        height: 10px;
-        width: 10px;
-        background-color: #bbb;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 5px;
-    }
+   
     .button-area {
         padding-right: 0 !important;
         padding-left: 0 !important;
@@ -139,4 +150,15 @@
 .loading-info {
     margin-bottom: 10px;
     display: inline-block;
+}
+.mobile-header {
+    margin-left: 10px;
+}
+.dot {
+    height: 10px;
+    width: 10px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
 }

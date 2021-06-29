@@ -104,6 +104,7 @@
     },
     "floor-area": {
         "title": "Tarkistettujen kaavaehdotusten asuinkerrosala {{date}}",
+        "mobile-title": "Kaavoitettu kerrosala nyt",
         "total-number": " / {{total}} k-m²",
         "current-number": " {{current}} k-m²",
         "y-axis-title": "k-m²",
