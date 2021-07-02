@@ -70,6 +70,7 @@ function FloorAreaMobile({
         heading={getFormattedHeaderDate(item.date) + ' ' + item.meetings + ' projektia'}
         className="mobile-accordion"
         headingLevel={4}
+        key={item.date}
       >
         {renderProjects(item.projects)}
       </Accordion>
@@ -83,9 +84,10 @@ function FloorAreaMobile({
   }
 
   const renderProject = project => {
+
     return (
-      <>
-        <Card>
+      <div key={project.id}>
+        <Card >
           <Grid columns="equal" textAlign="left">
             <Grid.Column width={10}>
               <div>{project.pino_number}</div>
@@ -102,14 +104,20 @@ function FloorAreaMobile({
           </Grid>
         </Card>
         <br />
-      </>
+      </div>
     )
   }
 
+  const isChartDataLoaded = () => {
+    if ( !chartData || Object.entries( chartData ).length === 0) {
+      return false
+    }
+   return true
+  }
   return (
     <div className="floor-area">
-      {!chartData && <LoadingSpinner className="center" />}
-      {chartData && (
+      {!isChartDataLoaded() && <LoadingSpinner className="center" />}
+      {isChartDataLoaded() && (
         <div className="chart-area-mobile">
           <h3>{t('floor-area.mobile-title')}</h3>
           <div className="total-floor-area">

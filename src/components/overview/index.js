@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { Grid, Segment } from 'semantic-ui-react'
 import CustomMap from './CustomMap'
 import FloorAreaChart from './FloorAreaChart'
-import FloorAreaMobile from './FloorAreaMobile'
 import ProjectsChart from './ProjectsChart'
 
 import './styles.scss'
@@ -15,6 +14,7 @@ import { fetchUsers } from '../../actions/userActions'
 import { usersSelector } from '../../selectors/userSelector'
 import { userIdSelector } from '../../selectors/authSelector'
 import projectUtils from '../../utils/projectUtils'
+import MobileView from './MobileView'
 
 const Overview = ({
   getProjectsOverviewFilters,
@@ -64,7 +64,12 @@ const Overview = ({
     return filters
   }
 
-  const renderNormalView = () => (
+  const isPrivileged = projectUtils.isUserPrivileged(currentUserId, users)
+
+  if (isMobile) {
+    return <MobileView filters={getFilters('filters_on_map')} isPrivileged={isPrivileged} />
+  }
+  return (
     <div className="overview">
       <NavHeader
         routeItems={[{ value: 'Yleisnäkymä', path: '/' }]}
@@ -100,25 +105,6 @@ const Overview = ({
       </Grid>
     </div>
   )
-
-  const renderMobileView = () => (
-    <div className="overview">
-    <h3 className="mobile-header">{t('overview.title')}</h3>
-      <Segment>
-        <CustomMap
-          isPrivileged={isPrivileged}
-          filters={getFilters('filters_on_map')}
-          isMobile={isMobile}
-        />
-      </Segment>
-      <Segment>
-        <FloorAreaMobile isPrivileged={isPrivileged} />
-      </Segment>
-    </div>
-  )
-
-  const isPrivileged = projectUtils.isUserPrivileged(currentUserId, users)
-  return isMobile ? renderMobileView() : renderNormalView()
 }
 const mapDispatchToProps = {
   getProjectsOverviewFilters,
