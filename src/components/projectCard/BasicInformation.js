@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-function BasicInformation({ fields }) {
+function BasicInformation({ fields, hideTitle }) {
 
     const { t } = useTranslation()
 
@@ -22,7 +22,7 @@ function BasicInformation({ fields }) {
     const renderFields = () => {
         return (
             <div key="basic-information">
-                <h3>{t('project.basic-information-title')}</h3>
+                { !hideTitle && <h3>{t('project.basic-information-title')}</h3> }
                     { fields && fields.map( (field, index)  => {
                         return renderField(field, index )
                     } )

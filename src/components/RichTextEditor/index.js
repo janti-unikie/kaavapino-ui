@@ -142,6 +142,7 @@ function RichTextEditor(props) {
     <div
       role="textbox"
       className={`rich-text-editor-wrapper ${disabled ? 'rich-text-disabled' : ''}`}
+      aria-label="tooltip"
     >
       <div
         className={`rich-text-editor ${

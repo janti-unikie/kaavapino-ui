@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { isArray } from 'lodash'
 
-function Contacts({ fields }) {
+function Contacts({ fields, hideTitle }) {
   const { t } = useTranslation()
 
   const renderField = (field, index) => {
@@ -44,7 +44,7 @@ function Contacts({ fields }) {
   const renderFields = () => {
     return (
       <div>
-        <h3>{t('project.contact-title')}</h3>
+        {!hideTitle && <h3>{t('project.contact-title')}</h3>}
         {fields &&
           fields.map((field, index) => {
             return renderField(field, index)

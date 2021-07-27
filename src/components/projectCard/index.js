@@ -20,6 +20,8 @@ import {
 import { connect } from 'react-redux'
 import { getProjectCardFields } from '../../actions/schemaActions'
 import { projectCardFieldsSelector } from '../../selectors/schemaSelector'
+import { Accordion } from 'hds-react'
+import { useTranslation } from 'react-i18next'
 
 export const PROJECT_PICTURE = 'Projektikortin kuva'
 export const PROJECT_BASIC = 'Perustiedot'
@@ -51,6 +53,9 @@ function ProjectCardPage({
   const [contractFields, setContractFields] = useState([])
   const [planningRestriction, setPlanningRestriction] = useState(null)
   const [currentProjectId, setCurrentProjectId] = useState(projectId)
+  const [isMobile, setIsMobile] = useState(false)
+
+  const { t } = useTranslation()
 
   useEffect(() => {
     getProjectCardFields()
@@ -75,6 +80,23 @@ function ProjectCardPage({
     window.scrollTo({ top: 0, behavior: 'auto' })
   }, [])
 
+  // create an event listener
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+    if (window.innerWidth < 720) {
+      setIsMobile(true)
+    }
+  })
+
+  //choose the screen size
+  const handleResize = () => {
+    if (window.innerWidth < 720) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }
+
   const buildPage = () => {
     const currentDescriptionFields = []
     const currentBasicInformationFields = []
@@ -92,17 +114,10 @@ function ProjectCardPage({
     )
     projectCardFields &&
       projectCardFields.forEach(field => {
-        let value = projectUtils.findValueFromObject(
-          projectData,
-          field.name
-        )
+        let value = projectUtils.findValueFromObject(projectData, field.name)
 
         const returnValues = []
-        projectUtils.findValuesFromObject(
-          projectData,
-          field.name,
-          returnValues
-        )
+        projectUtils.findValuesFromObject(projectData, field.name, returnValues)
 
         if (returnValues.length > 1) {
           let currentValues = []
@@ -231,18 +246,46 @@ function ProjectCardPage({
       </Grid>
     )
   }
+  const renderMobileView = () => {
+    return (
+      <div>
+        <Accordion heading={t('project.contact-title')}>
+          <Contacts hideTitle={true} fields={contactsFields} />
+        </Accordion>
+        <Accordion heading={t('project.basic-information-title')}>
+          <BasicInformation hideTitle={true} fields={basicInformationFields} />
+        </Accordion>
+        <Accordion heading={t('project.description-title')}>
+          <Description hideTitle={true} fields={descriptionFields} />
+        </Accordion>
+        <Accordion heading={t('project.photo-title')}>
+          <Photo field={photoField} />
+        </Accordion>
+        <Accordion heading={t('project.timetable-title')}>
+          <TimeTable hideTitle={true} fields={timeTableFields} />
+        </Accordion>
+        <Accordion heading={t('project.floor-area-title')}>
+          <FloorAreaInformation hideTitle={true} fields={floorAreaFields} />
+        </Accordion>
+      </div>
+    )
+  }
 
-  const firstRow = renderFirstRow()
-  const secondRow = renderSecondRow()
-  const timelineRow = renderTimeLineRow()
+  const renderNormalView = () => {
+    const firstRow = renderFirstRow()
+    const secondRow = renderSecondRow()
+    const timelineRow = renderTimeLineRow()
 
-  return (
-    <div className="project-card">
-      {firstRow}
-      {timelineRow}
-      {secondRow}
-    </div>
-  )
+    return (
+      <div className="project-card">
+        {firstRow}
+        {timelineRow}
+        {secondRow}
+      </div>
+    )
+  }
+
+  return isMobile ? renderMobileView() : renderNormalView()
 }
 const mapDispatchToProps = {
   getExternalDocuments,
