@@ -227,8 +227,9 @@ class NewProjectFormModal extends Component {
             </Button>
             <Button
               variant="primary"
-              disabled={loading ? true : false || hideSave}
-              loading={loading.toString()}
+              disabled={loading || hideSave}
+              loadingText={isEdit ? 'Tallenna' : 'Luo projekti'}
+              isLoading={loading}
               type="submit"
               onClick={this.handleSubmit}
             >
