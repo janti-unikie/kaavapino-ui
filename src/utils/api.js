@@ -46,6 +46,7 @@ class Api {
 // Different API endpoints
 export const commentApi = new Api('/v1/projects/:id/comments/')
 export const documentApi = new Api('/v1/projects/:id/documents/')
+
 export const phaseApi = new Api('/v1/phases/')
 export const projectApi = new Api('/v1/projects/')
 export const projectDeadlinesApi = new Api('/v1/deadlines/')

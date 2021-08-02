@@ -11,3 +11,8 @@ export const documentsLoadingSelector = createSelector(
   selectDocument,
   ({ documentsLoading }) => documentsLoading
 )
+
+export const documentPreviewSelector = createSelector(
+  selectDocument,
+  ({ documentPreview }) => documentPreview
+)

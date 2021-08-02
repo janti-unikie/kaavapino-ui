@@ -142,6 +142,7 @@ function RichTextEditor(props) {
     <div
       role="textbox"
       className={`rich-text-editor-wrapper ${disabled ? 'rich-text-disabled' : ''}`}
+      aria-label="tooltip"
     >
       <div
         className={`rich-text-editor ${
@@ -150,7 +151,7 @@ function RichTextEditor(props) {
         onFocus={() => setToolbarVisible(true)}
 
       >
-        <div id={toolbarName} onMouseDown={e => e.preventDefault()} className="ql-toolbar">
+        <div role="toolbar" id={toolbarName} onMouseDown={e => e.preventDefault()} className="ql-toolbar">
           <span className="ql-formats">
             <button aria-label="bold" className="ql-bold" />
             <button aria-label="italic" className="ql-italic" />
