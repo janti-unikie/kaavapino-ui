@@ -8,7 +8,7 @@ import ProjectsChart from './ProjectsChart'
 import './styles.scss'
 import { NavHeader } from '../common/NavHeader'
 import { connect } from 'react-redux'
-import { getProjectsOverviewFilters } from '../../actions/projectActions'
+import { getProjectsOverviewFilters, clearProjectsOverview } from '../../actions/projectActions'
 import { projectOverviewFiltersSelector } from '../../selectors/projectSelector'
 import { fetchUsers } from '../../actions/userActions'
 import { usersSelector } from '../../selectors/userSelector'
@@ -20,7 +20,8 @@ const Overview = ({
   filterData,
   fetchUsers,
   currentUserId,
-  users
+  users,
+  clearProjectsOverview
 }) => {
   const { t } = useTranslation()
   const [currentFilterData, setCurrentFilterData] = useState(filterData)
@@ -33,6 +34,12 @@ const Overview = ({
   useEffect(() => {
     setCurrentFilterData(filterData)
   }, [filterData])
+
+  useEffect(() => {
+    return () => {
+      clearProjectsOverview()
+    };
+  }, []);
 
   const getFilters = key => {
     const filters = []
@@ -85,7 +92,8 @@ const Overview = ({
 }
 const mapDispatchToProps = {
   getProjectsOverviewFilters,
-  fetchUsers
+  fetchUsers,
+  clearProjectsOverview
 }
 
 const mapStateToProps = state => {
