@@ -44,7 +44,8 @@ import {
   SET_OVERVIEW_MAP_FILTERS,
   SET_OVERVIEW_FLOOR_AREA_FILTERS,
   SET_OVERVIEW_PROJECT_TYPE_FILTERS,
-  GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL
+  GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL,
+  GET_PROJECT_MAP_LEGENDS_SUCCESSFUL
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -429,6 +430,15 @@ export const reducer = (state = initialState, action) => {
         overview: {
           ...state.overview,
           projectTypeFilters: action.payload
+        }
+      }
+    }
+    case GET_PROJECT_MAP_LEGENDS_SUCCESSFUL: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          legends: action.payload
         }
       }
     }

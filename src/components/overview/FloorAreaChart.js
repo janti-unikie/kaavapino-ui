@@ -228,7 +228,7 @@ function FloorAreaChart({
             <Grid.Column>{t('floor-area.tooltip.phase')}</Grid.Column>
             <Grid.Column textAlign="right">
               <span
-                style={{ backgroundColor: project.phase.color }}
+                style={{ backgroundColor: project.phase.color_code }}
                 className="dot"
               ></span>
               <span className="value">{project.phase.name}</span>

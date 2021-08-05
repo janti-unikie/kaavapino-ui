@@ -13,8 +13,11 @@ import { Grid } from 'semantic-ui-react'
 import {
   getProjectsOverviewMapData,
   clearProjectsOverviewMapData,
-  setProjectsOverviewMapFilter
+  setProjectsOverviewMapFilter,
+  getMapLegends
 } from '../../actions/projectActions'
+import { projectMapLegendsSelector } from '../../selectors/projectSelector'
+
 import { LoadingSpinner } from 'hds-react'
 import { isEqual, isEmpty } from 'lodash'
 import { EPSG3879 } from '../../utils/mapUtils'
@@ -27,7 +30,9 @@ function CustomMap({
   clearProjectsOverviewMapData,
   setProjectsOverviewMapFilter,
   storedFilter,
-  isPrivileged
+  isPrivileged,
+  getMapLegends,
+  legends
 }) {
   const crs = EPSG3879()
 
@@ -37,6 +42,7 @@ function CustomMap({
   useEffect(() => {
     getProjectsOverviewMapData(filter)
     setCurrentMapData(mapData)
+    getMapLegends()
   }, [])
 
   useEffect(() => {
@@ -126,6 +132,8 @@ function CustomMap({
     )
   }
 
+  console.log( legends )
+
   return (
     <div className="map-area">
       <div className="geometry-input-container">
@@ -182,13 +190,15 @@ function CustomMap({
 const mapDispatchToProps = {
   getProjectsOverviewMapData,
   clearProjectsOverviewMapData,
-  setProjectsOverviewMapFilter
+  setProjectsOverviewMapFilter,
+  getMapLegends
 }
 
 const mapStateToProps = state => {
   return {
     mapData: projectOverviewMapDataSelector(state),
-    storedFilter: projectOverviewMapFiltersSelector(state)
+    storedFilter: projectOverviewMapFiltersSelector(state),
+    legends: projectMapLegendsSelector(state)
   }
 }
 
