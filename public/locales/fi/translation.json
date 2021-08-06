@@ -119,7 +119,8 @@
             "process-size": "Prosessin koko",
             "responsible-person": "Vastuuhenkilö"
         },
-        "now": "Nyt"
+        "now": "Nyt",
+        "meetings-title": "Lautakunnan kokoukset"
     },
     "project-types": {
         "title": "Kaavaprojektien jakauma",
