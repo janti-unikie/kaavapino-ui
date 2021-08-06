@@ -72,7 +72,8 @@ export const initialState = {
     bySubtype: {},
     filters: [],
     mapData: {},
-    floorAreaTargets: {}
+    floorAreaTargets: {},
+    legends: []
   }
 }
 

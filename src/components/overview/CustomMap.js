@@ -13,15 +13,14 @@ import { Grid } from 'semantic-ui-react'
 import {
   getProjectsOverviewMapData,
   clearProjectsOverviewMapData,
-  setProjectsOverviewMapFilter,
-  getMapLegends
+  setProjectsOverviewMapFilter
 } from '../../actions/projectActions'
-import { projectMapLegendsSelector } from '../../selectors/projectSelector'
 
 import { LoadingSpinner } from 'hds-react'
 import { isEqual, isEmpty } from 'lodash'
 import { EPSG3879 } from '../../utils/mapUtils'
 import CustomMapPolygon from './CustomMapPolygon'
+import Legends from './Legends'
 
 function CustomMap({
   filters,
@@ -30,9 +29,7 @@ function CustomMap({
   clearProjectsOverviewMapData,
   setProjectsOverviewMapFilter,
   storedFilter,
-  isPrivileged,
-  getMapLegends,
-  legends
+  isPrivileged
 }) {
   const crs = EPSG3879()
 
@@ -42,7 +39,6 @@ function CustomMap({
   useEffect(() => {
     getProjectsOverviewMapData(filter)
     setCurrentMapData(mapData)
-    getMapLegends()
   }, [])
 
   useEffect(() => {
@@ -132,24 +128,26 @@ function CustomMap({
     )
   }
 
-  console.log( legends )
-
+  
   return (
     <div className="map-area">
       <div className="geometry-input-container">
         <Grid colums="equal" className="full-width">
           <Grid.Column width={4}>
             <h3>{t('map-area.title')}</h3>
+           
           </Grid.Column>
           <Grid.Column width={6}>
             {isEmpty(mapData) && (
               <span className="loading-info">
-                <LoadingSpinner small={true} className="loader-icon header-spinner" />
+                <LoadingSpinner small={true} className="loader-icon-right-margin header-spinner" />
                 {t('map-area.loading-data')}
               </span>
             )}
           </Grid.Column>
+          
         </Grid>
+        <Legends />
 
         <FilterList
           currentFilter={filter}
@@ -190,15 +188,13 @@ function CustomMap({
 const mapDispatchToProps = {
   getProjectsOverviewMapData,
   clearProjectsOverviewMapData,
-  setProjectsOverviewMapFilter,
-  getMapLegends
+  setProjectsOverviewMapFilter
 }
 
 const mapStateToProps = state => {
   return {
     mapData: projectOverviewMapDataSelector(state),
-    storedFilter: projectOverviewMapFiltersSelector(state),
-    legends: projectMapLegendsSelector(state)
+    storedFilter: projectOverviewMapFiltersSelector(state)
   }
 }
 
