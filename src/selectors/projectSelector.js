@@ -157,3 +157,7 @@ export const projectOverviewFloorAreaTargetsSelector = createSelector(
   selectProject,
   project => project.overview.floorAreaTargets
 )
+export const projectMapLegendsSelector = createSelector(
+  selectProject,
+  project => project.overview.legends
+)

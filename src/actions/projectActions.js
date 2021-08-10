@@ -64,6 +64,8 @@ export const SET_OVERVIEW_PROJECT_TYPE_FILTERS = "Set overview project type filt
 export const CLEAR_PROJECTS_OVERVIEW_PROJECT_TYPE_DATA = "Clear projects data"
 export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS = "get projects overview floor area targets"
 export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL = "get projects overview floor area targets successful"
+export const GET_PROJECT_MAP_LEGENDS = "Get project legends"
+export const GET_PROJECT_MAP_LEGENDS_SUCCESSFUL = "Get project legends successful"
 export const CLEAR_PROJECTS_OVERVIEW = "Clear project overview"
 export const CLEAR_EXTERNAL_DOCUMENTS = "Clear external documents"
 
@@ -310,4 +312,12 @@ export const getProjectsOverviewFloorAreaTargetsSuccessful = targets => ({
 })
 export const getProjectsOverviewFloorAreaTargets = () => ({
   type: GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS
+})
+export const getMapLegends = () => ({
+  type: GET_PROJECT_MAP_LEGENDS
+})
+
+export const getMapLegendsSuccessful = legends => ({
+  type: GET_PROJECT_MAP_LEGENDS_SUCCESSFUL,
+  payload: legends
 })
