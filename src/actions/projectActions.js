@@ -1,6 +1,7 @@
 export const FETCH_PROJECTS = 'Fetch projects'
 export const FETCH_PROJECTS_SUCCESSFUL = 'Fetch projects successful'
 export const FETCH_OWN_PROJECTS_SUCCESSFUL = 'Fetch own projects successful'
+export const CLEAR_PROJECTS = 'Clear projects'
 export const SET_PROJECTS = 'Set projects'
 export const SET_OWN_PROJECTS = 'Set own projects'
 export const SET_AMOUNT_OF_PROJECTS_TO_INCREASE = 'Set amount of projects to increase'
@@ -65,6 +66,8 @@ export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS = "get projects overview f
 export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL = "get projects overview floor area targets successful"
 export const GET_PROJECT_MAP_LEGENDS = "Get project legends"
 export const GET_PROJECT_MAP_LEGENDS_SUCCESSFUL = "Get project legends successful"
+export const CLEAR_PROJECTS_OVERVIEW = "Clear project overview"
+export const CLEAR_EXTERNAL_DOCUMENTS = "Clear external documents"
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -78,6 +81,11 @@ export const fetchProjectsSuccessful = projects => ({
   type: FETCH_PROJECTS_SUCCESSFUL,
   payload: projects
 })
+export const clearProjects = () => ({
+  type: CLEAR_PROJECTS
+})
+
+CLEAR_PROJECTS
 export const setProjects = projects => ({ type: SET_PROJECTS, payload: projects })
 export const setOwnProjects = projects => ({ type: SET_OWN_PROJECTS, payload: projects })
 export const initializeProject = id => ({ type: INITIALIZE_PROJECT, payload: id })
@@ -258,6 +266,9 @@ export const getExternalDocuments = projectId => ({
   type: GET_EXTERNAL_DOCUMENTS,
   payload: projectId
 })
+export const clearExternalDocuments = () => ({
+  type: CLEAR_EXTERNAL_DOCUMENTS
+})
 
 export const getExternalDocumentsSuccessful = documents => ({
   type: GET_EXTERNAL_DOCUMENTS_SUCCESSFUL,
@@ -291,6 +302,9 @@ export const setProjectsOverviewProjectTypeFilter = filter => ({
 })
 export const clearProjectsOverviewProjectTypeData = () => ({
   type: CLEAR_PROJECTS_OVERVIEW_PROJECT_TYPE_DATA
+})
+export const clearProjectsOverview = () => ({
+  type: CLEAR_PROJECTS_OVERVIEW
 })
 export const getProjectsOverviewFloorAreaTargetsSuccessful = targets => ({
   type: GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL,
