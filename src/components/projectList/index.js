@@ -5,7 +5,7 @@ import { fetchProjectSubtypes } from '../../actions/projectTypeActions'
 import { fetchUsers } from '../../actions/userActions'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
 import { usersSelector } from '../../selectors/userSelector'
-import { createProject } from '../../actions/projectActions'
+import { createProject, clearProjects } from '../../actions/projectActions'
 import {
   ownProjectsSelector,
   projectsSelector,
@@ -51,6 +51,7 @@ class ProjectListPage extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowSizeChange)
+    this.props.clearProjects()
   }
 
   handleWindowSizeChange = () => {
@@ -282,7 +283,8 @@ const mapDispatchToProps = {
   createProject,
   fetchProjects,
   fetchUsers,
-  fetchProjectSubtypes
+  fetchProjectSubtypes,
+  clearProjects
 }
 
 export default withRouter(
