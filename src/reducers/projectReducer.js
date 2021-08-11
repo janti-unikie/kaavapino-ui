@@ -44,7 +44,10 @@ import {
   SET_OVERVIEW_MAP_FILTERS,
   SET_OVERVIEW_FLOOR_AREA_FILTERS,
   SET_OVERVIEW_PROJECT_TYPE_FILTERS,
-  GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL
+  GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL,
+  CLEAR_PROJECTS_OVERVIEW,
+  CLEAR_PROJECTS,
+  CLEAR_EXTERNAL_DOCUMENTS
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -66,6 +69,7 @@ export const initialState = {
   pollingProjects: false,
   timelineProject: [],
   selectedPhase: 0,
+  currentProjectExternalDocuments: null,
   overview: {
     floorArea: {},
     bySubtype: {},
@@ -109,6 +113,23 @@ export const reducer = (state = initialState, action) => {
         ...state,
         projects: state.projects.concat(action.payload),
         loadingProjects: false
+      }
+    }
+    case CLEAR_PROJECTS: {
+      return {
+        ...state,
+        ownProjects: [],
+        projects: [],
+        totalOwnProjects: null,
+        totalProjects: null
+
+      }
+    }
+    case CLEAR_EXTERNAL_DOCUMENTS: {
+      return {
+        ...state,
+        currentProjectExternalDocuments: null
+
       }
     }
 
@@ -405,6 +426,19 @@ export const reducer = (state = initialState, action) => {
         }
       }
     }
+    case CLEAR_PROJECTS_OVERVIEW: {
+      return {
+        ...state,
+        overview: {
+          floorArea: {},
+          bySubtype: {},
+          filters: [],
+          mapData: {},
+          floorAreaTargets: {}
+        }
+      }
+    }
+
     case SET_OVERVIEW_MAP_FILTERS: {
       return {
         ...state,

@@ -29,6 +29,7 @@ export const EDIT_FIELD_COMMENT = 'Edit field comment'
 export const EDIT_FIELD_COMMENT_SUCCESSFUL = 'Edit field comment successful'
 export const DELETE_FIELD_COMMENT = 'Delete field comment'
 export const DELETE_FIELD_COMMENT_SUCCESSFUL = 'Delete field comment successful'
+export const CLEAR_COMMENTS = 'Clear comments'
 
 // Fetch
 export const fetchComments = id => ({ type: FETCH_COMMENTS, payload: id })
@@ -36,6 +37,7 @@ export const fetchUnreadCommentsCount = id => ({
   type: FETCH_UNREAD_COMMENTS_COUNT,
   payload: id
 })
+export const clearComments = () => ({ type: CLEAR_COMMENTS })
 export const pollComments = id => ({ type: POLL_COMMENTS, payload: id })
 export const fetchCommentsSuccessful = comments => ({
   type: FETCH_COMMENTS_SUCCESSFUL,

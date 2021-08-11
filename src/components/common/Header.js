@@ -22,9 +22,11 @@ const Header = props => {
   const logout = () => {
     props.history.push('/Logout')
   }
-  const { user } = props
+  const { user, userRole } = props
 
   const { t } = useTranslation()
+
+  const label = userRole ? `${user && user.profile.name} (${userRole})` : user && user.profile.name
 
   return (
     <Navigation
@@ -69,7 +71,7 @@ const Header = props => {
       <Navigation.Actions>
         <Navigation.User authenticated={true}>
           <Navigation.Item
-            label={user && user.profile.name}
+            label={label}
             href="/"
             target="_blank"
             variant="primary"
