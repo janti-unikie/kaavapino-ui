@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { change } from 'redux-form'
@@ -61,7 +61,8 @@ function RichTextEditor(props) {
     onBlur,
     className,
     updated,
-    formName
+    formName,
+    setRef
   } = props
   const dispatch = useDispatch()
   const fieldComments = useSelector(fieldCommentsSelector)
@@ -78,7 +79,7 @@ function RichTextEditor(props) {
 
   const getFieldComments = () => {
     const fieldName = inputProps.name
-    const lastIndex = fieldName.lastIndexOf('.')
+    const lastIndex = fieldName && fieldName.lastIndexOf('.')
 
     if (lastIndex !== -1) {
       // TODO: Temporary fix to avoid crashing
@@ -89,6 +90,13 @@ function RichTextEditor(props) {
     }
   }
   const comments = getFieldComments()
+
+  useEffect(() => {
+
+    if ( setRef ) {
+      setRef( {name: inputProps.name , ref: editorRef} )
+    }
+  }, [])
 
   const handleChange = (_val, _delta, source) => {
     if (currentTimeout) {
