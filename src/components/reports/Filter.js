@@ -1,40 +1,35 @@
-import React, { Component } from 'react'
-import { Dropdown, Header } from 'semantic-ui-react'
+import React, { useState } from 'react'
 import FilterField from './FilterField'
 import reportUtils from '../../utils/reportUtils'
+import {Select} from 'hds-react'
 
-class Filter extends Component {
-  state = {
-    selectedOption: null
-  }
+function Filter(props) {
+  
+  const [selectedOption, setSelectedOption] = useState(null)
 
-  formatOptions = options => {
+  const formatOptions = options => {
     return options.map(option => {
       return {
         key: option,
         value: option,
-        text: reportUtils.getOptionName(option)
+        label: reportUtils.getOptionName(option)
       }
     })
   }
-
-  render() {
-    const { id, options, type } = this.props
-    const { selectedOption } = this.state
-    return (
-      <div className="filter">
-        <Header as="h4">
-          <Header.Content>
+  const { id, options, type } = props
+  
+ return (
+      <div className="report-filter">
+        <h4>
             {`${reportUtils.getFilterName(id)} `}
-            <Dropdown
+            <Select
               inline
               clearable
               header="Valitse suodatin"
-              options={this.formatOptions(options)}
-              onChange={(e, data) => this.setState({ selectedOption: data.value })}
+              options={formatOptions(options)}
+              onChange={ data => setSelectedOption(data.value)}
             />
-          </Header.Content>
-        </Header>
+          </h4>
         {selectedOption && (
           <FilterField
             key={`${id}__${selectedOption}`}
@@ -45,7 +40,6 @@ class Filter extends Component {
         )}
       </div>
     )
-  }
 }
 
 export default Filter

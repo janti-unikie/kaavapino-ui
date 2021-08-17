@@ -1,18 +1,18 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { change } from 'redux-form'
 import CustomField from '../input/CustomField'
 
-class FilterField extends Component {
-  componentWillUnmount() {
-    const { id, selectedOption } = this.props
-    this.props.change('reportForm', `${id}__${selectedOption}`, '')
-  }
+function FilterField(props) {
+  const { type, id, selectedOption } = props
 
-  render() {
-    const { type, id, selectedOption } = this.props
-    return <CustomField field={{ type, name: `${id}__${selectedOption}` }} />
-  }
+  return (
+    <CustomField
+      onChange={ value => props.change('reportForm', `${id}__${selectedOption}`, value)}
+      className="filter-field"
+      field={{ type, name: `${id}__${selectedOption}`, editable: true }}
+    />
+  )
 }
 
 const mapDispatchToProps = {

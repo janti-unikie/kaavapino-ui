@@ -24,14 +24,15 @@ function* fetchReportsSaga() {
   }
 }
 
-function* downloadReportSaga() {
+function* downloadReportSaga({payload}) {
+
   try {
     const {
-      values: { report, ...rest }
+      values: { ...rest }
     } = yield select(reportFormSelector)
     const res = yield call(
       reportApi.get,
-      { path: { id: report }, query: { ...rest } },
+      { path: { id: payload.selectedReport }, query: { ...rest } },
       ':id/',
       { responseType: 'blob' },
       true

@@ -1,28 +1,26 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { fetchReports } from '../../actions/reportActions'
 import { NavHeader } from '../common/NavHeader'
 import ReportBuilder from './ReportBuilder'
 
-class Reports extends Component {
-  componentDidMount() {
-    this.props.fetchReports()
-  }
+function Reports(props) {
+  useEffect(() => {
+    props.fetchReports()
+  }, [])
 
-  render() {
-    return (
-      <div className="reports-page">
-        <NavHeader
-          routeItems={[
-            { value: 'Kaavaprojektit', path: '/projects' },
-            { value: 'Raportit', path: '/reports' }
-          ]}
-          title="Raportit"
-        />
-        <ReportBuilder />
-      </div>
-    )
-  }
+  return (
+    <div className="reports-page">
+      <NavHeader
+        routeItems={[
+          { value: 'Kaavaprojektit', path: '/projects' },
+          { value: 'Raportit', path: '/reports' }
+        ]}
+        title="Raportit"
+      />
+      <ReportBuilder />
+    </div>
+  )
 }
 
 const mapDispatchToProps = {

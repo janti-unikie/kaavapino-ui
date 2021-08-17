@@ -7,4 +7,4 @@ export const fetchReportsSuccessful = reports => ({
   type: FETCH_REPORTS_SUCCESSFUL,
   payload: reports
 })
-export const downloadReport = () => ({ type: DOWNLOAD_REPORT })
+export const downloadReport = report => ({ type: DOWNLOAD_REPORT, payload: report })

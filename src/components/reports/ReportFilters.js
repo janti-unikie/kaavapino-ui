@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Filter from './Filter'
 
-class ReportFilters extends Component {
-  formatFilters = filters => {
+function ReportFilters(props) {
+  const formatFilters = filters => {
     const result = {}
     filters.forEach(filter => {
       const splittedFilter = filter.identifier.split('__')
@@ -28,22 +28,26 @@ class ReportFilters extends Component {
     return result
   }
 
-  render() {
-    const { filters } = this.props
-    const formattedFilters = this.formatFilters(filters)
+  const renderFilters = () => {
+    const { filters } = props
+    const formattedFilters = formatFilters(filters)
+
     return (
-      <div>
+      <span className="reports-filters">
         {Object.keys(formattedFilters).map(filterKey => (
           <Filter
             key={filterKey}
             id={filterKey}
+            className="filter-choice"
             options={formattedFilters[filterKey].options}
             type={formattedFilters[filterKey].type}
           />
         ))}
-      </div>
+      </span>
     )
   }
+
+  return renderFilters()
 }
 
 export default ReportFilters

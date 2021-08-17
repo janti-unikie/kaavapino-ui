@@ -1,35 +1,49 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import { downloadReport } from '../../actions/reportActions'
 import { reportsSelector } from '../../selectors/reportSelector'
-import { reportFormSelectedReportSelector } from '../../selectors/formSelector'
-import { Form, Button } from 'semantic-ui-react'
-import CustomField from '../input/CustomField'
+import { Form } from 'semantic-ui-react'
 import ReportFilters from './ReportFilters'
+import { Button } from 'hds-react'
 
-class ReportBuilder extends Component {
-  formatReports = () => {
-    const { reports } = this.props
-    return reports.map(report => ({
-      label: report.name,
-      value: report.id
-    }))
+function ReportBuilder(props) {
+  const [selectedReport, setSelectedReport] = useState(null)
+
+  const handleSubmit = () => {
+    
+    props.downloadReport( {selectedReport} )
   }
 
-  handleSubmit = e => {
-    e.preventDefault()
-    this.props.downloadReport()
+  const renderReportButtons = () => {
+    const { reports } = props
+
+    return reports.map(report => (
+      <Button
+        className="report-type-button"
+        key={report.id}
+        variant="secondary"
+        onClick={() =>
+          !selectedReport || selectedReport !== report.id
+            ? setSelectedReport(report.id)
+            : setSelectedReport(null)
+        }
+      >
+        {report.name}
+      </Button>
+    ))
   }
 
-  render() {
-    const { reports, selectedReport } = this.props
-    return (
-      <Form onSubmit={this.handleSubmit} className="report-builder-container">
-        <div className="select-report-container">
-          <h2>Valitse raportti</h2>
-          <CustomField field={{ choices: this.formatReports(), name: 'report' }} />
-        </div>
+  const { reports } = props
+
+ 
+  return (
+    <>
+      <div className="select-report-container">
+        <h2>Valitse raportti</h2>
+        {renderReportButtons()}
+      </div>
+      <Form onSubmit={handleSubmit} className="report-builder-container">
         {selectedReport && (
           <div className="report-filter-container">
             <h2>Suodattimet</h2>
@@ -37,18 +51,17 @@ class ReportBuilder extends Component {
           </div>
         )}
         {selectedReport && (
-          <Button color="default" className="report-create-button">
+          <Button type="submit" variant="primary" className="report-create-button">
             Luo raportti
           </Button>
         )}
       </Form>
-    )
-  }
+    </>
+  )
 }
 
 const mapStateToProps = state => ({
-  reports: reportsSelector(state),
-  selectedReport: reportFormSelectedReportSelector(state)
+  reports: reportsSelector(state)
 })
 
 const mapDispatchToProps = {
@@ -56,5 +69,6 @@ const mapDispatchToProps = {
 }
 
 export default reduxForm({
-  form: 'reportForm'
+  form: 'reportForm',
+  enableReinitialize: true
 })(connect(mapStateToProps, mapDispatchToProps)(ReportBuilder))
