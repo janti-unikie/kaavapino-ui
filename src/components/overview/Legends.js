@@ -2,14 +2,18 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { getMapLegends } from '../../actions/projectActions'
 import { projectMapLegendsSelector } from '../../selectors/projectSelector'
+import { useTranslation } from 'react-i18next'
 
-function Legends({ getMapLegends, legends }) {
+function Legends({ getMapLegends, legends, centered }) {
+  const { t } = useTranslation()
+
   useEffect(() => {
     getMapLegends()
   }, [])
 
   return (
-    <div className="color-legends">
+    <div className={`color-legends ${centered ? 'centered' : ''}`}>
+      <span>{t('project.phase')}</span>
       {legends &&
         legends.phases &&
         legends.phases.map(phase => {

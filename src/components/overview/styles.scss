@@ -136,9 +136,14 @@
     display: inline-block;
     margin-right: 5px;
 }
+.centered {
+    text-align: center;
+}
 .color-legends {
     padding-top: 10px;
     padding-bottom: 10px;
+
+   
     .color-legend:not(:first-of-type) {
         margin-left: 10px;
     }
