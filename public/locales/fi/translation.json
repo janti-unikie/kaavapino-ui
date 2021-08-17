@@ -131,6 +131,13 @@
         "tarkastettuEhdotus": "Tarkastettu ehdotus -vaihe",
         "voimaantulo": "Voimaantulo-vaihe",
         "periaatteet": "Periaatteet-vaihe"
+    },
+    "reports" : {
+        "title": "Raportit",
+        "choose-report": "Valitse raporttityyppi",
+        "filters": "Suodattimet",
+        "create-report": "Luo raportti",
+        "create-preview": "Luo esikatselu"
     }
     
 }

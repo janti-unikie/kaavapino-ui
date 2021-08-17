@@ -3,8 +3,11 @@ import { connect } from 'react-redux'
 import { fetchReports } from '../../actions/reportActions'
 import { NavHeader } from '../common/NavHeader'
 import ReportBuilder from './ReportBuilder'
+import { useTranslation } from 'react-i18next'
 
 function Reports(props) {
+
+  const {t} = useTranslation()
   useEffect(() => {
     props.fetchReports()
   }, [])
@@ -13,10 +16,10 @@ function Reports(props) {
     <div className="reports-page">
       <NavHeader
         routeItems={[
-          { value: 'Kaavaprojektit', path: '/projects' },
-          { value: 'Raportit', path: '/reports' }
+          { value: t('projects.title'), path: '/projects' },
+          { value: t('reports.title'), path: '/reports' }
         ]}
-        title="Raportit"
+        title={t('reports.title')}
       />
       <ReportBuilder />
     </div>

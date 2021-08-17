@@ -6,9 +6,13 @@ import { reportsSelector } from '../../selectors/reportSelector'
 import { Form } from 'semantic-ui-react'
 import ReportFilters from './ReportFilters'
 import { Button } from 'hds-react'
+import { useTranslation } from 'react-i18next'
+
 
 function ReportBuilder(props) {
   const [selectedReport, setSelectedReport] = useState(null)
+
+  const {t} = useTranslation()
 
   const handleSubmit = () => {
     
@@ -40,20 +44,20 @@ function ReportBuilder(props) {
   return (
     <>
       <div className="select-report-container">
-        <h2>Valitse raportti</h2>
+        <h2>{t('reports.choose-report')}</h2>
         {renderReportButtons()}
       </div>
       <Form onSubmit={handleSubmit} className="report-builder-container">
         {selectedReport && (
           <div className="report-filter-container">
-            <h2>Suodattimet</h2>
+            <h2>{t('reports.filters')}</h2>
             <ReportFilters filters={reports.find(r => r.id === selectedReport).filters} />
           </div>
         )}
         {selectedReport && (
           <Button type="submit" variant="primary" className="report-create-button">
-            Luo raportti
-          </Button>
+            {t('reports.create-report')}
+          </Button>   
         )}
       </Form>
     </>
