@@ -65,4 +65,6 @@ export const cardSchemaApi = new Api('/v1/cardschema')
 export const externalDocumentsApi = new Api('/v1/projects/:id/external_documents/')
 export const attributesApi = new Api('/v1/attributes')
 export const personnelApi = new Api('/v1/personnel')
+export const legendApi = new Api('/v1/legend')
+
 

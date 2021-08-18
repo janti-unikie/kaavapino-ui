@@ -4,11 +4,12 @@ import {
   GET_PROJECT_CARD_FIELDS_SUCCESSFUL,
   GET_ATTRIBUTES_SUCCESSFUL
 } from '../actions/schemaActions'
-import { FETCH_PROJECTS } from '../actions/projectActions'
 
 export const initialState = {
   schema: null,
-  allEditFields: []
+  allEditFields: [],
+  attributes: [],
+  projectCardFields: []
 }
 
 export const reducer = (state = initialState, action) => {
@@ -17,14 +18,6 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         schema: action.payload
-      }
-    }
-
-    case FETCH_PROJECTS: {
-      return {
-        ...state,
-        schema: null,
-        allEditFields: []
       }
     }
 
