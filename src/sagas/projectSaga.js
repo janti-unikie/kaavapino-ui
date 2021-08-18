@@ -78,7 +78,9 @@ import {
   GET_PROJECTS_OVERVIEW_MAP_DATA,
   getProjectsOverviewMapDataSuccessful,
   getProjectsOverviewFloorAreaTargetsSuccessful,
-  GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS
+  GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS,
+  GET_PROJECT_MAP_LEGENDS,
+  getMapLegendsSuccessful
 
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
@@ -93,7 +95,8 @@ import {
   overviewFiltersApi,
   externalDocumentsApi,
   overviewMapApi,
-  overviewFloorAreaTargetApi
+  overviewFloorAreaTargetApi,
+  legendApi
 } from '../utils/api'
 import { usersSelector } from '../selectors/userSelector'
 import {
@@ -133,7 +136,9 @@ export default function* projectSaga() {
     takeLatest(GET_PROJECTS_OVERVIEW_FILTERS, getProjectsOverviewFilters),
     takeLatest(GET_EXTERNAL_DOCUMENTS, getExternalDocumentsSaga),
     takeLatest(GET_PROJECTS_OVERVIEW_MAP_DATA, getProjectOverviewMapDataSaga),
-    takeLatest(GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS, getProjectsOverviewFloorAreaTargets)
+    takeLatest(GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS, getProjectsOverviewFloorAreaTargets),
+    takeLatest(GET_PROJECT_MAP_LEGENDS, getProjectMapLegends)
+  
   ])
 }
 
@@ -832,3 +837,14 @@ function* getProjectsOverviewFilters() {
       yield put(error(e))
     }
   }
+  function* getProjectMapLegends() {
+    try {
+      const legends = yield call(legendApi.get)
+      yield put(getMapLegendsSuccessful(legends))
+    } catch (e) {
+      yield put(error(e))
+    }
+  }
+
+
+  

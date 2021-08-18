@@ -105,6 +105,6 @@ export const getPhaseData = (phases, currentName) => {
   const foundValue = phases.find(phase => phase.name === currentName)
 
   return foundValue
-    ? { project_count: foundValue.project_count, color: foundValue.color }
+    ? { project_count: foundValue.project_count, color: foundValue.color_code }
     : { project_count: 0, color: '' }
 }

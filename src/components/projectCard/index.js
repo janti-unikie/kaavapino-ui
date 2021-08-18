@@ -12,7 +12,7 @@ import GeometryInformation from './GeometryInformation'
 import Photo from './Photo'
 import Documents from './Documents'
 import projectUtils from './../../utils/projectUtils'
-import { getExternalDocuments, initializeProject } from '../../actions/projectActions'
+import { getExternalDocuments, initializeProject, clearExternalDocuments } from '../../actions/projectActions'
 import {
   externalDocumentsSelector,
   currentProjectSelector
@@ -41,7 +41,8 @@ function ProjectCardPage({
   externalDocuments,
   projectCardFields,
   currentProject,
-  initializeProject
+  initializeProject,
+  clearExternalDocuments
 }) {
   const [descriptionFields, setDescriptionDFields] = useState([])
   const [basicInformationFields, setBasicInformationFields] = useState([])
@@ -96,6 +97,11 @@ function ProjectCardPage({
       setIsMobile(false)
     }
   }
+  useEffect(() => {
+    return () => {
+      clearExternalDocuments()
+    };
+  }, []);
 
   const buildPage = () => {
     const currentDescriptionFields = []
@@ -290,7 +296,8 @@ function ProjectCardPage({
 const mapDispatchToProps = {
   getExternalDocuments,
   getProjectCardFields,
-  initializeProject
+  initializeProject,
+  clearExternalDocuments
 }
 
 const mapStateToProps = state => {
