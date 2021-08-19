@@ -1,7 +1,7 @@
 .project-card-container {
   width: 100%;
   display: flex;
-  overflow:auto;
+  overflow: auto;
 
   .summary {
     flex: 0.5;
@@ -36,19 +36,23 @@
   margin-top: 10px;
 }
 .project-card .basic-information {
-  height: 250px;
+  min-height: 250px;
   overflow: auto;
 }
 .project-card .contract {
-  height: 250px;
+  min-height: 250px;
   overflow: auto;
 }
 .project-card .description {
   min-height: 300px;
 }
 .project-card .floor-area-information {
-  height: 120px;
+  min-height: 120px;
   overflow: auto;
+}
+.project-card .floor-area-field {
+  padding-left: 0;
+  padding-right: 0;
 }
 .project-card .strategy-connection {
   min-height: 200px;
@@ -57,7 +61,7 @@
 .project-card .documents {
   min-height: 200px;
   overflow: auto;
-  
+
   .section {
     margin-bottom: 10px;
   }
@@ -70,12 +74,20 @@
   min-height: 200px;
   overflow: auto;
 }
-.project-card .photo {
-  height: 300px;
-  text-align: center;
 
- 
+@media only screen and (min-width: 501px) {
+  .project-card .photo {
+    height: 300px;
+    text-align: center;
+  }
 }
+@media only screen and (max-width: 500px) {
+  .project-card .photo {
+    height: 200px;
+    text-align: center;
+  }
+}
+
 .project-card .project-image-container {
   flex: 0.5;
 
@@ -85,7 +97,6 @@
     width: auto;
     height: auto;
   }
-  
 }
 .project-card .ui.segment {
   padding: 10px;
@@ -121,11 +132,33 @@
 .mobile {
   display: none;
 }
-@media only screen and (max-width: 500px){
+@media only screen and (max-width: 500px) {
   .mobile-hidden {
-      display: none;
+    display: none;
   }
   .mobile {
     display: inherit;
   }
+}
+
+@media only screen and (min-width: 501px) {
+  .project-image {
+    height: 300px;
+    text-align: center;
   }
+}
+@media only screen and (max-width: 500px) {
+  .project-image {
+    height: 200px;
+    text-align: center;
+  }
+}
+.mobile-accordion {
+  > div {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+.project-card-field {
+  padding-bottom: 5px;
+}

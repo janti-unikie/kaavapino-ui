@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
-function Documents({ documentFields }) {
+function Documents({ documentFields, hideTitle }) {
 
   const { t } = useTranslation()
   const renderSection = section => {
@@ -45,7 +45,7 @@ function Documents({ documentFields }) {
 
   return (
     <div className="documents">
-      <h3>{t('project.documents-title')}</h3>
+      {!hideTitle && <h3>{t('project.documents-title')}</h3>}
       <div>{fieldsComponent}</div>
     </div>
   )

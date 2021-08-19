@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { split } from 'lodash'
 import { useTranslation } from 'react-i18next'
 
-function StrategyConnection({ fields }) {
+function StrategyConnection({ fields, hideTitle }) {
 
     const { t } = useTranslation()
 
@@ -26,7 +26,7 @@ function StrategyConnection({ fields }) {
                     value = choice.label
                 }
             }
-            return <div key={value + index} >{value}</div>
+            return <div className="project-card-field" key={value + index} >{value}</div>
         })
 
         return (
@@ -38,7 +38,7 @@ function StrategyConnection({ fields }) {
     const renderFields = () => {
         return (
             <div>
-                <h3>{t('project.strategy-connection-title')}</h3>
+                {!hideTitle && <h3>{t('project.strategy-connection-title')}</h3>}
                 { fields && fields.map( field => {
                     return renderField(field )
                 } )

@@ -32,7 +32,7 @@ function Contacts({ fields, hideTitle }) {
       }
     }
     return (
-      <div key={field.label + index}>
+      <div className="project-card-field" key={field.label + index}>
         <div>{field.label}</div>
         <div>
           <b>{value}</b>

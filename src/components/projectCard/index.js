@@ -12,7 +12,11 @@ import GeometryInformation from './GeometryInformation'
 import Photo from './Photo'
 import Documents from './Documents'
 import projectUtils from './../../utils/projectUtils'
-import { getExternalDocuments, initializeProject, clearExternalDocuments } from '../../actions/projectActions'
+import {
+  getExternalDocuments,
+  initializeProject,
+  clearExternalDocuments
+} from '../../actions/projectActions'
 import {
   externalDocumentsSelector,
   currentProjectSelector
@@ -22,6 +26,8 @@ import { getProjectCardFields } from '../../actions/schemaActions'
 import { projectCardFieldsSelector } from '../../selectors/schemaSelector'
 import { Accordion } from 'hds-react'
 import { useTranslation } from 'react-i18next'
+import { unreadCommentsCountSelector } from '../../selectors/commentSelector'
+import CommentsMobile from '../shoutbox/comments/CommentsMobile'
 
 export const PROJECT_PICTURE = 'Projektikortin kuva'
 export const PROJECT_BASIC = 'Perustiedot'
@@ -42,7 +48,8 @@ function ProjectCardPage({
   projectCardFields,
   currentProject,
   initializeProject,
-  clearExternalDocuments
+  clearExternalDocuments,
+  unreadCommentsCount
 }) {
   const [descriptionFields, setDescriptionDFields] = useState([])
   const [basicInformationFields, setBasicInformationFields] = useState([])
@@ -100,8 +107,8 @@ function ProjectCardPage({
   useEffect(() => {
     return () => {
       clearExternalDocuments()
-    };
-  }, []);
+    }
+  }, [])
 
   const buildPage = () => {
     const currentDescriptionFields = []
@@ -255,23 +262,50 @@ function ProjectCardPage({
   const renderMobileView = () => {
     return (
       <div>
-        <Accordion heading={t('project.contact-title')}>
-          <Contacts hideTitle={true} fields={contactsFields} />
-        </Accordion>
-        <Accordion heading={t('project.basic-information-title')}>
-          <BasicInformation hideTitle={true} fields={basicInformationFields} />
-        </Accordion>
-        <Accordion heading={t('project.description-title')}>
+        <Accordion className="mobile-accordion" heading={t('project.description-title')}>
           <Description hideTitle={true} fields={descriptionFields} />
         </Accordion>
-        <Accordion heading={t('project.photo-title')}>
+        <Accordion className="mobile-accordion" heading={t('project.photo-title')}>
           <Photo field={photoField} />
         </Accordion>
-        <Accordion heading={t('project.timetable-title')}>
+        <Accordion className="mobile-accordion" heading={t('project.contact-title')}>
+          <Contacts hideTitle={true} fields={contactsFields} />
+        </Accordion>
+        <Accordion className="mobile-accordion" heading={t('project.floor-area-title')}>
+          <FloorAreaInformation hideTitle={true} fields={floorAreaFields} />
+        </Accordion>
+        <Accordion
+          className="mobile-accordion"
+          heading={t('project.basic-information-title')}
+        >
+          <BasicInformation hideTitle={true} fields={basicInformationFields} />
+        </Accordion>
+        <Accordion className="mobile-accordion" heading={t('project.contract-title')}>
+          <Contract hideTitle={true} fields={contractFields} />
+        </Accordion>
+        <Accordion
+          className="mobile-accordion"
+          heading={t('project.strategy-connection-title')}
+        >
+          <StrategyConnection hideTitle={true} fields={strategyConnectionFields} />
+        </Accordion>
+        <Accordion className="mobile-accordion" heading={t('project.timetable-title')}>
           <TimeTable hideTitle={true} fields={timeTableFields} />
         </Accordion>
-        <Accordion heading={t('project.floor-area-title')}>
-          <FloorAreaInformation hideTitle={true} fields={floorAreaFields} />
+        <Accordion
+          className="mobile-accordion"
+          heading={t('project.planning-area-constraints')}
+        >
+          <GeometryInformation hideTitle={true} field={planningRestriction} />
+        </Accordion>
+        <Accordion className="mobile-accordion" heading={t('project.documents-title')}>
+          <Documents hideTitle={true} documentFields={externalDocuments} />
+        </Accordion>
+        <Accordion
+          className="mobile-accordion"
+          heading={`Viestit ${unreadCommentsCount > 0 ? unreadCommentsCount : ''}`}
+        >
+          <CommentsMobile projectId={projectId} />
         </Accordion>
       </div>
     )
@@ -304,7 +338,8 @@ const mapStateToProps = state => {
   return {
     externalDocuments: externalDocumentsSelector(state),
     projectCardFields: projectCardFieldsSelector(state),
-    currentProject: currentProjectSelector(state)
+    currentProject: currentProjectSelector(state),
+    unreadCommentsCount: unreadCommentsCountSelector(state)
   }
 }
 
