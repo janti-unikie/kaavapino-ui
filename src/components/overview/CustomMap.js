@@ -15,10 +15,12 @@ import {
   clearProjectsOverviewMapData,
   setProjectsOverviewMapFilter
 } from '../../actions/projectActions'
+
 import { LoadingSpinner } from 'hds-react'
 import { isEqual, isEmpty } from 'lodash'
 import { EPSG3879 } from '../../utils/mapUtils'
 import CustomMapPolygon from './CustomMapPolygon'
+import Legends from './Legends'
 
 function CustomMap({
   filters,
@@ -160,16 +162,19 @@ function CustomMap({
         <Grid colums="equal" className="full-width">
           <Grid.Column width={4}>
             <h3>{t('map-area.title')}</h3>
+           
           </Grid.Column>
           <Grid.Column width={6}>
             {isEmpty(mapData) && (
               <span className="loading-info">
-                <LoadingSpinner small={true} className="loader-icon header-spinner" />
+                <LoadingSpinner small={true} className="loader-icon-right-margin header-spinner" />
                 {t('map-area.loading-data')}
               </span>
             )}
           </Grid.Column>
+          
         </Grid>
+        <Legends />
 
         <FilterList
           currentFilter={filter}

@@ -5,14 +5,6 @@
     max-width: 1148px;
     width: 100%;
 
-    .floor-area {
-        .chart-area {
-            margin-top: 40px
-        }
-        .chart-area-mobile {
-            margin-left: 10px
-        }
-    }
     .projects-size {
         min-height: 300px;
 
@@ -144,7 +136,7 @@
 }
 
 .header-spinner {
-    display: inline-block;
+   display: inline-block;
    margin-right: 10px;
 }
 .loading-info {
@@ -171,4 +163,11 @@
 }
 .chart-area-header-mobile {
     padding-left: 10px;
+.color-legends {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    .color-legend:not(:first-of-type) {
+        margin-left: 10px;
+    }
+}
 }
