@@ -25,6 +25,7 @@ import _ from 'lodash'
 import DeadlineInfoText from './DeadlineInfoText'
 import { get } from 'lodash'
 import { EDIT_PROJECT_TIMETABLE_FORM } from '../../constants'
+import CustomADUserSelect from './CustomADUserSelect'
 class CustomField extends Component {
   yearOptions = []
   shouldComponentUpdate(p) {
@@ -310,6 +311,11 @@ class CustomField extends Component {
       />
     )
   }
+  renderADUserSelection = props => {
+    const { field, onBlur } = this.props
+
+    return <CustomADUserSelect label={field.label} onBlur={onBlur} {...props} />
+  }
 
   getInput = field => {
 
@@ -369,6 +375,8 @@ class CustomField extends Component {
         return this.renderDeadlineCheckbox
       case 'readonly':
         return this.renderDeadlineInfo
+      case 'personnel':
+        return this.renderADUserSelection
       default:
         return this.renderNumber
     }
