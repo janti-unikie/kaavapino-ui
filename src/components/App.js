@@ -57,7 +57,7 @@ class App extends Component {
       return <p>{t('loading')}</p>
     }
     
-    const currentUser = users.find( item => user.profile && item.id === user.profile.sub )
+    const currentUser = users.find( item => user && user.profile && item.id === user.profile.sub )
     
     return (
       <ConnectedRouter history={history}>

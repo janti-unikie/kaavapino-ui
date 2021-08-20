@@ -93,9 +93,9 @@ class CustomField extends Component {
   }
 
   renderNumber = props => {
-    const { onBlur } = this.props
+    const { onBlur, setRef } = this.props
 
-    return <CustomInput min={0} onBlur={onBlur} {...props} type="number" />
+    return <CustomInput setRef={setRef} min={0} onBlur={onBlur} {...props} type="number" />
   }
 
   renderYearSelect = props => {
@@ -118,8 +118,9 @@ class CustomField extends Component {
   }
 
   renderString = props => {
-    const { onBlur } = this.props
-    return <CustomInput onBlur={onBlur} type="text" {...props} />
+    const { onBlur, setRef } = this.props
+
+    return <CustomInput setRef={ setRef } onBlur={onBlur} type="text" {...props} />
   }
 
   renderTextArea = props => {
@@ -141,8 +142,8 @@ class CustomField extends Component {
   }
 
   renderRichTextShort = props => {
-    const { onBlur, meta } = this.props
-    return <RichTextEditor onBlur={onBlur} meta={meta} {...props} />
+    const { onBlur, meta, setRef } = this.props
+    return <RichTextEditor setRef={setRef} onBlur={onBlur} meta={meta} {...props} />
   }
 
   renderDate = props => {
