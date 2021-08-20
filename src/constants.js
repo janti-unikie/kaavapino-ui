@@ -6,4 +6,5 @@ export const FLOOR_AREA_FILTER = 'floorAreaFilter'
 export const MAP_FILTER = 'mapFilter'
 export const PROJECT_TYPE_FILTER = 'projectTypeFilter'
 export const DOWNLOAD_PROJECT_DATA_FORM = 'downloadProjectData'
+export const OVERVIEW_FILTERS_FORM = 'overViewFiltersForm'
 
