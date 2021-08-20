@@ -8,19 +8,19 @@ import { useTranslation } from 'react-i18next'
 
 const Header = props => {
   const navigateToProjects = () => {
-    props.history.push('../projects')
+    props.history.push('/projects')
   }
 
   const navigateToHome = () => {
-    props.history.push('../')
+    props.history.push('/')
   }
 
   const navigateToReports = () => {
-    props.history.push('../reports')
+    props.history.push('/reports')
   }
 
   const logout = () => {
-    props.history.push('../Logout')
+    props.history.push('/Logout')
   }
   const { user, userRole } = props
 

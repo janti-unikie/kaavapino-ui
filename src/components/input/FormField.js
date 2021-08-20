@@ -51,6 +51,7 @@ const FormField = props => {
             formName={formName}
             formValues={formValues}
             syncronousErrors={syncronousErrors}
+            setRef={props.setRef }
           />
         )
     }

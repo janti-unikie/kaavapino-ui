@@ -1,13 +1,22 @@
 import React from 'react'
 import Document from './Document'
+import { Accordion } from 'hds-react'
 
-const DocumentGroup = ({ title, documents }) => (
-  <div className="document-group">
-    <h1>{title}</h1>
-    {documents.map(({ name, file }, i) => (
-      <Document name={name} file={file} key={i} />
+const DocumentGroup = ({ title, documents, projectId }) => {
+  
+  return (
+    <div className="document-group">
+     <Accordion
+      heading={title}
+      headingLevel={2}
+      className="document-accordion"
+    >
+        {documents.map(({ name, file }, i) => (
+      <Document title={title} projectId={projectId} name={name} file={file} key={i} />
     ))}
-  </div>
-)
+    </Accordion>
+  
+  </div>)
+}
 
 export default DocumentGroup
