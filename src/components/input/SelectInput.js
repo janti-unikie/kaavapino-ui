@@ -22,7 +22,7 @@ const SelectInput = ({
   let currentSingleValue
 
   if (multiple) {
-    if (isArray(input.value)) {
+    if (isArray(input && input.value)) {
       input.value.forEach(value =>
         currentValue.push({ label: getLabel(value), value: value })
       )

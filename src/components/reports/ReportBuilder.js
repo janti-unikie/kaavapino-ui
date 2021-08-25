@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import { downloadReport } from '../../actions/reportActions'
@@ -7,16 +7,20 @@ import { Form } from 'semantic-ui-react'
 import ReportFilters from './ReportFilters'
 import { Button } from 'hds-react'
 import { useTranslation } from 'react-i18next'
-
+import { fetchReports } from '../../actions/reportActions'
+import { REPORT_FORM } from '../../constants'
 
 function ReportBuilder(props) {
   const [selectedReport, setSelectedReport] = useState(null)
 
-  const {t} = useTranslation()
+  const { t } = useTranslation()
+
+  useEffect(() => {
+    props.fetchReports()
+  }, [])
 
   const handleSubmit = () => {
-    
-    props.downloadReport( {selectedReport} )
+    props.downloadReport({ selectedReport })
   }
 
   const renderReportButtons = () => {
@@ -40,7 +44,6 @@ function ReportBuilder(props) {
 
   const { reports } = props
 
- 
   return (
     <>
       <div className="select-report-container">
@@ -57,7 +60,7 @@ function ReportBuilder(props) {
         {selectedReport && (
           <Button type="submit" variant="primary" className="report-create-button">
             {t('reports.create-report')}
-          </Button>   
+          </Button>
         )}
       </Form>
     </>
@@ -69,10 +72,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  downloadReport
+  downloadReport,
+  fetchReports
 }
 
 export default reduxForm({
-  form: 'reportForm',
+  form: REPORT_FORM,
   enableReinitialize: true
 })(connect(mapStateToProps, mapDispatchToProps)(ReportBuilder))

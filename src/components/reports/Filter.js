@@ -1,45 +1,34 @@
-import React, { useState } from 'react'
+import React from 'react'
 import FilterField from './FilterField'
-import reportUtils from '../../utils/reportUtils'
-import {Select} from 'hds-react'
 
-function Filter(props) {
-  
-  const [selectedOption, setSelectedOption] = useState(null)
-
-  const formatOptions = options => {
-    return options.map(option => {
+function Filter({ filter }) {  
+  const formatChoices = choices => {
+    if ( !choices ) {
+      return []
+    }
+    return  choices.map(choice => {
       return {
-        key: option,
-        value: option,
-        label: reportUtils.getOptionName(option)
+        key: choice.identifier,
+        value: choice.identifier,
+        label: choice.value
       }
     })
   }
-  const { id, options, type } = props
-  
- return (
-      <div className="report-filter">
-        <h4>
-            {`${reportUtils.getFilterName(id)} `}
-            <Select
-              inline
-              clearable
-              header="Valitse suodatin"
-              options={formatOptions(options)}
-              onChange={ data => setSelectedOption(data.value)}
-            />
-          </h4>
-        {selectedOption && (
-          <FilterField
-            key={`${id}__${selectedOption}`}
-            type={type}
-            id={id}
-            selectedOption={selectedOption}
-          />
-        )}
-      </div>
-    )
+  return (
+    <div className="report-filter">
+      <h4>
+        {filter.name}
+      </h4>
+        <div className="filter-field">
+        <FilterField
+          key={`${filter.identifier}`}
+          type={filter.type}
+          id={filter.identifier}
+          options={formatChoices(filter.choices)}
+        />
+         </div>
+    </div>
+  )
 }
 
 export default Filter

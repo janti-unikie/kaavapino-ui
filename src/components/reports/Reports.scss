@@ -1,7 +1,6 @@
 .reports-page {
   flex: 1 1;
   margin: 0 auto;
-  max-width: 1148px;
   width: calc(100% - 32px);
 
   display: inline;
@@ -35,8 +34,8 @@
         width: 300px;
       }
     }
-    .filter-field input {
-      width: 300px;
+    .filter-field  {
+      max-width: 300px;
     }
    
   }

@@ -1,16 +1,12 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { fetchReports } from '../../actions/reportActions'
+import React from 'react'
 import { NavHeader } from '../common/NavHeader'
 import ReportBuilder from './ReportBuilder'
 import { useTranslation } from 'react-i18next'
 
-function Reports(props) {
+function Reports() {
 
   const {t} = useTranslation()
-  useEffect(() => {
-    props.fetchReports()
-  }, [])
+  
 
   return (
     <div className="reports-page">
@@ -26,8 +22,6 @@ function Reports(props) {
   )
 }
 
-const mapDispatchToProps = {
-  fetchReports
-}
 
-export default connect(null, mapDispatchToProps)(Reports)
+
+export default Reports
