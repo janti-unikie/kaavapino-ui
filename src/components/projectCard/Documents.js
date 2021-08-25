@@ -20,9 +20,11 @@ function Documents({ documentFields, hideTitle }) {
     )
   }
   const renderDocuments = documents => {
+    
     return documents.map((document, id) => {
       return (
         <div key={document.link + id}>
+        
           <Link key={document.link + id} to={{ pathname: document.link }} target="_blank">
             {document.document_name ? document.document_name : document.link}
           </Link>

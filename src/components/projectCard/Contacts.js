@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { isArray } from 'lodash'
 
-function Contacts({ fields, hideTitle }) {
+function Contacts({ fields, hideTitle, personnel }) {
   const { t } = useTranslation()
 
   const renderField = (field, index) => {
@@ -16,7 +16,14 @@ function Contacts({ fields, hideTitle }) {
     if (isArray(field.value)) {
       field.value.forEach(current => {
         if (!field.choices) {
-          completeValue.push(current)
+          const currentPerson = personnel.find( person => person.id = current.value )
+
+          if ( currentPerson ) {
+            completeValue.push(currentPerson.name)
+          } else {
+            completeValue.push(current)
+          }
+          
         } else {
           const choiceValue =
             field.choices && field.choices.find(choice => choice.value === current)
@@ -29,6 +36,12 @@ function Contacts({ fields, hideTitle }) {
         const foundValue =
           field.choices && field.choices.find(choice => choice.value === field.value)
         value = foundValue && foundValue.label
+      } else {
+        const current = personnel.find( person => person.id === field.value)
+
+          if ( current ) {
+            value = current.name
+          } 
       }
     }
     return (

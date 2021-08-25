@@ -19,7 +19,8 @@ import {
 } from '../../actions/projectActions'
 import {
   externalDocumentsSelector,
-  currentProjectSelector
+  currentProjectSelector,
+  personnelSelector
 } from '../../selectors/projectSelector'
 import { connect } from 'react-redux'
 import { getProjectCardFields } from '../../actions/schemaActions'
@@ -49,7 +50,8 @@ function ProjectCardPage({
   currentProject,
   initializeProject,
   clearExternalDocuments,
-  unreadCommentsCount
+  unreadCommentsCount,
+  personnel
 }) {
   const [descriptionFields, setDescriptionDFields] = useState([])
   const [basicInformationFields, setBasicInformationFields] = useState([])
@@ -224,7 +226,7 @@ function ProjectCardPage({
       <Grid stackable columns="equal">
         <Grid.Column width={5}>
           <Segment>
-            <Contacts fields={contactsFields} />
+            <Contacts fields={contactsFields} personnel={personnel} />
           </Segment>
           <Segment key="basic-information">
             <StrategyConnection fields={strategyConnectionFields} />
@@ -338,7 +340,8 @@ const mapStateToProps = state => {
     externalDocuments: externalDocumentsSelector(state),
     projectCardFields: projectCardFieldsSelector(state),
     currentProject: currentProjectSelector(state),
-    unreadCommentsCount: unreadCommentsCountSelector(state)
+    unreadCommentsCount: unreadCommentsCountSelector(state),
+    personnel: personnelSelector(state)
   }
 }
 

@@ -1,34 +1,38 @@
 .documents-page-container {
-  .no-documents {
-    text-align: center;
-  }
-
-  > div:not(:first-child) {
-    margin-top: 40px;
-  }
-
+  padding-bottom: 20px;
   .document-group {
-    border-bottom: 1px solid #aab2be;
-    .document {
-      display: flex;
-      align-items: flex-end;
-      cursor: pointer;
-      background-color: white;
-      padding: 15px;
-      font-size: 16px;
-      border: 1px solid #aab2be;
-      border-bottom: none;
-      user-select: none;
+    .title {
+      padding-left: 5px;
+    }
 
-      .document-title {
-        overflow: hidden;
-        white-space: normal;
-        text-overflow: ellipsis;
-      }
+    .ui.grid {
+      margin-left: 0;
+      margin-right: 0;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
 
-      :nth-child(n):not(:first-child) {
-        margin-left: 12px;
-      }
+    .document-row {
+        .document-title {
+          padding: 0px;
+          padding-left: 5px;
+          margin: 0;
+          line-height: 49px;
+        }
+        button > span{
+          padding-left: 0;
+        }
+        background-color: $light-gray3;  
+    }
+
+}
+
+.document-accordion {
+  margin: auto;
+  margin-top: 10px
+  }
+
+  .document-accordion > div{
+   padding: 10px;
     }
   }
-}

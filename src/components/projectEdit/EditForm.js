@@ -18,7 +18,7 @@ class EditForm extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, initialize, attributeData, geoServerData, submitErrors } = this.props
+    const { saving, initialize, attributeData, geoServerData, submitErrors, initialized } = this.props
 
     if (
       prevProps.saving &&
@@ -30,6 +30,10 @@ class EditForm extends Component {
       
       initialize( newInitialize )
     }
+    if ( initialized !== prevProps.initialized ) {
+      this.props.setFormInitialized(true)
+    }
+
   }
 
   render() {
@@ -76,6 +80,7 @@ class EditForm extends Component {
             section={section}
             disabled={disabled}
             attributeData={attributeData}
+            setRef={ this.props.setRef }
           />
         ))}
         <Button variant="supplementary"

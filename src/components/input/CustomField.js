@@ -25,6 +25,7 @@ import _ from 'lodash'
 import DeadlineInfoText from './DeadlineInfoText'
 import { get } from 'lodash'
 import { EDIT_PROJECT_TIMETABLE_FORM } from '../../constants'
+import CustomADUserSelect from './CustomADUserSelect'
 class CustomField extends Component {
   yearOptions = []
   shouldComponentUpdate(p) {
@@ -92,9 +93,9 @@ class CustomField extends Component {
   }
 
   renderNumber = props => {
-    const { onBlur } = this.props
+    const { onBlur, setRef } = this.props
 
-    return <CustomInput min={0} onBlur={onBlur} {...props} type="number" />
+    return <CustomInput setRef={setRef} min={0} onBlur={onBlur} {...props} type="number" />
   }
 
   renderYearSelect = props => {
@@ -117,8 +118,9 @@ class CustomField extends Component {
   }
 
   renderString = props => {
-    const { onBlur } = this.props
-    return <CustomInput onBlur={onBlur} type="text" {...props} />
+    const { onBlur, setRef } = this.props
+
+    return <CustomInput setRef={ setRef } onBlur={onBlur} type="text" {...props} />
   }
 
   renderTextArea = props => {
@@ -140,8 +142,8 @@ class CustomField extends Component {
   }
 
   renderRichTextShort = props => {
-    const { onBlur, meta } = this.props
-    return <RichTextEditor onBlur={onBlur} meta={meta} {...props} />
+    const { onBlur, meta, setRef } = this.props
+    return <RichTextEditor setRef={setRef} onBlur={onBlur} meta={meta} {...props} />
   }
 
   renderDate = props => {
@@ -310,6 +312,11 @@ class CustomField extends Component {
       />
     )
   }
+  renderADUserSelection = props => {
+    const { field, onBlur } = this.props
+
+    return <CustomADUserSelect label={field.label} onBlur={onBlur} {...props} />
+  }
 
   getInput = field => {
 
@@ -369,6 +376,8 @@ class CustomField extends Component {
         return this.renderDeadlineCheckbox
       case 'readonly':
         return this.renderDeadlineInfo
+      case 'personnel':
+        return this.renderADUserSelection
       default:
         return this.renderNumber
     }
