@@ -1,4 +1,4 @@
-FROM node:14.16.1-alpine3.13
+FROM registry.access.redhat.com/ubi8/nodejs-14
 
 WORKDIR /kaavapino-ui
 
