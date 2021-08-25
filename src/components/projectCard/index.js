@@ -262,6 +262,7 @@ function ProjectCardPage({
   const renderMobileView = () => {
     return (
       <div>
+        <h3>{currentProject.name}</h3>
         <Accordion className="mobile-accordion" heading={t('project.description-title')}>
           <Description hideTitle={true} fields={descriptionFields} />
         </Accordion>
@@ -292,12 +293,7 @@ function ProjectCardPage({
         <Accordion className="mobile-accordion" heading={t('project.timetable-title')}>
           <TimeTable hideTitle={true} fields={timeTableFields} />
         </Accordion>
-        <Accordion
-          className="mobile-accordion"
-          heading={t('project.planning-area-constraints')}
-        >
-          <GeometryInformation hideTitle={true} field={planningRestriction} />
-        </Accordion>
+
         <Accordion className="mobile-accordion" heading={t('project.documents-title')}>
           <Documents hideTitle={true} documentFields={externalDocuments} />
         </Accordion>
@@ -307,6 +303,9 @@ function ProjectCardPage({
         >
           <CommentsMobile projectId={projectId} />
         </Accordion>
+        <div className="mobile-accordion">
+          <GeometryInformation hideTitle={true} field={planningRestriction} />
+        </div>
       </div>
     )
   }
