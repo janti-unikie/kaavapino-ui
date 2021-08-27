@@ -8,6 +8,13 @@
         "sign-out": "Kirjaudu ulos",
         "choices-label": "Valikko"
     },
+    "document-loading": {
+        "title": "Dokumentin lataus",
+        "preview-title": "Esikatseludokumentin lataus",
+        "preview-content": "Esikatseludokumenttia {{name}} ladataan.",
+        "content": "Dokumenttia {{name}} ladataan.",
+        "error": "Dokumentin {{name}} lataus epäonnistui."
+    },
     "projects": {
         "own-short": "Omat",
         "all-short": "Kaikki",

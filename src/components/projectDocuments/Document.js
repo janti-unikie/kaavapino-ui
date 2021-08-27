@@ -16,7 +16,7 @@ const Document = props => {
         <Grid.Column textAlign="right">
           <Button
             variant="supplementary"
-            onClick={() => props.downloadDocument(props.file)}
+            onClick={() => props.downloadDocument({file: props.file, name: props.name})}
             href={props.file}
             className="document"
           >
@@ -24,7 +24,7 @@ const Document = props => {
           </Button>
           <Button
             variant="supplementary"
-            onClick={() => props.downloadDocumentPreview(props.file)}
+            onClick={() => props.downloadDocumentPreview({file: props.file, name: props.name})}
             href={props.file}
             className="document"
           >

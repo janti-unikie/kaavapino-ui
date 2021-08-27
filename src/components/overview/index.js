@@ -71,10 +71,11 @@ const Overview = ({
     return filters
   }
 
+
   const isPrivileged = projectUtils.isUserPrivileged(currentUserId, users)
 
   if (isMobile) {
-    return <MobileView filters={getFilters('filters_on_map')} isPrivileged={isPrivileged} />
+    return <MobileView filters={currentFilterData} isPrivileged={isPrivileged} />
   }
   return (
     <div className="overview">

@@ -8,7 +8,7 @@ import { Button } from 'hds-react'
 import FilterModal from './Filters/FilterModal'
 import { isArray } from 'lodash'
 
-function MobileView({ isPrivileged }) {
+function MobileView({ isPrivileged, filters }) {
   const { t } = useTranslation()
 
   const [filter, setFilter] = useState()
@@ -50,6 +50,7 @@ function MobileView({ isPrivileged }) {
       <FilterModal
         open={showFilterModal}
         initialValues={{}}
+        filters={filters}
         handleClose={value => {
           setShowFilterModal(false)
           onFilterChange(value)

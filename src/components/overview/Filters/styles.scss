@@ -10,21 +10,11 @@
  ul {
    overflow: hidden;
  }
- .filter-dropdown > div > button {
-   font-size: 12px;
- }
- .filter-dropdown > div > ul > li {
-  font-size: 12px;
-}
+ 
 }
 .filter-modal {
   font-size: 12px;
-
-  i {
-    margin-left: auto !important;
-    margin-top: 10px !important;
-    margin-right: 10px !important;
-  }
+ 
 }
 
 .filter-modal-header {
@@ -34,11 +24,6 @@
   padding: 5px !important; 
   margin: 5px !important;
 
-  div {
-    font-size: 14px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
 }
 .filter-modal-actions {
     button {
@@ -48,6 +33,9 @@
 }
 .filter-modal-button {
     margin-left: 10px;
+}
+.filter-accordion {
+  font-size: 14px;
 }
 
 
