@@ -740,9 +740,15 @@ function* getProjectsOverviewFloorArea({ payload }) {
   keys.forEach(key => {
     if (key === 'vuosi') {
       const value = payload[key]
-      const startDate = dayjs(new Date(value, 0, 1)).format('YYYY-MM-DD')
-      const endDate = dayjs(new Date(value, 11, 31)).format('YYYY-MM-DD')
-
+      let startDate
+      let endDate
+      if (!isArray(value)) {
+        startDate = dayjs(new Date(value, 0, 1)).format('YYYY-MM-DD')
+        endDate = dayjs(new Date(value, 11, 31)).format('YYYY-MM-DD')
+      } else {
+        startDate = dayjs(new Date(value[0], 0, 1)).format('YYYY-MM-DD')
+        endDate = dayjs(new Date(value[value.length - 1], 11, 31)).format('YYYY-MM-DD')
+      }
       query = {
         ...query,
         start_date: startDate,
@@ -841,8 +847,16 @@ function* getProjectOverviewMapDataSaga({ payload }) {
   keys.forEach(key => {
     if (key === 'vuosi') {
       const value = payload[key]
-      const startDate = dayjs(new Date(value, 0, 1)).format('YYYY-MM-DD')
-      const endDate = dayjs(new Date(value, 11, 31)).format('YYYY-MM-DD')
+
+      let startDate
+      let endDate
+      if (!isArray(value)) {
+        startDate = dayjs(new Date(value, 0, 1)).format('YYYY-MM-DD')
+        endDate = dayjs(new Date(value, 11, 31)).format('YYYY-MM-DD')
+      } else {
+        startDate = dayjs(new Date(value[0], 0, 1)).format('YYYY-MM-DD')
+        endDate = dayjs(new Date(value[value.length - 1], 11, 31)).format('YYYY-MM-DD')
+      }
 
       query = {
         ...query,

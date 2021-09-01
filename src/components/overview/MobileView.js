@@ -38,6 +38,20 @@ function MobileView({
       setFilter({})
     }
   }, [])
+  const getFilterAmount = () => {
+    let amount = 0
+    const keys = Object.keys( filter )
+
+    keys.forEach( key => {
+      if ( filter[key] ) {  
+        amount = amount + filter[key].length
+      }
+    })
+
+    return amount
+  }
+
+  const filterAmount = getFilterAmount()
 
   return (
     <div>
@@ -59,7 +73,8 @@ function MobileView({
             showFilterModal ? setShowFilterModal(false) : setShowFilterModal(true)
           }}
         >
-          Filters
+          {t('overview.filter-button')}
+          {filterAmount > 0 && <span>({filterAmount})</span>}
         </Button>
         <Button
           className="overview-filter-button"
@@ -68,7 +83,7 @@ function MobileView({
             setFilter({})
           }}
         >
-          Tyhjennä
+          {t('overview.clear')}
         </Button>
         <Segment key="map">
           <CustomMapMobile isPrivileged={isPrivileged} />

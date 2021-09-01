@@ -107,7 +107,11 @@
     },
     "overview": {
         "title": "Yleisnäkymä",
-        "clear-selections": "Tyhjennä valinnat"
+        "clear-selections": "Tyhjennä valinnat",
+        "filter-button": "Suodata",
+        "filter-modal-title": "Suodata",
+        "clear": "Tyhjennä",
+        "selected": "{{amount}} valittu"
     },
     "floor-area": {
         "title": "Tarkistettujen kaavaehdotusten asuinkerrosala {{date}}",

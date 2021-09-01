@@ -7,7 +7,7 @@ class CustomADUserCombobox extends Component {
   state = {
     options: [],
     currentQuery: null,
-    currentValue: null
+    currentValue: this.props.currentValue
   }
 
   componentDidMount() {

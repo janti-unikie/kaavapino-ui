@@ -14,9 +14,8 @@ function FilterModal({ filterList, handleClose, open, setFilter, currentFilter }
   }
 
   useEffect(() => {
-    setSelectedFilters( currentFilter )
+    setSelectedFilters(currentFilter)
   }, [currentFilter])
-
 
   const onClose = () => {
     setFilter(selectedFilters)
@@ -69,12 +68,10 @@ function FilterModal({ filterList, handleClose, open, setFilter, currentFilter }
   const getHeader = (name, amountSelected) => {
     return (
       <Grid columns="equal">
-        <Grid.Column>
-        {name}
-        </Grid.Column>
+        <Grid.Column>{name}</Grid.Column>
         <Grid.Column textAlign="right">
-       {amountSelected > 0 && <Tag size="s">{amountSelected} valittu</Tag>}
-       </Grid.Column>
+          {amountSelected > 0 && <Tag size="s">{t('overview.selected', {amount: amountSelected})}</Tag>}
+        </Grid.Column>
       </Grid>
     )
   }
@@ -87,7 +84,7 @@ function FilterModal({ filterList, handleClose, open, setFilter, currentFilter }
       open={open}
       closeIcon
     >
-      <Modal.Header className="filter-modal-header">Suodata</Modal.Header>
+      <Modal.Header className="filter-modal-header"> {t('overview.filter-modal-title')}</Modal.Header>
       <Modal.Content className="filter-modal-content">{renderFilters()}</Modal.Content>
       <Modal.Actions className="filter-modal-actions">
         <Button type="button" variant="primary" onClick={onClose}>
