@@ -9,27 +9,56 @@ import {
 import { currentProjectIdSelector } from '../../selectors/projectSelector'
 import { LoadingSpinner } from 'hds-react'
 import DocumentGroup from './DocumentGroup'
+import { IconAlertCircle } from 'hds-react'
 
 function ProjectDocumentsPage(props) {
- 
   useEffect(() => {
     const { currentProjectId } = props
-      props.fetchDocuments(currentProjectId)
+    props.fetchDocuments(currentProjectId)
   }, [])
 
   const groupDocuments = documents => {
     const result = {}
     documents.forEach(doc => {
-      if (!result[doc.phase_index]) {
-        result[doc.phase_index] = { title: doc.phase_name, documents: [] }
+      if (!doc.phases) {
+        return null
       }
-      result[doc.phase_index].documents.push(doc)
+
+      doc.phases.forEach(phase => {
+        if (!result[phase.phase_index]) {
+          result[phase.phase_index] = {
+            title: phase.phase_name,
+            documents: [],
+            phaseEnded: phase.phase_ended
+          }
+        }
+        result[phase.phase_index].documents.push(doc)
+      })
     })
     return result
   }
   const { documents, documentsLoading } = props
-  const groupedDocuments = groupDocuments(documents) 
+  const groupedDocuments = groupDocuments(documents)
 
+  console.log(groupedDocuments)
+
+  const getTitle = key => {
+    const current = groupedDocuments[key]
+
+    return (
+      <>
+        <span>
+          {current.title}
+          {current.phaseEnded && (
+            <span className="phase-end-tag">
+              <IconAlertCircle size="xs" />
+              Vaihe ohitettu
+            </span>
+          )}
+        </span>
+      </>
+    )
+  }
   const renderDocumentList = () => (
     <div className="documents-page-container">
       {documentsLoading && <LoadingSpinner className="loader-icon" />}
@@ -39,7 +68,8 @@ function ProjectDocumentsPage(props) {
       {Object.keys(groupedDocuments).map(key => (
         <DocumentGroup
           key={key}
-          title={groupedDocuments[key].title}
+          title={getTitle(key)}
+          phaseEnded={groupedDocuments[key].phaseEnded}
           documents={groupedDocuments[key].documents}
           projectId={props.currentProjectId}
         />
