@@ -7,14 +7,10 @@ import {
 } from './floorAreaChartUtils'
 import {
   projectOverviewFloorAreaSelector,
-  projectOverviewFloorAreaFiltersSelector,
   projectOverviewFloorAreaTargetsSelector
 } from '../../selectors/projectSelector'
 
 import {
-  getProjectsOverviewFloorArea,
-  clearProjectsOverviewFloorArea,
-  setProjectsOverviewFloorAreaFilter,
   getProjectsOverviewFloorAreaTargets
 } from '../../actions/projectActions'
 import { connect } from 'react-redux'
@@ -79,16 +75,12 @@ FloorAreaMobile.propTypes = {
 }
 
 const mapDispatchToProps = {
-  getProjectsOverviewFloorArea,
-  clearProjectsOverviewFloorArea,
-  setProjectsOverviewFloorAreaFilter,
   getProjectsOverviewFloorAreaTargets
 }
 
 const mapStateToProps = state => {
   return {
     chartData: projectOverviewFloorAreaSelector(state),
-    storedFilter: projectOverviewFloorAreaFiltersSelector(state),
     floorAreaTargets: projectOverviewFloorAreaTargetsSelector(state)
   }
 }

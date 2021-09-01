@@ -51,6 +51,8 @@ const Overview = ({
     window.addEventListener('resize', handleResize)
     if (window.innerWidth < 720) {
       setIsMobile(true)
+    } else {
+      setIsMobile( false )
     }
   })
   useEffect(() => {
@@ -58,6 +60,10 @@ const Overview = ({
       clearProjectsOverview()
     };
   }, []);
+
+  useEffect(() => {
+    clearProjectsOverview()
+  }, [isMobile])
 
   const getFilters = key => {
     const filters = []
@@ -75,7 +81,7 @@ const Overview = ({
   const isPrivileged = projectUtils.isUserPrivileged(currentUserId, users)
 
   if (isMobile) {
-    return <MobileView filters={currentFilterData} isPrivileged={isPrivileged} />
+    return <MobileView filterList={filterData} isPrivileged={isPrivileged} />
   }
   return (
     <div className="overview">

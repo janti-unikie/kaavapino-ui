@@ -315,7 +315,7 @@ function FloorAreaChart({
       </Grid>
 
       <div>
-        <Legends />
+       
 
         {!currentChartData && <LoadingSpinner className="center" />}
         {currentChartData && (
@@ -431,7 +431,9 @@ function FloorAreaChart({
             </ResponsiveContainer>
           </div>
         )}
+        
       </div>
+      <Legends centered={true} />
     </div>
   )
 }

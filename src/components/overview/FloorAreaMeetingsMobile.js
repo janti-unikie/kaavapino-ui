@@ -1,15 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  projectOverviewFloorAreaSelector,
-  projectOverviewFloorAreaFiltersSelector
-} from '../../selectors/projectSelector'
+import { projectOverviewFloorAreaSelector } from '../../selectors/projectSelector'
 
-import {
-  getProjectsOverviewFloorArea,
-  clearProjectsOverviewFloorArea,
-  setProjectsOverviewFloorAreaFilter
-} from '../../actions/projectActions'
 import { connect } from 'react-redux'
 import { Accordion, LoadingSpinner, Card } from 'hds-react'
 import { withRouter } from 'react-router-dom'
@@ -23,19 +15,28 @@ function FloorAreaMeetings({ chartData }) {
   const getFormattedHeaderDate = date => {
     return dayjs(date).format('DD.MM.YYYY')
   }
-
   const renderMeetings = () => {
-    return (
+    const items =
       chartData &&
       chartData.daily_stats &&
       chartData.daily_stats.map(item => renderItem(item))
-    )
+
+    const realMeetings = []
+
+    items.forEach(item => {
+      if (item) {
+        realMeetings.push(item)
+      }
+    })
+
+    return realMeetings.length > 2 ? realMeetings.slice(0, 3) : realMeetings
   }
 
   const renderItem = item => {
     if (!item.meetings || item.meetings.length === 0) {
       return null
     }
+
     return (
       <Accordion
         heading={getFormattedHeaderDate(item.date) + ' ' + item.meetings + ' projektia'}
@@ -100,18 +101,10 @@ function FloorAreaMeetings({ chartData }) {
 FloorAreaMeetings.propTypes = {
   chartData: PropTypes.object.isRequired
 }
-
-const mapDispatchToProps = {
-  getProjectsOverviewFloorArea,
-  clearProjectsOverviewFloorArea,
-  setProjectsOverviewFloorAreaFilter
-}
-
 const mapStateToProps = state => {
   return {
-    chartData: projectOverviewFloorAreaSelector(state),
-    storedFilter: projectOverviewFloorAreaFiltersSelector(state)
+    chartData: projectOverviewFloorAreaSelector(state)
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FloorAreaMeetings))
+export default withRouter(connect(mapStateToProps)(FloorAreaMeetings))

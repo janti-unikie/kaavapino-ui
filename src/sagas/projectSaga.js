@@ -81,7 +81,6 @@ import {
   GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS,
   GET_PROJECT_MAP_LEGENDS,
   getMapLegendsSuccessful
-
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
@@ -109,6 +108,7 @@ import i18 from 'i18next'
 import { showField } from '../utils/projectVisibilityUtils'
 import { checkDeadlines } from '../components/ProjectTimeline/helpers/helpers'
 import dayjs from 'dayjs'
+import { isArray } from 'lodash'
 
 export default function* projectSaga() {
   yield all([
@@ -136,9 +136,11 @@ export default function* projectSaga() {
     takeLatest(GET_PROJECTS_OVERVIEW_FILTERS, getProjectsOverviewFilters),
     takeLatest(GET_EXTERNAL_DOCUMENTS, getExternalDocumentsSaga),
     takeLatest(GET_PROJECTS_OVERVIEW_MAP_DATA, getProjectOverviewMapDataSaga),
-    takeLatest(GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS, getProjectsOverviewFloorAreaTargets),
+    takeLatest(
+      GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS,
+      getProjectsOverviewFloorAreaTargets
+    ),
     takeLatest(GET_PROJECT_MAP_LEGENDS, getProjectMapLegends)
-  
   ])
 }
 
@@ -746,14 +748,37 @@ function* getProjectsOverviewFloorArea({ payload }) {
         start_date: startDate,
         end_date: endDate
       }
-    } else {
+    } else if (key === 'henkilo') {
+      const currentPersonIds = []
+
+      const currentPayload = payload[key]
+
+      currentPayload.forEach(current => currentPersonIds.push(current.id))
+
       query = {
         ...query,
-        [key]: payload[key]
+        [key]: currentPersonIds.toString()
+      }
+    } else {
+      const queryValue = []
+
+      const current = payload[key]
+
+      if (isArray(current)) {
+        current.forEach(value => queryValue.push(value))
+      } else {
+        queryValue.push(payload[key])
+      }
+
+      if (queryValue.length > 0) {
+        query = {
+          ...query,
+          [key]: queryValue.toString()
+        }
       }
     }
   })
- 
+
   try {
     const floorArea = yield call(overviewFloorAreaApi.get, { query: query })
     yield put(getProjectsOverviewFloorAreaSuccessful(floorArea))
@@ -771,7 +796,7 @@ function* getProjectsOverviewBySubtype({ payload }) {
       const value = payload[key]
       const startDate = dayjs(new Date(value, 0, 1)).format('YYYY-MM-DD')
       const endDate = dayjs(new Date(value, 11, 31)).format('YYYY-MM-DD')
-      
+
       query = {
         ...query,
         start_date: startDate,
@@ -782,7 +807,6 @@ function* getProjectsOverviewBySubtype({ payload }) {
         ...query,
         [key]: payload[key]
       }
-      
     }
   })
   try {
@@ -800,51 +824,81 @@ function* getProjectsOverviewFilters() {
     yield put(error(e))
   }
 }
-  function* getExternalDocumentsSaga({ payload: projectId }) {
-    try {
-      const documents = yield call(externalDocumentsApi.get, { path: { id: projectId } })
-      yield put(getExternalDocumentsSuccessful(documents))
-    } catch (e) {
-      yield put(error(e))
-    }
+function* getExternalDocumentsSaga({ payload: projectId }) {
+  try {
+    const documents = yield call(externalDocumentsApi.get, { path: { id: projectId } })
+    yield put(getExternalDocumentsSuccessful(documents))
+  } catch (e) {
+    yield put(error(e))
   }
+}
 
-  function* getProjectOverviewMapDataSaga({payload}) {
+function* getProjectOverviewMapDataSaga({ payload }) {
+  let query = {}
 
-    let query = {}
+  const keys = Object.keys(payload)
 
-    const keys = Object.keys(payload)
-  
-    keys.forEach(key => {
+  keys.forEach(key => {
+    if (key === 'vuosi') {
+      const value = payload[key]
+      const startDate = dayjs(new Date(value, 0, 1)).format('YYYY-MM-DD')
+      const endDate = dayjs(new Date(value, 11, 31)).format('YYYY-MM-DD')
+
+      query = {
+        ...query,
+        start_date: startDate,
+        end_date: endDate
+      }
+    } else if (key === 'henkilo') {
+      const currentPersonIds = []
+
+      const currentPayload = payload[key]
+
+      currentPayload.forEach(current => currentPersonIds.push(current.id))
+
+      query = {
+        ...query,
+        [key]: currentPersonIds.toString()
+      }
+    } else {
+      const queryValue = []
+
+      const current = payload[key]
+
+      if (isArray(current)) {
+        current.forEach(value => queryValue.push(value))
+      } else {
+        queryValue.push(payload[key])
+      }
+
+      if (queryValue.length > 0) {
         query = {
           ...query,
-          [key]: payload[key]
+          [key]: queryValue.toString()
         }
       }
-    )
-    try {
-      const mapData = yield call(overviewMapApi.get,  { query: query })
-      yield put(getProjectsOverviewMapDataSuccessful(mapData))
-    } catch (e) {
-      yield put(error(e))
     }
+  })
+  try {
+    const mapData = yield call(overviewMapApi.get, { query: query })
+    yield put(getProjectsOverviewMapDataSuccessful(mapData))
+  } catch (e) {
+    yield put(error(e))
   }
-  function* getProjectsOverviewFloorAreaTargets() {
-    try {
-      const targets = yield call(overviewFloorAreaTargetApi.get)
-      yield put(getProjectsOverviewFloorAreaTargetsSuccessful(targets))
-    } catch (e) {
-      yield put(error(e))
-    }
+}
+function* getProjectsOverviewFloorAreaTargets() {
+  try {
+    const targets = yield call(overviewFloorAreaTargetApi.get)
+    yield put(getProjectsOverviewFloorAreaTargetsSuccessful(targets))
+  } catch (e) {
+    yield put(error(e))
   }
-  function* getProjectMapLegends() {
-    try {
-      const legends = yield call(legendApi.get)
-      yield put(getMapLegendsSuccessful(legends))
-    } catch (e) {
-      yield put(error(e))
-    }
+}
+function* getProjectMapLegends() {
+  try {
+    const legends = yield call(legendApi.get)
+    yield put(getMapLegendsSuccessful(legends))
+  } catch (e) {
+    yield put(error(e))
   }
-
-
-  
+}

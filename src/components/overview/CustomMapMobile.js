@@ -1,61 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import { Map, TileLayer } from 'react-leaflet'
 import { useTranslation } from 'react-i18next'
-import FilterList from './Filters/FilterList'
 import { formatGeoJSONToPositions, helsinkiCenter } from '../../utils/mapUtils'
-import {
-  projectOverviewMapDataSelector,
-  projectOverviewMapFiltersSelector
-} from '../../selectors/projectSelector'
+import { projectOverviewMapDataSelector } from '../../selectors/projectSelector'
 import { connect } from 'react-redux'
-import { Grid } from 'semantic-ui-react'
-
-import {
-  getProjectsOverviewMapData,
-  clearProjectsOverviewMapData,
-  setProjectsOverviewMapFilter
-} from '../../actions/projectActions'
 
 import { LoadingSpinner } from 'hds-react'
-import { isEqual, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import { EPSG3879 } from '../../utils/mapUtils'
 import CustomMapPolygon from './CustomMapPolygon'
-import Legends from './Legends'
 
-function CustomMap({
-  filters,
-  getProjectsOverviewMapData,
-  mapData,
-  clearProjectsOverviewMapData,
-  setProjectsOverviewMapFilter,
-  storedFilter,
-  isPrivileged,
-  isMobile
-}) {
+function CustomMapMobile({ mapData, isPrivileged }) {
   const crs = EPSG3879()
 
   const [currentMapData, setCurrentMapData] = useState(null)
-  const [filter, setFilter] = useState({})
 
   useEffect(() => {
-    getProjectsOverviewMapData(filter)
     setCurrentMapData(mapData)
   }, [])
-
-  useEffect(() => {
-    getProjectsOverviewMapData(filter)
-    setCurrentMapData(mapData)
-  }, [filter])
-
-  useEffect(() => {
-    if (!storedFilter || !isEqual(storedFilter, filter)) {
-      clearProjectsOverviewMapData()
-      setCurrentMapData(null)
-      getProjectsOverviewMapData(filter)
-      setProjectsOverviewMapFilter(filter)
-      setCurrentMapData(mapData)
-    }
-  }, [filter])
 
   useEffect(() => {
     setCurrentMapData(mapData)
@@ -86,33 +48,6 @@ function CustomMap({
 
   const [current] = useState(helsinkiCenter)
 
-  const onFilterChange = (values, currentParameter) => {
-    if (!values || values.length === 0) {
-      const newFilter = Object.assign({}, filter)
-      delete newFilter[currentParameter]
-      setFilter({
-        ...newFilter
-      })
-      return
-    }
-    const valueArray = []
-    let parameter
-
-    values.forEach(value => {
-      valueArray.push(value.value)
-      parameter = value.parameter
-    })
-
-    setFilter({
-      ...filter,
-      [parameter]: valueArray
-    })
-  }
-  const onClear = () => {
-    setProjectsOverviewMapFilter({})
-    setFilter({})
-  }
-
   const { t } = useTranslation()
 
   const getPolygonArea = () => {
@@ -135,7 +70,7 @@ function CustomMap({
   }
   const renderMap = () => (
     <Map
-      className={isMobile ? 'geometry-input-mobile' : 'geometry-input'}
+      className="geometry-input-mobile"
       center={current}
       scrollWheelZoom={true}
       zoom={9}
@@ -161,38 +96,6 @@ function CustomMap({
     </Map>
   )
 
-  const renderNormalView = () => (
-    <div className="map-area">
-      <div className="geometry-input-container">
-        <Grid colums="equal" className="full-width">
-          <Grid.Column width={4}>
-            <h3>{t('map-area.title')}</h3>
-           
-          </Grid.Column>
-          <Grid.Column width={6}>
-            {isEmpty(mapData) && (
-              <span className="loading-info">
-                <LoadingSpinner small={true} className="loader-icon-right-margin header-spinner" />
-                {t('map-area.loading-data')}
-              </span>
-            )}
-          </Grid.Column>
-          
-        </Grid>
-        <Legends />
-
-        <FilterList
-          currentFilter={filter}
-          onChange={onFilterChange}
-          filterList={filters}
-          showClearButton={true}
-          onClear={onClear}
-        />
-        {renderMap()}
-      </div>
-    </div>
-  )
-
   const renderMobileView = () => (
     <div className="map-area">
       <div className="geometry-input-container">
@@ -208,19 +111,13 @@ function CustomMap({
     </div>
   )
 
-  return isMobile ? renderMobileView() : renderNormalView()
-}
-const mapDispatchToProps = {
-  getProjectsOverviewMapData,
-  clearProjectsOverviewMapData,
-  setProjectsOverviewMapFilter
+  return renderMobileView()
 }
 
 const mapStateToProps = state => {
   return {
-    mapData: projectOverviewMapDataSelector(state),
-    storedFilter: projectOverviewMapFiltersSelector(state)
+    mapData: projectOverviewMapDataSelector(state)
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomMap)
+export default connect(mapStateToProps)(CustomMapMobile)

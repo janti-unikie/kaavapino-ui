@@ -2,23 +2,34 @@ import React, { useState, useEffect } from 'react'
 import projectUtils from '../../../utils/projectUtils'
 import { Checkbox } from 'hds-react'
 import CustomADUserCombobox from '../../input/CustomADUserCombobox'
+import { isObject } from 'lodash'
 
-export default function MobileFilterList({ filter, onChange, onUserFilterChange }) {
-  const [checkedItems, setCheckedItems] = useState({})
+export default function MobileFilterList({
+  filter,
+  onChange,
+  onUserFilterChange,
+  filterValues
+}) {
+  const currentFilterValue = filterValues[filter.parameter]
+
+  const currentFilter = {}
+
+  currentFilterValue && currentFilterValue.forEach(value => (currentFilter[value] = true))
+  const [checkedItems, setCheckedItems] = useState(currentFilter)
 
   useEffect(() => {
-
-    
-    console.log("🚀 ~ file: MobileFilterList.js ~ line 29 ~ useEffect ~ checkedItems", checkedItems)
-
     let returnValue = []
-   
-   const keys = Object.keys( checkedItems )
-   keys.forEach( key => checkedItems[key] && returnValue.push( key ))
-  
-   console.log("🚀 ~ file: MobileFilterList.js ~ line 15 ~ useEffect ~ returnValue", returnValue)
 
-    onChange(returnValue, filter.parameter)
+    const keys = Object.keys(checkedItems)
+    keys.forEach(key => {
+      if (isObject(checkedItems[key])) {
+        returnValue.push(checkedItems[key])
+      } else {
+    
+        return checkedItems[key] === true ? returnValue.push(key) : null
+      }
+    })
+      onChange(returnValue, filter.parameter)
   }, [checkedItems])
 
   const handleChange = e => {
@@ -28,17 +39,18 @@ export default function MobileFilterList({ filter, onChange, onUserFilterChange 
   }
 
   const handleUserChange = value => {
-  console.log("🚀 ~ file: MobileFilterList.js ~ line 20 ~ MobileFilterList ~ value", value)
     onUserFilterChange(value, filter.parameter)
   }
 
   const renderFields = () => {
     if (filter.value_type === 'user') {
-       return (
+      return (
         <CustomADUserCombobox
           label={filter.name}
           input={{ onChange: handleUserChange }}
           multiselect={true}
+          currentValue={currentFilterValue}
+        
         />
       )
     }

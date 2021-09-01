@@ -86,11 +86,10 @@ class CustomADUserCombobox extends Component {
              value && this.props.input.onChange(value.id)
             } else {
               let returnValue = []
-              value.forEach( current => returnValue.push( current.id ))
+              value.forEach( current => returnValue.push( current ))
               this.props.input.onChange( returnValue )
             }
           }}
-          value={this.state.currentValue}
           defaultValue={this.state.currentValue}
           onBlur={this.props.onBlur}
         />

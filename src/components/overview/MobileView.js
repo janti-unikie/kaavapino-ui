@@ -1,59 +1,53 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import FloorAreaMobile from './FloorAreaMobile'
-import CustomMap from './CustomMap'
 import { Segment } from 'semantic-ui-react'
 import { useTranslation } from 'react-i18next'
 import FloorAreaMeetings from './FloorAreaMeetingsMobile'
 import { Button } from 'hds-react'
 import FilterModal from './Filters/FilterModal'
-import { isArray } from 'lodash'
+import CustomMapMobile from './CustomMapMobile'
+import { connect } from 'react-redux'
+import {
+  getProjectsOverviewMapData,
+  getProjectsOverviewFloorArea
+} from '../../actions/projectActions'
 
-function MobileView({ isPrivileged, filters }) {
+function MobileView({
+  isPrivileged,
+  filterList,
+  getProjectsOverviewMapData,
+  getProjectsOverviewFloorArea
+}) {
   const { t } = useTranslation()
 
-  const [filter, setFilter] = useState()
+  const [filter, setFilter] = useState({})
 
   const [showFilterModal, setShowFilterModal] = useState(false)
 
-  const onFilterChange = (values, currentParameter) => {
-    if (!values || values.length === 0) {
-      const newFilter = Object.assign({}, filter)
-      delete newFilter[currentParameter]
-      setFilter({
-        ...newFilter
-      })
-      return
-    }
-    if (isArray(values)) {
-      const valueArray = []
-      let parameter
-
-      values.forEach(value => {
-        valueArray.push(value.value)
-        parameter = value.parameter
-      })
-
-      setFilter({
-        ...filter,
-        [parameter]: valueArray
-      })
-    } else {
-      setFilter({
-        ...filter,
-        [values.parameter]: values.value
-      })
-    }
+  const onFilterSet = value => {
+    setFilter(value)
   }
+
+  useEffect(() => {
+    getProjectsOverviewMapData(filter)
+    getProjectsOverviewFloorArea(filter)
+  }, [filter])
+
+  useEffect(() => {
+    return () => {
+      setFilter({})
+    }
+  }, [])
 
   return (
     <div>
       <FilterModal
         open={showFilterModal}
-        initialValues={{}}
-        filters={filters}
-        handleClose={value => {
+        filterList={filterList}
+        setFilter={onFilterSet}
+        currentFilter={filter}
+        handleClose={() => {
           setShowFilterModal(false)
-          onFilterChange(value)
         }}
       />
       <div className="overview">
@@ -61,24 +55,38 @@ function MobileView({ isPrivileged, filters }) {
         <Button
           className="overview-filter-button"
           variant="secondary"
-          onClick={() =>
+          onClick={() => {
             showFilterModal ? setShowFilterModal(false) : setShowFilterModal(true)
-          }
+          }}
         >
           Filters
         </Button>
+        <Button
+          className="overview-filter-button"
+          variant="secondary"
+          onClick={() => {
+            setFilter({})
+          }}
+        >
+          Tyhjennä
+        </Button>
         <Segment key="map">
-          <CustomMap isPrivileged={isPrivileged} isMobile={true} filter={filter} />
+          <CustomMapMobile isPrivileged={isPrivileged} />
         </Segment>
         <Segment key="floor-area">
-          <FloorAreaMobile isPrivileged={isPrivileged} filter={filter} />
+          <FloorAreaMobile isPrivileged={isPrivileged} />
         </Segment>
         <Segment key="floor-area-meetings">
-          <FloorAreaMeetings isPrivileged={isPrivileged} filter={filter} />
+          <FloorAreaMeetings isPrivileged={isPrivileged} />
         </Segment>
       </div>
     </div>
   )
 }
 
-export default MobileView
+const mapDispatchToProps = {
+  getProjectsOverviewMapData,
+  getProjectsOverviewFloorArea
+}
+
+export default connect(null, mapDispatchToProps)(MobileView)

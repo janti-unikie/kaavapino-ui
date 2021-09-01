@@ -1,32 +1,37 @@
-import React, { useState } from 'react'
-import { OVERVIEW_FILTERS_FORM } from '../../../constants'
-import { reduxForm, getFormValues } from 'redux-form'
-import { connect } from 'react-redux'
-import { Modal } from 'semantic-ui-react'
-import { Button, Accordion } from 'hds-react'
+import React, { useState, useEffect } from 'react'
+import { Modal, Grid } from 'semantic-ui-react'
+import { Button, Accordion, Tag } from 'hds-react'
 import { useTranslation } from 'react-i18next'
 import MobileFilterList from './MobileFilterList'
 
-function FilterModal({ filters, handleClose, open }) {
+function FilterModal({ filterList, handleClose, open, setFilter, currentFilter }) {
   const { t } = useTranslation()
 
-  const [selectedFilters, setSelectedFilters] = useState({})
+  const [selectedFilters, setSelectedFilters] = useState(currentFilter)
 
   const onFilterChange = (value, name) => {
-    setSelectedFilters({ ...selectedFilters, [name]: value } )
+    setSelectedFilters({ ...selectedFilters, [name]: value })
+  }
+
+  useEffect(() => {
+    setSelectedFilters( currentFilter )
+  }, [currentFilter])
+
+
+  const onClose = () => {
+    setFilter(selectedFilters)
+    handleClose()
   }
 
   const renderFilters = () => {
-    return filters.map(filter => {
+    return filterList.map(filter => {
       let amountSelected = 0
 
-    
-       if ( selectedFilters && selectedFilters[filter.parameter]) {
-        const currentFilters = Object.keys( selectedFilters[filter.parameter] ) 
-        if ( currentFilters ) {
-            amountSelected = currentFilters.length
+      if (selectedFilters && selectedFilters[filter.parameter]) {
+        const currentFilters = Object.keys(selectedFilters[filter.parameter])
+        if (currentFilters) {
+          amountSelected = currentFilters.length
         }
-    
       }
 
       return (
@@ -47,20 +52,32 @@ function FilterModal({ filters, handleClose, open }) {
           style={{ fontSize: '14px' }}
           headingLevel={5}
           key={filter.name}
-          heading={filter.name + amountSelected}
+          heading={getHeader(filter.name, amountSelected)}
         >
           <MobileFilterList
             filter={filter}
             onChange={onFilterChange}
             selectedFilters={selectedFilters[filter.parameter]}
             onUserFilterChange={onFilterChange}
+            filterValues={currentFilter}
           />
         </Accordion>
       )
     })
   }
 
-  console.log(selectedFilters)
+  const getHeader = (name, amountSelected) => {
+    return (
+      <Grid columns="equal">
+        <Grid.Column>
+        {name}
+        </Grid.Column>
+        <Grid.Column textAlign="right">
+       {amountSelected > 0 && <Tag size="s">{amountSelected} valittu</Tag>}
+       </Grid.Column>
+      </Grid>
+    )
+  }
 
   return (
     <Modal
@@ -73,7 +90,7 @@ function FilterModal({ filters, handleClose, open }) {
       <Modal.Header className="filter-modal-header">Suodata</Modal.Header>
       <Modal.Content className="filter-modal-content">{renderFilters()}</Modal.Content>
       <Modal.Actions className="filter-modal-actions">
-        <Button type="button" variant="primary" onClick={handleClose}>
+        <Button type="button" variant="primary" onClick={onClose}>
           {t('common.save')}
         </Button>
       </Modal.Actions>
@@ -81,13 +98,4 @@ function FilterModal({ filters, handleClose, open }) {
   )
 }
 
-const mapStateToProps = state => ({
-  formValues: getFormValues(OVERVIEW_FILTERS_FORM)(state)
-})
-
-const decoratedForm = reduxForm({
-  form: OVERVIEW_FILTERS_FORM,
-  initialValues: {}
-})(FilterModal)
-
-export default connect(mapStateToProps, () => ({}))(decoratedForm)
+export default FilterModal
