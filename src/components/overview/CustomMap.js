@@ -87,6 +87,7 @@ function CustomMap({
   const [current] = useState(helsinkiCenter)
 
   const onFilterChange = (values, currentParameter) => {
+
     if (!values || values.length === 0) {
       const newFilter = Object.assign({}, filter)
       delete newFilter[currentParameter]
@@ -106,6 +107,20 @@ function CustomMap({
     setFilter({
       ...filter,
       [parameter]: valueArray
+    })
+  }
+  const onUserFilterChange = (values, currentParameter) => {
+    if (!values || values.length === 0) {
+      const newFilter = Object.assign({}, filter)
+      delete newFilter[currentParameter]
+      setFilter({
+        ...newFilter
+      })
+      return
+    }
+    setFilter({
+      ...filter,
+      [currentParameter]: values
     })
   }
   const onClear = () => {
@@ -133,6 +148,8 @@ function CustomMap({
       })
     )
   }
+
+  console.log(filter)
   const renderMap = () => (
     <Map
       className={isMobile ? 'geometry-input-mobile' : 'geometry-input'}
@@ -167,17 +184,18 @@ function CustomMap({
         <Grid colums="equal" className="full-width">
           <Grid.Column width={4}>
             <h3>{t('map-area.title')}</h3>
-           
           </Grid.Column>
           <Grid.Column width={6}>
             {isEmpty(mapData) && (
               <span className="loading-info">
-                <LoadingSpinner small={true} className="loader-icon-right-margin header-spinner" />
+                <LoadingSpinner
+                  small={true}
+                  className="loader-icon-right-margin header-spinner"
+                />
                 {t('map-area.loading-data')}
               </span>
             )}
           </Grid.Column>
-          
         </Grid>
         <Legends />
 
@@ -187,6 +205,7 @@ function CustomMap({
           filterList={filters}
           showClearButton={true}
           onClear={onClear}
+          onUserChange={onUserFilterChange}
         />
         {renderMap()}
       </div>

@@ -68,7 +68,7 @@ function FilterModal({ filterList, handleClose, open, setFilter, currentFilter }
   const getHeader = (name, amountSelected) => {
     return (
       <Grid columns="equal">
-        <Grid.Column>{name}</Grid.Column>
+        <Grid.Column width={10}>{name}</Grid.Column>
         <Grid.Column textAlign="right">
           {amountSelected > 0 && <Tag size="s">{t('overview.selected', {amount: amountSelected})}</Tag>}
         </Grid.Column>

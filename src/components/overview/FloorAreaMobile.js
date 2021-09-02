@@ -62,7 +62,7 @@ function FloorAreaMobile({
         <div className="chart-area-header-mobile">
           <h3 >{t('floor-area.mobile-title')}</h3>
             <div className="current-number">
-              {t('floor-area.current-number', { current })}{t('floor-area.total-number', { total })}
+              {t('floor-area.current-number', { current })}{t('floor-area.total-number', { total: total ? total : '' })}
             </div>
         </div>
       )}

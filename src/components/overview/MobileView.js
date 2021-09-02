@@ -9,14 +9,16 @@ import CustomMapMobile from './CustomMapMobile'
 import { connect } from 'react-redux'
 import {
   getProjectsOverviewMapData,
-  getProjectsOverviewFloorArea
+  getProjectsOverviewFloorArea,
+  clearProjectsOverview
 } from '../../actions/projectActions'
 
 function MobileView({
   isPrivileged,
   filterList,
   getProjectsOverviewMapData,
-  getProjectsOverviewFloorArea
+  getProjectsOverviewFloorArea,
+  clearProjectsOverview
 }) {
   const { t } = useTranslation()
 
@@ -29,6 +31,9 @@ function MobileView({
   }
 
   useEffect(() => {
+
+    clearProjectsOverview()
+
     getProjectsOverviewMapData(filter)
     getProjectsOverviewFloorArea(filter)
   }, [filter])
@@ -101,7 +106,8 @@ function MobileView({
 
 const mapDispatchToProps = {
   getProjectsOverviewMapData,
-  getProjectsOverviewFloorArea
+  getProjectsOverviewFloorArea,
+  clearProjectsOverview
 }
 
 export default connect(null, mapDispatchToProps)(MobileView)

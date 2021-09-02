@@ -78,6 +78,7 @@ class CustomADUserCombobox extends Component {
           options={this.state.options}
           multiselect={this.props.multiselect}
           filter={this.handleFilter}
+          placeholder={this.props.placeholder}
           clearable={true}
           onChange={value => {    
             this.setState({ ...this.state, currentValue: value, options: [] })
