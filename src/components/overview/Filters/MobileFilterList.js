@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import projectUtils from '../../../utils/projectUtils'
-import { Checkbox } from 'hds-react'
+import { Checkbox, Combobox } from 'hds-react'
 import CustomADUserCombobox from '../../input/CustomADUserCombobox'
 import { isObject } from 'lodash'
 
@@ -25,17 +25,19 @@ export default function MobileFilterList({
       if (isObject(checkedItems[key])) {
         returnValue.push(checkedItems[key])
       } else {
-    
         return checkedItems[key] === true ? returnValue.push(key) : null
       }
     })
-      onChange(returnValue, filter.parameter)
+    onChange(returnValue, filter.parameter)
   }, [checkedItems])
 
   const handleChange = e => {
     const item = e.target.id
     const isChecked = e.target.checked
     setCheckedItems({ ...checkedItems, [item]: isChecked })
+  }
+  const handleSingleChange = value => {
+     onUserFilterChange([value], filter.parameter)
   }
 
   const handleUserChange = value => {
@@ -50,10 +52,10 @@ export default function MobileFilterList({
           input={{ onChange: handleUserChange }}
           multiselect={true}
           currentValue={currentFilterValue}
-        
         />
       )
     }
+
     let choices = []
     if (!filter) {
       return null
@@ -64,6 +66,19 @@ export default function MobileFilterList({
       }
     } else {
       choices = filter.choices
+    }
+
+    if (filter.accepts_year) {
+
+      return (
+        <Combobox
+          options={choices}
+          onChange={handleSingleChange}
+          defaultValue={currentFilterValue && currentFilterValue[0] ? currentFilterValue[0] : null}
+          multiselect={false}
+          clearable={true}
+        />
+      )
     }
 
     return choices.map(field => {
