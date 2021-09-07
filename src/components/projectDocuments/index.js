@@ -10,12 +10,15 @@ import { currentProjectIdSelector } from '../../selectors/projectSelector'
 import { LoadingSpinner } from 'hds-react'
 import DocumentGroup from './DocumentGroup'
 import { IconAlertCircle } from 'hds-react'
+import { useTranslation } from 'react-i18next'
 
 function ProjectDocumentsPage(props) {
   useEffect(() => {
     const { currentProjectId } = props
     props.fetchDocuments(currentProjectId)
   }, [])
+
+  const {t} = useTranslation()
 
   const groupDocuments = documents => {
     const result = {}
@@ -40,8 +43,6 @@ function ProjectDocumentsPage(props) {
   const { documents, documentsLoading } = props
   const groupedDocuments = groupDocuments(documents)
 
-  console.log(groupedDocuments)
-
   const getTitle = key => {
     const current = groupedDocuments[key]
 
@@ -52,7 +53,7 @@ function ProjectDocumentsPage(props) {
           {current.phaseEnded && (
             <span className="phase-end-tag">
               <IconAlertCircle size="xs" />
-              Vaihe ohitettu
+              {t('project.phase-passed')}
             </span>
           )}
         </span>
@@ -63,7 +64,7 @@ function ProjectDocumentsPage(props) {
     <div className="documents-page-container">
       {documentsLoading && <LoadingSpinner className="loader-icon" />}
       {!documentsLoading && Object.keys(groupedDocuments).length === 0 && (
-        <p className="no-documents">Ei dokumentteja.</p>
+        <p className="no-documents">{t('project.no-documents')}</p>
       )}
       {Object.keys(groupedDocuments).map(key => (
         <DocumentGroup
