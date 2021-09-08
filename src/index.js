@@ -30,12 +30,12 @@ if (window.location.pathname === '/silent-renew') {
       <OidcProvider userManager={userManager} store={store}>
         <React.Fragment>
           <ReduxToastr
-            timeOut={4000}
+            closeOnToastrClick={true}
             newestOnTop={false}
             position="top-center"
             transitionIn="fadeIn"
             transitionOut="fadeOut"
-            closeOnToastrClick
+            timeOut={0}
           />
           <Suspense fallback={i18n.t('loading')}>
             <App />

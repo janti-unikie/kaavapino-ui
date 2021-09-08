@@ -14,6 +14,7 @@ import { fetchUsers } from '../../actions/userActions'
 import { usersSelector } from '../../selectors/userSelector'
 import { userIdSelector } from '../../selectors/authSelector'
 import projectUtils from '../../utils/projectUtils'
+import MobileView from './MobileView'
 
 const Overview = ({
   getProjectsOverviewFilters,
@@ -35,11 +36,34 @@ const Overview = ({
     setCurrentFilterData(filterData)
   }, [filterData])
 
+  const [isMobile, setIsMobile] = useState(false)
+
+  //choose the screen size
+  const handleResize = () => {
+    if (window.innerWidth < 720) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }
+  // create an event listener
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+    if (window.innerWidth < 720) {
+      setIsMobile(true)
+    } else {
+      setIsMobile( false )
+    }
+  })
   useEffect(() => {
     return () => {
       clearProjectsOverview()
     };
   }, []);
+
+  useEffect(() => {
+    clearProjectsOverview()
+  }, [isMobile])
 
   const getFilters = key => {
     const filters = []
@@ -52,7 +76,13 @@ const Overview = ({
       })
     return filters
   }
+
+
   const isPrivileged = projectUtils.isUserPrivileged(currentUserId, users)
+
+  if (isMobile) {
+    return <MobileView filterList={filterData} isPrivileged={isPrivileged} />
+  }
   return (
     <div className="overview">
       <NavHeader
@@ -65,6 +95,7 @@ const Overview = ({
             <CustomMap
               isPrivileged={isPrivileged}
               filters={getFilters('filters_on_map')}
+              isMobile={isMobile}
             />
           </Segment>
         </Grid.Column>
@@ -79,7 +110,6 @@ const Overview = ({
           </Segment>
         </Grid.Column>
       </Grid>
-
       <Grid stackable columns="equal">
         <Grid.Column width={8}>
           <Segment>

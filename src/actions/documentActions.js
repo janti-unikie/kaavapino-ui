@@ -10,14 +10,14 @@ export const fetchDocumentsSuccessful = documents => ({
   payload: documents
 })
 
-export const downloadDocument = documentUrl => ({
+export const downloadDocument = payload => ({
   type: DOWNLOAD_DOCUMENT,
-  payload: documentUrl
+  payload: payload
 })
 
-export const downloadDocumentPreview = documentUrl => ({
+export const downloadDocumentPreview = payload => ({
   type: DOWNLOAD_DOCUMENT_PREVIEW,
-  payload: documentUrl
+  payload: payload
 })
 
 export const clearDocumentPreview = documentUrl => ({

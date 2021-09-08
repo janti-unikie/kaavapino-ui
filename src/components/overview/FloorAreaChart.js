@@ -124,6 +124,20 @@ function FloorAreaChart({
       })
     }
   }
+  const onUserFilterChange = (values, currentParameter) => {
+    if (!values || values.length === 0) {
+      const newFilter = Object.assign({}, filter)
+      delete newFilter[currentParameter]
+      setFilter({
+        ...newFilter
+      })
+      return
+    }
+    setFilter({
+      ...filter,
+      [currentParameter]: values
+    })
+  }
 
   const goToProjectCard = id => {
     if (history) {
@@ -297,26 +311,17 @@ function FloorAreaChart({
 
   return (
     <div className="floor-area">
-      <Grid stackable columns="equal">
-        <Grid.Column width={7}>
-          <h3>
-            {t('floor-area.title', { date: getFormattedHeaderDate(chartData.date) })}
-          </h3>
-        </Grid.Column>
-        <Grid.Column className="filters" textAlign="left">
-          <FilterList
-            currentFilter={filter}
-            onChange={onFilterChange}
-            filterList={filters}
-            onClear={onClear}
-            defaultYear={currentYear}
-          />
-        </Grid.Column>
-      </Grid>
+      <h3>{t('floor-area.title', { date: getFormattedHeaderDate(chartData.date) })}</h3>
+      <FilterList
+        currentFilter={filter}
+        onChange={onFilterChange}
+        filterList={filters}
+        onClear={onClear}
+        defaultYear={currentYear}
+        onUserChange={onUserFilterChange}
+      />
 
       <div>
-        <Legends />
-
         {!currentChartData && <LoadingSpinner className="center" />}
         {currentChartData && (
           <div>
@@ -324,7 +329,7 @@ function FloorAreaChart({
               <span className="current-number">
                 {t('floor-area.current-number', { current })}
               </span>
-              <span>{t('floor-area.total-number', { total })}</span>
+              <span>{t('floor-area.total-number', { total: total ? total : '' })}</span>
             </div>
             <ResponsiveContainer width="100%" height={350}>
               <ComposedChart data={currentChartData.floorAreas}>
@@ -432,6 +437,7 @@ function FloorAreaChart({
           </div>
         )}
       </div>
+      <Legends centered={true} />
     </div>
   )
 }

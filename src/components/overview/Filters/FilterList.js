@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import DropdownFilter from './DropdownFilter'
 import projectUtils from '../../../utils/projectUtils'
 import { Grid } from 'semantic-ui-react'
-function FilterList({ filterList, currentFilter, onChange, defaultYear }) {
+import CustomADUserCombobox from '../../input/CustomADUserCombobox'
+function FilterList({ filterList, currentFilter, onChange, defaultYear, onUserChange }) {
   const [filters, setFilters] = useState(currentFilter)
 
   useEffect(() => {
@@ -27,17 +28,33 @@ function FilterList({ filterList, currentFilter, onChange, defaultYear }) {
   }
 
   const getDefaultValue = field => {
-    if ( field && field.accepts_year ) {
+    if (field && field.accepts_year) {
       return defaultYear
     }
     return filters && filters[field.parameter] ? filters[field.parameter] : null
-  } 
+  }
 
   const getFiltersList = () => {
     if (!filterList) {
       return null
     }
     return filterList.map((field, index) => {
+      if (field.value_type === 'user') {
+        return (
+          <Grid.Column key={index}>
+            <CustomADUserCombobox
+              label={field.name}
+              input={{
+                onChange: value => {
+                  onUserChange(value, field.parameter)
+                }
+              }}
+              multiselect={true}
+              placeholder={field.name}
+            />
+          </Grid.Column>
+        )
+      }
       return (
         <Grid.Column key={index}>
           <DropdownFilter
