@@ -38,6 +38,9 @@ import { usersSelector } from '../../selectors/userSelector'
 import { userIdSelector } from '../../selectors/authSelector'
 import { withRouter } from 'react-router-dom'
 import projectUtils from '../../utils/projectUtils'
+import InfoComponent from '../common/InfoComponent'
+import { withTranslation } from 'react-i18next'
+
 class ProjectEditPage extends Component {
   state = {
     showEditFloorAreaForm: false,
@@ -46,7 +49,7 @@ class ProjectEditPage extends Component {
     refs: [],
     selectedRefName: null,
     currentRef: null,
-    formInitialized: false,
+    formInitialized: false
   }
 
   constructor(props) {
@@ -55,27 +58,25 @@ class ProjectEditPage extends Component {
     this.props.fetchSchemas(project.id, project.subtype)
   }
   componentDidUpdate() {
-    this.scroll() 
-    }
-    componentDidMount() {
-      this.scroll()
-    }
-  
+    this.scroll()
+  }
+  componentDidMount() {
+    this.scroll()
+  }
+
   scroll() {
     const search = this.props.location.search
     const params = new URLSearchParams(search)
 
     const param = params.get('attribute')
-    
+
     const currentRef = this.state.refs.find(ref => ref.name === param)
-    
-   
+
     if (currentRef && currentRef.ref) {
       setTimeout(() => {
-        currentRef.ref.current.scrollIntoView({  block: 'center' })
-      }, 100);
-      
-      }
+        currentRef.ref.current.scrollIntoView({ block: 'center' })
+      }, 100)
+    }
   }
   changePhase = () => {
     const { schema, selectedPhase } = this.props
@@ -120,12 +121,14 @@ class ProjectEditPage extends Component {
   }
 
   setFormInitialized = value => {
-
     this.setState({
       ...this.state,
       formInitialized: value
     })
   }
+  /*
+  
+  */
 
   render() {
     const {
@@ -144,7 +147,8 @@ class ProjectEditPage extends Component {
       saveProjectBase,
       currentProject,
       submitErrors,
-      users
+      users,
+      t
     } = this.props
     const { highlightGroup } = this.state
     if (!schema) {
@@ -178,6 +182,7 @@ class ProjectEditPage extends Component {
 
     const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
 
+    
     return (
       <div>
         <div className="timeline" onClick={() => showTimelineModal(true)}>
@@ -187,6 +192,10 @@ class ProjectEditPage extends Component {
             onhold={currentProject.onhold}
           />
         </div>
+        {currentProject.phase_documents_creation_started === true &&
+          currentProject.phase_documents_created === false && (
+            <InfoComponent>{t('project.documents-created')}</InfoComponent>
+          )}
         <div className={`project-input-container ${highlightGroup}`}>
           <div className="project-input-left">
             <QuickNav
@@ -308,4 +317,4 @@ const mapDispatchToProps = {
   getProjectSnapshot
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectEditPage))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProjectEditPage)))
