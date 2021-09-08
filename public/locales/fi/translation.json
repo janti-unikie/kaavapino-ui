@@ -131,7 +131,8 @@
       "phase": "Vaihe",
       "process-size": "Prosessin koko",
       "responsible-person": "Vastuuhenkilö"
-    }
+    },
+    "now": "Nyt"
   },
 
   "project-types": {
