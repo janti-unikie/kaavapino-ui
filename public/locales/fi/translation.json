@@ -65,6 +65,7 @@
     "floor-area-title": "Kerrosalatiedot",
     "basic-information-title": "Perustiedot",
     "description-title": "Suunnittelualueen kuvaus",
+    "photo-title": "Kuva",
     "contract-title": "Maanomistus ja maankäyttösopimus",
     "strategy-connection-title": "Strategiakytkentä",
     "timetable-title": "Aikataulu",
@@ -112,7 +113,11 @@
   },
   "overview": {
     "title": "Yleisnäkymä",
-    "clear-selections": "Tyhjennä valinnat"
+    "clear-selections": "Tyhjennä valinnat",
+    "filter-button": "Suodata",
+        "filter-modal-title": "Suodata",
+        "clear": "Tyhjennä",
+        "selected": "{{amount}} valittu"
   },
 
   "floor-area": {
