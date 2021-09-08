@@ -15,7 +15,7 @@ function GeometryInformation(props) {
 
   return (
     <div>
-      <h3>{t('project.planning-area-constraints')}</h3>
+      {!props.hideTitle && <h3>{t('project.planning-area-constraints')}</h3>}
       <div className="geometry-input-container">
         <Geometry {...inputProps} />
       </div>

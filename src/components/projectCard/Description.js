@@ -5,50 +5,44 @@ import parse from 'html-react-parser'
 import { isObject } from 'lodash'
 import { useTranslation } from 'react-i18next'
 
-function Description({ fields }) {
+function Description({ fields, hideTitle }) {
+  const { t } = useTranslation()
 
-    const { t } = useTranslation()
-
-    const renderField = ( field, index ) => {
-        const key = field.label + index
-        let value = field.value
-        if ( isObject( field.value ) ) {
-            value = getRichTextContent( field.value.ops )
-        }
-        return (
-            <div key={key}>
-                <div>{value} </div>
-            </div>
-        )
+  const renderField = (field, index) => {
+    const key = field.label + index
+    let value = field.value
+    if (isObject(field.value)) {
+      value = getRichTextContent(field.value.ops)
     }
-    const getRichTextContent = value => {
-        const cfg = { encodeHtml: false }
-        const converter = new QuillDeltaToHtmlConverter(value, cfg)
-        return parse(converter.convert())
-      }
-    const renderFields = () => {
-        return (
-            <div>
-                <h3>{t('project.description-title')}</h3>
-                { fields && fields.map( (field, index) => {
-                    return renderField(field, index )
-                } )
-                }
-            </div>
-            )
-    }
-    const fieldsComponent = renderFields()
-
     return (
-        <div className="description">
-            {fieldsComponent}
-        </div>
+      <div key={key}>
+        <div>{value} </div>
+      </div>
     )
+  }
+  const getRichTextContent = value => {
+    const cfg = { encodeHtml: false }
+    const converter = new QuillDeltaToHtmlConverter(value, cfg)
+    return parse(converter.convert())
+  }
+  const renderFields = () => {
+    return (
+      <div>
+        {!hideTitle && <h3>{t('project.description-title')}</h3>}
+        {fields &&
+          fields.map((field, index) => {
+            return renderField(field, index)
+          })}
+      </div>
+    )
+  }
+  const fieldsComponent = renderFields()
+
+  return <div className="description">{fieldsComponent}</div>
 }
 
 Description.propTypes = {
-    fields: PropTypes.array
+  fields: PropTypes.array
 }
 
 export default Description
-
