@@ -490,3 +490,21 @@ h4 {
 .latest-update {
   text-align: left;
 }
+.info-box {
+  height: 44px;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+
+  .icon-area {
+    display: inline;
+    background-color: $yellow2;
+    text-align: center;
+    
+  }
+  .content {
+    background-color: $yellow;
+
+  }
+
+}

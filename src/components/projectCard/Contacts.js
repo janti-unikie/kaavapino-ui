@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { isArray } from 'lodash'
 
-function Contacts({ fields, personnel }) {
+function Contacts({ fields, hideTitle, personnel }) {
   const { t } = useTranslation()
 
   const renderField = (field, index) => {
@@ -16,36 +16,36 @@ function Contacts({ fields, personnel }) {
     if (isArray(field.value)) {
       field.value.forEach(current => {
         if (!field.choices) {
-          const currentPerson = personnel.find( person => person.id = current.value )
+          const currentPerson =
+            personnel && personnel.find(person => (person.id = current.value))
 
-          if ( currentPerson ) {
+          if (currentPerson) {
             completeValue.push(currentPerson.name)
           } else {
             completeValue.push(current)
           }
-          
         } else {
           const choiceValue =
             field.choices && field.choices.find(choice => choice.value === current)
           completeValue.push(choiceValue.label)
         }
       })
-      value = completeValue.map( value => <div key={value}>{value}</div>)
+      value = completeValue.map(value => <div key={value}>{value}</div>)
     } else {
       if (field.choices) {
         const foundValue =
           field.choices && field.choices.find(choice => choice.value === field.value)
         value = foundValue && foundValue.label
       } else {
-        const current = personnel.find( person => person.id === field.value)
+        const current = personnel && personnel.find(person => person.id === field.value)
 
-          if ( current ) {
-            value = current.name
-          } 
+        if (current) {
+          value = current.name
+        }
       }
     }
     return (
-      <div key={field.label + index}>
+      <div className="project-card-field" key={field.label + index}>
         <div>{field.label}</div>
         <div>
           <b>{value}</b>
@@ -57,7 +57,7 @@ function Contacts({ fields, personnel }) {
   const renderFields = () => {
     return (
       <div>
-        <h3>{t('project.contact-title')}</h3>
+        {!hideTitle && <h3>{t('project.contact-title')}</h3>}
         {fields &&
           fields.map((field, index) => {
             return renderField(field, index)

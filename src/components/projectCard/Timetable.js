@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import dayjs from 'dayjs'
 import { isArray } from 'lodash'
 
-function TimeTable({ fields }) {
+function TimeTable({ fields, hideTitle }) {
   const { t } = useTranslation()
 
   const renderField = (field, index) => {
@@ -65,7 +65,7 @@ function TimeTable({ fields }) {
 
   return (
     <div className="timetable">
-      <h3>{t('project.timetable-title')}</h3>
+      {!hideTitle && <h3>{t('project.timetable-title')}</h3>}
       {fieldsComponent}
     </div>
   )

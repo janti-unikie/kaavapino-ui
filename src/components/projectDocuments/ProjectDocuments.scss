@@ -13,26 +13,34 @@
     }
 
     .document-row {
-        .document-title {
-          padding: 0px;
-          padding-left: 5px;
-          margin: 0;
-          line-height: 49px;
-        }
-        button > span{
-          padding-left: 0;
-        }
-        background-color: $light-gray3;  
+      .document-title {
+        padding: 0px;
+        padding-left: 5px;
+        margin: 0;
+        line-height: 49px;
+      }
+      button > span {
+        padding-left: 0;
+      }
+      background-color: $light-gray3;
     }
+  }
 
+  .document-accordion {
+    margin: auto;
+    margin-top: 10px;
+  }
+
+  .document-accordion > div {
+    padding: 10px;
+  }
+  .phase-end-tag {
+    margin-left: 20px;
+    font-size: 14px;
+    font-weight: normal;
+    color: $dark-blue-color
+  }
+  .image-template-icon {
+    color: $dark-blue-color
+  }
 }
-
-.document-accordion {
-  margin: auto;
-  margin-top: 10px
-  }
-
-  .document-accordion > div{
-   padding: 10px;
-    }
-  }

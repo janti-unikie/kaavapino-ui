@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Grid } from 'semantic-ui-react'
 import { useTranslation } from 'react-i18next'
 
-function FloorAreaInformation({ fields }) {
+function FloorAreaInformation({ fields, hideTitle }) {
   const { t } = useTranslation()
 
   const renderField = (field, index) => {
@@ -19,7 +19,7 @@ function FloorAreaInformation({ fields }) {
     } else {
       return (
         <Grid.Column key={field.label + index}>
-          <div>
+          <div className="floor-area-field">
             <div>{field.label}</div>
             <div className="floor-area-value">
               {field.value} {field.unit}
@@ -32,7 +32,7 @@ function FloorAreaInformation({ fields }) {
   const renderFields = () => {
     return (
       <div>
-        <h3>{t('project.floor-area-title')}</h3>
+        {!hideTitle && <h3>{t('project.floor-area-title')}</h3>}
         <Grid stackable columns="equal">
           {fields &&
             fields.map((field, index) => {

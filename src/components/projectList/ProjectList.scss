@@ -51,8 +51,7 @@
   }
   .project-list-container {
     min-height: 273px;
-    padding-top: 40px;
-
+    
     .project-list {
       background-color: #ffffff;
       padding: 10px 0px;
@@ -363,9 +362,6 @@
       font-size: 24px;
     }
 
-    @media screen and (max-width: 800px) {
-      margin-top: 48px;
-    }
   }
   .ui.tabular.menu {
     font-family: 'Helsinki Grotesk Medium';
