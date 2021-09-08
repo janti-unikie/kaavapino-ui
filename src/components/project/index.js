@@ -58,14 +58,17 @@ class ProjectPage extends Component {
       showPrintProjectDataModal: false,
       deadlines: null
     }
-
   }
 
   componentDidMount() {
     const { currentProjectLoaded, users, getAttributes, currentProject } = this.props
 
     getAttributes()
-    if (!currentProjectLoaded || !currentProject || currentProject.id !== +this.props.id ) {
+    if (
+      !currentProjectLoaded ||
+      !currentProject ||
+      currentProject.id !== +this.props.id
+    ) {
       this.props.initializeProject(this.props.id)
     }
     if (!users || users.length === 0) {
@@ -87,8 +90,6 @@ class ProjectPage extends Component {
     if (prevProps.edit && !edit) this.props.setSelectedPhaseId(currentProject.phase)
 
     getExternalDocuments(this.props.id)
-
-   
   }
 
   switchDisplayedPhase = phase => {
@@ -241,10 +242,7 @@ class ProjectPage extends Component {
           initialValues={{}}
           handleClose={() => this.togglePrintProjectDataModal(false)}
         />
-        <ProjectCardPage
-          projectId={this.props.id}
-          documents={externalDocuments}
-        />
+        <ProjectCardPage projectId={this.props.id} documents={externalDocuments} />
       </div>
     )
   }
@@ -276,9 +274,15 @@ class ProjectPage extends Component {
             {t('project.modify')}
           </Button>
         )}
-        <Button variant="secondary" iconLeft={<IconPen />} onClick={this.createDocuments}>
-          {t('project.create-documents')}
-        </Button>
+        {showCreate && (
+          <Button
+            variant="secondary"
+            iconLeft={<IconPen />}
+            onClick={this.createDocuments}
+          >
+            {t('project.create-documents')}
+          </Button>
+        )}
         <Button
           variant="secondary"
           iconLeft={<IconPrinter />}
@@ -388,7 +392,9 @@ class ProjectPage extends Component {
     if (!edit) return []
 
     return allEditFields.map((f, i) => {
-      const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.label} ${f.user_name}`
+      const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.label} ${
+        f.user_name
+      }`
       return {
         name: f.name,
         label: f.attribute_label,

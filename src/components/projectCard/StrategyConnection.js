@@ -30,11 +30,12 @@ function StrategyConnection({ fields }) {
         })
 
         return (
-            <div key="strategy-connection">
+            <div key={field.name}>
                 {elements}
             </div>
         )
     }
+   
     const renderFields = () => {
         return (
             <div>
