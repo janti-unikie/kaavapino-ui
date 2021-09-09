@@ -12,13 +12,12 @@ ENV APP_NAME kaavapino-ui
 COPY package.json yarn.lock ./
 RUN yarn install && yarn cache clean --all
 
-RUN useradd kaavapinouser && groupadd kaavapinogroup
-USER kaavapinouser:kaavapinogroup
-
-
 # =============================
 FROM appbase as development
 # =============================
+
+RUN useradd kaavapinouser && groupadd kaavapinogroup
+USER kaavapinouser:kaavapinogroup
 
 # copy in our source code last, as it changes the most
 COPY --chown=kaavapinouser:kaavapinogroup . .
