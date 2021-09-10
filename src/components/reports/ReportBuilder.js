@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { downloadReport } from '../../actions/reportActions'
-import { reportsSelector } from '../../selectors/reportSelector'
+import {
+  downloadReport,
+  downloadReportReview,
+  clearDownloadReportReview
+} from '../../actions/reportActions'
+import { reportsSelector, currentReportsSelector } from '../../selectors/reportSelector'
 import { Form } from 'semantic-ui-react'
 import ReportFilters from './ReportFilters'
 import { Button } from 'hds-react'
 import { useTranslation } from 'react-i18next'
 import { fetchReports } from '../../actions/reportActions'
 import { REPORT_FORM } from '../../constants'
+import { readString } from 'react-papaparse'
+import ReportPreviewModal from './ReportPreviewModal'
 
 function ReportBuilder(props) {
   const [selectedReport, setSelectedReport] = useState(null)
+  const [showPreviewModal, setShowPreviewModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const { t } = useTranslation()
 
@@ -20,8 +28,25 @@ function ReportBuilder(props) {
   }, [])
 
   const handleSubmit = () => {
-    props.downloadReport({ selectedReport })
+    clearDownloadReportReview()
+
+    props.downloadReport({ selectedReport: selectedReport.id })
   }
+
+  const onShowPreviewModal = () => {
+    props.downloadReportReview({ selectedReport: selectedReport.id })
+    setIsLoading(true)
+  }
+
+  useEffect(() => {
+    setIsLoading(false)
+  }, [props.currentReport])
+
+  useEffect(() => {
+    if (props.currentReport) {
+      setShowPreviewModal(true)
+    }
+  }, [isLoading])
 
   const renderReportButtons = () => {
     const { reports } = props
@@ -32,8 +57,8 @@ function ReportBuilder(props) {
         key={report.id}
         variant="secondary"
         onClick={() =>
-          !selectedReport || selectedReport !== report.id
-            ? setSelectedReport(report.id)
+          !selectedReport || selectedReport.id !== report.id
+            ? setSelectedReport(report)
             : setSelectedReport(null)
         }
       >
@@ -41,8 +66,46 @@ function ReportBuilder(props) {
       </Button>
     ))
   }
+  const current = props.currentReport ? readString(props.currentReport) : []
 
-  const { reports } = props
+  const getHeaders = () => {
+    const columns = []
+    const data = current.data
+   
+    if (!data || !data[0]) {
+      return columns
+    }
+
+    const headerRow = data[0]
+   
+    headerRow.forEach(column => {
+      if (!headerRow.find(current => current === column)) {
+        return columns.push({ Header: column, accessor: column  })
+      }
+    })
+
+    return columns
+  }
+
+  const getContent = () => {
+    const data = current.data
+
+    if (!data || data.length < 2) {
+      return null
+    }
+    const content = data.splice(1, data.length - 1)
+
+    content.map(one => {
+      one.map(item => {
+        return item
+      })
+    })
+  }
+
+  const hidePreview = () => {
+    setShowPreviewModal(false)
+    clearDownloadReportReview()
+  }
 
   return (
     <>
@@ -54,26 +117,48 @@ function ReportBuilder(props) {
         {selectedReport && (
           <div className="report-filter-container">
             <h2>{t('reports.filters')}</h2>
-            <ReportFilters filters={reports.find(r => r.id === selectedReport).filters} />
+            <ReportFilters filters={selectedReport.filters} />
           </div>
         )}
-        {selectedReport && (
+        {selectedReport && selectedReport.previewable === false && (
           <Button type="submit" variant="primary" className="report-create-button">
             {t('reports.create-report')}
           </Button>
         )}
       </Form>
+      {selectedReport && selectedReport.previewable === true && (
+        <Button
+          type="button"
+          onClick={onShowPreviewModal}
+          variant="primary"
+          className="report-create-button"
+          loadingText={t('reports.create-preview')}
+          isLoading={isLoading}
+        >
+          {t('reports.create-preview')}
+        </Button>
+      )}
+      <ReportPreviewModal
+        open={showPreviewModal}
+        handleSubmit={handleSubmit}
+        handleClose={hidePreview}
+        headers={getHeaders()}
+        content={getContent()}
+      />
     </>
   )
 }
 
 const mapStateToProps = state => ({
-  reports: reportsSelector(state)
+  reports: reportsSelector(state),
+  currentReport: currentReportsSelector(state)
 })
 
 const mapDispatchToProps = {
   downloadReport,
-  fetchReports
+  downloadReportReview,
+  fetchReports,
+  clearDownloadReportReview
 }
 
 export default reduxForm({

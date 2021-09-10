@@ -1,7 +1,12 @@
-import { FETCH_REPORTS_SUCCESSFUL } from '../actions/reportActions'
+import {
+  FETCH_REPORTS_SUCCESSFUL,
+  DOWNLOAD_REPORT_REVIEW_SUCCESSFUL,
+  CLEAR_REPORT_PREVIEW
+} from '../actions/reportActions'
 
 export const initialState = {
-  reports: []
+  reports: [],
+  currentReport: null
 }
 
 export const reducer = (state = initialState, { type, payload }) => {
@@ -11,7 +16,16 @@ export const reducer = (state = initialState, { type, payload }) => {
         ...state,
         reports: payload
       }
-
+    case DOWNLOAD_REPORT_REVIEW_SUCCESSFUL:
+      return {
+        ...state,
+        currentReport: payload
+      }
+      case CLEAR_REPORT_PREVIEW:
+      return {
+        ...state,
+        currentReport: null
+      }
     default:
       return { ...state }
   }

@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { downloadDocument } from '../../actions/documentActions'
-import { IconPhoto } from 'hds-react'
+import { IconPhoto, Button } from 'hds-react'
 
 const Document = ({ name, file, downloadDocument }) => (
-  <div onClick={() => downloadDocument(file)} href={file} className="document">
-    <IconPhoto  size="l" />
+  <Button iconLeft={ <IconPhoto  size="l" />} onClick={() => downloadDocument(file)} href={file} className="document">
+   
     <p className="document-title">{name}</p>
-  </div>
+  </Button>
 )
 
 const mapDispatchToProps = {
