@@ -22,7 +22,7 @@ stages:
 - name: Publish
   steps:
   - publishImageConfig:
-      dockerfilePath: ./Dockerfile_nginx
+      dockerfilePath: ./Dockerfile_unikie_dev_cluster
       buildContext: .
       tag: web:${CICD_EXECUTION_SEQUENCE}-${CICD_GIT_COMMIT}
 - name: Deploy
