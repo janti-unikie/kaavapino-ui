@@ -415,7 +415,8 @@ export const reducer = (state = initialState, action) => {
         ...state,
         overview: {
           ...state.overview,
-          floorArea: {}
+          floorArea: {},
+          mapData: {}
         }
       }
     }

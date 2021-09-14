@@ -17,7 +17,11 @@ const SelectInput = ({
 
   const getLabel = value => {
     const current = options.find(option => option.value === value)
-    return current && current.label
+    if ( current && current.label && current.label !== ' ') {
+      return current.label
+    } else {
+      return current.key
+    }
   }
   let currentSingleValue
 
@@ -36,6 +40,8 @@ const SelectInput = ({
       value: current && current.value
     }
   }
+
+  options = options.filter( option => option.label && option.label.trim() !== '' )  
 
   return (
     <Select

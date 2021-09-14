@@ -17,7 +17,6 @@
     text-transform: uppercase;
   }
 
-
   .comment-submit-container {
     display: inline-flex;
     margin-top: 16px;
@@ -108,4 +107,113 @@
       }
     }
   }
+}
+.comment-list-container-mobile {
+  height: 200px;
+  overflow-y: scroll;
+  
+  .comment-text-field {
+    width: 100%;
+  }
+
+  .comment-list-mobile {
+    margin: 0;
+    overflow: hidden;
+    overflow-y: auto;
+
+    .comments-message {
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .comment-container-mobile {
+      background-color: white;
+      border-bottom: 1px solid #dededf;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      overflow-wrap: break-word;
+      padding: 5px 22px;
+      font-size: 12px;
+
+      .comment-header-container {
+        display: flex;
+        justify-content: space-between;
+
+        .comment-header-text-container {
+          font-size: 12px;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+
+          .comment-creator {
+            margin-right: 6px;
+
+            &.generated {
+              color: coral;
+            }
+          }
+        }
+
+        .comment-edit-container {
+          margin-right: -12px;
+        }
+
+        .comment-edit {
+          cursor: pointer;
+        }
+      }
+
+      .comment-content {
+        font-size: 12px;
+        margin: 6px 0;
+
+        input {
+          height: 30px;
+          font-size: 12px;
+        }
+        
+      }
+
+      .comment-footer {
+        align-items: center;
+        display: flex;
+        justify-content: flex-end;
+
+        .comment-footer-actions {
+          white-space: nowrap;
+
+          button {
+            height: 30px;
+            min-height: 30px;
+            margin-left: 8px;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+ 
+}
+.comment-submit-container-mobile {
+  display: inline-flex;
+  margin-top: 16px;
+  width: 100%;
+
+  .ui.button {
+    min-height: 30px;
+    height: 30px;
+  }
+.send-button {
+  height: 30px;
+  margin-left: 2px;
+  min-height: 30px;
+  font-size: 12px;
+}
+input[type='text'] {
+  height: 30px;
+  min-height: 30px;
+  font-size: 12px;
+}
 }

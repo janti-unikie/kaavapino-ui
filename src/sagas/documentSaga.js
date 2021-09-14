@@ -3,15 +3,19 @@ import { takeLatest, put, call, all } from 'redux-saga/effects'
 import {
   FETCH_DOCUMENTS,
   fetchDocumentsSuccessful,
-  DOWNLOAD_DOCUMENT
+  DOWNLOAD_DOCUMENT,
+  DOWNLOAD_DOCUMENT_PREVIEW
 } from '../actions/documentActions'
 import { error } from '../actions/apiActions'
 import { documentApi } from '../utils/api'
+import { toastr } from 'react-redux-toastr'
+import i18next from 'i18next'
 
 export default function* documentSaga() {
   yield all([
     takeLatest(FETCH_DOCUMENTS, fetchDocumentsSaga),
-    takeLatest(DOWNLOAD_DOCUMENT, downloadDocumentSaga)
+    takeLatest(DOWNLOAD_DOCUMENT, downloadDocumentSaga),
+    takeLatest(DOWNLOAD_DOCUMENT_PREVIEW, downloadDocumentPreviewSaga)
   ])
 }
 
@@ -24,9 +28,15 @@ function* fetchDocumentsSaga({ payload: projectId }) {
   }
 }
 
-function* downloadDocumentSaga({ payload: documentUrl }) {
+function* downloadDocumentSaga({ payload: payload }) {
+  toastr.info(
+    i18next.t('document-loading.title'),
+    i18next.t('document-loading.content', { name: payload.name })
+  )
+
   try {
-    const res = yield call(axios.get, documentUrl, { responseType: 'blob' })
+    const res = yield call(axios.get, payload.file, { responseType: 'blob' })
+
     const fileData = res.data
     const fileName = res.headers['content-disposition'].split('filename=')[1]
     if (fileData) {
@@ -39,6 +49,42 @@ function* downloadDocumentSaga({ payload: documentUrl }) {
       document.body.removeChild(link)
     }
   } catch (e) {
-    yield put(error(e))
+    toastr.error(
+      i18next.t('document-loading.title'),
+      i18next.t('document-loading.error', { name: payload.name })
+    )
+  } finally {
+    toastr.removeByType('info')
+  }
+}
+
+function* downloadDocumentPreviewSaga({ payload: payload }) {
+  const modifiedUrl = payload.file + '?preview=true'
+  toastr.info(
+    i18next.t('document-loading.preview-title'),
+    i18next.t('document-loading.content', { name: payload.name })
+  )
+
+  try {
+    const res = yield call(axios.get, modifiedUrl, { responseType: 'blob' })
+
+    const fileData = res.data
+    const fileName = res.headers['content-disposition'].split('filename=')[1]
+    if (fileData) {
+      const url = window.URL.createObjectURL(new Blob([fileData]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', fileName)
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
+  } catch (e) {
+    toastr.error(
+      i18next.t('document-loading.preview-title'),
+      i18next.t('document-loading.error', { name: payload.name })
+    )
+  } finally {
+    toastr.removeByType('info')
   }
 }

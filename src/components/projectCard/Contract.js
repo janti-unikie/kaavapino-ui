@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-function Contract({ fields }) {
+function Contract({ fields, hideTitle }) {
 
     const { t } = useTranslation()
 
@@ -33,7 +33,7 @@ function Contract({ fields }) {
             }
         }
         return (
-            <div key={field.label + index}>
+            <div className="project-card-field" key={field.label + index}>
                 <div>{field.label}</div>
                 <div><b>{value }</b></div>
             </div>
@@ -42,7 +42,7 @@ function Contract({ fields }) {
     const renderFields = () => {
         return (
             <div>
-                <h3>{t('project.contract-title')}</h3>
+                {!hideTitle && <h3>{t('project.contract-title')}</h3>}
                 { fields && fields.map( (field, index) => {
                     return renderField(field, index )
                 } )

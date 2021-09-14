@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { change } from 'redux-form'
@@ -61,7 +61,8 @@ function RichTextEditor(props) {
     onBlur,
     className,
     updated,
-    formName
+    formName,
+    setRef
   } = props
   const dispatch = useDispatch()
   const fieldComments = useSelector(fieldCommentsSelector)
@@ -78,7 +79,7 @@ function RichTextEditor(props) {
 
   const getFieldComments = () => {
     const fieldName = inputProps.name
-    const lastIndex = fieldName.lastIndexOf('.')
+    const lastIndex = fieldName && fieldName.lastIndexOf('.')
 
     if (lastIndex !== -1) {
       // TODO: Temporary fix to avoid crashing
@@ -89,6 +90,13 @@ function RichTextEditor(props) {
     }
   }
   const comments = getFieldComments()
+
+  useEffect(() => {
+
+    if ( setRef ) {
+      setRef( {name: inputProps.name , ref: editorRef} )
+    }
+  }, [])
 
   const handleChange = (_val, _delta, source) => {
     if (currentTimeout) {
@@ -142,6 +150,7 @@ function RichTextEditor(props) {
     <div
       role="textbox"
       className={`rich-text-editor-wrapper ${disabled ? 'rich-text-disabled' : ''}`}
+      aria-label="tooltip"
     >
       <div
         className={`rich-text-editor ${
@@ -150,7 +159,7 @@ function RichTextEditor(props) {
         onFocus={() => setToolbarVisible(true)}
 
       >
-        <div id={toolbarName} onMouseDown={e => e.preventDefault()} className="ql-toolbar">
+        <div role="toolbar" id={toolbarName} onMouseDown={e => e.preventDefault()} className="ql-toolbar">
           <span className="ql-formats">
             <button aria-label="bold" className="ql-bold" />
             <button aria-label="italic" className="ql-italic" />
