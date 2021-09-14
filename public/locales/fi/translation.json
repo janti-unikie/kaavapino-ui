@@ -136,7 +136,7 @@
         "title": "Raportit",
         "choose-report": "Valitse raporttityyppi",
         "filters": "Suodattimet",
-        "create-report": "Lataa raportti (.slxs)",
+        "create-report": "Lataa raportti (.xlxs)",
         "create-preview": "Esikatselu"
     }
     

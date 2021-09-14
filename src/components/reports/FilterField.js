@@ -23,11 +23,22 @@ function FilterField(props) {
   }
 
   const renderTextInput = () => {
+
+    let currentType
+    if ( type === 'string') {
+      currentType = 'text'
+    }
+    if ( type === 'number') {
+      currentType = 'number'
+    }
+
+
     return (
       <TextInput
         onChange={event => {
           change(REPORT_FORM, id, event.target.value)
         }}
+        type={currentType }
         input={{
           value: null
         }}
