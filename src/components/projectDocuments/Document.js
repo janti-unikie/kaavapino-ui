@@ -33,7 +33,7 @@ function Document({
        
           <Button
             variant="supplementary"
-            onClick={() => downloadDocument(file)}
+            onClick={() => downloadDocument({name, file})}
             href={file}
             className="document"
           >
@@ -41,7 +41,7 @@ function Document({
           </Button>
           <Button
             variant="supplementary"
-            onClick={() => downloadDocumentPreview(file)}
+            onClick={() => downloadDocumentPreview({name, file})}
             href={file}
             className="document"
           >
