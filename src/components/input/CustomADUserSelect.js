@@ -17,7 +17,6 @@ class CustomADUserSelect extends Component {
     const label = name && title ? `${name} (${title})` : name ? name : email
     return { label, id }  
   }
-
   modifyOptions = options => {
     const modifiedOptions = []
 
@@ -36,6 +35,7 @@ class CustomADUserSelect extends Component {
     return modifiedOptions
   }
   getPerson = async () => {
+
     await axios.get(`/v1/personnel/${this.props.input.value}`).then(response => {
       this.setState({ ...this.state, currentValue: { label: response.data.name, id: response.data.id }  })
     })
@@ -70,9 +70,10 @@ class CustomADUserSelect extends Component {
         <Combobox
           options={this.state.options}
           filter={this.handleFilter}
+          placeholder={this.props.placeholder}
           clearable={true}
           onChange={value => {
-            this.setState( {...this.state, currentValue: value})
+            this.setState( {...this.state, currentValue: value, options:[]})
             value && this.props.input.onChange(value.id)}
             }
             value={this.state.currentValue}

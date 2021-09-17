@@ -15,13 +15,15 @@ import { fetchReports } from '../../actions/reportActions'
 import { REPORT_FORM } from '../../constants'
 import { readString } from 'react-papaparse'
 import ReportPreviewModal from './ReportPreviewModal'
-import { parseKYLKReport } from './reportUtils';
-import { findIndex } from 'lodash';
+import { parseKYLKReport } from './reportUtils'
+import { findIndex } from 'lodash'
+import { LoadingSpinner } from 'hds-react'
 
 function ReportBuilder(props) {
   const [selectedReport, setSelectedReport] = useState(null)
   const [showPreviewModal, setShowPreviewModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [currentReportData, setCurrentReportData] = useState(null)
 
   const { t } = useTranslation()
 
@@ -30,8 +32,6 @@ function ReportBuilder(props) {
   }, [])
 
   const handleSubmit = () => {
-    clearDownloadReportReview()
-
     props.downloadReport({ selectedReport: selectedReport.id })
   }
 
@@ -39,16 +39,23 @@ function ReportBuilder(props) {
     props.downloadReportReview({ selectedReport: selectedReport.id })
     setIsLoading(true)
   }
-
   useEffect(() => {
-    setIsLoading(false)
+    setCurrentReportData(props.currentReport)
   }, [props.currentReport])
 
   useEffect(() => {
-    if (props.currentReport) {
+    if (currentReportData) {
       setShowPreviewModal(true)
     }
-  }, [isLoading])
+    setIsLoading(false)
+  }, [currentReportData])
+
+  useEffect(() => {
+    setShowPreviewModal(false)
+    setIsLoading(false)
+    setCurrentReportData(null)
+    props.initialize(null)
+  }, [selectedReport])
 
   const renderReportButtons = () => {
     const { reports } = props
@@ -68,86 +75,85 @@ function ReportBuilder(props) {
       </Button>
     ))
   }
-  const current = props.currentReport ? readString(props.currentReport) : []
+  const current = currentReportData ? readString(currentReportData) : []
 
-
- 
   const getHeaders = () => {
     const columns = []
     const data = current.data
-   
+
     if (!data || !data[0]) {
       return columns
     }
 
     const headerRow = data[0]
-   
+
     headerRow.forEach(column => {
-      return columns.push({ Header: column, accessor: getNonDuplicateName(column, columns)  })
+      return columns.push({
+        Header: column,
+        accessor: getNonDuplicateName(column, columns)
+      })
     })
 
     return columns
   }
   function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * max)
   }
-  
-  const getNonDuplicateName = ( column, list) => {
-  
-    if ( !list || list.length === 0 ) {
+
+  const getNonDuplicateName = (column, list) => {
+    if (!list || list.length === 0) {
       return column
     }
-    if ( findIndex( list, item => {
-      
-      return item.accessor === column} ) !== -1) {
-
-     
+    if (
+      findIndex(list, item => {
+        return item.accessor === column
+      }) !== -1
+    ) {
       const randomNumber = getRandomInt(10000)
       return column + randomNumber
-
     } else {
       return column
     }
-
   }
 
-   const headers = getHeaders()
- 
-  const getContent = () => {
+  const headers = getHeaders()
 
+  const getContent = () => {
     const data = current.data
 
     if (!data || data.length < 2) {
       return null
     }
-   
+
     const returnValue = []
 
-    const content = data.slice( 1, data.length - 1)
+    const content = data.slice(1, data.length - 1)
 
-    content.forEach( row => {
-
+    content.forEach(row => {
       const rowValues = {}
 
-      row.forEach( (column, index) => {
-
+      row.forEach((column, index) => {
         const header = headers[index].accessor
         rowValues[header] = column
       })
-      returnValue.push( rowValues )
+      returnValue.push(rowValues)
     })
     return returnValue
   }
 
-  
   const hidePreview = () => {
     setShowPreviewModal(false)
-    clearDownloadReportReview()
+    setCurrentReportData(null)
+    props.clearDownloadReportReview()
   }
 
   const content = getContent()
-  
-  parseKYLKReport(headers, content)
+
+  if (!props.reports || props.reports.length === 0) {
+    return <LoadingSpinner />
+  }
+
+  const noData = !headers || headers.length === 0 || !content || content.length === 0
 
   return (
     <>
@@ -182,10 +188,11 @@ function ReportBuilder(props) {
       )}
       <ReportPreviewModal
         open={showPreviewModal}
+        noData={noData}
         handleSubmit={handleSubmit}
         handleClose={hidePreview}
         headers={headers}
-        report={parseKYLKReport( headers, content )}
+        report={parseKYLKReport(headers, content)}
       />
     </>
   )

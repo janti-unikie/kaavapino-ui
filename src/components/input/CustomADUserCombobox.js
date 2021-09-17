@@ -37,7 +37,7 @@ class CustomADUserCombobox extends Component {
     return modifiedOptions
   }
   getPerson = async () => {
-
+    
     if ( !this.props.input.value ) {
       return null
     }
@@ -91,7 +91,7 @@ class CustomADUserCombobox extends Component {
               this.props.input.onChange( returnValue )
             }
           }}
-          defaultValue={this.state.currentValue}
+          value={this.state.currentValue}
           onBlur={this.props.onBlur}
         />
       </div>

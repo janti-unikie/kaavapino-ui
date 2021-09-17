@@ -115,13 +115,14 @@
     "title": "Yleisnäkymä",
     "clear-selections": "Tyhjennä valinnat",
     "filter-button": "Suodata",
-        "filter-modal-title": "Suodata",
-        "clear": "Tyhjennä",
-        "selected": "{{amount}} valittu"
+    "filter-modal-title": "Suodata",
+    "clear": "Tyhjennä",
+    "selected": "{{amount}} valittu"
   },
 
   "floor-area": {
     "title": "Tarkistettujen kaavaehdotusten asuinkerrosala {{date}}",
+    "mobile-title": "Kaavoitettu kerrosala nyt",
     "total-number": " / {{total}} k-m²",
     "current-number": " {{current}} k-m²",
     "y-axis-title": "k-m²",
@@ -136,7 +137,8 @@
       "process-size": "Prosessin koko",
       "responsible-person": "Vastuuhenkilö"
     },
-    "now": "Nyt"
+    "now": "Nyt",
+    "meetings-title": "Lautakunnan kokoukset"
   },
   "project-types": {
     "title": "Kaavaprojektien jakauma",
@@ -149,11 +151,22 @@
     "voimaantulo": "Voimaantulo-vaihe",
     "periaatteet": "Periaatteet-vaihe"
   },
-  "reports" : {
+  "reports": {
     "title": "Raportit",
     "choose-report": "Valitse raporttityyppi",
     "filters": "Suodattimet",
     "create-report": "Lataa raportti (.xlxs)",
-    "create-preview": "Esikatselu"
+    "create-preview": "Esikatselu",
+    "preview-title": "Esikatseluraportin lataus",
+    "preview-content": "Raporttia ladataan esikatseluun.",
+    "content": "Raporttia ladataan.",
+    "error": "Raportin lataus epäonnistui.",
+    "presentation-report": {
+        "title": "Esittelysuunnitelma",
+        "infoText": " Kaupunkiympäristölautakunnalle (KYLK) esitettäväksi suunniteltuja MAKA:n asioita",
+        "empty-report": "Tyhjä raportti",
+        "kylk-title": "Kylk {{date}}"
+    }
   }
+
 }

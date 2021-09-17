@@ -433,9 +433,9 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         overview: {
+          ...state.overview,
           floorArea: {},
           bySubtype: {},
-          filters: [],
           mapData: {},
           floorAreaTargets: {}
         }

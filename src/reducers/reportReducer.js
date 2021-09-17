@@ -21,7 +21,7 @@ export const reducer = (state = initialState, { type, payload }) => {
         ...state,
         currentReport: payload
       }
-      case CLEAR_REPORT_PREVIEW:
+    case CLEAR_REPORT_PREVIEW:
       return {
         ...state,
         currentReport: null
