@@ -79,7 +79,8 @@
     "no-documents": "Ei dokumentteja",
     "phase-passed": "Vaihe ohitettu",
     "load": "Lataa",
-    "load-preview": "Esikatselu"
+    "load-preview": "Esikatselu",
+    "phase": "Kaavan vaihe:"
   },
   "nav-header": {
     "latest-update": "Viimeisin muokkaus: {{latestUpdate}}"
