@@ -1,9 +1,8 @@
 .reports-page {
   flex: 1 1;
   margin: 0 auto;
-  width: calc(100% - 32px);
-
-  display: inline;
+  max-width: 1148px;
+  width: 100%;
 
   .report-builder-container {
     .report-filter-container {
