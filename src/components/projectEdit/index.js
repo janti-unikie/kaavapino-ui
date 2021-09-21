@@ -70,13 +70,10 @@ class ProjectEditPage extends Component {
 
     const param = params.get('attribute')
 
-    const currentRef = this.state.refs.find(ref => ref.name === param)
+    const element = document.getElementById(param)
 
-    if (currentRef && currentRef.ref) {
-      setTimeout(() => {
-        currentRef.ref.current.scrollIntoView({ block: 'center' })
-      }, 100)
-    }
+      element && element.scrollIntoView()
+    
   }
   changePhase = () => {
     const { schema, selectedPhase } = this.props
@@ -182,7 +179,6 @@ class ProjectEditPage extends Component {
 
     const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
 
-    
     return (
       <div>
         <div className="timeline" onClick={() => showTimelineModal(true)}>
@@ -317,4 +313,6 @@ const mapDispatchToProps = {
   getProjectSnapshot
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProjectEditPage)))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProjectEditPage))
+)
