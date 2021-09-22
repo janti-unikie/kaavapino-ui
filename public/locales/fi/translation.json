@@ -136,7 +136,8 @@
       "process-size": "Prosessin koko",
       "responsible-person": "Vastuuhenkilö"
     },
-    "now": "Nyt"
+    "now": "Nyt",
+    "total-area": "Kokonaiskerrosala"
   },
   "project-types": {
     "title": "Kaavaprojektien jakauma",

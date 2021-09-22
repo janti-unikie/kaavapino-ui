@@ -21,7 +21,8 @@ import {
   BUSINESS_PREMISES,
   LIVING,
   PREDICTION,
-  LIVING_OVERALL
+  LIVING_OVERALL,
+  TOTAL
 } from './floorAreaChartUtils'
 import {
   projectOverviewFloorAreaSelector,
@@ -344,11 +345,12 @@ function FloorAreaChart({
                 <XAxis
                   interval={1}
                   scale="time"
-                  tickCount={104}
+                  height={65}
+                  tickCount={100}
                   domain={['auto', 'auto']}
                   type="number"
                   dataKey="date"
-                  angle={-45}
+                  angle={-90}
                   textAnchor="end"
                   tickFormatter={getFormattedDate}
                 />
@@ -383,7 +385,7 @@ function FloorAreaChart({
                   fill="lightBlue"
                   legendType="none"
                 />
-                <Legend />
+                 <Legend />
                 <CartesianGrid yAxisId="left" vertical={false} opacity={0.4} />
 
                 <Line
@@ -432,7 +434,32 @@ function FloorAreaChart({
                   dot={false}
                   yAxisId="left"
                 />
+                  <Line
+                  isAnimationActive={false}
+                  legendType="plainline"
+                  name={t('floor-area.total-area')}
+                  type="monotone"
+                  dataKey={TOTAL}
+                  stroke="black"
+                  strokeWidth="2px"
+                  dot={false}
+                  yAxisId="left"
+                />
+                <Line
+                  isAnimationActive={false}
+                  legendType="none"
+                  type="monotone"
+                  dataKey={TOTAL + PREDICTION}
+                  stroke="green"
+                  strokeDasharray="3 3"
+                  strokeWidth="2px"
+                  dot={false}
+                  yAxisId="left"
+                />
+                
               </ComposedChart>
+             
+               
             </ResponsiveContainer>
           </div>
         )}
