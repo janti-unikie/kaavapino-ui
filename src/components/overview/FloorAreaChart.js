@@ -385,7 +385,7 @@ function FloorAreaChart({
                   fill="lightBlue"
                   legendType="none"
                 />
-                 <Legend />
+                <Legend />
                 <CartesianGrid yAxisId="left" vertical={false} opacity={0.4} />
 
                 <Line
@@ -434,7 +434,7 @@ function FloorAreaChart({
                   dot={false}
                   yAxisId="left"
                 />
-                  <Line
+                <Line
                   isAnimationActive={false}
                   legendType="plainline"
                   name={t('floor-area.total-area')}
@@ -456,10 +456,7 @@ function FloorAreaChart({
                   dot={false}
                   yAxisId="left"
                 />
-                
               </ComposedChart>
-             
-               
             </ResponsiveContainer>
           </div>
         )}
