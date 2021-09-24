@@ -7,11 +7,11 @@ const DocumentGroup = ({ title, documents, projectId, phaseEnded }) => {
   return (
     <div className="document-group">
       <Accordion heading={title} headingLevel={2} className="document-accordion">
-        {documents.map(({ name, file, lastDownloaded, image_template, id }, i) => (
+        {documents.map(({ name, file, last_downloaded, image_template, id }, i) => (
           <Document
             title={title}
             phaseEnded={phaseEnded}
-            lastDownloaded={lastDownloaded}
+            lastDownloaded={last_downloaded}
             id={id}
             image_template={image_template}
             projectId={projectId}
