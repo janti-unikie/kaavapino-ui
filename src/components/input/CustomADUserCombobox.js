@@ -73,7 +73,7 @@ class CustomADUserCombobox extends Component {
 
   render() {
     return (
-      <div id="test">
+      <div id="test" className="ad-combobox">
         <Combobox
           options={this.state.options}
           multiselect={this.props.multiselect}

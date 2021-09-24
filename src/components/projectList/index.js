@@ -70,6 +70,7 @@ class ProjectListPage extends Component {
 
   fetchFilteredItems = value => {
     this.setState({ filter: value }, () => {
+      this.props.clearProjects()
       this.props.fetchProjects(this.state.filter)
     })
   }

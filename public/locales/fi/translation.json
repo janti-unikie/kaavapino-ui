@@ -31,7 +31,9 @@
     "logging": {
       "modified": "Muokattu",
       "old": "Vanha"
-    }
+    },
+    "person-search": "Henkilöhaku"
+
   },
   "deadlines": {
     "title": "Päivitä aikataulut",
