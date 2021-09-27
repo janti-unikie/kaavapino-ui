@@ -23,18 +23,24 @@ function ReportPreviewModal({
       return (
         <div key={current.date} className="report-date">
           {t('reports.presentation-report.kylk-title', { date: current.date })}
-          {current.rows && <ReportTable columns={headers} data={current.rows} />}
+          {current.rows && <ReportTable columns={headers.slice( 1, headers.length)} data={current.rows} />}
         </div>
       )
     })
   }
+
   return (
     <Modal
       className="preview-modal"
-      size={'large'}
+      size='large'
       onClose={handleClose}
       open={open}
       closeIcon
+      closeOnDocumentClick={false}
+      closeOnTriggerBlur={false}
+      closeOnTriggerMouseLeave={false}
+      closeOnDimmerClick={false}
+      closeOnPortalMouseLeave={false}
     >
       <Modal.Actions>
         <span>

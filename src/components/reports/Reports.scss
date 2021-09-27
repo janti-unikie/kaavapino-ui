@@ -2,7 +2,7 @@
   flex: 1 1;
   margin: 0 auto;
   max-width: 1148px;
-  width: 100%;
+  width: calc(100% - 32px);
 
   .report-builder-container {
     .report-filter-container {
@@ -40,6 +40,10 @@
 }
 .preview-modal {
   overflow: auto;
+ 
+  @media screen and (min-width: 1350px) {
+    width: 1350px !important;
+  }
 
   .content {
     margin-left: 30px !important;
@@ -60,6 +64,7 @@
 }
 .report-table {
  
+  font-size: 12px;
   table {
     border-spacing: 0;
     border: 1px solid black;
@@ -77,6 +82,8 @@
       margin: 0;
       padding: 0.5rem;
       border-bottom: 1px solid black;
+      text-overflow: ellipsis;
+      width: 100%;
     
       :last-child {
         border-right: 0;

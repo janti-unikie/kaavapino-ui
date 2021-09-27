@@ -15,7 +15,9 @@ class CustomADUserCombobox extends Component {
   }
 
   getModifiedOption({ name, id, email, title }) {
-    const label = name && title ? `${name} (${title})` : name ? name : email
+
+    const option = name ? name : email
+    const label = name && title ? `${name} (${title})` : option
     return { label, id }
   }
 
@@ -26,7 +28,8 @@ class CustomADUserCombobox extends Component {
       return []
     }
     options.forEach(({ name, id, email, title }) => {
-      const label = name && title ? `${name} (${title})` : name ? name : email
+      const optionValue = name ? name : email
+      const label = name && title ? `${name} (${title})` : optionValue
 
       if (modifiedOptions.find(option => option.label === label)) {
         modifiedOptions.push({ label: email, id })

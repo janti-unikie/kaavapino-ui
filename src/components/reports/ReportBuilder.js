@@ -28,6 +28,7 @@ function ReportBuilder(props) {
   const { t } = useTranslation()
 
   useEffect(() => {
+    props.clearDownloadReportReview()
     props.fetchReports()
   }, [])
 
@@ -35,10 +36,6 @@ function ReportBuilder(props) {
     props.downloadReport({ selectedReport: selectedReport.id })
   }
 
-  const onShowPreviewModal = () => {
-    props.downloadReportReview({ selectedReport: selectedReport.id })
-    setIsLoading(true)
-  }
   useEffect(() => {
     setCurrentReportData(props.currentReport)
   }, [props.currentReport])
@@ -57,6 +54,10 @@ function ReportBuilder(props) {
     props.initialize(null)
   }, [selectedReport])
 
+  const onShowPreviewModal = () => {
+    props.downloadReportReview({ selectedReport: selectedReport.id })
+    setIsLoading(true)
+  }
   const renderReportButtons = () => {
     const { reports } = props
 
@@ -88,6 +89,14 @@ function ReportBuilder(props) {
     const headerRow = data[0]
 
     headerRow.forEach(column => {
+      if (column === 'Selite') {
+        return columns.push({
+          Header: column,
+          accessor: getNonDuplicateName(column, columns),
+          minWidth: 200,
+          width: 200
+        })
+      }
       return columns.push({
         Header: column,
         accessor: getNonDuplicateName(column, columns)
@@ -143,6 +152,7 @@ function ReportBuilder(props) {
 
   const hidePreview = () => {
     setShowPreviewModal(false)
+    setIsLoading(false)
     setCurrentReportData(null)
     props.clearDownloadReportReview()
   }

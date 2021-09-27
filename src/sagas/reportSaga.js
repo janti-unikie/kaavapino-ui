@@ -82,6 +82,10 @@ function* downloadReportPreviewSaga({ payload }) {
   toastr.removeByType('info')
 
   if (!isError) {
+    toastr.success(
+      i18next.t('reports.title'),
+      i18next.t('reports.report-preview-loaded')
+    )
     yield put(downloadReportReviewSuccessful(res.data))
   }
 }
@@ -144,6 +148,11 @@ function* downloadReportSaga({ payload }) {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
+
+      toastr.success(
+        i18next.t('reports.title'),
+        i18next.t('reports.report-loaded')
+      )
     }
   }
 }
