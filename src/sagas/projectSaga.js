@@ -522,21 +522,25 @@ function* saveProject() {
     const { sections } = currentSchema
     const changedValues = getChangedAttributeData(values, initial, sections)
 
-    const attribute_data = changedValues
+    const keys = Object.keys(changedValues)
 
-    try {
-      const updatedProject = yield call(
-        projectApi.patch,
-        { attribute_data },
-        { path: { id: currentProjectId } },
-        ':id/'
-      )
-      yield put(updateProject(updatedProject))
-    } catch (e) {
-      if (e.response.status === 400) {
-        yield put(stopSubmit(EDIT_PROJECT_FORM, e.response.data))
-      } else {
-        yield put(error(e))
+    if (keys.length !== 0) {
+      const attribute_data = changedValues
+
+      try {
+        const updatedProject = yield call(
+          projectApi.patch,
+          { attribute_data },
+          { path: { id: currentProjectId } },
+          ':id/'
+        )
+        yield put(updateProject(updatedProject))
+      } catch (e) {
+        if (e.response.status === 400) {
+          yield put(stopSubmit(EDIT_PROJECT_FORM, e.response.data))
+        } else {
+          yield put(error(e))
+        }
       }
     }
   }
@@ -747,7 +751,9 @@ function* getProjectsOverviewFloorArea({ payload }) {
         endDate = dayjs(new Date(value, 11, 31)).format('YYYY-MM-DD')
       } else {
         startDate = dayjs(new Date(value[0].value, 0, 1)).format('YYYY-MM-DD')
-        endDate = dayjs(new Date(value[value.length - 1].value, 11, 31)).format('YYYY-MM-DD')
+        endDate = dayjs(new Date(value[value.length - 1].value, 11, 31)).format(
+          'YYYY-MM-DD'
+        )
       }
       query = {
         ...query,
@@ -844,8 +850,6 @@ function* getProjectOverviewMapDataSaga({ payload }) {
 
   const keys = Object.keys(payload)
 
-
-
   keys.forEach(key => {
     if (key === 'vuosi') {
       const value = payload[key]
@@ -857,7 +861,9 @@ function* getProjectOverviewMapDataSaga({ payload }) {
         endDate = dayjs(new Date(value, 11, 31)).format('YYYY-MM-DD')
       } else {
         startDate = dayjs(new Date(value[0].value, 0, 1)).format('YYYY-MM-DD')
-        endDate = dayjs(new Date(value[value.length - 1].value, 11, 31)).format('YYYY-MM-DD')
+        endDate = dayjs(new Date(value[value.length - 1].value, 11, 31)).format(
+          'YYYY-MM-DD'
+        )
       }
 
       query = {

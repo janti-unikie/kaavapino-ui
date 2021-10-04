@@ -15,7 +15,9 @@ class CustomADUserCombobox extends Component {
   }
 
   getModifiedOption({ name, id, email, title }) {
-    const label = name && title ? `${name} (${title})` : name ? name : email
+
+    const option = name ? name : email
+    const label = name && title ? `${name} (${title})` : option
     return { label, id }
   }
 
@@ -26,7 +28,8 @@ class CustomADUserCombobox extends Component {
       return []
     }
     options.forEach(({ name, id, email, title }) => {
-      const label = name && title ? `${name} (${title})` : name ? name : email
+      const optionValue = name ? name : email
+      const label = name && title ? `${name} (${title})` : optionValue
 
       if (modifiedOptions.find(option => option.label === label)) {
         modifiedOptions.push({ label: email, id })
@@ -37,7 +40,7 @@ class CustomADUserCombobox extends Component {
     return modifiedOptions
   }
   getPerson = async () => {
-
+    
     if ( !this.props.input.value ) {
       return null
     }
@@ -73,7 +76,7 @@ class CustomADUserCombobox extends Component {
 
   render() {
     return (
-      <div id="test">
+      <div id="test" className="ad-combobox">
         <Combobox
           options={this.state.options}
           multiselect={this.props.multiselect}
@@ -91,7 +94,7 @@ class CustomADUserCombobox extends Component {
               this.props.input.onChange( returnValue )
             }
           }}
-          defaultValue={this.state.currentValue}
+          value={this.state.currentValue}
           onBlur={this.props.onBlur}
         />
       </div>

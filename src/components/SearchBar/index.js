@@ -1,54 +1,87 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import './SearchBar.scss'
-import { IconCross, IconSearch, SearchInput, Button } from 'hds-react'
+import { IconCross, IconSearch, SearchInput, Button, Checkbox } from 'hds-react'
+import CustomADUserCombobox from '../input/CustomADUserCombobox'
+import { useTranslation } from 'react-i18next';
 
-class SearchBar extends Component {
-  onSubmit = value => {
-    const { buttonAction } = this.props
+function SearchBar(props) {
+  const [personSearchToggle, setPersonSearchToggle] = useState(false)
+  const {t} = useTranslation()
+
+  useEffect(() => {
+   
+    return () => {
+      setPersonSearchToggle(false)
+    }
+  }, [])
+  const onSubmit = value => {
+    const { buttonAction } = props
     buttonAction(value)
   }
 
-  onReset = () => {
-    const { buttonAction, toggleSearch } = this.props
+  const onReset = () => {
+    const { buttonAction, toggleSearch } = props
 
     toggleSearch(false)
 
-    if ( buttonAction ) {
-    buttonAction('')
+    if (buttonAction) {
+      buttonAction('')
     }
   }
-  render() {
-    const { searchOpen, toggleSearch } = this.props
 
-    return (
-      <span className="search-bar">
-        {!searchOpen ? (
-          <Button
-            variant="supplementary"
-            className="search-action-icon"
-            iconLeft={<IconSearch size="l" />}
-            onClick={() => toggleSearch(true)}
-            aria-label="Hae"
-          />
-        ) : (
-          <>
+
+  const { searchOpen, toggleSearch } = props
+
+  return (
+    <span className="search-bar">
+      {!searchOpen ? (
+        <Button
+          variant="supplementary"
+          className="search-action-icon"
+          iconLeft={<IconSearch size="l" />}
+          onClick={() => toggleSearch(true)}
+          aria-label="Hae"
+        />
+      ) : (
+        <>
+          {!personSearchToggle && (
             <SearchInput
               clearButtonAriaLabel="Clear"
-              onSubmit={value => this.onSubmit(value)}
+              onSubmit={value => onSubmit(value)}
               aria-label="Tyhjennä"
             />
-            <Button
-              variant="supplementary"
-              iconLeft={<IconCross size="l"  />}
-              onClick={this.onReset}
-              aria-label="Poista"
+          )}
 
+          {personSearchToggle && (
+            <div>
+            <CustomADUserCombobox
+              input={{
+                onChange: value => {
+                  onSubmit(value)
+                }
+              }}
+              multiselect={false}
             />
-          </>
-        )}
-      </span>
-    )
-  }
+            </div>
+          )
+          }
+          <Checkbox
+            id="person-toggle"
+            className="person-toggle"
+            label={t('projects.person-search')}
+            checked={personSearchToggle}
+            onChange={() => setPersonSearchToggle(personSearchToggle ? false : true)}
+          />
+          <Button
+            variant="supplementary"
+            iconLeft={<IconCross size="l" />}
+            onClick={onReset}
+            aria-label="Poista"
+          />
+        </>
+      )}
+    </span>
+  )
 }
 
 export default SearchBar

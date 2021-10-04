@@ -15,10 +15,9 @@ function Document({
   downloadDocumentPreview,
   phaseEnded,
   image_template
-
 }) {
-
-  const {t} = useTranslation()
+  
+  const { t } = useTranslation()
   return (
     <>
       <Grid columns="equal" className="document-row ">
@@ -27,31 +26,32 @@ function Document({
           <span className="document-title">{name}</span>
         </Grid.Column>
         <Grid.Column>
-          <span className="document-title">{lastDownloaded ? dayjs(lastDownloaded).format('DD.MM.YYYY') : ''}</span>
+          <span className="document-title">
+            <span>{t('project.document-last-loaded')} </span>
+            {lastDownloaded ? dayjs(lastDownloaded).format('DD.MM.YYYY') : ''}
+          </span>
         </Grid.Column>
-        {!phaseEnded &&  <Grid.Column textAlign="right">
-       
-          <Button
-            variant="supplementary"
-            onClick={() => downloadDocument({name, file})}
-            href={file}
-            className="document"
-          >
-            {t('project.load')}
-          </Button>
-          <Button
-            variant="supplementary"
-            onClick={() => downloadDocumentPreview({name, file})}
-            href={file}
-            className="document"
-          >
-            {t('project.load-preview')}
-          </Button>
-          
-        </Grid.Column>
-        }
+        {!phaseEnded && (
+          <Grid.Column textAlign="right">
+            <Button
+              variant="supplementary"
+              onClick={() => downloadDocument({file, name})}
+              href={file}
+              className="document"
+            >
+              {t('project.load')}
+            </Button>
+            <Button
+              variant="supplementary"
+              onClick={() => downloadDocumentPreview({ file, name })}
+              href={file}
+              className="document"
+            >
+              {t('project.load-preview')}
+            </Button>
+          </Grid.Column>
+        )}
       </Grid>
-    
     </>
   )
 }

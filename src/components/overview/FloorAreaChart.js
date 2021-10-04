@@ -460,6 +460,7 @@ function FloorAreaChart({
             </ResponsiveContainer>
           </div>
         )}
+        
       </div>
       <Legends centered={true} />
     </div>

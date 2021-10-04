@@ -149,7 +149,6 @@ function CustomMap({
     )
   }
 
-  console.log(filter)
   const renderMap = () => (
     <Map
       className={isMobile ? 'geometry-input-mobile' : 'geometry-input'}

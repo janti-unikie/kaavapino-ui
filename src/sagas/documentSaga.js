@@ -31,7 +31,8 @@ function* fetchDocumentsSaga({ payload: projectId }) {
 function* downloadDocumentSaga({ payload: payload }) {
   toastr.info(
     i18next.t('document-loading.title'),
-    i18next.t('document-loading.content', { name: payload.name })
+    i18next.t('document-loading.content', { name: payload.name }),
+    { closeOnToastrClick: false }
   )
 
   try {
@@ -47,6 +48,10 @@ function* downloadDocumentSaga({ payload: payload }) {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
+      toastr.success(
+        i18next.t('document-loading.title'),
+        i18next.t('document-loading.document-loaded', { name: payload.name })
+      )
     }
   } catch (e) {
     toastr.error(
@@ -62,7 +67,8 @@ function* downloadDocumentPreviewSaga({ payload: payload }) {
   const modifiedUrl = payload.file + '?preview=true'
   toastr.info(
     i18next.t('document-loading.preview-title'),
-    i18next.t('document-loading.content', { name: payload.name })
+    i18next.t('document-loading.content', { name: payload.name }),
+    { closeOnToastrClick: false }
   )
 
   try {
@@ -78,6 +84,11 @@ function* downloadDocumentPreviewSaga({ payload: payload }) {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
+
+      toastr.success(
+        i18next.t('document-loading.title'),
+        i18next.t('document-loading.document-preview-loaded', { name: payload.name })
+      )
     }
   } catch (e) {
     toastr.error(

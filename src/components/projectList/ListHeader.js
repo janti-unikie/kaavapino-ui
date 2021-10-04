@@ -29,7 +29,7 @@ const ListHeader = ({
             </Button>
           )
         })}
-        <span className="header-item project-timeline-toggle">
+        <span className="timeline-header-item  project-timeline-toggle">
           Aikajana
           <Radio onChange={toggleGraph} toggle checked={graphToggled} />
         </span>

@@ -87,13 +87,11 @@ function FloorAreaMeetings({ chartData }) {
   }
   return (
     <div className="floor-area">
-      {!isChartDataLoaded() && <LoadingSpinner className="center" />}
-      {isChartDataLoaded() && (
-        <div className="chart-area-header-mobile">
-          <h3>{t('floor-area.meetings-title')}</h3>
-          {renderMeetings()}
-        </div>
-      )}
+      <div className="chart-area-header-mobile">
+        <h3>{t('floor-area.meetings-title')}</h3>
+        {!isChartDataLoaded() && <LoadingSpinner className="center" />}
+        {isChartDataLoaded() && <div>{renderMeetings()}</div>}
+      </div>
     </div>
   )
 }

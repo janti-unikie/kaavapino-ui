@@ -154,6 +154,9 @@
     display: inline-block;
     margin-right: 5px;
 }
+.centered {
+    text-align: center;
+}
 .mobile-project-meetings {
     padding: 10px;
 }
@@ -167,6 +170,8 @@
 .color-legends {
     padding-top: 10px;
     padding-bottom: 10px;
+
+   
     .color-legend:not(:first-of-type) {
         margin-left: 10px;
     }

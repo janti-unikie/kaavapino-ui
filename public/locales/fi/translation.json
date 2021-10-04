@@ -13,7 +13,9 @@
     "preview-title": "Esikatseludokumentin lataus",
     "preview-content": "Esikatseludokumenttia {{name}} ladataan.",
     "content": "Dokumenttia {{name}} ladataan.",
-    "error": "Dokumentin {{name}} lataus epäonnistui."
+    "error": "Dokumentin {{name}} lataus epäonnistui.",
+    "document-preview-loaded": "Dokumentin esikatselu ladattu onnituneesti",
+    "document-loaded": "Dokumentti ladattu onnistuneesti"
   },
   "projects": {
     "own-short": "Omat",
@@ -31,7 +33,9 @@
     "logging": {
       "modified": "Muokattu",
       "old": "Vanha"
-    }
+    },
+    "person-search": "Henkilöhaku"
+
   },
   "deadlines": {
     "title": "Päivitä aikataulut",
@@ -79,7 +83,9 @@
     "no-documents": "Ei dokumentteja",
     "phase-passed": "Vaihe ohitettu",
     "load": "Lataa",
-    "load-preview": "Esikatselu"
+    "load-preview": "Esikatselu",
+    "phase": "Kaavan vaihe:",
+    "document-last-loaded": "Ladattu viimeksi"
   },
   "nav-header": {
     "latest-update": "Viimeisin muokkaus: {{latestUpdate}}"
@@ -115,13 +121,14 @@
     "title": "Yleisnäkymä",
     "clear-selections": "Tyhjennä valinnat",
     "filter-button": "Suodata",
-        "filter-modal-title": "Suodata",
-        "clear": "Tyhjennä",
-        "selected": "{{amount}} valittu"
+    "filter-modal-title": "Suodata",
+    "clear": "Tyhjennä",
+    "selected": "{{amount}} valittu"
   },
 
   "floor-area": {
     "title": "Tarkistettujen kaavaehdotusten asuinkerrosala {{date}}",
+    "mobile-title": "Kaavoitettu kerrosala nyt",
     "total-number": " / {{total}} k-m²",
     "current-number": " {{current}} k-m²",
     "y-axis-title": "k-m²",
@@ -137,6 +144,7 @@
       "responsible-person": "Vastuuhenkilö"
     },
     "now": "Nyt",
+    "meetings-title": "Lautakunnan kokoukset",
     "total-area": "Kokonaiskerrosala"
   },
   "project-types": {
@@ -149,5 +157,25 @@
     "tarkastettuEhdotus": "Tarkastettu ehdotus -vaihe",
     "voimaantulo": "Voimaantulo-vaihe",
     "periaatteet": "Periaatteet-vaihe"
+  },
+  "reports": {
+    "title": "Raportit",
+    "choose-report": "Valitse raporttityyppi",
+    "filters": "Suodattimet",
+    "create-report": "Lataa raportti (.xlxs)",
+    "create-preview": "Esikatselu",
+    "preview-title": "Esikatseluraportin lataus",
+    "preview-content": "Raporttia ladataan esikatseluun.",
+    "content": "Raporttia ladataan.",
+    "error": "Raportin lataus epäonnistui.",
+    "presentation-report": {
+        "title": "Esittelysuunnitelma",
+        "infoText": " Kaupunkiympäristölautakunnalle (KYLK) esitettäväksi suunniteltuja MAKA:n asioita",
+        "empty-report": "Tyhjä raportti",
+        "kylk-title": "Kylk {{date}}"
+    },
+    "report-preview-loaded": "Raportin esikatselu ladattu onnituneesti",
+    "report-loaded": "Raportti ladattu onnistuneesti"
   }
+
 }
