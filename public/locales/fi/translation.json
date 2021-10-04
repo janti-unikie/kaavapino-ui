@@ -144,7 +144,8 @@
       "responsible-person": "Vastuuhenkilö"
     },
     "now": "Nyt",
-    "meetings-title": "Lautakunnan kokoukset"
+    "meetings-title": "Lautakunnan kokoukset",
+    "total-area": "Kokonaiskerrosala"
   },
   "project-types": {
     "title": "Kaavaprojektien jakauma",
