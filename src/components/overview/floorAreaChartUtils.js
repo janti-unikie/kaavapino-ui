@@ -7,6 +7,7 @@ export const FLOOR_AREAS = 'floorAreas'
 export const MEETINGS = 'meetings'
 export const DATE = 'date'
 export const LIVING_OVERALL ='living_overall'
+export const TOTAL = 'total'
 
 export const getFloorAreaChartData = data => {
   const modifiedData = {}
@@ -34,6 +35,8 @@ export const getFloorAreaChartData = data => {
       ? current.floor_area[BUSINESS_PREMISES]
       : 0
 
+    const totalData =   current.floor_area[TOTAL] ? current.floor_area[TOTAL] : 0
+
     const date = new Date(current[DATE]).getTime()
 
     const meetings = current[MEETINGS]
@@ -44,12 +47,14 @@ export const getFloorAreaChartData = data => {
       chartData[PUBLIC + PREDICTION] = publicData !== 0 ? publicData : undefined
       chartData[OTHER + PREDICTION] = otherData !== 0 ? otherData : undefined
       chartData[BUSINESS_PREMISES + PREDICTION] = businessPremisesData !== 0 ? businessPremisesData : undefined
+      chartData[TOTAL + PREDICTION] = totalData !== 0 ? totalData : undefined
+      
     } else {
       chartData[LIVING] = livingData !== 0 ? livingData : undefined
       chartData[PUBLIC] = publicData !== 0 ? publicData : undefined
       chartData[OTHER] = otherData !== 0 ? otherData : undefined
       chartData[BUSINESS_PREMISES] = businessPremisesData !== 0 ? businessPremisesData : undefined
-
+      chartData[TOTAL] = totalData !== 0 ? totalData : undefined
     }
 
     chartData[MEETINGS] = meetings
@@ -67,6 +72,6 @@ export const getFloorAreaChartData = data => {
     modifiedData[LIVING_OVERALL] = lastValue.floor_area[LIVING]
   }
   modifiedData[FLOOR_AREAS] = floorAreas
- 
+  
   return modifiedData
 }
