@@ -15,7 +15,7 @@ import {
   initializeProject,
   getProjectSnapshot
 } from '../../actions/projectActions'
-import { fetchSchemas, setAllEditFields } from '../../actions/schemaActions'
+import { fetchSchemas, setAllEditFields, clearSchemas } from '../../actions/schemaActions'
 import {
   savingSelector,
   changingPhaseSelector,
@@ -28,7 +28,7 @@ import { schemaSelector, allEditFieldsSelector } from '../../selectors/schemaSel
 import NavigationPrompt from 'react-router-navigation-prompt'
 import Prompt from '../common/Prompt'
 import EditForm from './EditForm'
-import QuickNav from './quickNav/QuickNav'
+import QuickNav from './quickNav/NewQuickView'
 import EditFloorAreaFormModal from '../project/EditFloorAreaFormModal'
 import { EDIT_PROJECT_FORM } from '../../constants'
 import _ from 'lodash'
@@ -52,6 +52,10 @@ class ProjectEditPage extends Component {
     formInitialized: false
   }
 
+  currentSectionIndex = 0
+
+  headings = []
+
   constructor(props) {
     super(props)
     const { project } = this.props
@@ -59,9 +63,15 @@ class ProjectEditPage extends Component {
   }
   componentDidUpdate() {
     this.scroll()
+
+    this.headings = this.createHeadings()
   }
   componentDidMount() {
     this.scroll()
+  }
+
+  componentWillUnmount() {
+    this.props.clearSchemas()
   }
 
   scroll() {
@@ -72,8 +82,7 @@ class ProjectEditPage extends Component {
 
     const element = document.getElementById(param)
 
-      element && element.scrollIntoView()
-    
+    element && element.scrollIntoView()
   }
   changePhase = () => {
     const { schema, selectedPhase } = this.props
@@ -123,9 +132,32 @@ class ProjectEditPage extends Component {
       formInitialized: value
     })
   }
-  /*
-  
-  */
+  createHeadings = () => {
+    const { schema } = this.props
+    const allPhases = schema && schema.phases
+
+    const newPhases = []
+
+    allPhases && allPhases.forEach(phase => {
+      const sections = []
+      phase.sections.forEach(section => {
+        sections.push({ title: section.title })
+       
+      })
+
+      const newPhase = {
+        id: phase.id,
+        title: phase.title,
+        color: phase.color,
+        color_code: phase.color_code,
+        list_prefix: phase.list_prefix,
+        sections: sections
+      }
+
+      newPhases.push(newPhase)
+    })
+    return newPhases
+  }
 
   render() {
     const {
@@ -217,6 +249,7 @@ class ProjectEditPage extends Component {
               isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
               formValues={this.props.formValues}
               notLastPhase={notLastPhase}
+              phases={this.headings}
             />
             <NavigationPrompt
               when={
@@ -289,12 +322,12 @@ const mapStateToProps = state => {
     checking: checkingSelector(state),
     isDirty: isDirty(EDIT_PROJECT_FORM)(state),
     syncErrors: getFormSyncErrors(EDIT_PROJECT_FORM)(state),
-    currentProject: currentProjectSelector(state),
     submitErrors: getFormSubmitErrors(EDIT_PROJECT_FORM)(state),
     formValues: getFormValues(EDIT_PROJECT_FORM)(state),
     allEditFields: allEditFieldsSelector(state),
     users: usersSelector(state),
-    currentUserId: userIdSelector(state)
+    currentUserId: userIdSelector(state),
+    currentProject: currentProjectSelector(state)
   }
 }
 
@@ -310,7 +343,8 @@ const mapDispatchToProps = {
   fetchProjectDeadlines,
   setAllEditFields,
   initializeProject,
-  getProjectSnapshot
+  getProjectSnapshot,
+  clearSchemas
 }
 
 export default withRouter(

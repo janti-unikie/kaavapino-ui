@@ -13,7 +13,6 @@ import { Field, FieldArray } from 'redux-form'
 import CustomRadioButton from './CustomRadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
-import OnHoldCheckbox from './OnholdCheckbox'
 import CustomCheckbox from './CustomCheckbox'
 
 import AutofillInputCalculations from './AutofillInputCalculation/AutofillInputCalculations'
@@ -295,19 +294,6 @@ class CustomField extends Component {
     )
   }
 
-  renderOnholdCheckbox = props => {
-    const { onhold, saveProjectBase, disabled, label } = this.props
-
-    return (
-      <OnHoldCheckbox
-        {...props}
-        projectOnhold={onhold}
-        saveProjectBase={saveProjectBase}
-        disabled={disabled}
-        label={label}
-      />
-    )
-  }
   renderDeadlineInfo = props => {
     const { field } = this.props
 
@@ -389,8 +375,6 @@ class CustomField extends Component {
         return this.renderLink
       case 'decimal':
         return this.renderDecimal
-      case 'checkbox-onhold':
-        return this.renderOnholdCheckbox
       case 'checkbox':
         return this.renderDeadlineCheckbox
       case 'readonly':

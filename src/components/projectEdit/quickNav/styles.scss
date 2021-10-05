@@ -26,33 +26,31 @@
     max-height: 45vh;
     overflow: hidden;
     overflow-y: auto;
-
-    .ui.accordion {
-      .title {
-        font-family: 'Helsinki Grotesk Medium';
-        height: 64px;
-        padding: 0 16px 0 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 16px;
-
-        &:not(:first-of-type) {
-          border-top: 1px solid $gray;
-        }
-
-        & ~ .content {
-          margin-bottom: 20px;
-          padding: 0;
-        }
-      }
+    
+    .phase-accordion > div{
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0;
+     }
+    .accordion-button {
+      padding-left: 0;
+      color: black;
     }
-
+    .accordion-button > span {
+      padding-left: 0;
+      
+    }
     .quicknav-item {
       cursor: pointer;
       display: block;
       padding-left: 8px;
       margin: 20px 8px 0;
+      font-size: 14px;
+      margin-top: 0px;
+      color: black;
+      text-align: left;
+      margin-left: 10px;
+     
 
       &.active {
         font-weight: bold;
@@ -61,6 +59,7 @@
       }
     }
   }
+
 
   .quicknav-buttons {
     margin-top: 32px;

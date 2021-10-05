@@ -21,8 +21,7 @@ import {
 import { phasesSelector } from '../../selectors/phaseSelector'
 import {
   allEditFieldsSelector,
-  projectCardFieldsSelector,
-  attributesSelector
+  projectCardFieldsSelector
 } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader } from '../common/NavHeader'
@@ -480,7 +479,6 @@ const mapStateToProps = state => {
     selectedPhase: selectedPhaseSelector(state),
     projectCardFields: projectCardFieldsSelector(state),
     externalDocuments: externalDocumentsSelector(state),
-    attributes: attributesSelector(state)
   }
 }
 

@@ -2,28 +2,28 @@ import React, { useState } from 'react'
 import { Checkbox } from 'hds-react'
 
 const OnHoldCheckbox = ({
-  input: { name, onChange },
-  meta: { error },
+  name,
+  error,
   projectOnhold,
-  placeholder,
-  ...custom
+  disabled,
+  saveProjectBase,
+  label
 }) => {
   const [checked, setChecked] = useState(projectOnhold)
   const onChangeSave = () => {
     setChecked(!checked)
-    onChange(!checked)
-    setTimeout(() => custom.saveProjectBase(), 200)
+    setTimeout(() => saveProjectBase(), 200)
   }
 
   return (
     <Checkbox
-      label={placeholder}
+      label={label}
       error={error}
       name={name}
       id={name}
       onChange={onChangeSave}
       checked={checked}
-      disabled={custom.disabled}
+      disabled={disabled}
     />
   )
 }

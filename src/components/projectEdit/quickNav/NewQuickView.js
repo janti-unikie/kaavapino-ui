@@ -1,0 +1,198 @@
+import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Button, Accordion } from 'hds-react'
+import OnHoldCheckbox from '../../input/OnholdCheckbox'
+import ConfirmModal from '../ConfirmModal'
+import { Message } from 'semantic-ui-react'
+import './styles.scss'
+import RoleHighlightPicker from './roleHighlightPicker/index';
+
+export default function NewQuickView({
+  currentProject,
+  saveProjectBase,
+  handleCheck,
+  handleSave,
+  saving,
+  errors,
+  isCurrentPhase,
+  changePhase,
+  changingPhase,
+  validating,
+  notLastPhase,
+  phases,
+  switchDisplayedPhase,
+  setHighlightRole
+}) {
+  const [endPhaseError] = useState(false)
+  const [verifying, setVerifying] = useState(false)
+  const [checkButtonPressed, setCheckButtonPressed] = useState(false)
+  const [activePhase, setActivePhase] = useState(0)
+  const [selected, setSelected] = useState(0)
+
+  console.log( changingPhase )
+  const { t } = useTranslation()
+
+  const onCheckPressed = () => {
+    setCheckButtonPressed(true)
+    handleCheck()
+  }
+
+  useEffect(() => {
+    const c = document.getElementById(`title-${selected}`)
+    c && c.scrollIntoView()
+  }, [selected])
+
+  const renderButtons = () => {
+    return (
+      <>
+        <Button
+          onClick={onCheckPressed}
+          help={t('quick-nav.check-help-text')}
+          disabled={currentProject.archived}
+          className={checkButtonPressed ? 'check-pressed' : ''}
+          variant="secondary"
+        >
+          {t('quick-nav.check')}
+        </Button>
+        <Button
+          onClick={handleSave}
+          isLoading={saving || errors}
+          help={t('quick-nav.save-help')}
+          disabled={currentProject.archived}
+          className={checkButtonPressed ? 'check-pressed' : ''}
+          variant="secondary"
+        >
+          {t('common.save')}
+        </Button>
+
+        <Button
+          onClick={changePhase}
+          fullWidth={true}
+          isLoading={changingPhase || validating}
+          help={`${
+            notLastPhase ? t('quick-nav.end-phase-help') : t('quick-nav.archive-help')
+          }`}
+          disabled={!isCurrentPhase || currentProject.archived}
+          className={checkButtonPressed ? 'check-pressed' : ''}
+          variant="secondary"
+        >
+          {`${notLastPhase ? t('quick-nav.end-phase') : t('quick-nav.archive')}`}
+        </Button>
+      </>
+    )
+  }
+
+  const renderCheckBox = () => (
+    <OnHoldCheckbox
+      projectOnhold={currentProject.onhold}
+      saveProjectBase={saveProjectBase}
+      name="onhold"
+      disabled={saving || currentProject.archived}
+      label={
+        currentProject.onhold
+          ? t('quick-nav.onhold-lable')
+          : t('quick-nav.set-onhold-lable')
+      }
+    />
+  )
+
+  const phaseCallback = changePhase => {
+    if (changePhase) {
+      if (notLastPhase) {
+        changePhase()
+      } else {
+        saveProjectBase({ archived: true })
+      }
+    }
+    setVerifying(false)
+  }
+
+  const handleSectionTitleClick = (title, index, phaseId) => {
+    if (phaseId !== activePhase) {
+      setActivePhase(phaseId)
+      switchDisplayedPhase(phaseId)
+    }
+
+    setSelected(title)
+  }
+
+  const handleAccordionTitleClick = titleIndex => {
+    const shouldChangePhase = activePhase !== titleIndex
+
+    if (shouldChangePhase) {
+      setActivePhase(activePhase === titleIndex ? null : titleIndex)
+
+      switchDisplayedPhase(titleIndex)
+
+      const accordionTitle = document.getElementById('accordion-title')
+      if (accordionTitle) {
+        accordionTitle.scrollIntoView()
+      }
+    } else {
+      setActivePhase(null)
+    }
+  }
+
+  return (
+    <div>
+      <div className="quicknav-container">
+        <div className="quicknav-navigation-section">
+          <h2 className="quicknav-title">Kaavan vaiheet</h2>
+          <div className="quicknav-content">
+            {phases &&
+              phases.map(phase => (
+                <Accordion
+                  initiallyOpen={activePhase === phase.id}
+                  className="phase-accordion"
+                  heading={
+                    <Button
+                      variant="supplementary"
+                      className="accordion-button"
+                      onClick={() => handleAccordionTitleClick(phase.id)}
+                    >{`${phase.list_prefix}. ${phase.title}`}</Button>
+                  }
+                  key={phase.id}
+                >
+                  {phase.sections &&
+                    phase.sections.map((section, index) => {
+                      return (
+                        <Button
+                          key={index}
+                          variant="supplementary"
+                          className={`quicknav-item ${
+                            section.title === selected && phase.id === activePhase
+                              ? 'active'
+                              : ''
+                          }`}
+                          onClick={() =>
+                            handleSectionTitleClick(section.title, index, phase.id)
+                          }
+                        >
+                          <div> {section.title}</div>
+                        </Button>
+                      )
+                    })}
+                </Accordion>
+              ))}
+          </div>
+        </div>
+        <RoleHighlightPicker onRoleUpdate={setHighlightRole} />
+       
+        <div className="quicknav-buttons">{renderButtons()}</div>
+        <div className="quicknav-onhold-form">{renderCheckBox()}</div>
+        <ConfirmModal
+          callback={phaseCallback}
+          open={verifying}
+          notLastPhase={notLastPhase}
+        />
+        {endPhaseError && (
+          <Message
+            header={t('quick-nav.change-phase-error')}
+            content={t('quick-nav.change-phase-error-message')}
+            color="yellow"
+          />
+        )}
+      </div>
+    </div>
+  )
+}
