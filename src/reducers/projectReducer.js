@@ -48,7 +48,8 @@ import {
   GET_PROJECT_MAP_LEGENDS_SUCCESSFUL,
   CLEAR_PROJECTS_OVERVIEW,
   CLEAR_PROJECTS,
-  CLEAR_EXTERNAL_DOCUMENTS
+  CLEAR_EXTERNAL_DOCUMENTS,
+  SAVE_PROJECT_BASE_PAYLOAD
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -232,7 +233,8 @@ export const reducer = (state = initialState, action) => {
     }
 
     case SAVE_PROJECT:
-    case SAVE_PROJECT_BASE: {
+    case SAVE_PROJECT_BASE: 
+    case SAVE_PROJECT_BASE_PAYLOAD: {
       return {
         ...state,
         saving: true
@@ -250,7 +252,8 @@ export const reducer = (state = initialState, action) => {
     case VALIDATE_PROJECT_FIELDS: {
       return {
         ...state,
-        validating: true
+        validating: true,
+        hasErrors: false
       }
     }
 

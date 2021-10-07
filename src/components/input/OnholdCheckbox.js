@@ -12,7 +12,7 @@ const OnHoldCheckbox = ({
   const [checked, setChecked] = useState(projectOnhold)
   const onChangeSave = () => {
     setChecked(!checked)
-    setTimeout(() => saveProjectBase(), 200)
+    saveProjectBase(!checked)
   }
 
   return (

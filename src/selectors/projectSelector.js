@@ -73,7 +73,7 @@ export const changingPhaseSelector = createSelector(
 
 export const validatingSelector = createSelector(
   selectProject,
-  ({ validating }) => validating
+  project => project.validating
 )
 
 export const hasErrorsSelector = createSelector(
@@ -110,6 +110,15 @@ export const personnelSelector = createSelector(
 export const deadlinesSelector = createSelector(
   currentProjectSelector,
   (currentProject = { deadlines: [] }) => currentProject.deadlines
+)
+
+export const currentProjectArchivedSelector = createSelector(
+  currentProjectSelector,
+  currentProject => currentProject.archived
+)
+export const currentProjectOnHoldSelector = createSelector(
+  currentProjectSelector,
+  currentProject => currentProject.onHold
 )
 
 export const selectedPhaseSelector = createSelector(

@@ -82,10 +82,10 @@
     "documents-created": "Osa tämän vaiheen dokumenteista on luotu.",
     "no-documents": "Ei dokumentteja",
     "phase-passed": "Vaihe ohitettu",
-    "load": "Lataa",
-    "load-preview": "Esikatselu",
+    "load": "Lataa ulos kun valmis",
+    "load-preview": "Esikatsele keskeneräistä",
     "phase": "Kaavan vaihe:",
-    "document-last-loaded": "Ladattu viimeksi"
+    "document-last-loaded": "Ladattu ulos viimeksi:"
   },
   "nav-header": {
     "latest-update": "Viimeisin muokkaus: {{latestUpdate}}"

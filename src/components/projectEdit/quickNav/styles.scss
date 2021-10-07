@@ -67,6 +67,7 @@
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    width: 100%;
 
     button {
       min-width: calc(50% - 8px);
@@ -87,20 +88,11 @@
   @media screen and (max-width: 545px) {
     border: 1px solid gainsboro;
   }
+  .project-onhold {
+    margin-top: 10px;
+  }
 
-  .quicknav-onhold-form {
-    .input-container {
-      .input-title {
-        font-size: 14px !important;
-        position: absolute;
-        margin-left: 35px;
-        margin-top: 18px;
-      }
-      .checkbox {
-        label::before {
-        border-radius: 0 !important;
-        }
-      }
-    }
+  .quicknav-onhold {
+    padding-top: 10px;
   }
 }
