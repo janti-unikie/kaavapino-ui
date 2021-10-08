@@ -41,7 +41,7 @@ function FilterField({ type, id, options, change }) {
   const renderSelect = () => {
     return (
       <SelectInput
-        multiple={type === 'multiple' ? true : false}
+        multiple={type === 'multiple' || type === 'set' ? true : false}
         options={options}
         className="filter-field"
         input={{
@@ -110,13 +110,14 @@ function FilterField({ type, id, options, change }) {
   }
 
   const renderComponent = () => {
-    if (options && options.length > 0) {
+    if (options && options.length > 0 ) {
       return renderSelect()
     }
 
     if (id === 'henkilo') {
       return renderUser()
     }
+
     if (type === 'range') {
       return renderTimeRange()
     }
