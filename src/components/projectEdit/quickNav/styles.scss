@@ -35,9 +35,13 @@
     .accordion-button {
       padding-left: 0;
       color: black;
+      width: 100%;
+
     }
     .accordion-button > span {
       padding-left: 0;
+      text-align: left;
+      width: 100%;
       
     }
     .quicknav-item {
@@ -50,6 +54,7 @@
       color: black;
       text-align: left;
       margin-left: 10px;
+      width: 100%;
      
 
       &.active {
