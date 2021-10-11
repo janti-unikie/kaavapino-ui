@@ -14,6 +14,7 @@ import { delay } from 'redux-saga'
 import { toastr } from 'react-redux-toastr'
 import i18next from 'i18next'
 import { isArray } from 'lodash'
+import FileSaver from 'file-saver'
 
 const MAX_COUNT = 100
 const INTERVAL_MILLISECONDS = 4000
@@ -190,13 +191,7 @@ function* downloadReportSaga({ payload }) {
     const contentDisposition = res.headers['content-disposition']
     const fileName = contentDisposition && contentDisposition.split('filename=')[1]
     if (fileData) {
-      const url = window.URL.createObjectURL(new Blob([fileData]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', fileName)
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
+      FileSaver.saveAs(fileData, fileName)
 
       toastr.success(i18next.t('reports.title'), i18next.t('reports.report-loaded'))
       yield put(downloadReportSuccessful())
