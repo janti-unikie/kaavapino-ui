@@ -11,7 +11,8 @@ function ReportPreviewModal({
   headers,
   handleSubmit,
   noData,
-  isReportLoading
+  isReportLoading,
+  blockColumn
 }) {
   const { t } = useTranslation()
 
@@ -23,7 +24,7 @@ function ReportPreviewModal({
     return report.map(current => {
       return (
         <div key={current.date} className="report-date">
-          {t('reports.presentation-report.kylk-title', { date: current.date })}
+          {`${blockColumn ? blockColumn : ''} ${current.date }`}
           {current.rows && (
             <ReportTable columns={headers.slice(1, headers.length)} data={current.rows} />
           )}

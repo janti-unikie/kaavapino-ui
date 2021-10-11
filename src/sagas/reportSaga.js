@@ -67,12 +67,24 @@ function* downloadReportPreviewSaga({ payload }) {
     }
   }
 
+  res = yield call(
+    reportApi.get,
+    { path: { id: payload.selectedReport }, query: { ...filteredParams } },
+    ':id/',
+    { responseType: 'text' },
+    true
+  )
+  currentTask = res && res.data ? res.data.detail : null
+
   toastr.info(i18next.t('reports.preview-title'), i18next.t('reports.content'))
-  while ((!res || res.status === 202) && !isError && counter < MAX_COUNT) {
-    try {
-      currentTask = res && res.data ? res.data.detail : null
-      console.log(counter)
-      if (currentTask) {
+  if (!currentTask) {
+    toastr.removeByType('info')
+    toastr.error(i18next.t('reports.preview-title'), i18next.t('reports.error'))
+    isError = true
+    yield put(downloadReportSuccessful())
+  } else {
+    while ((!res || res.status === 202) && !isError && counter < MAX_COUNT) {
+      try {
         res = yield call(
           reportApi.get,
           { path: { id: payload.selectedReport, task: currentTask } },
@@ -81,27 +93,17 @@ function* downloadReportPreviewSaga({ payload }) {
           true
         )
         counter++
-      } else {
-        res = yield call(
-          reportApi.get,
-          { path: { id: payload.selectedReport }, query: { ...filteredParams } },
-          ':id/',
-          { responseType: 'text' },
-          true
-        )
-      }
 
-      yield call(delay, INTERVAL_MILLISECONDS)
-    } catch (e) {
-      toastr.error(i18next.t('reports.preview-title'), i18next.t('reports.error'))
+        yield call(delay, INTERVAL_MILLISECONDS)
+      } catch (e) {
+        toastr.error(i18next.t('reports.preview-title'), i18next.t('reports.error'))
+      }
     }
   }
-  toastr.removeByType('info')
 
   if (counter === MAX_COUNT) {
     toastr.error(i18next.t('reports.preview-title'), i18next.t('reports.error'))
     yield put(downloadReportReviewSuccessful(null))
-    
   }
 
   if (!isError && counter !== MAX_COUNT) {
@@ -140,33 +142,38 @@ function* downloadReportSaga({ payload }) {
   })
 
   toastr.info(i18next.t('reports.title'), i18next.t('reports.content'))
-  while ((!res || res.status === 202) && !isError && counter < MAX_COUNT) {
-    try {
-      currentTask = res && res.data ? res.data.detail : null
 
-      if (currentTask) {
+  res = yield call(
+    reportApi.get,
+    { path: { id: payload.selectedReport }, query: { ...filteredParams } },
+    ':id/',
+    { responseType: 'text' },
+    true
+  )
+  currentTask = res && res.data ? res.data.detail : null
+
+  if (!currentTask) {
+    toastr.removeByType('info')
+    toastr.error(i18next.t('reports.title'), i18next.t('reports.error'))
+    isError = true
+    yield put(downloadReportSuccessful())
+  } else {
+    while ((!res || res.status === 202) && !isError && counter < MAX_COUNT) {
+      try {
         res = yield call(
           reportApi.get,
           { path: { id: payload.selectedReport, task: currentTask } },
           ':id/?task=:task',
-          { responseType: 'text' },
+          { responseType: 'blob' },
           true
         )
         counter++
-      } else {
-        res = yield call(
-          reportApi.get,
-          { path: { id: payload.selectedReport }, query: { ...filteredParams } },
-          ':id/',
-          { responseType: 'text' },
-          true
-        )
-      }
 
-      yield call(delay, INTERVAL_MILLISECONDS)
-    } catch (e) {
-      toastr.error(i18next.t('reports.title'), i18next.t('reports.error'))
-      isError = true
+        yield call(delay, INTERVAL_MILLISECONDS)
+      } catch (e) {
+        toastr.error(i18next.t('reports.title'), i18next.t('reports.error'))
+        isError = true
+      }
     }
   }
 
@@ -198,5 +205,4 @@ function* downloadReportSaga({ payload }) {
       yield put(downloadReportSuccessful())
     }
   }
-  
 }

@@ -20,7 +20,7 @@ import { fetchReports } from '../../actions/reportActions'
 import { REPORT_FORM } from '../../constants'
 import { readString } from 'react-papaparse'
 import ReportPreviewModal from './ReportPreviewModal'
-import { parseKYLKReport } from './reportUtils'
+import { parseReport } from './reportUtils'
 import { findIndex } from 'lodash'
 import { LoadingSpinner } from 'hds-react'
 
@@ -54,7 +54,6 @@ function ReportBuilder(props) {
 
   useEffect(() => {
     setShowPreviewModal(false)
-    setIsLoading(false)
     setCurrentReportData(undefined)
     props.initialize(null)
   }, [selectedReport])
@@ -88,7 +87,7 @@ function ReportBuilder(props) {
       </Button>
     ))
   }
-  const current = currentReportData ? readString(currentReportData) : null
+  const current = currentReportData ? readString(currentReportData, {encoding: 'utf-8'}) : null
 
   const getHeaders = () => {
     const columns = []
@@ -197,6 +196,7 @@ function ReportBuilder(props) {
             isLoading={isReportLoading}
             loadingText={t('reports.create-report')}
             className="report-create-button"
+            disabled={props.reviewLoading}
           >
             {t('reports.create-report')}
           </Button>
@@ -210,6 +210,7 @@ function ReportBuilder(props) {
           className="report-create-button"
           loadingText={t('reports.create-preview')}
           isLoading={isLoading}
+          disabled={ props.reportLoading }
         >
           {t('reports.create-preview')}
         </Button>
@@ -221,7 +222,12 @@ function ReportBuilder(props) {
         handleSubmit={handleSubmit}
         handleClose={hidePreview}
         headers={headers}
-        report={parseKYLKReport(headers, content)}
+        report={parseReport(
+          headers,
+          content,
+          selectedReport && selectedReport.preview_title_column
+        )}
+        blockColumn={selectedReport && selectedReport.preview_title_column}
       />
     </>
   )
