@@ -1,6 +1,6 @@
 import { findIndex } from 'lodash'
 
-export const parseReport = (headers, csvRows, blockColumn) => {
+export const parseReport = (headers, csvRows, blockColumn, timeRange) => {
   if (!csvRows || !headers) {
     return []
   }
@@ -9,9 +9,28 @@ export const parseReport = (headers, csvRows, blockColumn) => {
     const dates = row[blockColumn].split(',')
 
     dates.forEach(date => {
-      return kylkDates.add(date.trim())
+      if (timeRange) {
+        const timeRangeDates = timeRange.split(',')
+
+        const startDate = new Date(timeRangeDates[0])
+
+        const endDate = new Date(timeRangeDates[1])
+
+        const dateItems = date.split('.')
+
+        const currentDate = new Date(dateItems[2], dateItems[1], dateItems[0])
+
+        if (currentDate >= startDate && currentDate <= endDate) {
+          return kylkDates.add({ date: date.trim(), current: currentDate })
+        }
+      } else {
+        return kylkDates.add({ date: date.trim() })
+      }
     })
-    
+  })
+
+  const sortedKylkDates = Array.from(kylkDates).sort((a, b) => {
+    return a.current < b.current ? -1 : a.current > b.current ? 1 : 0
   })
 
   const getRows = kylk => {
@@ -30,14 +49,15 @@ export const parseReport = (headers, csvRows, blockColumn) => {
 
   const returnValue = []
 
-  for (let item of kylkDates) {
-    const value = returnValue.find(current => current.date === item)
+  sortedKylkDates.forEach(item => {
+    const value = returnValue.find(current => current.date === item.date)
 
     if (!value) {
-      returnValue.push({ date: item.trim(), rows: getRows(item.trim()) })
+      returnValue.push({ date: item.date.trim(), rows: getRows(item.date.trim()) })
     } else {
-      value.rows.push(getRows(item))
+      value.rows = getRows(item.date.trim())
     }
-  }
+  })
+
   return returnValue
 }

@@ -8,7 +8,7 @@ import CustomADUserCombobox from '../input/CustomADUserCombobox'
 import { isArray } from 'lodash'
 import { Grid } from 'semantic-ui-react';
 
-function FilterField({ type, id, options, change, disabled }) {
+function FilterField({ type, id, options, change, disabled, inputType}) {
   const [start, setStart] = useState(null)
   const [end, setEnd] = useState(null)
 
@@ -119,7 +119,7 @@ function FilterField({ type, id, options, change, disabled }) {
       return renderSelect()
     }
 
-    if (id === 'henkilo') {
+    if (inputType === 'personnel') {
       return renderUser()
     }
 
