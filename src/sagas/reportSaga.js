@@ -62,10 +62,9 @@ function* downloadReportPreviewSaga({ payload }) {
     }
   })
 
-  if (!rest) {
-    filteredParams = {
-      preview: true
-    }
+  filteredParams = {
+    ...rest,
+    preview: true
   }
 
   res = yield call(
