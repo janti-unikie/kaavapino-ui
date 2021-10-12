@@ -46,6 +46,8 @@ import {
   ACCEPTANCE
 } from './bySubtypeChartUtils'
 import { isEqual } from 'lodash'
+import dayjs from 'dayjs'
+import { isArray } from 'lodash'
 
 function ProjectsChart({
   filters,
@@ -68,6 +70,7 @@ function ProjectsChart({
   }, [])
 
   useEffect(() => {
+ 
     if (!storedFilter || !isEqual(storedFilter, filter)) {
       clearProjectsOverviewProjectTypeData()
       setCurrentChartData(null)
@@ -89,18 +92,25 @@ function ProjectsChart({
       })
       return
     }
-    const valueArray = []
-    let parameter
+    if (isArray(values)) {
+      const valueArray = []
+      let parameter
 
-    values.forEach(value => {
-      valueArray.push(value.value)
-      parameter = value.parameter
-    })
+      values.forEach(value => {
+        valueArray.push(value.value)
+        parameter = value.parameter
+      })
 
-    setFilter({
-      ...filter,
-      [parameter]: valueArray
-    })
+      setFilter({
+        ...filter,
+        [parameter]: valueArray
+      })
+    } else {
+      setFilter({
+        ...filter,
+        [values.parameter]: values.value
+      })
+    }
   }
   const onUserFilterChange = (values, currentParameter) => {
     if (!values || values.length === 0) {
@@ -143,6 +153,7 @@ function ProjectsChart({
     return null
   }
 
+  const currentYear = dayjs(chartData.date).year()
   return (
     <div className="projects-size">
       <div className="header">
@@ -152,6 +163,7 @@ function ProjectsChart({
           onChange={onFilterChange}
           filterList={filters}
           onUserChange={onUserFilterChange}
+          defaultYear={currentYear}
         />
       </div>
       {!currentChartData && <LoadingSpinner className="center" />}

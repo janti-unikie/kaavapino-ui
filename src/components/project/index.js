@@ -52,7 +52,6 @@ class ProjectPage extends Component {
     }
 
     this.state = {
-      showDeadlineModal: false,
       showBaseInformationForm: false,
       showPrintProjectDataModal: false,
       deadlines: null
@@ -74,6 +73,17 @@ class ProjectPage extends Component {
       this.props.fetchUsers()
     }
     window.scrollTo({ top: 0, behavior: 'auto' })
+
+    const search = this.props.location.search
+    const params = new URLSearchParams(search)
+
+    const viewParameter = params.get('property')
+
+    if ( viewParameter ) {
+      this.setState( { ...this.state, showBaseInformationForm: true })
+    }
+
+    
   }
 
   componentDidUpdate(prevProps) {

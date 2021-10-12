@@ -8,7 +8,7 @@ import CustomADUserCombobox from '../input/CustomADUserCombobox'
 import { isArray } from 'lodash'
 import { Grid } from 'semantic-ui-react';
 
-function FilterField({ type, id, options, change }) {
+function FilterField({ type, id, options, change, disabled }) {
   const [start, setStart] = useState(null)
   const [end, setEnd] = useState(null)
 
@@ -34,6 +34,7 @@ function FilterField({ type, id, options, change }) {
             }
           }
         }}
+        disabled={disabled}
         multiselect={true}
       />
     )
@@ -41,9 +42,10 @@ function FilterField({ type, id, options, change }) {
   const renderSelect = () => {
     return (
       <SelectInput
-        multiple={type === 'multiple' ? true : false}
+        multiple={type === 'multiple' || type === 'set' ? true : false}
         options={options}
         className="filter-field"
+        disabled={disabled}
         input={{
           value: [],
           onChange: value => change(REPORT_FORM, id, value)
@@ -65,6 +67,7 @@ function FilterField({ type, id, options, change }) {
             type="date"
             className="date-input"
             style={{height: "50px"}}
+            disabled={disabled}
           />
           </Grid.Column>
           <Grid.Column className="center-horizontal" width={1}>
@@ -78,6 +81,7 @@ function FilterField({ type, id, options, change }) {
             placeholder="Lopetus"
             type="date"
             className="date-input"
+            disabled={disabled}
           />
            </Grid.Column>
           </Grid>
@@ -105,18 +109,20 @@ function FilterField({ type, id, options, change }) {
         input={{
           value: null
         }}
+        disabled={disabled}
       />
     )
   }
 
   const renderComponent = () => {
-    if (options && options.length > 0) {
+    if (options && options.length > 0 ) {
       return renderSelect()
     }
 
     if (id === 'henkilo') {
       return renderUser()
     }
+
     if (type === 'range') {
       return renderTimeRange()
     }

@@ -35,7 +35,6 @@
       "old": "Vanha"
     },
     "person-search": "Henkilöhaku"
-
   },
   "deadlines": {
     "title": "Päivitä aikataulut",
@@ -79,7 +78,7 @@
     "documents-title": "Valmiit dokumentit",
     "yes": "Kyllä",
     "no": "Ei",
-    "documents-created": "Osa tämän vaiheen dokumenteista on luotu.",
+    "documents-created": "Osa tämän vaiheen dokumenteista on jo ladattu ulos. Ole tarvittaessa yhteydessä projektin vastuuhenkilöön.",
     "no-documents": "Ei dokumentteja",
     "phase-passed": "Vaihe ohitettu",
     "load": "Lataa ulos kun valmis",
@@ -169,13 +168,12 @@
     "content": "Raporttia ladataan.",
     "error": "Raportin lataus epäonnistui.",
     "presentation-report": {
-        "title": "Esittelysuunnitelma",
-        "infoText": " Kaupunkiympäristölautakunnalle (KYLK) esitettäväksi suunniteltuja MAKA:n asioita",
-        "empty-report": "Tyhjä raportti",
-        "kylk-title": "Kylk {{date}}"
+      "title": "Esittelysuunnitelma",
+      "infoText": " Kaupunkiympäristölautakunnalle (KYLK) esitettäväksi suunniteltuja MAKA:n asioita",
+      "empty-report": "Tyhjä raportti",
+      "kylk-title": "Kylk {{date}}"
     },
     "report-preview-loaded": "Raportin esikatselu ladattu onnituneesti",
     "report-loaded": "Raportti ladattu onnistuneesti"
   }
-
 }

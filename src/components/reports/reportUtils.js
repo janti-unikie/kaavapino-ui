@@ -1,12 +1,12 @@
 import { findIndex } from 'lodash'
 
-export const parseKYLKReport = (headers, csvRows) => {
+export const parseReport = (headers, csvRows, blockColumn) => {
   if (!csvRows || !headers) {
     return []
   }
   const kylkDates = new Set()
   csvRows.forEach(row => {
-    const dates = row['KYLK'].split(',')
+    const dates = row[blockColumn].split(',')
 
     dates.forEach(date => {
       return kylkDates.add(date.trim())
@@ -18,7 +18,7 @@ export const parseKYLKReport = (headers, csvRows) => {
     const rows = []
 
     csvRows.forEach(row => {
-      const valueArray = row['KYLK'].split(',')
+      const valueArray = row[blockColumn].split(',')
 
       if (findIndex(valueArray, item => item.trim() === kylk) != -1) {
         rows.push(row)

@@ -1,12 +1,17 @@
 import {
   FETCH_REPORTS_SUCCESSFUL,
   DOWNLOAD_REPORT_REVIEW_SUCCESSFUL,
-  CLEAR_REPORT_PREVIEW
+  CLEAR_REPORT_PREVIEW,
+  DOWNLOAD_REPORT_REVIEW,
+  DOWNLOAD_REPORT,
+  DOWNLOAD_REPORT_SUCCESSFUL
 } from '../actions/reportActions'
 
 export const initialState = {
   reports: [],
-  currentReport: null
+  currentReport: undefined,
+  reportPreviewLoading: false,
+  reportLoading: false
 }
 
 export const reducer = (state = initialState, { type, payload }) => {
@@ -16,15 +21,31 @@ export const reducer = (state = initialState, { type, payload }) => {
         ...state,
         reports: payload
       }
+
+    case DOWNLOAD_REPORT: {
+      return { ...state, reportLoading: true }
+    }
+
+    case DOWNLOAD_REPORT_SUCCESSFUL: {
+      return { ...state, reportLoading: false }
+    }
+
+    case DOWNLOAD_REPORT_REVIEW: {
+      return {
+        ...state,
+        reportPreviewLoading: true
+      }
+    }
     case DOWNLOAD_REPORT_REVIEW_SUCCESSFUL:
       return {
         ...state,
-        currentReport: payload
+        currentReport: payload,
+        reportPreviewLoading: false
       }
     case CLEAR_REPORT_PREVIEW:
       return {
         ...state,
-        currentReport: null
+        currentReport: undefined
       }
     default:
       return { ...state }

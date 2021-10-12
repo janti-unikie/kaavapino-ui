@@ -69,6 +69,18 @@ class ProjectEditPage extends Component {
   }
   componentDidMount() {
     this.scroll()
+
+    const search = this.props.location.search
+    const params = new URLSearchParams(search)
+
+    const viewParameter = params.get('view')
+
+    if ( viewParameter === 'deadline' ) {
+      this.setState( { ...this.state, showEditProjectTimetableForm: true})
+    }
+    if ( viewParameter === 'floorarea') {
+      this.setState( { ...this.state, showEditFloorAreaForm: true})
+    }
   }
 
   componentWillUnmount() {
