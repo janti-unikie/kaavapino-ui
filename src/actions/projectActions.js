@@ -47,27 +47,35 @@ export const GET_PROJECT_SNAPSHOT_SUCCESSFUL = 'Get project snapshot successful'
 export const RESET_PROJECT_SNAPSHOT = 'Reset project snapshot'
 export const SET_SELECTED_PHASE_ID = 'Set selected phase id'
 export const GET_PROJECTS_OVERVIEW_FLOOR_AREA = 'Get projects overview floor-area'
-export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL = 'Get projects overview floor-area successful'
+export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL =
+  'Get projects overview floor-area successful'
 export const GET_PROJECTS_OVERVIEW_BY_SUBTYPE = 'Get projects overview by subtype'
-export const GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL = 'Get projects overview by subtype successful'
+export const GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL =
+  'Get projects overview by subtype successful'
 export const GET_PROJECTS_OVERVIEW_FILTERS = 'Get project overview filters'
-export const GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL = 'Get project overview filters successful'
+export const GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL =
+  'Get project overview filters successful'
 export const GET_EXTERNAL_DOCUMENTS = 'Get external documents'
 export const GET_EXTERNAL_DOCUMENTS_SUCCESSFUL = 'Get external documents successful'
-export const CLEAR_PROJECTS_OVERVIEW_FLOOR_AREA= 'Clear current data'
+export const CLEAR_PROJECTS_OVERVIEW_FLOOR_AREA = 'Clear current data'
 export const GET_PROJECTS_OVERVIEW_MAP_DATA = 'Get projects overview map data'
-export const GET_PROJECTS_OVERVIEW_MAP_DATA_SUCCESSFUL = 'Get projects overview map data successful'
-export const CLEAR_PROJECTS_OVERVIEW_MAP_DATA ='Clear projects overview map data'
-export const SET_OVERVIEW_MAP_FILTERS = "Set overview map filters"
-export const SET_OVERVIEW_FLOOR_AREA_FILTERS = "Set overview floor area filters"
-export const SET_OVERVIEW_PROJECT_TYPE_FILTERS = "Set overview project type filters"
-export const CLEAR_PROJECTS_OVERVIEW_PROJECT_TYPE_DATA = "Clear projects data"
-export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS = "get projects overview floor area targets"
-export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL = "get projects overview floor area targets successful"
-export const GET_PROJECT_MAP_LEGENDS = "Get project legends"
-export const GET_PROJECT_MAP_LEGENDS_SUCCESSFUL = "Get project legends successful"
-export const CLEAR_PROJECTS_OVERVIEW = "Clear project overview"
-export const CLEAR_EXTERNAL_DOCUMENTS = "Clear external documents"
+export const GET_PROJECTS_OVERVIEW_MAP_DATA_SUCCESSFUL =
+  'Get projects overview map data successful'
+export const CLEAR_PROJECTS_OVERVIEW_MAP_DATA = 'Clear projects overview map data'
+export const SET_OVERVIEW_MAP_FILTERS = 'Set overview map filters'
+export const SET_OVERVIEW_FLOOR_AREA_FILTERS = 'Set overview floor area filters'
+export const SET_OVERVIEW_PROJECT_TYPE_FILTERS = 'Set overview project type filters'
+export const CLEAR_PROJECTS_OVERVIEW_PROJECT_TYPE_DATA = 'Clear projects data'
+export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS =
+  'get projects overview floor area targets'
+export const GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL =
+  'get projects overview floor area targets successful'
+export const GET_PROJECT_MAP_LEGENDS = 'Get project legends'
+export const GET_PROJECT_MAP_LEGENDS_SUCCESSFUL = 'Get project legends successful'
+export const CLEAR_PROJECTS_OVERVIEW = 'Clear project overview'
+export const CLEAR_EXTERNAL_DOCUMENTS = 'Clear external documents'
+export const SAVE_PROJECT_BASE_PAYLOAD = 'Save project payload'
+export const SAVE_PROJECT_BASE_PAYLOAD_SUCCESSFUL = 'Save project base successful'
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
@@ -149,6 +157,15 @@ export const createOwnProjectSuccessful = project => ({
 export const saveProjectBase = archived => ({
   type: SAVE_PROJECT_BASE,
   payload: archived
+})
+
+export const saveProjectBasePayload = payload => ({
+  type: SAVE_PROJECT_BASE_PAYLOAD,
+  payload: payload
+})
+
+export const saveProjectBasePayloadSuccessful = () => ({
+  type: SAVE_PROJECT_BASE_SUCCESSFUL
 })
 export const saveProjectBaseSuccessful = () => ({ type: SAVE_PROJECT_BASE_SUCCESSFUL })
 
@@ -286,7 +303,7 @@ export const getProjectsOverviewMapDataSuccessful = mapData => ({
 })
 
 export const clearProjectsOverviewMapData = () => ({
-    type: CLEAR_PROJECTS_OVERVIEW_MAP_DATA
+  type: CLEAR_PROJECTS_OVERVIEW_MAP_DATA
 })
 export const setProjectsOverviewMapFilter = filter => ({
   type: SET_OVERVIEW_MAP_FILTERS,

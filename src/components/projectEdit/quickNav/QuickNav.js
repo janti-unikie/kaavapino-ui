@@ -1,50 +1,112 @@
-import React, { Component } from 'react'
-import FormButton from '../../common/FormButton'
-import { Accordion, Form, Message } from 'semantic-ui-react'
-import AccordionTitle from './AccordionTitle'
-import './styles.scss'
-import RoleHighlightPicker from './roleHighlightPicker'
-import _ from 'lodash'
-import FormField from '../../input/FormField'
-import { reduxForm } from 'redux-form'
-import { NEW_PROJECT_FORM } from '../../../constants'
+import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Button, Accordion } from 'hds-react'
+import OnHoldCheckbox from '../../input/OnholdCheckbox'
 import ConfirmModal from '../ConfirmModal'
-import { withTranslation } from 'react-i18next'
+import { Message } from 'semantic-ui-react'
+import './styles.scss'
+import RoleHighlightPicker from './roleHighlightPicker/index'
 
-const ONHOLD = 'onhold'
+export default function NewQuickView({
+  currentProject,
+  saveProjectBase,
+  handleCheck,
+  handleSave,
+  saving,
+  errors,
+  isCurrentPhase,
+  changePhase,
+  notLastPhase,
+  phases,
+  switchDisplayedPhase,
+  setHighlightRole,
+  saveProjectBasePayload,
+  setChecking,
+  hasMissingFields
+}) {
+  const [endPhaseError, setEndPhaseError] = useState(false)
+  const [verifying, setVerifying] = useState(false)
+  const [checkButtonPressed, setCheckButtonPressed] = useState(false)
+  const [activePhase, setActivePhase] = useState(0)
+  const [selected, setSelected] = useState(0)
+  const [currentTimeout, setCurrentTimeout] = useState(null)
+  const [hasErrors, setHasErrors] = useState(false)
+  const [validationOk, setValidationOk] = useState(false)
 
-class QuickNav extends Component {
-  constructor(props) {
-    super(props)
+  const { t } = useTranslation()
 
-    this.state = {
-      sectionHeights: [],
-      active: 0,
-      activePhase: 0,
-      selected: 0,
-      endPhaseError: false,
-      verifying: false,
-      checkButtonPressed: false
-    }
+  const onCheckPressed = () => {
+    setCheckButtonPressed(true)
+    handleCheck()
   }
 
-  getPosition = element => {
-    let yPosition = 0
+  useEffect(() => {
+    const c = document.getElementById(`title-${selected}`)
+    c && c.scrollIntoView()
+  }, [selected])
 
-    while (element) {
-      yPosition += element.offsetTop - element.scrollTop + element.clientTop
-      element = element.offsetParent
+  useEffect(() => {
+    if (!validationOk) {
+      return
     }
+    if (!hasErrors) {
+      setEndPhaseError(false)
+      setChecking(false)
+      setVerifying(true)
+      setValidationOk(false)
+    } else {
+      setEndPhaseError(true)
+      clearTimeout(currentTimeout)
+      setCurrentTimeout(setTimeout(() => setEndPhaseError(false), 5000))
+      setChecking(true)
+      setValidationOk(false)
+    }
+  }, [validationOk])
 
-    return yPosition
+  const renderButtons = () => {
+    return (
+      <>
+        <Button
+          onClick={onCheckPressed}
+          help={t('quick-nav.check-help-text')}
+          disabled={currentProject.archived}
+          className={checkButtonPressed ? 'check-pressed' : ''}
+          variant="secondary"
+        >
+          {t('quick-nav.check')}
+        </Button>
+        <Button
+          onClick={handleSave}
+          isLoading={saving || errors}
+          loadingText={t('common.save')}
+          help={t('quick-nav.save-help')}
+          disabled={currentProject.archived}
+          variant="secondary"
+        >
+          {t('common.save')}
+        </Button>
+
+        <Button
+          onClick={changeCurrentPhase}
+          fullWidth={true}
+          loadingText={`${
+            notLastPhase ? t('quick-nav.end-phase') : t('quick-nav.archive')
+          }`}
+          help={`${
+            notLastPhase ? t('quick-nav.end-phase-help') : t('quick-nav.archive-help')
+          }`}
+          disabled={!isCurrentPhase || currentProject.archived}
+          variant="secondary"
+        >
+          {`${notLastPhase ? t('quick-nav.end-phase') : t('quick-nav.archive')}`}
+        </Button>
+      </>
+    )
   }
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll)
-    this.setState({ sectionHeights: this.initSections(this.props.sections) })
-    const { initialize, currentProject } = this.props
-    initialize({
-      onhold: currentProject.onhold,
+  const onSaveProjectPhase = onHold => {
+    saveProjectBasePayload({
+      onhold: onHold,
       public: currentProject.public,
       user: currentProject.user,
       subtype: currentProject.subtype,
@@ -54,83 +116,54 @@ class QuickNav extends Component {
     })
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
+  const renderCheckBox = () => (
+    <OnHoldCheckbox
+      projectOnhold={currentProject.onhold}
+      saveProjectBase={onSaveProjectPhase}
+      name="onhold"
+      disabled={saving || currentProject.archived}
+      label={
+        currentProject.onhold
+          ? t('quick-nav.onhold-lable')
+          : t('quick-nav.set-onhold-lable')
+      }
+    />
+  )
+
+  const changeCurrentPhase = () => {
+    const value = hasMissingFields()
+    setHasErrors(value)
+    setValidationOk(true)
   }
 
-  componentDidUpdate = prevProps => {
-    const { setChecking, phaseTitle, currentPhases, sections, hasErrors } = this.props
-
-    if (prevProps.validating && !this.props.validating) {
-      if (!hasErrors) {
-        this.setState({ verifying: true, endPhaseError: false })
-        setChecking(false)
+  const phaseCallback = currentChange => {
+    if (currentChange) {
+      if (notLastPhase) {
+        changePhase()
       } else {
-        this.setState({ endPhaseError: true })
-        clearTimeout(this.timeout)
-        this.timeout = setTimeout(() => this.setState({ endPhaseError: false }), 5000)
-        setChecking(true)
+        saveProjectBase({ archived: true })
       }
     }
-
-    if (phaseTitle !== prevProps.phaseTitle) {
-      this.setState({ sectionHeights: this.initSections(sections) })
-
-      /* If the phase has changed through other sources than this navigation, close the nav component */
-      const newPhaseIndex = currentPhases.findIndex(phase => phase.name === phaseTitle)
-
-      if (newPhaseIndex !== this.state.activePhase - 1) {
-        this.setState({ activePhase: null, selected: null })
-      }
-    }
+    setVerifying(false)
+    setValidationOk(false)
+    setEndPhaseError(false)
   }
 
-  initSections = sections => {
-    const sectionHeights = []
-    if (!sections) {
-      return
+  const handleSectionTitleClick = (title, index, phaseId) => {
+    if (phaseId !== activePhase) {
+      setActivePhase(phaseId)
+      switchDisplayedPhase(phaseId)
     }
-    sections.forEach(section => {
-      const c = document.getElementById(`title-${section.title}`)
-      sectionHeights.push({ title: section.title, y: this.getPosition(c) })
-    })
-    return sectionHeights.sort((a, b) => a.y - b.y)
+
+    setSelected(title)
   }
 
-  handleScroll = () => {
-    let activeTitle = 0
-    if (!this.state.sectionHeights) {
-      return
-    }
-    this.state.sectionHeights.forEach((section, i) => {
-      if (section.y - 20 < window.scrollY) {
-        activeTitle = i
-      }
-    })
-    if (activeTitle === this.state.activeTitle) {
-      return
-    }
-    this.setState({ active: activeTitle })
-  }
-
-  handleSectionTitleClick = (title, index) => {
-    const c = document.getElementById(`title-${title}`)
-    c.scrollIntoView()
-
-    this.setState({
-      ...this.state,
-      selected: index
-    })
-  }
-
-  handleAccordionTitleClick = titleIndex => {
-    const { switchDisplayedPhase } = this.props
-    const shouldChangePhase = this.state.activePhase !== titleIndex
+  const handleAccordionTitleClick = titleIndex => {
+    const shouldChangePhase = activePhase !== titleIndex
 
     if (shouldChangePhase) {
-      this.setState({
-        activePhase: this.state.activePhase === titleIndex ? null : titleIndex
-      })
+      setActivePhase(activePhase === titleIndex ? null : titleIndex)
+
       switchDisplayedPhase(titleIndex)
 
       const accordionTitle = document.getElementById('accordion-title')
@@ -138,163 +171,63 @@ class QuickNav extends Component {
         accordionTitle.scrollIntoView()
       }
     } else {
-      this.setState({ activePhase: null })
+      setActivePhase(null)
     }
   }
 
-  phaseCallback = changePhase => {
-    if (changePhase) {
-      if (this.props.notLastPhase) {
-        this.props.changePhase()
-      } else {
-        this.props.saveProjectBase({ archived: true })
-      }
-    }
-    this.setState({ verifying: false })
-  }
-
-  changePhase = () => {
-    this.props.validateProjectFields(this.props.formValues)
-  }
-
-  getFormField = fieldProps => {
-    const { formSubmitErrors, formValues, saveProjectBase } = this.props
-
-    const error =
-      formSubmitErrors &&
-      fieldProps &&
-      fieldProps.field &&
-      formSubmitErrors[fieldProps.field.name]
-
-    return (
-      <FormField
-        {...fieldProps}
-        error={error}
-        formValues={formValues}
-        onhold={fieldProps.onhold}
-        saveProjectBase={saveProjectBase}
-      />
-    )
-  }
-
-  render() {
-    const { activePhase } = this.state
-    const {
-      currentPhases,
-      changingPhase,
-      validating,
-      saving,
-      handleSave,
-      syncronousErrors,
-      currentProject,
-      saveProjectBase,
-      isCurrentPhase,
-      notLastPhase,
-      t
-    } = this.props
-    const errors = syncronousErrors && !_.isEmpty(syncronousErrors) ? true : false
-
-    const onCheckPressed = () => {
-      const { handleCheck } = this.props
-      const { checkButtonPressed } = this.state
-
-      this.setState({
-        ...this.state,
-        checkButtonPressed: checkButtonPressed
-      })
-      handleCheck()
-    }
-    return (
+  return (
+    <div>
       <div className="quicknav-container">
         <div className="quicknav-navigation-section">
           <h2 className="quicknav-title">Kaavan vaiheet</h2>
           <div className="quicknav-content">
-            <Accordion>
-              {currentPhases.map((phase, index) => (
-                <React.Fragment key={index}>
-                  <AccordionTitle
-                    activePhase={this.state.activePhase}
-                    id={phase.id}
-                    handleClick={this.handleAccordionTitleClick}
-                    index={index}
-                    list_prefix={phase.list_prefix}
-                  >
-                    {phase.name}
-                  </AccordionTitle>
-                  <Accordion.Content active={activePhase === phase.id}>
-                    {this.state.sectionHeights &&
-                      this.state.sectionHeights.map((section, index) => {
-                        return (
-                          <span
-                            key={index}
-                            className={`quicknav-item ${
-                              index === this.state.selected ? 'active' : ''
-                            }`}
-                            onClick={() =>
-                              this.handleSectionTitleClick(section.title, index)
-                            }
-                          >
-                            {section.title}
-                          </span>
-                        )
-                      })}
-                  </Accordion.Content>
-                </React.Fragment>
+            {phases &&
+              phases.map(phase => (
+                <Accordion
+                  initiallyOpen={activePhase === phase.id}
+                  className="phase-accordion"
+                  heading={
+                    <Button
+                      variant="supplementary"
+                      className="accordion-button"
+                      onClick={() => handleAccordionTitleClick(phase.id)}
+                    >{`${phase.list_prefix}. ${phase.title}`}</Button>
+                  }
+                  key={phase.id}
+                >
+                  {phase.sections &&
+                    phase.sections.map((section, index) => {
+                      return (
+                        <Button
+                          key={index}
+                          variant="supplementary"
+                          className={`quicknav-item ${
+                            section.title === selected && phase.id === activePhase
+                              ? 'active'
+                              : ''
+                          }`}
+                          onClick={() =>
+                            handleSectionTitleClick(section.title, index, phase.id)
+                          }
+                        >
+                          <div> {section.title}</div>
+                        </Button>
+                      )
+                    })}
+                </Accordion>
               ))}
-            </Accordion>
           </div>
         </div>
-        <RoleHighlightPicker onRoleUpdate={this.props.setHighlightRole} />
-        <div className="quicknav-buttons">
-          <FormButton
-            handleClick={onCheckPressed}
-            value={t('quick-nav.check')}
-            help={t('quick-nav.check-help-text')}
-            disabled={currentProject.archived}
-            className={this.state.checkButtonPressed ? 'check-pressed' : ''}
-            variant='secondary'
-          />
-          <FormButton
-            handleClick={handleSave}
-            value={t('common.save')}
-            loading={saving || errors}
-            help={t('quick-nav.save-help')}
-            disabled={currentProject.archived}
-            variant='secondary'
+        <RoleHighlightPicker onRoleUpdate={setHighlightRole} />
 
-          />
-          <FormButton
-            handleClick={this.changePhase}
-            value={`${notLastPhase ? t('quick-nav.end-phase') : t('quick-nav.archive')}`}
-            loading={changingPhase || validating}
-            disabled={!isCurrentPhase || currentProject.archived}
-            variant='secondary'
-            fullWidth={true}
-            help={`${
-              notLastPhase ? t('quick-nav.end-phase-help') : t('quick-nav.archive-help')
-            }`}
-          />
-        </div>
-        <Form className="quicknav-onhold-form">
-          {this.getFormField({
-            field: {
-              name: ONHOLD,
-              label: currentProject.onhold
-                ? t('quick-nav.onhold-lable')
-                : t('quick-nav.set-onhold-lable'),
-              type: 'checkbox-onhold',
-              disabled: saving || currentProject.archived
-            },
-            onhold: currentProject.onhold,
-            saveProjectBase: saveProjectBase
-          })}
-        </Form>
+        <div className="quicknav-buttons">{renderButtons()}</div>
+        <div className="quicknav-onhold">{renderCheckBox()}</div>
         <ConfirmModal
-          callback={this.phaseCallback}
-          open={this.state.verifying}
+          callback={phaseCallback}
+          open={verifying}
           notLastPhase={notLastPhase}
         />
-        {this.state.endPhaseError && (
+        {endPhaseError && (
           <Message
             header={t('quick-nav.change-phase-error')}
             content={t('quick-nav.change-phase-error-message')}
@@ -302,12 +235,6 @@ class QuickNav extends Component {
           />
         )}
       </div>
-    )
-  }
+    </div>
+  )
 }
-
-const QuickNavForm = reduxForm({
-  form: NEW_PROJECT_FORM
-})(QuickNav)
-
-export default withTranslation()(QuickNavForm)

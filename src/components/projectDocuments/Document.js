@@ -16,7 +16,6 @@ function Document({
   phaseEnded,
   image_template
 }) {
-  
   const { t } = useTranslation()
   return (
     <>
@@ -31,26 +30,29 @@ function Document({
             {lastDownloaded ? dayjs(lastDownloaded).format('DD.MM.YYYY') : ''}
           </span>
         </Grid.Column>
-        {!phaseEnded && (
-          <Grid.Column textAlign="right">
-            <Button
-              variant="supplementary"
-              onClick={() => downloadDocument({file, name})}
-              href={file}
-              className="document"
-            >
-              {t('project.load')}
-            </Button>
-            <Button
-              variant="supplementary"
-              onClick={() => downloadDocumentPreview({ file, name })}
-              href={file}
-              className="document"
-            >
-              {t('project.load-preview')}
-            </Button>
-          </Grid.Column>
-        )}
+
+        <Grid.Column textAlign="right">
+          {!phaseEnded && (
+            <>
+              <Button
+                variant="supplementary"
+                onClick={() => downloadDocument({ file, name })}
+                href={file}
+                className="document"
+              >
+                {t('project.load')}
+              </Button>
+              <Button
+                variant="supplementary"
+                onClick={() => downloadDocumentPreview({ file, name })}
+                href={file}
+                className="document"
+              >
+                {t('project.load-preview')}
+              </Button>
+            </>
+          )}
+        </Grid.Column>
       </Grid>
     </>
   )

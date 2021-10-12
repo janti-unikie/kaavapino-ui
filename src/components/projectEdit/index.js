@@ -13,9 +13,10 @@ import {
   saveProjectBase,
   fetchProjectDeadlines,
   initializeProject,
-  getProjectSnapshot
+  getProjectSnapshot,
+  saveProjectBasePayload
 } from '../../actions/projectActions'
-import { fetchSchemas, setAllEditFields } from '../../actions/schemaActions'
+import { fetchSchemas, setAllEditFields, clearSchemas } from '../../actions/schemaActions'
 import {
   savingSelector,
   changingPhaseSelector,
@@ -41,6 +42,7 @@ import projectUtils from '../../utils/projectUtils'
 import InfoComponent from '../common/InfoComponent'
 import { withTranslation } from 'react-i18next'
 
+
 class ProjectEditPage extends Component {
   state = {
     showEditFloorAreaForm: false,
@@ -52,6 +54,10 @@ class ProjectEditPage extends Component {
     formInitialized: false
   }
 
+  currentSectionIndex = 0
+
+  headings = []
+
   constructor(props) {
     super(props)
     const { project } = this.props
@@ -59,6 +65,7 @@ class ProjectEditPage extends Component {
   }
   componentDidUpdate() {
     this.scroll()
+    this.headings = this.createHeadings()
   }
   componentDidMount() {
     this.scroll()
@@ -76,6 +83,10 @@ class ProjectEditPage extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.clearSchemas()
+  }
+
   scroll() {
     const search = this.props.location.search
     const params = new URLSearchParams(search)
@@ -85,7 +96,6 @@ class ProjectEditPage extends Component {
     const element = document.getElementById(param)
 
     element && element.scrollIntoView()
-    
   }
   changePhase = () => {
     const { schema, selectedPhase } = this.props
@@ -98,7 +108,8 @@ class ProjectEditPage extends Component {
   }
 
   handleSave = () => {
-    this.props.saveProject()
+   this.props.saveProject()
+    
   }
   handleAutoSave = () => {
     if (this.props.syncErrors && !_.isEmpty(this.props.syncErrors)) {
@@ -135,21 +146,46 @@ class ProjectEditPage extends Component {
       formInitialized: value
     })
   }
-  /*
-  
-  */
+  createHeadings = () => {
+    const { schema } = this.props
+    const allPhases = schema && schema.phases
 
+    const newPhases = []
+
+    allPhases &&
+      allPhases.forEach(phase => {
+        const sections = []
+        phase.sections.forEach(section => {
+          sections.push({ title: section.title })
+        })
+
+        const newPhase = {
+          id: phase.id,
+          title: phase.title,
+          color: phase.color,
+          color_code: phase.color_code,
+          list_prefix: phase.list_prefix,
+          sections: sections
+        }
+
+        newPhases.push(newPhase)
+      })
+    return newPhases
+  }
+
+  hasMissingFields = () => {
+    const {formValues, currentProject, schema } = this.props
+    return projectUtils.hasMissingFields( formValues, currentProject, schema )
+  }
   render() {
     const {
-      currentPhases,
       schema,
       selectedPhase,
       saveProjectFloorArea,
-      project: { name, attribute_data, phase, id, geoserver_data },
+      project: { attribute_data, phase, id, geoserver_data },
       saving,
       changingPhase,
       switchDisplayedPhase,
-      validateProjectFields,
       validating,
       hasErrors,
       syncErrors,
@@ -157,7 +193,9 @@ class ProjectEditPage extends Component {
       currentProject,
       submitErrors,
       users,
-      t
+      t,
+      saveProjectBasePayload,
+      currentPhases
     } = this.props
     const { highlightGroup } = this.state
     if (!schema) {
@@ -191,6 +229,7 @@ class ProjectEditPage extends Component {
 
     const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
 
+    
     return (
       <div>
         <div className="timeline" onClick={() => showTimelineModal(true)}>
@@ -208,17 +247,14 @@ class ProjectEditPage extends Component {
           <div className="project-input-left">
             <QuickNav
               changingPhase={changingPhase}
+              currentPhases={currentPhases}
               handleSave={this.handleSave}
               handleCheck={() => this.props.projectSetChecking(!this.props.checking)}
               setChecking={this.props.projectSetChecking}
-              projectName={name}
-              sections={currentSchema.sections}
-              phaseTitle={currentSchema.title}
-              currentPhases={currentPhases}
               saving={saving}
               switchDisplayedPhase={switchDisplayedPhase}
               validating={validating}
-              validateProjectFields={validateProjectFields}
+              hasMissingFields={this.hasMissingFields}
               syncronousErrors={syncErrors}
               saveProjectBase={saveProjectBase}
               currentProject={currentProject}
@@ -229,6 +265,8 @@ class ProjectEditPage extends Component {
               isLastPhase={phase === schema.phases[schema.phases.length - 1].id}
               formValues={this.props.formValues}
               notLastPhase={notLastPhase}
+              phases={this.headings}
+              saveProjectBasePayload={saveProjectBasePayload}
             />
             <NavigationPrompt
               when={
@@ -301,12 +339,12 @@ const mapStateToProps = state => {
     checking: checkingSelector(state),
     isDirty: isDirty(EDIT_PROJECT_FORM)(state),
     syncErrors: getFormSyncErrors(EDIT_PROJECT_FORM)(state),
-    currentProject: currentProjectSelector(state),
     submitErrors: getFormSubmitErrors(EDIT_PROJECT_FORM)(state),
     formValues: getFormValues(EDIT_PROJECT_FORM)(state),
     allEditFields: allEditFieldsSelector(state),
     users: usersSelector(state),
-    currentUserId: userIdSelector(state)
+    currentUserId: userIdSelector(state),
+    currentProject: currentProjectSelector(state)
   }
 }
 
@@ -322,7 +360,9 @@ const mapDispatchToProps = {
   fetchProjectDeadlines,
   setAllEditFields,
   initializeProject,
-  getProjectSnapshot
+  getProjectSnapshot,
+  clearSchemas,
+  saveProjectBasePayload
 }
 
 export default withRouter(

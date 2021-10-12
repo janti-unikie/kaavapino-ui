@@ -2,7 +2,8 @@ import {
   FETCH_SCHEMAS_SUCCESSFUL,
   SET_ALL_EDIT_FIELDS_SUCCESSFUL,
   GET_PROJECT_CARD_FIELDS_SUCCESSFUL,
-  GET_ATTRIBUTES_SUCCESSFUL
+  GET_ATTRIBUTES_SUCCESSFUL,
+  CLEAR_SCHEMAS
 } from '../actions/schemaActions'
 
 export const initialState = {
@@ -26,6 +27,9 @@ export const reducer = (state = initialState, action) => {
         ...state,
         allEditFields: action.payload
       }
+    }
+    case CLEAR_SCHEMAS: {
+      return initialState
     }
 
     case GET_PROJECT_CARD_FIELDS_SUCCESSFUL: {

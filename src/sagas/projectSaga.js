@@ -51,8 +51,6 @@ import {
   CHANGE_PROJECT_PHASE,
   changeProjectPhaseSuccessful,
   changeProjectPhaseFailure,
-  VALIDATE_PROJECT_FIELDS,
-  validateProjectFieldsSuccessful,
   PROJECT_FILE_UPLOAD,
   PROJECT_FILE_REMOVE,
   projectFileRemoveSuccessful,
@@ -80,7 +78,8 @@ import {
   getProjectsOverviewFloorAreaTargetsSuccessful,
   GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS,
   GET_PROJECT_MAP_LEGENDS,
-  getMapLegendsSuccessful
+  getMapLegendsSuccessful,
+  SAVE_PROJECT_BASE_PAYLOAD
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
@@ -105,7 +104,6 @@ import {
   EDIT_PROJECT_TIMETABLE_FORM
 } from '../constants'
 import i18 from 'i18next'
-import { showField } from '../utils/projectVisibilityUtils'
 import { checkDeadlines } from '../components/ProjectTimeline/helpers/helpers'
 import dayjs from 'dayjs'
 import { isArray } from 'lodash'
@@ -121,7 +119,6 @@ export default function* projectSaga() {
     takeLatest(SAVE_PROJECT_TIMETABLE, saveProjectTimetable),
     takeLatest(SAVE_PROJECT, saveProject),
     takeLatest(CHANGE_PROJECT_PHASE, changeProjectPhase),
-    takeLatest(VALIDATE_PROJECT_FIELDS, validateProjectFields),
     takeLatest(PROJECT_FILE_UPLOAD, projectFileUpload),
     takeLatest(PROJECT_FILE_REMOVE, projectFileRemove),
     takeLatest(PROJECT_SET_DEADLINES, projectSetDeadlinesSaga),
@@ -140,7 +137,8 @@ export default function* projectSaga() {
       GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS,
       getProjectsOverviewFloorAreaTargets
     ),
-    takeLatest(GET_PROJECT_MAP_LEGENDS, getProjectMapLegends)
+    takeLatest(GET_PROJECT_MAP_LEGENDS, getProjectMapLegends),
+    takeLatest(SAVE_PROJECT_BASE_PAYLOAD, saveProjectPayload)
   ])
 }
 
@@ -409,6 +407,21 @@ const getChangedAttributeData = (values, initial, sections) => {
   })
   return attribute_data
 }
+function* saveProjectPayload({ payload }) {
+  const currentProjectId = yield select(currentProjectIdSelector)
+  try {
+    const updatedProject = yield call(
+      projectApi.patch,
+      payload,
+      { path: { id: currentProjectId } },
+      ':id/'
+    )
+    yield put(updateProject(updatedProject))
+    yield put(initializeProjectAction(currentProjectId))
+  } catch (e) {
+    yield put(error(e))
+  }
+}
 
 function* saveProjectBase({ payload }) {
   yield put(startSubmit(NEW_PROJECT_FORM))
@@ -417,6 +430,7 @@ function* saveProjectBase({ payload }) {
   if (payload && payload.archived) {
     values.archived = payload.archived
   }
+
   if (values) {
     try {
       const updatedProject = yield call(
@@ -548,67 +562,7 @@ function* saveProject() {
   yield put(setAllEditFields())
 }
 
-function* validateProjectFields({ payload: formValues }) {
-  try {
-    yield call(saveProject)
-    // Gather up required data
-    const currentProject = yield select(currentProjectSelector)
-    const schema = yield select(schemaSelector)
-    const currentSchema = schema.phases.find(s => s.id === currentProject.phase)
-    const { sections } = currentSchema
-    const attributeData = currentProject.attribute_data
-    let missingFields = false
-    // Go through every single field
-    sections.forEach(({ fields }) => {
-      fields.forEach((field, fieldIndex) => {
-        // Only validate visible fields
-        if (showField(field, formValues)) {
-          // Matrices can contain any kinds of fields, so
-          // we must go through them separately
-          if (field.type === 'matrix') {
-            const { matrix } = field
-            matrix.fields.forEach(({ required, name }) => {
-              if (projectUtils.isFieldMissing(name, required, attributeData)) {
-                missingFields = true
-              }
-            })
-            // Fieldsets can contain any fields (except matrices)
-            // multiple times, so we need to go through them all
-          } else if (field.type === 'fieldset') {
-            const { fieldset_attributes } = field
-            if (fieldset_attributes) {
-              fieldset_attributes.forEach(field => {
-                if (attributeData[fields[fieldIndex].name]) {
-                  attributeData[fields[fieldIndex].name].forEach(attribute => {
-                    if (
-                      projectUtils.isFieldMissing(field.name, field.required, attribute)
-                    ) {
-                      missingFields = true
-                    }
-                  })
-                } else {
-                  if (
-                    projectUtils.isFieldMissing(field.name, field.required, attributeData)
-                  ) {
-                    missingFields = true
-                  }
-                }
-              })
-            }
-          } else if (
-            projectUtils.isFieldMissing(field.name, field.required, attributeData)
-          ) {
-            missingFields = true
-          }
-        }
-      })
-    })
-    yield put(validateProjectFieldsSuccessful(missingFields))
-    yield put(saveProjectAction())
-  } catch (e) {
-    yield put(error(e))
-  }
-}
+
 
 function* changeProjectPhase({ payload: phase }) {
   try {
@@ -767,9 +721,11 @@ function* getProjectsOverviewFloorArea({ payload }) {
 
       currentPayload.forEach(current => currentPersonIds.push(current.id))
 
-      query = {
-        ...query,
-        [key]: currentPersonIds.toString()
+      if (currentPersonIds) {
+        query = {
+          ...query,
+          [key]: currentPersonIds.toString()
+        }
       }
     } else {
       const queryValue = []
