@@ -7,7 +7,7 @@ class CustomADUserCombobox extends Component {
   state = {
     options: [],
     currentQuery: null,
-    currentValue: this.props.currentValue
+    currentValue: null
   }
 
   componentDidMount() {
@@ -75,6 +75,7 @@ class CustomADUserCombobox extends Component {
   }
 
   render() {
+
     return (
       <div id="test" className="ad-combobox">
         <Combobox
@@ -82,10 +83,10 @@ class CustomADUserCombobox extends Component {
           multiselect={this.props.multiselect}
           filter={this.handleFilter}
           placeholder={this.props.placeholder}
+          disabled={this.props.disabled}
           clearable={true}
           onChange={value => {    
             this.setState({ ...this.state, currentValue: value, options: [] })
-
             if ( !isArray ( value )) {
              value && this.props.input.onChange(value.id)
             } else {

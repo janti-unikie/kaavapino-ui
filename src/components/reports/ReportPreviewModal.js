@@ -10,7 +10,9 @@ function ReportPreviewModal({
   report,
   headers,
   handleSubmit,
-  noData
+  noData,
+  isReportLoading,
+  blockColumn
 }) {
   const { t } = useTranslation()
 
@@ -22,8 +24,10 @@ function ReportPreviewModal({
     return report.map(current => {
       return (
         <div key={current.date} className="report-date">
-          {t('reports.presentation-report.kylk-title', { date: current.date })}
-          {current.rows && <ReportTable columns={headers.slice( 1, headers.length)} data={current.rows} />}
+          {`${blockColumn ? blockColumn : ''} ${current.date }`}
+          {current.rows && (
+            <ReportTable columns={headers.slice(1, headers.length)} data={current.rows} />
+          )}
         </div>
       )
     })
@@ -32,7 +36,7 @@ function ReportPreviewModal({
   return (
     <Modal
       className="preview-modal"
-      size='large'
+      size="large"
       onClose={handleClose}
       open={open}
       closeIcon
@@ -44,7 +48,13 @@ function ReportPreviewModal({
     >
       <Modal.Actions>
         <span>
-          <Button variant="secondary" type="button" onClick={handleSubmit}>
+          <Button
+            variant="secondary"
+            isLoading={isReportLoading}
+            loadingText={t('reports.create-report')}
+            type="button"
+            onClick={handleSubmit}
+          >
             {t('reports.create-report')}
           </Button>
         </span>

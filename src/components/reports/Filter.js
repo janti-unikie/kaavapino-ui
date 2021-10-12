@@ -1,7 +1,7 @@
 import React from 'react'
 import FilterField from './FilterField'
 
-function Filter({ filter }) {  
+function Filter({ filter, disabled }) {  
   const formatChoices = choices => {
     if ( !choices ) {
       return []
@@ -25,6 +25,7 @@ function Filter({ filter }) {
           type={filter.type}
           id={filter.identifier}
           options={formatChoices(filter.choices)}
+          disabled={disabled}
         />
          </div>
     </div>

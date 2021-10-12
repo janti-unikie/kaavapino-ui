@@ -6,7 +6,12 @@ import {
   downloadReportReview,
   clearDownloadReportReview
 } from '../../actions/reportActions'
-import { reportsSelector, currentReportsSelector } from '../../selectors/reportSelector'
+import {
+  reportsSelector,
+  currentReportsSelector,
+  reportPreviewLoadingSelector,
+  reportLoadingSelector
+} from '../../selectors/reportSelector'
 import { Form } from 'semantic-ui-react'
 import ReportFilters from './ReportFilters'
 import { Button } from 'hds-react'
@@ -15,7 +20,7 @@ import { fetchReports } from '../../actions/reportActions'
 import { REPORT_FORM } from '../../constants'
 import { readString } from 'react-papaparse'
 import ReportPreviewModal from './ReportPreviewModal'
-import { parseKYLKReport } from './reportUtils'
+import { parseReport } from './reportUtils'
 import { findIndex } from 'lodash'
 import { LoadingSpinner } from 'hds-react'
 
@@ -23,7 +28,8 @@ function ReportBuilder(props) {
   const [selectedReport, setSelectedReport] = useState(null)
   const [showPreviewModal, setShowPreviewModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [currentReportData, setCurrentReportData] = useState(null)
+  const [isReportLoading, setIsReportLoading] = useState(false)
+  const [currentReportData, setCurrentReportData] = useState()
 
   const { t } = useTranslation()
 
@@ -44,19 +50,24 @@ function ReportBuilder(props) {
     if (currentReportData) {
       setShowPreviewModal(true)
     }
-    setIsLoading(false)
   }, [currentReportData])
 
   useEffect(() => {
     setShowPreviewModal(false)
-    setIsLoading(false)
-    setCurrentReportData(null)
+    setCurrentReportData(undefined)
     props.initialize(null)
   }, [selectedReport])
 
+  useEffect(() => {
+    setIsLoading(props.reviewLoading)
+  }, [props.reviewLoading])
+
+  useEffect(() => {
+    setIsReportLoading(props.reportLoading)
+  }, [props.reportLoading])
+
   const onShowPreviewModal = () => {
     props.downloadReportReview({ selectedReport: selectedReport.id })
-    setIsLoading(true)
   }
   const renderReportButtons = () => {
     const { reports } = props
@@ -76,11 +87,11 @@ function ReportBuilder(props) {
       </Button>
     ))
   }
-  const current = currentReportData ? readString(currentReportData) : []
+  const current = currentReportData ? readString(currentReportData, {encoding: 'utf-8'}) : null
 
   const getHeaders = () => {
     const columns = []
-    const data = current.data
+    const data = current && current.data
 
     if (!data || !data[0]) {
       return columns
@@ -128,7 +139,7 @@ function ReportBuilder(props) {
   const headers = getHeaders()
 
   const getContent = () => {
-    const data = current.data
+    const data = current && current.data
 
     if (!data || data.length < 2) {
       return null
@@ -153,7 +164,7 @@ function ReportBuilder(props) {
   const hidePreview = () => {
     setShowPreviewModal(false)
     setIsLoading(false)
-    setCurrentReportData(null)
+    setCurrentReportData(undefined)
     props.clearDownloadReportReview()
   }
 
@@ -179,7 +190,14 @@ function ReportBuilder(props) {
           </div>
         )}
         {selectedReport && selectedReport.previewable === false && (
-          <Button type="submit" variant="primary" className="report-create-button">
+          <Button
+            type="submit"
+            variant="primary"
+            isLoading={isReportLoading}
+            loadingText={t('reports.create-report')}
+            className="report-create-button"
+            disabled={props.reviewLoading}
+          >
             {t('reports.create-report')}
           </Button>
         )}
@@ -192,6 +210,7 @@ function ReportBuilder(props) {
           className="report-create-button"
           loadingText={t('reports.create-preview')}
           isLoading={isLoading}
+          disabled={ props.reportLoading }
         >
           {t('reports.create-preview')}
         </Button>
@@ -199,10 +218,16 @@ function ReportBuilder(props) {
       <ReportPreviewModal
         open={showPreviewModal}
         noData={noData}
+        isReportLoading={isReportLoading}
         handleSubmit={handleSubmit}
         handleClose={hidePreview}
         headers={headers}
-        report={parseKYLKReport(headers, content)}
+        report={parseReport(
+          headers,
+          content,
+          selectedReport && selectedReport.preview_title_column
+        )}
+        blockColumn={selectedReport && selectedReport.preview_title_column}
       />
     </>
   )
@@ -210,7 +235,9 @@ function ReportBuilder(props) {
 
 const mapStateToProps = state => ({
   reports: reportsSelector(state),
-  currentReport: currentReportsSelector(state)
+  currentReport: currentReportsSelector(state),
+  reviewLoading: reportPreviewLoadingSelector(state),
+  reportLoading: reportLoadingSelector(state)
 })
 
 const mapDispatchToProps = {
