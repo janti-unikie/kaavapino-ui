@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { reduxForm } from 'redux-form'
+import { reduxForm, getFormValues } from 'redux-form'
 import {
   downloadReport,
   downloadReportReview,
@@ -225,7 +225,8 @@ function ReportBuilder(props) {
         report={parseReport(
           headers,
           content,
-          selectedReport && selectedReport.preview_title_column
+          selectedReport && selectedReport.preview_title_column,
+          props.formValues && props.formValues.aikavali
         )}
         blockColumn={selectedReport && selectedReport.preview_title_column}
       />
@@ -237,7 +238,8 @@ const mapStateToProps = state => ({
   reports: reportsSelector(state),
   currentReport: currentReportsSelector(state),
   reviewLoading: reportPreviewLoadingSelector(state),
-  reportLoading: reportLoadingSelector(state)
+  reportLoading: reportLoadingSelector(state),
+  formValues: getFormValues(REPORT_FORM)(state)
 })
 
 const mapDispatchToProps = {

@@ -47,10 +47,10 @@ function* downloadReportPreviewSaga({ payload }) {
   let filteredParams = {}
 
   const keys = rest ? Object.keys(rest) : []
-
+  
   keys.forEach(key => {
     const value = rest[key]
-
+        
     if (isArray(value)) {
       if (value.length > 0) {
         filteredParams[key] = value
@@ -63,7 +63,7 @@ function* downloadReportPreviewSaga({ payload }) {
   })
 
   filteredParams = {
-    ...rest,
+    ...filteredParams,
     preview: true
   }
 

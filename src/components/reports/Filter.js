@@ -26,6 +26,7 @@ function Filter({ filter, disabled }) {
           id={filter.identifier}
           options={formatChoices(filter.choices)}
           disabled={disabled}
+          inputType={filter.input_type}
         />
          </div>
     </div>
