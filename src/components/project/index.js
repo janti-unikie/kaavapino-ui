@@ -16,7 +16,8 @@ import {
   currentProjectLoadedSelector,
   changingPhaseSelector,
   selectedPhaseSelector,
-  externalDocumentsSelector
+  externalDocumentsSelector,
+  creatorSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
 import {
@@ -79,11 +80,9 @@ class ProjectPage extends Component {
 
     const viewParameter = params.get('property')
 
-    if ( viewParameter ) {
-      this.setState( { ...this.state, showBaseInformationForm: true })
+    if (viewParameter) {
+      this.setState({ ...this.state, showBaseInformationForm: true })
     }
-
-    
   }
 
   componentDidUpdate(prevProps) {
@@ -396,11 +395,11 @@ class ProjectPage extends Component {
     this.setState({ ...this.state, showBaseInformationForm: opened })
 
   getAllChanges = () => {
-    const { allEditFields, edit } = this.props
+    const { allEditFields, edit, creator, t } = this.props
 
     if (!edit) return []
 
-    return allEditFields.map((f, i) => {
+    const returnValues = allEditFields.map((f, i) => {
       const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.label} ${
         f.user_name
       }`
@@ -415,6 +414,18 @@ class ProjectPage extends Component {
         labels: f.labels
       }
     })
+
+    returnValues.push({
+      name: 'Project created',
+      label: creator.user_name,
+      text: t('project.project-created-log', {
+        timestamp: projectUtils.formatDateTime(creator.timestamp),
+        name: creator.user_name
+      }),
+      hideChangeValue: true
+    })
+
+    return returnValues
   }
 
   togglePrintProjectDataModal = opened =>
@@ -489,6 +500,7 @@ const mapStateToProps = state => {
     selectedPhase: selectedPhaseSelector(state),
     projectCardFields: projectCardFieldsSelector(state),
     externalDocuments: externalDocumentsSelector(state),
+    creator: creatorSelector(state)
   }
 }
 

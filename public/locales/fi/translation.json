@@ -84,7 +84,8 @@
     "load": "Lataa ulos kun valmis",
     "load-preview": "Esikatsele keskeneräistä",
     "phase": "Kaavan vaihe:",
-    "document-last-loaded": "Ladattu ulos viimeksi:"
+    "document-last-loaded": "Ladattu ulos viimeksi:",
+    "project-created-log": "{{timestamp}} Projekti luotu {{name}}"
   },
   "nav-header": {
     "latest-update": "Viimeisin muokkaus: {{latestUpdate}}"
