@@ -222,7 +222,7 @@ function LoggingComponent(props) {
                   <Grid.Column width={14}>
                     <div className="show-value">{option.text}</div>
                   </Grid.Column>
-                  <Grid.Column>
+                  {!option.hideChangeValue && <Grid.Column>
                     <Popup
                       hideOnScroll={false}
                       offset={[50, 50]}
@@ -265,7 +265,9 @@ function LoggingComponent(props) {
                         </div>
                       </div>
                     </Popup>
+                  
                   </Grid.Column>
+                  }
                 </Grid.Row>
               )
             })}

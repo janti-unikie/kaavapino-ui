@@ -107,6 +107,12 @@ export const personnelSelector = createSelector(
     currentProject && currentProject._metadata ? currentProject._metadata.personnel : []
 )
 
+export const creatorSelector = createSelector(
+  currentProjectSelector,
+  (currentProject = {}) =>
+    currentProject && currentProject._metadata ? currentProject._metadata.created : []
+)
+
 export const deadlinesSelector = createSelector(
   currentProjectSelector,
   (currentProject = { deadlines: [] }) => currentProject.deadlines
