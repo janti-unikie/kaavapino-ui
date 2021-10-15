@@ -75,7 +75,7 @@ class ProjectEditPage extends Component {
 
     const viewParameter = params.get('view')
 
-    if ( viewParameter === 'deadline' ) {
+    if ( viewParameter === 'deadlines' ) {
       this.setState( { ...this.state, showEditProjectTimetableForm: true})
     }
     if ( viewParameter === 'floorarea') {
