@@ -8,7 +8,7 @@ import {
 } from '../actions/reportActions'
 
 export const initialState = {
-  reports: [],
+  reports: null,
   currentReport: undefined,
   reportPreviewLoading: false,
   reportLoading: false
@@ -19,7 +19,7 @@ export const reducer = (state = initialState, { type, payload }) => {
     case FETCH_REPORTS_SUCCESSFUL:
       return {
         ...state,
-        reports: payload
+        reports: payload,
       }
 
     case DOWNLOAD_REPORT: {

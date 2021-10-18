@@ -49,7 +49,13 @@ import {
   CLEAR_PROJECTS_OVERVIEW,
   CLEAR_PROJECTS,
   CLEAR_EXTERNAL_DOCUMENTS,
-  SAVE_PROJECT_BASE_PAYLOAD
+  SAVE_PROJECT_BASE_PAYLOAD,
+  FETCH_ARCHIVED_PROJECTS_SUCCESSFUL,
+  FETCH_ONHOLD_PROJECTS_SUCCESSFUL,
+  SET_TOTAL_ARCHIVED_PROJECTS,
+  SET_TOTAL_ONHOLD_PROJECTS,
+  SET_ONHOLD_PROJECTS,
+  SET_ARCHIVED_PROJECTS
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -58,7 +64,11 @@ export const initialState = {
   amountOfProjectsToIncrease: 10,
   amountOfProjectsToShow: 10,
   totalOwnProjects: null,
+  totalOnholdProjects: null,
+  totalArchivedProjects: null,
   ownProjects: [],
+  onholdProjects: [],
+  archivedProjects: [],
   loadingProjects: false,
   users: [],
   currentProject: null,
@@ -93,7 +103,11 @@ export const reducer = (state = initialState, action) => {
         projects: [],
         ownProjects: [],
         amountOfProjectsToIncrease: 10,
-        amountOfProjectsToShow: 10
+        amountOfProjectsToShow: 10,
+        totalOnholdProjects: null,
+        totalArchivedProjects: null,
+        onholdProjects: [],
+        archivedProjects: []
       }
     }
 
@@ -118,21 +132,37 @@ export const reducer = (state = initialState, action) => {
         loadingProjects: false
       }
     }
+
+    case FETCH_ONHOLD_PROJECTS_SUCCESSFUL: {
+      return {
+        ...state,
+        onholdProjects: state.onholdProjects.concat(action.payload)
+      }
+    }
+
+    case FETCH_ARCHIVED_PROJECTS_SUCCESSFUL: {
+      return {
+        ...state,
+        archivedProjects: state.archivedProjects.concat(action.payload)
+      }
+    }
     case CLEAR_PROJECTS: {
       return {
         ...state,
         ownProjects: [],
         projects: [],
+        archivedProjects: [],
+        onHoldProjects: [],
         totalOwnProjects: null,
-        totalProjects: null
-
+        totalProjects: null,
+        totalOnholdProjects: null,
+        totalArchivedProjects: null
       }
     }
     case CLEAR_EXTERNAL_DOCUMENTS: {
       return {
         ...state,
         currentProjectExternalDocuments: null
-
       }
     }
 
@@ -147,6 +177,18 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         ownProjects: action.payload
+      }
+    }
+    case SET_ONHOLD_PROJECTS: {
+      return {
+        ...state,
+        onholdProjects: action.payload
+      }
+    }
+    case SET_ARCHIVED_PROJECTS: {
+      return {
+        ...state,
+       archivedProjects: action.payload
       }
     }
 
@@ -183,6 +225,18 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         totalOwnProjects: action.payload
+      }
+    }
+    case SET_TOTAL_ARCHIVED_PROJECTS: {
+      return {
+        ...state,
+        totalArchivedProjects: action.payload
+      }
+    }
+    case SET_TOTAL_ONHOLD_PROJECTS: {
+      return {
+        ...state,
+        totalOnholdProjects: action.payload
       }
     }
 
@@ -233,7 +287,7 @@ export const reducer = (state = initialState, action) => {
     }
 
     case SAVE_PROJECT:
-    case SAVE_PROJECT_BASE: 
+    case SAVE_PROJECT_BASE:
     case SAVE_PROJECT_BASE_PAYLOAD: {
       return {
         ...state,

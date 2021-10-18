@@ -2,11 +2,19 @@ import { createSelector } from 'reselect'
 
 const selectProject = state => state.project
 
-export const projectsSelector = createSelector(selectProject, project => project.projects)
+export const projectsSelector = createSelector(selectProject, ({ projects }) => projects)
 
 export const ownProjectsSelector = createSelector(
   selectProject,
   ({ ownProjects }) => ownProjects
+)
+export const onholdProjectsSelector = createSelector(
+  selectProject,
+  ({ onholdProjects }) => onholdProjects
+)
+export const archivedProjectsSelector = createSelector(
+  selectProject,
+  ({ archivedProjects }) => archivedProjects
 )
 
 export const amountOfProjectsToShowSelector = createSelector(
@@ -122,9 +130,9 @@ export const currentProjectArchivedSelector = createSelector(
   currentProjectSelector,
   currentProject => currentProject.archived
 )
-export const currentProjectOnHoldSelector = createSelector(
+export const currentProjectOnholdSelector = createSelector(
   currentProjectSelector,
-  currentProject => currentProject.onHold
+  currentProject => currentProject.onhold
 )
 
 export const selectedPhaseSelector = createSelector(
@@ -132,14 +140,14 @@ export const selectedPhaseSelector = createSelector(
   project => project.selectedPhase
 )
 
-export const onHoldProjectSelector = createSelector(
+export const onholdProjectSelector = createSelector(
   selectProject,
-  project => project.projects.filter(proj => proj.onhold)
+  project => project.onholdProjects
 )
 
 export const archivedProjectSelector = createSelector(
   selectProject,
-  project => project.projects.filter(proj => proj.archived)
+  project => project.archivedProjects
 )
 
 export const projectOverviewFloorAreaSelector = createSelector(

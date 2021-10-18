@@ -19,7 +19,9 @@ import {
   ownProjectsSelector,
   projectsSelector,
   amountOfProjectsToIncreaseSelector,
-  selectedPhaseSelector
+  selectedPhaseSelector,
+  onholdProjectsSelector,
+  archivedProjectsSelector
 } from '../selectors/projectSelector'
 import { schemaSelector } from '../selectors/schemaSelector'
 import { userIdSelector } from '../selectors/authSelector'
@@ -79,7 +81,15 @@ import {
   GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS,
   GET_PROJECT_MAP_LEGENDS,
   getMapLegendsSuccessful,
-  SAVE_PROJECT_BASE_PAYLOAD
+  SAVE_PROJECT_BASE_PAYLOAD,
+  FETCH_ARCHIVED_PROJECTS,
+  FETCH_ONHOLD_PROJECTS,
+  fetchOnholdProjectsSuccessful,
+  fetchArchivedProjectsSuccessful,
+  setTotalOnholdProjects,
+  setTotalArchivedProjects,
+  setOnholdProjects,
+  setArchivedProjects
 } from '../actions/projectActions'
 import { startSubmit, stopSubmit, setSubmitSucceeded } from 'redux-form'
 import { error } from '../actions/apiActions'
@@ -138,7 +148,9 @@ export default function* projectSaga() {
       getProjectsOverviewFloorAreaTargets
     ),
     takeLatest(GET_PROJECT_MAP_LEGENDS, getProjectMapLegends),
-    takeLatest(SAVE_PROJECT_BASE_PAYLOAD, saveProjectPayload)
+    takeLatest(SAVE_PROJECT_BASE_PAYLOAD, saveProjectPayload),
+    takeLatest(FETCH_ONHOLD_PROJECTS, fetchOnholdProjects),
+    takeLatest(FETCH_ARCHIVED_PROJECTS, fetchArchivedProjects)
   ])
 }
 
@@ -166,7 +178,76 @@ function* getProject({ payload: projectId }) {
     yield put(error(e))
   }
 }
-
+function* fetchOnholdProjects({ page, payload: searchQuery }) {
+  try {
+      let query = {
+        page: page ? page : 1,
+        ordering: '-modified_at',
+        status: 'onhold'
+      }
+      if (searchQuery) {
+        query = {
+          page: page ? page : 1,
+          ordering: '-modified_at',
+          search: searchQuery,
+          status: 'onhold'
+        }
+      }
+      const onholdProjects = yield call(
+        projectApi.get,
+        {
+          query
+        },
+        '',
+        null,
+        null,
+        true
+      )
+      yield put(fetchOnholdProjectsSuccessful(onholdProjects.results))
+      yield put(setTotalOnholdProjects(onholdProjects.count))
+    }
+   
+   catch (e) {
+    if (e.response && e.response.status !== 404) {
+      yield put(error(e))
+    }
+  }
+}
+function* fetchArchivedProjects({ page, payload: searchQuery }) {
+  try {
+      let query = {
+        page: page ? page : 1,
+        ordering: '-modified_at',
+        status: 'archived'
+      }
+      if (searchQuery) {
+        query = {
+          page: page ? page : 1,
+          ordering: '-modified_at',
+          search: searchQuery,
+          status: 'archived'
+        }
+      }
+      const archivedProjects = yield call(
+        projectApi.get,
+        {
+          query
+        },
+        '',
+        null,
+        null,
+        true
+      )
+      yield put(fetchArchivedProjectsSuccessful(archivedProjects.results))
+      yield put(setTotalArchivedProjects(archivedProjects.count))
+    }
+   
+   catch (e) {
+    if (e.response && e.response.status !== 404) {
+      yield put(error(e))
+    }
+  }
+}
 function* fetchProjects({ page, own = true, all = true, payload: searchQuery }) {
   try {
     const userId = yield select(userIdSelector)
@@ -174,14 +255,16 @@ function* fetchProjects({ page, own = true, all = true, payload: searchQuery }) 
       let query = {
         includes_users: userId,
         page: page ? page : 1,
-        ordering: '-modified_at'
+        ordering: '-modified_at',
+        status: 'active'
       }
       if (searchQuery) {
         query = {
           includes_users: userId,
           page: page ? page : 1,
           ordering: '-modified_at',
-          search: searchQuery
+          search: searchQuery,
+          status: 'active'
         }
       }
       const ownProjects = yield call(
@@ -200,13 +283,15 @@ function* fetchProjects({ page, own = true, all = true, payload: searchQuery }) 
     if (all) {
       let query = {
         page: page ? page : 1,
-        ordering: '-modified_at'
+        ordering: '-modified_at',
+        status: 'active'
       }
       if (searchQuery) {
         query = {
           page: page ? page : 1,
           ordering: '-modified_at',
-          search: searchQuery
+          search: searchQuery,
+          status: 'active'
         }
       }
       const allProjects = yield call(
@@ -302,12 +387,18 @@ function* sortProjectsSaga({ payload: { sort, dir } }) {
   try {
     const ownProjects = yield select(ownProjectsSelector)
     const projects = yield select(projectsSelector)
+    const onholdProjects = yield select(onholdProjectsSelector)
+    const archivedProjects = yield select(archivedProjectsSelector)
+    
     const phases = yield select(phasesSelector)
     const users = yield select(usersSelector)
     const amountOfProjectsToShow = yield select(totalProjectsSelector)
     const options = { sort, dir, phases, amountOfProjectsToShow, users }
+    
     yield put(setOwnProjects(projectUtils.sortProjects(ownProjects, options)))
     yield put(setProjects(projectUtils.sortProjects(projects, options)))
+    yield put(setOnholdProjects(projectUtils.sortProjects(onholdProjects, options)))
+    yield put(setArchivedProjects(projectUtils.sortProjects(archivedProjects, options)))
   } catch (e) {
     yield put(error(e))
   }
@@ -529,6 +620,7 @@ function* saveProject() {
   const currentProjectId = yield select(currentProjectIdSelector)
   const editForm = yield select(editFormSelector) || {}
   const { initial, values } = editForm
+ 
   if (values) {
     const selectedPhase = yield select(selectedPhaseSelector)
     const schema = yield select(schemaSelector)

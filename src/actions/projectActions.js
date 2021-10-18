@@ -76,10 +76,35 @@ export const CLEAR_PROJECTS_OVERVIEW = 'Clear project overview'
 export const CLEAR_EXTERNAL_DOCUMENTS = 'Clear external documents'
 export const SAVE_PROJECT_BASE_PAYLOAD = 'Save project payload'
 export const SAVE_PROJECT_BASE_PAYLOAD_SUCCESSFUL = 'Save project base successful'
+export const FETCH_ONHOLD_PROJECTS = "Fetch onhold projects"
+export const FETCH_ONHOLD_PROJECTS_SUCCESSFUL = "Fetch onhold projects successful"
+export const FETCH_ARCHIVED_PROJECTS = "Fetch archived projects"
+export const FETCH_ARCHIVED_PROJECTS_SUCCESSFUL = "Fetch arcvhived projects successful"
+export const SET_TOTAL_ARCHIVED_PROJECTS = "Set total archived projects"
+export const SET_TOTAL_ONHOLD_PROJECTS = "Set total onhold projects"
+export const SET_ONHOLD_PROJECTS = "Set onhold projects"
+export const SET_ARCHIVED_PROJECTS = "Set archived projects"
+
 
 export const fetchProjects = searchQuery => ({
   type: FETCH_PROJECTS,
   payload: searchQuery
+})
+export const fetchOnholdProjects = searchQuery => ({
+  type: FETCH_ONHOLD_PROJECTS,
+  payload: searchQuery
+})
+export const fetchArchivedProjects = searchQuery => ({
+  type: FETCH_ARCHIVED_PROJECTS,
+  payload: searchQuery
+})
+export const fetchOnholdProjectsSuccessful = projects => ({
+  type: FETCH_ONHOLD_PROJECTS_SUCCESSFUL,
+  payload: projects
+})
+export const fetchArchivedProjectsSuccessful = projects => ({
+  type: FETCH_ARCHIVED_PROJECTS_SUCCESSFUL,
+  payload: projects
 })
 export const fetchOwnProjectsSuccessful = projects => ({
   type: FETCH_OWN_PROJECTS_SUCCESSFUL,
@@ -93,9 +118,12 @@ export const clearProjects = () => ({
   type: CLEAR_PROJECTS
 })
 
-CLEAR_PROJECTS
 export const setProjects = projects => ({ type: SET_PROJECTS, payload: projects })
 export const setOwnProjects = projects => ({ type: SET_OWN_PROJECTS, payload: projects })
+
+export const setOnholdProjects = projects => ({ type: SET_ONHOLD_PROJECTS, payload: projects })
+export const setArchivedProjects = projects => ({ type: SET_ARCHIVED_PROJECTS, payload: projects })
+
 export const initializeProject = id => ({ type: INITIALIZE_PROJECT, payload: id })
 export const initializeProjectSuccessful = () => ({ type: INITIALIZE_PROJECT_SUCCESSFUL })
 
@@ -115,6 +143,15 @@ export const setAmountOfProjectsToShow = count => ({
 export const setTotalProjects = count => ({ type: SET_TOTAL_PROJECTS, payload: count })
 export const setTotalOwnProjects = count => ({
   type: SET_TOTAL_OWN_PROJECTS,
+  payload: count
+})
+
+export const setTotalArchivedProjects = count => ({
+  type: SET_TOTAL_ARCHIVED_PROJECTS,
+  payload: count
+})
+export const setTotalOnholdProjects = count => ({
+  type: SET_TOTAL_ONHOLD_PROJECTS,
   payload: count
 })
 

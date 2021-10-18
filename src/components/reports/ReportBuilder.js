@@ -170,7 +170,7 @@ function ReportBuilder(props) {
 
   const content = getContent()
 
-  if (!props.reports || props.reports.length === 0) {
+  if (!props.reports ) {
     return <LoadingSpinner />
   }
 

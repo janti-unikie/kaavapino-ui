@@ -1,4 +1,4 @@
-import { takeLatest, all, call, put, select } from 'redux-saga/effects'
+import { takeLatest, all, call, put, select, delay } from 'redux-saga/effects'
 import {
   FETCH_REPORTS,
   fetchReportsSuccessful,
@@ -10,7 +10,6 @@ import {
 import { reportFormSelector } from '../selectors/formSelector'
 import { error } from '../actions/apiActions'
 import { reportApi } from '../utils/api'
-import { delay } from 'redux-saga'
 import { toastr } from 'react-redux-toastr'
 import i18next from 'i18next'
 import { isArray } from 'lodash'
