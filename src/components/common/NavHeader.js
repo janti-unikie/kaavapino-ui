@@ -43,7 +43,7 @@ export const NavHeader = ({ routeItems, actions, title, infoOptions, attributes 
     }
   }
 
-  if ( isMobile ) {
+  if (isMobile) {
     return null
   }
 

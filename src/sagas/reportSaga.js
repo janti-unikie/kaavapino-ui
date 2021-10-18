@@ -93,7 +93,7 @@ function* downloadReportPreviewSaga({ payload }) {
         )
         counter++
 
-        yield call(delay, INTERVAL_MILLISECONDS)
+        yield delay(INTERVAL_MILLISECONDS)
       } catch (e) {
         toastr.error(i18next.t('reports.preview-title'), i18next.t('reports.error'))
       }
@@ -168,7 +168,7 @@ function* downloadReportSaga({ payload }) {
         )
         counter++
 
-        yield call(delay, INTERVAL_MILLISECONDS)
+        yield delay(INTERVAL_MILLISECONDS)
       } catch (e) {
         toastr.error(i18next.t('reports.title'), i18next.t('reports.error'))
         isError = true

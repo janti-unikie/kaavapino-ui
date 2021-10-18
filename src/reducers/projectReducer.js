@@ -152,7 +152,7 @@ export const reducer = (state = initialState, action) => {
         ownProjects: [],
         projects: [],
         archivedProjects: [],
-        onHoldProjects: [],
+        onholdProjects: [],
         totalOwnProjects: null,
         totalProjects: null,
         totalOnholdProjects: null,

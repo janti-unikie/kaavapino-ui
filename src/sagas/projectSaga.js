@@ -180,34 +180,32 @@ function* getProject({ payload: projectId }) {
 }
 function* fetchOnholdProjects({ page, payload: searchQuery }) {
   try {
-      let query = {
+    let query = {
+      page: page ? page : 1,
+      ordering: '-modified_at',
+      status: 'onhold'
+    }
+    if (searchQuery) {
+      query = {
         page: page ? page : 1,
         ordering: '-modified_at',
+        search: searchQuery,
         status: 'onhold'
       }
-      if (searchQuery) {
-        query = {
-          page: page ? page : 1,
-          ordering: '-modified_at',
-          search: searchQuery,
-          status: 'onhold'
-        }
-      }
-      const onholdProjects = yield call(
-        projectApi.get,
-        {
-          query
-        },
-        '',
-        null,
-        null,
-        true
-      )
-      yield put(fetchOnholdProjectsSuccessful(onholdProjects.results))
-      yield put(setTotalOnholdProjects(onholdProjects.count))
     }
-   
-   catch (e) {
+    const onholdProjects = yield call(
+      projectApi.get,
+      {
+        query
+      },
+      '',
+      null,
+      null,
+      true
+    )
+    yield put(fetchOnholdProjectsSuccessful(onholdProjects.results))
+    yield put(setTotalOnholdProjects(onholdProjects.count))
+  } catch (e) {
     if (e.response && e.response.status !== 404) {
       yield put(error(e))
     }
@@ -215,34 +213,32 @@ function* fetchOnholdProjects({ page, payload: searchQuery }) {
 }
 function* fetchArchivedProjects({ page, payload: searchQuery }) {
   try {
-      let query = {
+    let query = {
+      page: page ? page : 1,
+      ordering: '-modified_at',
+      status: 'archived'
+    }
+    if (searchQuery) {
+      query = {
         page: page ? page : 1,
         ordering: '-modified_at',
+        search: searchQuery,
         status: 'archived'
       }
-      if (searchQuery) {
-        query = {
-          page: page ? page : 1,
-          ordering: '-modified_at',
-          search: searchQuery,
-          status: 'archived'
-        }
-      }
-      const archivedProjects = yield call(
-        projectApi.get,
-        {
-          query
-        },
-        '',
-        null,
-        null,
-        true
-      )
-      yield put(fetchArchivedProjectsSuccessful(archivedProjects.results))
-      yield put(setTotalArchivedProjects(archivedProjects.count))
     }
-   
-   catch (e) {
+    const archivedProjects = yield call(
+      projectApi.get,
+      {
+        query
+      },
+      '',
+      null,
+      null,
+      true
+    )
+    yield put(fetchArchivedProjectsSuccessful(archivedProjects.results))
+    yield put(setTotalArchivedProjects(archivedProjects.count))
+  } catch (e) {
     if (e.response && e.response.status !== 404) {
       yield put(error(e))
     }
@@ -389,12 +385,12 @@ function* sortProjectsSaga({ payload: { sort, dir } }) {
     const projects = yield select(projectsSelector)
     const onholdProjects = yield select(onholdProjectsSelector)
     const archivedProjects = yield select(archivedProjectsSelector)
-    
+
     const phases = yield select(phasesSelector)
     const users = yield select(usersSelector)
     const amountOfProjectsToShow = yield select(totalProjectsSelector)
     const options = { sort, dir, phases, amountOfProjectsToShow, users }
-    
+
     yield put(setOwnProjects(projectUtils.sortProjects(ownProjects, options)))
     yield put(setProjects(projectUtils.sortProjects(projects, options)))
     yield put(setOnholdProjects(projectUtils.sortProjects(onholdProjects, options)))
@@ -620,7 +616,7 @@ function* saveProject() {
   const currentProjectId = yield select(currentProjectIdSelector)
   const editForm = yield select(editFormSelector) || {}
   const { initial, values } = editForm
- 
+
   if (values) {
     const selectedPhase = yield select(selectedPhaseSelector)
     const schema = yield select(schemaSelector)
@@ -653,8 +649,6 @@ function* saveProject() {
   yield put(saveProjectSuccessful())
   yield put(setAllEditFields())
 }
-
-
 
 function* changeProjectPhase({ payload: phase }) {
   try {
