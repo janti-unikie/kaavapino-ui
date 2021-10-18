@@ -193,10 +193,8 @@ function ReportBuilder(props) {
           <Button
             type="submit"
             variant="primary"
-            isLoading={isReportLoading}
             loadingText={t('reports.create-report')}
             className="report-create-button"
-            disabled={props.reviewLoading}
           >
             {t('reports.create-report')}
           </Button>
@@ -210,7 +208,6 @@ function ReportBuilder(props) {
           className="report-create-button"
           loadingText={t('reports.create-preview')}
           isLoading={isLoading}
-          disabled={ props.reportLoading }
         >
           {t('reports.create-preview')}
         </Button>

@@ -6,27 +6,29 @@ export const parseReport = (headers, csvRows, blockColumn, timeRange) => {
   }
   const kylkDates = new Set()
   csvRows.forEach(row => {
-    const dates = row[blockColumn].split(',')
+    if (row[blockColumn]) {
+      const dates = row[blockColumn].split(',')
 
-    dates.forEach(date => {
-      if (timeRange) {
-        const timeRangeDates = timeRange.split(',')
+      dates.forEach(date => {
+        if (timeRange) {
+          const timeRangeDates = timeRange.split(',')
 
-        const startDate = new Date(timeRangeDates[0])
+          const startDate = new Date(timeRangeDates[0])
 
-        const endDate = new Date(timeRangeDates[1])
+          const endDate = new Date(timeRangeDates[1])
 
-        const dateItems = date.split('.')
+          const dateItems = date.split('.')
 
-        const currentDate = new Date(dateItems[2], dateItems[1], dateItems[0])
+          const currentDate = new Date(dateItems[2], dateItems[1], dateItems[0])
 
-        if (currentDate >= startDate && currentDate <= endDate) {
-          return kylkDates.add({ date: date.trim(), current: currentDate })
+          if (currentDate >= startDate && currentDate <= endDate) {
+            return kylkDates.add({ date: date.trim(), current: currentDate })
+          }
+        } else {
+          return kylkDates.add({ date: date.trim() })
         }
-      } else {
-        return kylkDates.add({ date: date.trim() })
-      }
-    })
+      })
+    }
   })
 
   const sortedKylkDates = Array.from(kylkDates).sort((a, b) => {
@@ -37,10 +39,12 @@ export const parseReport = (headers, csvRows, blockColumn, timeRange) => {
     const rows = []
 
     csvRows.forEach(row => {
-      const valueArray = row[blockColumn].split(',')
+      if (row[blockColumn]) {
+        const valueArray = row[blockColumn].split(',')
 
-      if (findIndex(valueArray, item => item.trim() === kylk) != -1) {
-        rows.push(row)
+        if (findIndex(valueArray, item => item.trim() === kylk) != -1) {
+          rows.push(row)
+        }
       }
     })
 

@@ -46,10 +46,10 @@ function* downloadReportPreviewSaga({ payload }) {
   let filteredParams = {}
 
   const keys = rest ? Object.keys(rest) : []
-  
+
   keys.forEach(key => {
     const value = rest[key]
-        
+
     if (isArray(value)) {
       if (value.length > 0) {
         filteredParams[key] = value
@@ -83,6 +83,10 @@ function* downloadReportPreviewSaga({ payload }) {
     yield put(downloadReportSuccessful())
   } else {
     while ((!res || res.status === 202) && !isError && counter < MAX_COUNT) {
+      if (res && res.status === 500) {
+        isError = true
+        break
+      }
       try {
         res = yield call(
           reportApi.get,
@@ -158,6 +162,10 @@ function* downloadReportSaga({ payload }) {
     yield put(downloadReportSuccessful())
   } else {
     while ((!res || res.status === 202) && !isError && counter < MAX_COUNT) {
+      if (res && res.status === 500) {
+        isError = true
+        break
+      }
       try {
         res = yield call(
           reportApi.get,

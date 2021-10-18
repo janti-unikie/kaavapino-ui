@@ -174,7 +174,7 @@
       "empty-report": "Tyhjä raportti",
       "kylk-title": "Kylk {{date}}"
     },
-    "report-preview-loaded": "Raportin esikatselu ladattu onnituneesti",
+    "report-preview-loaded": "Raportin esikatselu ladattu onnistuneesti",
     "report-loaded": "Raportti ladattu onnistuneesti"
   }
 }
