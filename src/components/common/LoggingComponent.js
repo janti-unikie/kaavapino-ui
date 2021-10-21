@@ -277,6 +277,4 @@ function LoggingComponent(props) {
   )
 }
 
-LoggingComponent.propTypes = {}
-
 export default LoggingComponent

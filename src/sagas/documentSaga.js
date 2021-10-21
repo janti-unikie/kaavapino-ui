@@ -10,6 +10,7 @@ import { error } from '../actions/apiActions'
 import { documentApi } from '../utils/api'
 import { toastr } from 'react-redux-toastr'
 import i18next from 'i18next'
+import FileSaver from 'file-saver'
 
 export default function* documentSaga() {
   yield all([
@@ -41,13 +42,8 @@ function* downloadDocumentSaga({ payload: payload }) {
     const fileData = res.data
     const fileName = res.headers['content-disposition'].split('filename=')[1]
     if (fileData) {
-      const url = window.URL.createObjectURL(new Blob([fileData]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', fileName)
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
+      FileSaver.saveAs(fileData, fileName)
+
       toastr.success(
         i18next.t('document-loading.title'),
         i18next.t('document-loading.document-loaded', { name: payload.name })
@@ -77,13 +73,7 @@ function* downloadDocumentPreviewSaga({ payload: payload }) {
     const fileData = res.data
     const fileName = res.headers['content-disposition'].split('filename=')[1]
     if (fileData) {
-      const url = window.URL.createObjectURL(new Blob([fileData]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', fileName)
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
+      FileSaver.saveAs(fileData, fileName)
 
       toastr.success(
         i18next.t('document-loading.title'),

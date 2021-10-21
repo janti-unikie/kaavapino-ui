@@ -47,7 +47,7 @@
     "redux-form": "^8.3.7",
     "redux-logger": "^3.0.6",
     "redux-oidc": "^3.0.2",
-    "redux-saga": "^0.16.0",
+    "redux-saga": "1.1.1",
     "reselect": "^3.0.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.3"

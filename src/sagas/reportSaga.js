@@ -1,4 +1,4 @@
-import { takeLatest, all, call, put, select } from 'redux-saga/effects'
+import { takeLatest, all, call, put, select, delay } from 'redux-saga/effects'
 import {
   FETCH_REPORTS,
   fetchReportsSuccessful,
@@ -10,7 +10,6 @@ import {
 import { reportFormSelector } from '../selectors/formSelector'
 import { error } from '../actions/apiActions'
 import { reportApi } from '../utils/api'
-import { delay } from 'redux-saga'
 import { toastr } from 'react-redux-toastr'
 import i18next from 'i18next'
 import { isArray } from 'lodash'
@@ -47,10 +46,10 @@ function* downloadReportPreviewSaga({ payload }) {
   let filteredParams = {}
 
   const keys = rest ? Object.keys(rest) : []
-  
+
   keys.forEach(key => {
     const value = rest[key]
-        
+
     if (isArray(value)) {
       if (value.length > 0) {
         filteredParams[key] = value
@@ -84,6 +83,10 @@ function* downloadReportPreviewSaga({ payload }) {
     yield put(downloadReportSuccessful())
   } else {
     while ((!res || res.status === 202) && !isError && counter < MAX_COUNT) {
+      if (res && res.status === 500) {
+        isError = true
+        break
+      }
       try {
         res = yield call(
           reportApi.get,
@@ -94,7 +97,7 @@ function* downloadReportPreviewSaga({ payload }) {
         )
         counter++
 
-        yield call(delay, INTERVAL_MILLISECONDS)
+        yield delay(INTERVAL_MILLISECONDS)
       } catch (e) {
         toastr.error(i18next.t('reports.preview-title'), i18next.t('reports.error'))
       }
@@ -159,6 +162,10 @@ function* downloadReportSaga({ payload }) {
     yield put(downloadReportSuccessful())
   } else {
     while ((!res || res.status === 202) && !isError && counter < MAX_COUNT) {
+      if (res && res.status === 500) {
+        isError = true
+        break
+      }
       try {
         res = yield call(
           reportApi.get,
@@ -169,7 +176,7 @@ function* downloadReportSaga({ payload }) {
         )
         counter++
 
-        yield call(delay, INTERVAL_MILLISECONDS)
+        yield delay(INTERVAL_MILLISECONDS)
       } catch (e) {
         toastr.error(i18next.t('reports.title'), i18next.t('reports.error'))
         isError = true
