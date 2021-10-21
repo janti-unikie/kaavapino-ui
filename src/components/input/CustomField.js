@@ -348,7 +348,7 @@ class CustomField extends Component {
         return this.renderSelect
       }
     }
-    if (field.display === 'dropdown') {
+    if (field.display === 'dropdown' || field.display === 'simple_integer')  {
       return this.renderYearSelect
     }
     if (
