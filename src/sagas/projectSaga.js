@@ -848,18 +848,51 @@ function* getProjectsOverviewBySubtype({ payload }) {
   keys.forEach(key => {
     if (key === 'vuosi') {
       const value = payload[key]
-      const startDate = dayjs(new Date(value, 0, 1)).format('YYYY-MM-DD')
-      const endDate = dayjs(new Date(value, 11, 31)).format('YYYY-MM-DD')
+
+      let startDate
+      let endDate
+      if (!isArray(value)) {
+        startDate = dayjs(new Date(value, 0, 1)).format('YYYY-MM-DD')
+        endDate = dayjs(new Date(value, 11, 31)).format('YYYY-MM-DD')
+      } else {
+        startDate = dayjs(new Date(value[0].value, 0, 1)).format('YYYY-MM-DD')
+        endDate = dayjs(new Date(value[value.length - 1].value, 11, 31)).format(
+          'YYYY-MM-DD'
+        )
+      }
 
       query = {
         ...query,
         start_date: startDate,
         end_date: endDate
       }
-    } else {
+    } else if (key === 'henkilo') {
+      const currentPersonIds = []
+
+      const currentPayload = payload[key]
+
+      currentPayload.forEach(current => currentPersonIds.push(current.id))
+
       query = {
         ...query,
-        [key]: payload[key]
+        [key]: currentPersonIds.toString()
+      }
+    } else {
+      const queryValue = []
+
+      const current = payload[key]
+
+      if (isArray(current)) {
+        current.forEach(value => queryValue.push(value))
+      } else {
+        queryValue.push(payload[key])
+      }
+
+      if (queryValue.length > 0) {
+        query = {
+          ...query,
+          [key]: queryValue.toString()
+        }
       }
     }
   })
