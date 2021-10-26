@@ -82,6 +82,7 @@ class ProjectPage extends Component {
 
     if (viewParameter) {
       this.setState({ ...this.state, showBaseInformationForm: true })
+      this.props.history.replace( { ...this.props.location, search: ''} )
     }
   }
 
