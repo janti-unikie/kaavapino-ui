@@ -64,7 +64,7 @@ export const NavHeader = ({ routeItems, actions, title, infoOptions, attributes 
         <div className="nav-header-content">
           <div className="nav-header-titles">
             <Grid className="full-width" stackable padded={false} columns="equal">
-              <Grid.Column width={5}>
+              <Grid.Column width={4}>
                 <h2 className="nav-header-title">{title}</h2>
               </Grid.Column>
               <Grid.Column textAlign="right">{actions && actions}</Grid.Column>

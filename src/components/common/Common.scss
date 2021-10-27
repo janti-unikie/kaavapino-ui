@@ -497,13 +497,25 @@ h4 {
 
 
   .icon-area {
-    display: inline;
     background-color: $yellow2;
-    text-align: center;
+    display: inline-flex;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    .icon {
+      height: 42px;
+    }
     
   }
   .content {
     background-color: $yellow;
+    display: inline-flex;
+
+    .text {
+      margin: auto;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
 
   }
 
