@@ -185,7 +185,8 @@ function ReportBuilder(props) {
       <Form onSubmit={handleSubmit} className="report-builder-container">
         {selectedReport && (
           <div className="report-filter-container">
-            <h2>{t('reports.filters')}</h2>
+            <h2>{selectedReport.name}</h2>
+            <h3>{t('reports.filters')}</h3>
             <ReportFilters filters={selectedReport.filters} />
           </div>
         )}
