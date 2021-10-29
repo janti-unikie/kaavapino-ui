@@ -42,7 +42,6 @@ import projectUtils from '../../utils/projectUtils'
 import InfoComponent from '../common/InfoComponent'
 import { withTranslation } from 'react-i18next'
 
-
 class ProjectEditPage extends Component {
   state = {
     showEditFloorAreaForm: false,
@@ -64,10 +63,21 @@ class ProjectEditPage extends Component {
     this.props.fetchSchemas(project.id, project.subtype)
   }
   componentDidUpdate() {
+
     this.scroll()
     this.headings = this.createHeadings()
   }
   componentDidMount() {
+
+    window.addEventListener('resize', this.handleResize)
+
+    if (window.innerWidth < 720) {
+      this.setState({
+        ...this.state,
+        isMobile: true
+      })
+    }
+   
     this.scroll()
 
     const search = this.props.location.search
@@ -75,12 +85,15 @@ class ProjectEditPage extends Component {
 
     const viewParameter = params.get('view')
 
-    if ( viewParameter === 'deadlines' ) {
-      this.setState( { ...this.state, showEditProjectTimetableForm: true})
+    if (viewParameter === 'deadlines') {
+      this.setState({ ...this.state, showEditProjectTimetableForm: true })
+      this.props.history.replace( { ...this.props.location, search: ''} )
     }
-    if ( viewParameter === 'floorarea') {
-      this.setState( { ...this.state, showEditFloorAreaForm: true})
+    if (viewParameter === 'floorarea') {
+      this.setState({ ...this.state, showEditFloorAreaForm: true })
+      this.props.history.replace( { ...this.props.location, search: ''} )
     }
+
   }
 
   componentWillUnmount() {
@@ -95,6 +108,10 @@ class ProjectEditPage extends Component {
 
     const element = document.getElementById(param)
 
+    if ( param && element ) {
+      this.props.history.replace( { ...this.props.location, search: ''} )
+    }
+
     element && element.scrollIntoView()
   }
   changePhase = () => {
@@ -108,8 +125,7 @@ class ProjectEditPage extends Component {
   }
 
   handleSave = () => {
-   this.props.saveProject()
-    
+    this.props.saveProject()
   }
   handleAutoSave = () => {
     if (this.props.syncErrors && !_.isEmpty(this.props.syncErrors)) {
@@ -174,8 +190,22 @@ class ProjectEditPage extends Component {
   }
 
   hasMissingFields = () => {
-    const {formValues, currentProject, schema } = this.props
-    return projectUtils.hasMissingFields( formValues, currentProject, schema )
+    const { formValues, currentProject, schema } = this.props
+    return projectUtils.hasMissingFields(formValues, currentProject, schema)
+  }
+  //choose the screen size
+  handleResize = () => {
+    if (window.innerWidth < 720) {
+      this.setState({
+        ...this.state,
+        isMobile: true
+      })
+    } else {
+      this.setState({
+        ...this.state,
+        isMobile: false
+      })
+    }
   }
   render() {
     const {
@@ -229,16 +259,15 @@ class ProjectEditPage extends Component {
 
     const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
 
-    
     return (
       <div>
-        <div className="timeline" onClick={() => showTimelineModal(true)}>
+        {!this.state.isMobile && <div className="timeline" onClick={() => showTimelineModal(true)}>
           <ProjectTimeline
             deadlines={currentProject.deadlines}
             projectView={true}
             onhold={currentProject.onhold}
           />
-        </div>
+        </div>}
         {currentProject.phase_documents_creation_started === true &&
           currentProject.phase_documents_created === false && (
             <InfoComponent>{t('project.documents-created')}</InfoComponent>

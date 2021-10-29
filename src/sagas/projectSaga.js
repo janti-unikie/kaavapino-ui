@@ -2,7 +2,6 @@ import axios from 'axios'
 import { takeLatest, put, all, call, select } from 'redux-saga/effects'
 import { isEqual } from 'lodash'
 import { push } from 'connected-react-router'
-import { actions as toastrActions } from 'react-redux-toastr'
 import {
   editFormSelector,
   deadlineModalSelector,
@@ -117,6 +116,7 @@ import i18 from 'i18next'
 import { checkDeadlines } from '../components/ProjectTimeline/helpers/helpers'
 import dayjs from 'dayjs'
 import { isArray } from 'lodash'
+import { toastr } from 'react-redux-toastr'
 
 export default function* projectSaga() {
   yield all([
@@ -554,14 +554,9 @@ function* saveProjectFloorArea() {
       )
       yield put(updateProject(updatedProject))
       yield put(setSubmitSucceeded(EDIT_FLOOR_AREA_FORM))
-      yield put(
-        toastrActions.add({
-          type: 'success',
-          title: 'Kerrosalatiedot tallennettu onnistuneesti'
-        })
-      )
+      yield put(toastr.success(i18.t('messages.timelines-successfully-saved')))
     } catch (e) {
-      if (e.response.status === 400) {
+      if (e.response && e.response.status === 400) {
         yield put(stopSubmit(EDIT_FLOOR_AREA_FORM, e.response.data))
       } else {
         yield put(error(e))
@@ -587,27 +582,18 @@ function* saveProjectTimetable() {
       yield put(setSubmitSucceeded(EDIT_PROJECT_TIMETABLE_FORM))
 
       if (!checkDeadlines(updatedProject.deadlines)) {
-        yield put(
-          toastrActions.add({
-            type: 'success',
-            title: i18.t('messages.deadlines-successfully-saved')
-          })
-        )
+        yield put(toastr.success(i18.t('messages.deadlines-successfully-saved')))
       } else {
         yield put(
-          toastrActions.add({
-            type: 'warning',
-            title: i18.t('messages.deadlines-successfully-saved'),
-            message: i18.t('messages.check-timetable'),
-            options: {
-              timeOut: 5000
-            }
-          })
+          toastr.warning(
+            i18.t('messages.deadlines-successfully-saved'),
+            i18.t('messages.check-timetable')
+          )
         )
       }
       yield put(initializeProjectAction(currentProjectId))
     } catch (e) {
-      yield put(stopSubmit(EDIT_PROJECT_TIMETABLE_FORM, e.response.data))
+      yield put(stopSubmit(EDIT_PROJECT_TIMETABLE_FORM, e.response && e.response.data))
     }
   }
 }
