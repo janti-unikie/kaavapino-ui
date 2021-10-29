@@ -32,11 +32,13 @@ function ProjectDocumentsPage(props) {
           result[phase.phase_index] = {
             title: phase.phase_name,
             documents: [],
-            phaseEnded: phase.phase_ended
+            phaseEnded: phase.phase_ended,
+            phaseIndex: phase.phase_index
           }
         }
         result[phase.phase_index].documents.push(doc)
       })
+      
     })
     return result
   }
@@ -73,6 +75,7 @@ function ProjectDocumentsPage(props) {
           phaseEnded={groupedDocuments[key].phaseEnded}
           documents={groupedDocuments[key].documents}
           projectId={props.currentProjectId}
+          phase={groupedDocuments[key]}
         />
       ))}
     </div>

@@ -7,6 +7,10 @@ import { withRouter } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import dayjs from 'dayjs'
 
+
+// Special case for checking that in "Käynnistysvaihe" documents stays downloadable
+export const STARTING_PHASE_INDEX = 1
+
 function Document({
   name,
   file,
@@ -14,7 +18,8 @@ function Document({
   downloadDocument,
   downloadDocumentPreview,
   phaseEnded,
-  image_template
+  image_template,
+  phaseIndex
 }) {
   const { t } = useTranslation()
   return (
@@ -32,7 +37,7 @@ function Document({
         </Grid.Column>
 
         <Grid.Column textAlign="right">
-          {!phaseEnded && (
+          {(!phaseEnded || phaseIndex === STARTING_PHASE_INDEX) && 
             <>
               <Button
                 variant="supplementary"
@@ -51,7 +56,7 @@ function Document({
                 {t('project.load-preview')}
               </Button>
             </>
-          )}
+          }
         </Grid.Column>
       </Grid>
     </>

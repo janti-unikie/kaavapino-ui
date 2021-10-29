@@ -2,7 +2,7 @@ import React from 'react'
 import Document from './Document'
 import { Accordion } from 'hds-react'
 
-const DocumentGroup = ({ title, documents, projectId, phaseEnded }) => {
+const DocumentGroup = ({ title, documents, projectId, phaseEnded, phase }) => {
 
   return (
     <div className="document-group">
@@ -18,6 +18,7 @@ const DocumentGroup = ({ title, documents, projectId, phaseEnded }) => {
             name={name}
             file={file}
             key={i}
+            phaseIndex={phase.phaseIndex}
           />
         ))}
       </Accordion>
