@@ -282,7 +282,7 @@ class CustomField extends Component {
     return <CustomInput type="number" step="0.01" onBlur={onBlur} {...props} />
   }
 
-  renderDeadlineCheckbox = props => {
+  renderCustomCheckbox = props => {
     const { field, formName } = this.props
 
     return (
@@ -291,6 +291,7 @@ class CustomField extends Component {
         label={field.label}
         autofillRule={field.autofill_rule}
         formName={formName}
+        display={field.display}
       />
     )
   }
@@ -355,7 +356,7 @@ class CustomField extends Component {
       field.display === 'readonly_checkbox' &&
       this.props.formName === EDIT_PROJECT_TIMETABLE_FORM
     ) {
-      return this.renderDeadlineCheckbox
+      return this.renderCustomCheckbox
     }
 
     if (field.type === 'radio' && field.options) {
@@ -392,7 +393,7 @@ class CustomField extends Component {
       case 'checkbox-onhold':
         return this.renderOnholdCheckbox
       case 'checkbox':
-        return this.renderDeadlineCheckbox
+        return this.renderCustomCheckbox
       case 'readonly':
         return this.renderDeadlineInfo
       case 'personnel':
