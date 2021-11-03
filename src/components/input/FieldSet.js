@@ -26,14 +26,10 @@ const FieldSet = ({
   handleSave,
   onRadioChange,
   updated,
-  field: {
-    disable_fieldset_delete_add
-  }
+  field: { disable_fieldset_delete_add }
 }) => {
   const handleBlurSave = () => {
-    setTimeout(function () {
-      handleSave()
-    }, 500)
+    handleSave()
   }
   const dispatch = useDispatch()
 
@@ -61,20 +57,21 @@ const FieldSet = ({
       }
     })
   }
-  const getLastValidIndex = () =>  {
+  const getLastValidIndex = () => {
     let lastValidIndex = sets.length - 1
 
-    for ( let index = lastValidIndex ; index >= 0 ; index -- ) {
-
-      if ( !sets.get( index )._deleted) {
+    for (let index = lastValidIndex; index >= 0; index--) {
+      if (!sets.get(index)._deleted) {
         return index
       }
     }
   }
 
-  const nulledFields = fields && fields.map(field => {
-    return { [field.name]: null, _deleted: true }
-  })
+  const nulledFields =
+    fields &&
+    fields.map(field => {
+      return { [field.name]: null, _deleted: true }
+    })
   return (
     <React.Fragment>
       {sets.map((set, i) => {
@@ -86,158 +83,156 @@ const FieldSet = ({
                 <div className="fieldset-header">
                   <h3 className="fieldset-header-number">{i + 1}.</h3>
 
-                  {!disable_fieldset_delete_add && <IconCross
-                    className="fieldset-remove"
-                    color="red"
-                    size="l"
-                    onClick={() => {
-                      dispatch(change(formName, set, ...nulledFields))
-                      setHiddenIndex( i )
-                      handleSave()
-                    }}
-                  />}
+                  {!disable_fieldset_delete_add && (
+                    <IconCross
+                      className="fieldset-remove"
+                      color="red"
+                      size="l"
+                      onClick={() => {
+                        dispatch(change(formName, set, ...nulledFields))
+                        setHiddenIndex(i)
+                        handleSave()
+                      }}
+                    />
+                  )}
                 </div>
                 {fields.map((field, j) => {
-                    const currentName = `${set}.${field.name}`
+                  const currentName = `${set}.${field.name}`
+                  if (
+                    !showField(field, formValues, currentName) ||
+                    !field.fieldset_index
+                  ) {
+                    return null
+                  }
+
+                  let required = false
+
+                  const isReadOnly = field && field.autofill_readonly
+                  if (checking && !(!attributeData[name] || !attributeData[name][i])) {
                     if (
-                      !showField(field, formValues, currentName) ||
-                      !field.fieldset_index
+                      checking &&
+                      projectUtils.isFieldMissing(
+                        field.name,
+                        field.required,
+                        attributeData[name][i]
+                      )
                     ) {
-                      return null
-                    }
-
-                    let required = false
-
-                    const isReadOnly = field && field.autofill_readonly
-                    if (checking && !(!attributeData[name] || !attributeData[name][i])) {
-                      if (
-                        checking &&
-                        projectUtils.isFieldMissing(
-                          field.name,
-                          field.required,
-                          attributeData[name][i]
-                        )
-                      ) {
-                        required = true
-                      }
-                    } else if (checking && field.required) {
                       required = true
                     }
+                  } else if (checking && field.required) {
+                    required = true
+                  }
 
-                    const title = field.character_limit
-                      ? `${field.label}  (Max ${field.character_limit} merkkiä)`
-                      : field.label
-                    const error = syncronousErrors && syncronousErrors[field.name]
+                  const title = field.character_limit
+                    ? `${field.label}  (Max ${field.character_limit} merkkiä)`
+                    : field.label
+                  const error = syncronousErrors && syncronousErrors[field.name]
 
-                    /* Two ways to bring errors to FormField component:
-                     * 1) the missing attribute data of required fields is checked automatically.
-                     * 2) error text can be given directly to the component as props.
-                     * Redux form gives error information to the Field component, but that's further down the line, and we need that information
-                     * here to modify the input header accordingly. */
-                    const showError = required ? 'pakollinen kenttä' : error
+                  /* Two ways to bring errors to FormField component:
+                   * 1) the missing attribute data of required fields is checked automatically.
+                   * 2) error text can be given directly to the component as props.
+                   * Redux form gives error information to the Field component, but that's further down the line, and we need that information
+                   * here to modify the input header accordingly. */
+                  const showError = required ? 'pakollinen kenttä' : error
 
-                    const fieldUpdated =
-                      updated &&
-                      updated.new_value &&
-                      has(updated.new_value[0], field.name)
-                    return (
-                      <div
-                        className={`input-container ${showError ? 'error' : ''}`}
-                        key={j}
-                      >
-                        <Form.Field required={required}>
-                          <div className="input-header">
-                            <Label
-                              className={`input-title${required ? ' highlight' : ''} ${
-                                showError ? 'error' : ''
-                              }`}
-                            >
-                              {title}
-                            </Label>
-                            <div className="input-header-icons">
-                              {fieldUpdated && !isReadOnly && (
-                                <Popup
-                                  trigger={<IconClock />}
-                                  inverted
-                                  on="hover"
-                                  position="top center"
-                                  hideOnScroll
-                                  content={(
-                                    <span className="input-history">
-                                      <span>{`${projectUtils.formatDate(
-                                        updated.timestamp
-                                      )} ${projectUtils.formatTime(updated.timestamp)} ${
-                                        updated.user_name
-                                      }`}</span>
-                                    </span>
-                                  )}
-                                />
-                              )}
-                              {field.help_text && (
-                                <Info content={field.help_text} link={field.help_link} />
-                              )}
-                            </div>
+                  const fieldUpdated =
+                    updated && updated.new_value && has(updated.new_value[0], field.name)
+                  return (
+                    <div
+                      className={`input-container ${showError ? 'error' : ''}`}
+                      key={j}
+                    >
+                      <Form.Field required={required}>
+                        <div className="input-header">
+                          <Label
+                            className={`input-title${required ? ' highlight' : ''} ${
+                              showError ? 'error' : ''
+                            }`}
+                          >
+                            {title}
+                          </Label>
+                          <div className="input-header-icons">
+                            {fieldUpdated && !isReadOnly && (
+                              <Popup
+                                trigger={<IconClock />}
+                                inverted
+                                on="hover"
+                                position="top center"
+                                hideOnScroll
+                                content={
+                                  <span className="input-history">
+                                    <span>{`${projectUtils.formatDate(
+                                      updated.timestamp
+                                    )} ${projectUtils.formatTime(updated.timestamp)} ${
+                                      updated.user_name
+                                    }`}</span>
+                                  </span>
+                                }
+                              />
+                            )}
+                            {field.help_text && (
+                              <Info content={field.help_text} link={field.help_link} />
+                            )}
                           </div>
-                          <CustomField
-                            field={{ ...field, name: currentName, disabled }}
-                            attributeData={attributeData}
-                            fieldset={field.type === 'fieldset'}
-                            parentName={name}
-                            formName={formName}
-                            formValues={formValues}
-                            handleSave={handleSave}
-                            onRadioChange={onRadioChange}
-                            onBlur={handleBlurSave}
-                            validate={validate}
-                          />
-                          {showError && <div className="error-text">{showError}</div>}
-                        </Form.Field>
-                      </div>
-                    )
-                  })}
+                        </div>
+                        <CustomField
+                          field={{ ...field, name: currentName, disabled }}
+                          attributeData={attributeData}
+                          fieldset={field.type === 'fieldset'}
+                          parentName={name}
+                          formName={formName}
+                          formValues={formValues}
+                          handleSave={handleSave}
+                          onRadioChange={onRadioChange}
+                          onBlur={handleBlurSave}
+                          validate={validate}
+                        />
+                        {showError && <div className="error-text">{showError}</div>}
+                      </Form.Field>
+                    </div>
+                  )
+                })}
               </div>
             )}
           </React.Fragment>
         )
       })}
-      {!disable_fieldset_delete_add &&
-      <>
-      <Button
-        className={`fieldset-button-add ${
-          requiredError ? 'fieldset-internal-error' : null
-        }`}
-        onClick={() => {
-          sets.push({})
-          handleBlurSave()
-        }}
-        disabled={disabled}
-        variant="secondary"
-      >
-        Lisää
-      </Button>
-      <Button
-        className="fieldset-button-remove"
-        disabled={sets.length < 1}
-        onClick={() => {
+      {!disable_fieldset_delete_add && (
+        <>
+          <Button
+            className={`fieldset-button-add ${
+              requiredError ? 'fieldset-internal-error' : null
+            }`}
+            onClick={() => {
+              sets.push({})
+              handleBlurSave()
+            }}
+            disabled={disabled}
+            variant="secondary"
+          >
+            Lisää
+          </Button>
+          <Button
+            className="fieldset-button-remove"
+            disabled={sets.length < 1}
+            onClick={() => {
+              const lastValidIndex = getLastValidIndex()
+              sets.map((set, index) => {
+                if (index === lastValidIndex) {
+                  dispatch(change(formName, set, ...nulledFields))
+                  setHiddenIndex(index)
+                }
+                return null
+              })
 
-          const lastValidIndex = getLastValidIndex()
-          sets.map((set, index) => {
-
-            if (index === lastValidIndex ) {
-              dispatch(change(formName, set, ...nulledFields))
-              setHiddenIndex( index )
-            }
-            return null
-          })
-
-         handleSave()
-        }}
-        variant="secondary"
-      >
-        Poista
-      </Button>
-      </>
-      }
+              handleSave()
+            }}
+            variant="secondary"
+          >
+            Poista
+          </Button>
+        </>
+      )}
     </React.Fragment>
   )
 }

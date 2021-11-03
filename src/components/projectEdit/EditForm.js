@@ -97,5 +97,6 @@ class EditForm extends Component {
 
 export default reduxForm({
   form: EDIT_PROJECT_FORM,
-  enableReinitialize: true
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true
 })(EditForm)
