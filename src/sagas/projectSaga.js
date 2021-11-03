@@ -624,7 +624,7 @@ function* saveProject() {
         )
         yield put(updateProject(updatedProject))
       } catch (e) {
-        if (e.response.status === 400) {
+        if (e.response && e.response.status === 400) {
           yield put(stopSubmit(EDIT_PROJECT_FORM, e.response.data))
         } else {
           yield put(error(e))
