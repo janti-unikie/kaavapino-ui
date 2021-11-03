@@ -19,7 +19,7 @@ class EditForm extends Component {
 
   componentDidUpdate(prevProps) {
     const { saving, initialize, attributeData, geoServerData, submitErrors, initialized } = this.props
-
+    
     if (
       prevProps.saving &&
       !saving &&
@@ -97,5 +97,6 @@ class EditForm extends Component {
 
 export default reduxForm({
   form: EDIT_PROJECT_FORM,
-  enableReinitialize: true
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true
 })(EditForm)
