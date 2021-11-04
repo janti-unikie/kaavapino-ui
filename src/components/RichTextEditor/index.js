@@ -92,9 +92,8 @@ function RichTextEditor(props) {
   const comments = getFieldComments()
 
   useEffect(() => {
-
-    if ( setRef ) {
-      setRef( {name: inputProps.name , ref: editorRef} )
+    if (setRef) {
+      setRef({ name: inputProps.name, ref: editorRef })
     }
   }, [])
 
@@ -157,9 +156,13 @@ function RichTextEditor(props) {
           toolbarVisible || showComments ? 'toolbar-visible' : ''
         } ${largeField ? 'large' : ''}`}
         onFocus={() => setToolbarVisible(true)}
-
       >
-        <div role="toolbar" id={toolbarName} onMouseDown={e => e.preventDefault()} className="ql-toolbar">
+        <div
+          role="toolbar"
+          id={toolbarName}
+          onMouseDown={e => e.preventDefault()}
+          className="ql-toolbar"
+        >
           <span className="ql-formats">
             <button aria-label="bold" className="ql-bold" />
             <button aria-label="italic" className="ql-italic" />
@@ -167,7 +170,7 @@ function RichTextEditor(props) {
             <button aria-label="strike" className="ql-strike" />
           </span>
           <span className="ql-formats">
-            <select aria-label="color"  className="ql-color" />
+            <select aria-label="color" className="ql-color" />
             <select aria-label="background" className="ql-background" />
           </span>
           <span className="ql-formats">
@@ -207,11 +210,19 @@ function RichTextEditor(props) {
           // Do not explicitly set value. see comments at top of this file.
           onChange={handleChange}
           onBlur={(_range, _source, quill) => {
-            setToolbarVisible(false)
-            setShowCounter(false)
-            if (onBlur) {
-              onBlur(quill.getContents())
-            }
+            setTimeout(() => {
+
+              // Hack. Prevent blurring when copy-paste data
+              let fixRange = quill.getSelection()
+              if (!fixRange) {
+                setToolbarVisible(false)
+                setShowCounter(false)
+
+                if (onBlur) {
+                  onBlur(quill.getContents())
+                }
+              }
+            }, 50) // random time
           }}
           meta={meta}
           placeholder={placeholder}
