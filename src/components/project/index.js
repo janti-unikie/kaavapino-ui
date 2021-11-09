@@ -341,20 +341,15 @@ class ProjectPage extends Component {
 
     return (
       <span className="header-buttons">
-        <Button
-          variant="secondary"
-          onClick={this.openProjectDataModal}
-          iconLeft={<IconDownload />}
-        >
-          Tulosta projektin tiedot
-        </Button>
-        {showCreate && (
+       
+       {showCreate && (
           <Button
             variant="secondary"
-            onClick={() => this.toggleBaseInformationForm(true)}
+            className="header-button"
+            onClick={this.modifyContent}
             iconLeft={<IconPen />}
           >
-            {t('project.modify-project')}
+            {t('project.modify')}
           </Button>
         )}
         <Button variant="primary" iconLeft={<IconPen />} onClick={this.checkProjectCard}>

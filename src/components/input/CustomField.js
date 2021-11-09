@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import CustomInput from './CustomInput'
 import DeadLineInput from './DeadlineInput'
 import SelectInput from './SelectInput'
-import BooleanRadio from './RadioBooleanButton'
+import RadioBooleanButton from './RadioBooleanButton'
 import CustomTextArea from './CustomTextArea'
 import File from './File'
 import FieldSet from './FieldSet'
@@ -206,13 +206,14 @@ class CustomField extends Component {
 
   renderBooleanRadio = props => {
     const { input, onRadioChange, defaultValue } = this.props
-
+   
     return (
-      <BooleanRadio
+      <RadioBooleanButton
         onBlur={props.onBlur}
         input={input}
         onRadioChange={onRadioChange}
         defaultValue={defaultValue}
+        autofillReadonly={this.props.field.autofill_readonly}
         {...props}
       />
     )

@@ -7,7 +7,8 @@ const RadioBooleanButton = ({
   double,
   onRadioChange,
   disabled,
-  className
+  className,
+  autofillReadonly
 }) => {
   const [radioValue, setRadioValue] = useState(null)
 
@@ -23,6 +24,9 @@ const RadioBooleanButton = ({
     setRadioValue(value)
   }, [value])
 
+
+  const showNoInformation = autofillReadonly ? value === '' : true
+   
   return (
     <div>
       <RadioButton
@@ -49,7 +53,7 @@ const RadioBooleanButton = ({
         onChange={() => handleOnChange(false)}
         checked={radioValue === false}
       />
-      {!double && (
+      {!double && showNoInformation && (
         <RadioButton
           key={`${name}-null`}
           id={`${name}-null`}
