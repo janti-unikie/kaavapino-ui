@@ -65,29 +65,29 @@ function* downloadReportPreviewSaga({ payload }) {
     ...filteredParams,
     preview: true
   }
+  try {
+    res = yield call(
+      reportApi.get,
+      { path: { id: payload.selectedReport }, query: { ...filteredParams } },
+      ':id/',
+      { responseType: 'text' },
+      true
+    )
+    currentTask = res && res.data ? res.data.detail : null
 
-  res = yield call(
-    reportApi.get,
-    { path: { id: payload.selectedReport }, query: { ...filteredParams } },
-    ':id/',
-    { responseType: 'text' },
-    true
-  )
-  currentTask = res && res.data ? res.data.detail : null
+    toastr.info(i18next.t('reports.preview-title'), i18next.t('reports.content'))
+    if (!currentTask) {
+      toastr.removeByType('info')
+      toastr.error(i18next.t('reports.preview-title'), i18next.t('reports.error'))
+      isError = true
+      yield put(downloadReportSuccessful())
+    } else {
+      while ((!res || res.status === 202) && !isError && counter < MAX_COUNT) {
+        if (res && res.status === 500) {
+          isError = true
+          break
+        }
 
-  toastr.info(i18next.t('reports.preview-title'), i18next.t('reports.content'))
-  if (!currentTask) {
-    toastr.removeByType('info')
-    toastr.error(i18next.t('reports.preview-title'), i18next.t('reports.error'))
-    isError = true
-    yield put(downloadReportSuccessful())
-  } else {
-    while ((!res || res.status === 202) && !isError && counter < MAX_COUNT) {
-      if (res && res.status === 500) {
-        isError = true
-        break
-      }
-      try {
         res = yield call(
           reportApi.get,
           { path: { id: payload.selectedReport, task: currentTask } },
@@ -98,10 +98,11 @@ function* downloadReportPreviewSaga({ payload }) {
         counter++
 
         yield delay(INTERVAL_MILLISECONDS)
-      } catch (e) {
-        toastr.error(i18next.t('reports.preview-title'), i18next.t('reports.error'))
       }
     }
+  } catch (e) {
+    isError = true
+    toastr.error(i18next.t('reports.preview-title'), i18next.t('reports.error'))
   }
 
   if (counter === MAX_COUNT) {
@@ -145,28 +146,28 @@ function* downloadReportSaga({ payload }) {
   })
 
   toastr.info(i18next.t('reports.title'), i18next.t('reports.content'))
+  try {
+    res = yield call(
+      reportApi.get,
+      { path: { id: payload.selectedReport }, query: { ...filteredParams } },
+      ':id/',
+      { responseType: 'text' },
+      true
+    )
+    currentTask = res && res.data ? res.data.detail : null
 
-  res = yield call(
-    reportApi.get,
-    { path: { id: payload.selectedReport }, query: { ...filteredParams } },
-    ':id/',
-    { responseType: 'text' },
-    true
-  )
-  currentTask = res && res.data ? res.data.detail : null
+    if (!currentTask) {
+      toastr.removeByType('info')
+      toastr.error(i18next.t('reports.title'), i18next.t('reports.error'))
+      isError = true
+      yield put(downloadReportSuccessful())
+    } else {
+      while ((!res || res.status === 202) && !isError && counter < MAX_COUNT) {
+        if (res && res.status === 500) {
+          isError = true
+          break
+        }
 
-  if (!currentTask) {
-    toastr.removeByType('info')
-    toastr.error(i18next.t('reports.title'), i18next.t('reports.error'))
-    isError = true
-    yield put(downloadReportSuccessful())
-  } else {
-    while ((!res || res.status === 202) && !isError && counter < MAX_COUNT) {
-      if (res && res.status === 500) {
-        isError = true
-        break
-      }
-      try {
         res = yield call(
           reportApi.get,
           { path: { id: payload.selectedReport, task: currentTask } },
@@ -177,11 +178,11 @@ function* downloadReportSaga({ payload }) {
         counter++
 
         yield delay(INTERVAL_MILLISECONDS)
-      } catch (e) {
-        toastr.error(i18next.t('reports.title'), i18next.t('reports.error'))
-        isError = true
       }
     }
+  } catch (e) {
+    toastr.error(i18next.t('reports.title'), i18next.t('reports.error'))
+    isError = true
   }
 
   toastr.removeByType('info')
