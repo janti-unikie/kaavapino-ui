@@ -14,7 +14,7 @@
     "preview-content": "Esikatseludokumenttia {{name}} ladataan.",
     "content": "Dokumenttia {{name}} ladataan.",
     "error": "Dokumentin {{name}} lataus epäonnistui.",
-    "document-preview-loaded": "Dokumentin esikatselu ladattu onnituneesti",
+    "document-preview-loaded": "Dokumentin esikatselu ladattu onnistuneesti",
     "document-loaded": "Dokumentti ladattu onnistuneesti"
   },
   "projects": {

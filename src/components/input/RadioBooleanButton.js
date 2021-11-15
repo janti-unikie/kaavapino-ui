@@ -28,13 +28,13 @@ const RadioBooleanButton = ({
   const showNoInformation = autofillReadonly ? value === '' : true
    
   return (
-    <div>
+    <div className={className}>
       <RadioButton
         key={`${name}-true`}
         id={`${name}-true`}
         label="Kyllä"
         disabled={disabled}
-        className={`radio-button radio-button-true ${className}`}
+        className={`radio-button radio-button-true`}
         value="Kyllä"
         error={error}
         name={name}
@@ -46,7 +46,7 @@ const RadioBooleanButton = ({
         id={`${name}-false`}
         key={`${name}-false`}
         disabled={disabled}
-        className={`radio-button radio-button-false ${className}`}
+        className={`radio-button radio-button-false`}
         error={error}
         value="Ei"
         name={name}
@@ -59,7 +59,7 @@ const RadioBooleanButton = ({
           id={`${name}-null`}
           label="Tieto puuttuu"
           disabled={disabled}
-          className={`radio-button radio-button-null ${className}`}
+          className={`radio-button radio-button-null`}
           value=""
           error={error}
           name={name}
