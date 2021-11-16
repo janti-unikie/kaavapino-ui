@@ -39,9 +39,7 @@ export const getFieldAutofillValue = (
         const lastIndex = fieldName ? fieldName.lastIndexOf('.') : -1
         const fieldNameFieldsetPart = fieldName ? fieldName.substring(0, lastIndex) : ''
 
-        let results = []
-        if (conditions && conditions.length > 0) {
-          let formExtraValue
+        let formExtraValue
 
           if (extraVariables && extraVariables[0]) {
             // Check first if value is not inside fieldset
@@ -65,6 +63,10 @@ export const getFieldAutofillValue = (
           if (formExtraValue === undefined || formExtraValue === null) {
             formExtraValue = ''
           }
+
+        let results = []
+        if (conditions && conditions.length > 0) {
+          
 
           results = []
           let notFoundValues = 0
@@ -157,15 +159,20 @@ export const getFieldAutofillValue = (
               }
             }
           }
-
-          if (!results.includes(false)) {
+           
+          if (!results.includes(false) ) {
             return formExtraValue + thenBranch
           }
 
-          if (notFoundValues == conditions.length) {
-            return ''
+          
+
+          if (notFoundValues == conditions.length ) {
+            return formExtraValue
           }
+
+         
         }
+        
       } else {
         if (!condition) {
           continue
