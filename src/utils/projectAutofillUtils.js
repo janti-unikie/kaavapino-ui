@@ -103,8 +103,7 @@ export const getFieldAutofillValue = (
 
             // List rule
             if (comparisonValueType === 'list<string>') {
-
-              if ( formValue === undefined || formValue === null ) {
+              if (formValue === undefined || formValue === null) {
                 notFoundValues++
               }
               if (comparisonValue.includes(formValue)) {
@@ -135,20 +134,16 @@ export const getFieldAutofillValue = (
               }
 
               if (operator === EQUAL) {
-
                 const value = comparisonValue === realValue
                 results.push(value)
               }
               if (operator === NOT_EQUAL) {
-
                 const value = comparisonValue !== realValue
                 results.push(value)
-                
               }
             }
             if (comparisonValueType === 'number' || comparisonValueType === 'string') {
-
-              if ( formValue === undefined || formValue === null ) {
+              if (formValue === undefined || formValue === null) {
                 notFoundValues++
               }
               if (operator === EQUAL) {
@@ -166,18 +161,13 @@ export const getFieldAutofillValue = (
           if (!results.includes(false)) {
             return formExtraValue + thenBranch
           }
-        
+
           if (notFoundValues == conditions.length) {
             return ''
           }
         }
-
-       
-
-       
       } else {
-
-        if ( !condition ) {
+        if (!condition) {
           continue
         }
         const variable = condition.variable
@@ -356,6 +346,6 @@ export const getFieldAutofillValue = (
       }
     }
   }
-  
+
   return returnValue
 }
