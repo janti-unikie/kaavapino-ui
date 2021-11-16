@@ -207,6 +207,27 @@ class ProjectEditPage extends Component {
       })
     }
   }
+
+  showTimelineModal = show => {
+
+    const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, this.props.users)
+
+    if (showCreate) {
+      this.setState({ showEditProjectTimetableForm: show })
+    }
+  }
+
+  getSelectedPhase = () => {
+    let checkedSelectedPhase = this.props.selectedPhase
+    const search = this.props.location.search
+    const params = new URLSearchParams(search)
+
+    if (params.get('phase')) {
+      checkedSelectedPhase = +params.get('phase')
+    }
+    return checkedSelectedPhase
+  }
+
   render() {
     const {
       schema,
@@ -222,7 +243,6 @@ class ProjectEditPage extends Component {
       saveProjectBase,
       currentProject,
       submitErrors,
-      users,
       t,
       saveProjectBasePayload,
       currentPhases
@@ -231,15 +251,9 @@ class ProjectEditPage extends Component {
     if (!schema) {
       return <LoadingSpinner className="loader-icon" />
     }
-    let checkedSelectedPhase = selectedPhase
-    const search = this.props.location.search
-    const params = new URLSearchParams(search)
+  
 
-    if (params.get('phase')) {
-      checkedSelectedPhase = +params.get('phase')
-    }
-
-    const currentSchemaIndex = schema.phases.findIndex(s => s.id === checkedSelectedPhase)
+    const currentSchemaIndex = schema.phases.findIndex(s => s.id === this.getSelectedPhase())
 
     const currentSchema = schema.phases[currentSchemaIndex]
     const projectPhaseIndex = schema.phases.findIndex(s => s.id === phase)
@@ -251,17 +265,13 @@ class ProjectEditPage extends Component {
     if (currentSchemaIndex === -1) {
       return <LoadingSpinner className="loader-icon" />
     }
-    const showTimelineModal = show => {
-      if (showCreate) {
-        this.setState({ showEditProjectTimetableForm: show })
-      }
-    }
+   
 
-    const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
-
+    const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, this.props.users)
+    
     return (
       <div>
-        {!this.state.isMobile && <div className="timeline" onClick={() => showTimelineModal(true)}>
+        {!this.state.isMobile && <div className="timeline" onClick={() => this.showTimelineModal(true)}>
           <ProjectTimeline
             deadlines={currentProject.deadlines}
             projectView={true}
