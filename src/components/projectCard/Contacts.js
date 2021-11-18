@@ -17,7 +17,7 @@ function Contacts({ fields, hideTitle, personnel }) {
       field.value.forEach(current => {
         if (!field.choices) {
           const currentPerson =
-            personnel && personnel.find(person => (person.id = current.value))
+            personnel && personnel.find(person => (person.id === current))
 
           if (currentPerson) {
             completeValue.push(currentPerson.name)
