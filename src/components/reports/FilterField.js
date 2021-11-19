@@ -6,9 +6,10 @@ import { TextInput } from 'hds-react'
 import { REPORT_FORM } from '../../constants'
 import CustomADUserCombobox from '../input/CustomADUserCombobox'
 import { isArray } from 'lodash'
-import { Grid } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react'
 
-function FilterField({ type, id, options, change, disabled, inputType}) {
+function FilterField({ type, id, options, change, disabled, inputType }) {
+  console.log('🚀 ~ file: FilterField.js ~ line 12 ~ FilterField ~ type', type)
   const [start, setStart] = useState(null)
   const [end, setEnd] = useState(null)
 
@@ -19,7 +20,7 @@ function FilterField({ type, id, options, change, disabled, inputType}) {
     const value = `${start},${end}`
     change(REPORT_FORM, id, value)
   }, [start, end])
-  
+
   const renderUser = () => {
     return (
       <CustomADUserCombobox
@@ -53,39 +54,37 @@ function FilterField({ type, id, options, change, disabled, inputType}) {
       />
     )
   }
-  const renderTimeRange = () => {
+  const renderRange = type => {
     return (
       <div>
         <div className="range-filters">
-        <Grid>
-
-          <Grid.Column width={7}>
-          <TextInput
-            onChange={event => {
-              setStart(event.target.value)
-            }}
-            type="date"
-            className="date-input"
-            style={{height: "50px"}}
-            disabled={disabled}
-          />
-          </Grid.Column>
-          <Grid.Column className="center-horizontal" width={1}>
-            -
+          <Grid>
+            <Grid.Column width={7}>
+              <TextInput
+                onChange={event => {
+                  setStart(event.target.value)
+                }}
+                type={type}
+                className="date-input"
+                style={{ height: '50px' }}
+                disabled={disabled}
+              />
             </Grid.Column>
-          <Grid.Column width={7}>
-          <TextInput
-            onChange={event => {
-              setEnd(event.target.value)
-            }}
-            placeholder="Lopetus"
-            type="date"
-            className="date-input"
-            disabled={disabled}
-          />
-           </Grid.Column>
+            <Grid.Column className="center-horizontal" width={1}>
+              -
+            </Grid.Column>
+            <Grid.Column width={7}>
+              <TextInput
+                onChange={event => {
+                  setEnd(event.target.value)
+                }}
+                placeholder="Lopetus"
+                type={type}
+                className="date-input"
+                disabled={disabled}
+              />
+            </Grid.Column>
           </Grid>
-
         </div>
       </div>
     )
@@ -115,7 +114,7 @@ function FilterField({ type, id, options, change, disabled, inputType}) {
   }
 
   const renderComponent = () => {
-    if (options && options.length > 0 ) {
+    if (options && options.length > 0) {
       return renderSelect()
     }
 
@@ -124,7 +123,7 @@ function FilterField({ type, id, options, change, disabled, inputType}) {
     }
 
     if (type === 'range') {
-      return renderTimeRange()
+      return renderRange(inputType)
     }
 
     return renderTextInput()
