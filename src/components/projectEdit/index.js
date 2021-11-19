@@ -128,8 +128,6 @@ class ProjectEditPage extends Component {
     this.props.saveProject()
   }
   handleAutoSave = () => {
-    console.log("🚀 ~ file: index.js ~ line 133 ~ ProjectEditPage ~ this.state.showEditProjectTimetableForm", this.state.showEditProjectTimetableForm)
-   console.log(this.props.currentProject)
     if ( this.state.showEditFloorAreaForm || this.state.showEditProjectTimetableForm ) {
       return
     }
