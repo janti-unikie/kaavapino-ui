@@ -9,7 +9,6 @@ import { isArray } from 'lodash'
 import { Grid } from 'semantic-ui-react'
 
 function FilterField({ type, id, options, change, disabled, inputType }) {
-  console.log('🚀 ~ file: FilterField.js ~ line 12 ~ FilterField ~ type', type)
   const [start, setStart] = useState(null)
   const [end, setEnd] = useState(null)
 
