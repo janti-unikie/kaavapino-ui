@@ -84,7 +84,7 @@ class EditForm extends Component {
           iconRight={<IconArrowUp/>}
           className="scroll-to-top"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >s
+        >
           <div>Sivun alkuun</div>
         </Button>
       </Form>
