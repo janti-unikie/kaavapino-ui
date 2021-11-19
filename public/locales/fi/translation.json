@@ -79,14 +79,17 @@
     "documents-title": "Valmiit dokumentit",
     "yes": "Kyllä",
     "no": "Ei",
-    "documents-created": "Osa tämän vaiheen dokumenteista on jo ladattu ulos. Ole tarvittaessa yhteydessä projektin vastuuhenkilöön etunimi.sukunimi@hel.fi.",
+    "documents-created": "Osa tämän vaiheen dokumenteista on jo ladattu ulos. Ole tarvittaessa yhteydessä projektin vastuuhenkilöön {{email}}.",
     "no-documents": "Ei dokumentteja",
     "phase-passed": "Vaihe ohitettu",
     "load": "Lataa ulos kun valmis",
     "load-preview": "Esikatsele keskeneräistä",
     "phase": "Kaavan vaihe:",
     "document-last-loaded": "Ladattu ulos viimeksi:",
-    "project-created-log": "{{timestamp}} Projekti luotu {{name}}"
+    "project-created-log": "{{timestamp}} Projekti luotu {{name}}",
+    "default-email": "etunimi.sukunimi@hel.fi",
+    "save-warning": "Hankkeessa on tallentamattomia muutoksia. Haluatteko silti jatkaa?"
+
   },
   "nav-header": {
     "latest-update": "Viimeisin muokkaus: {{latestUpdate}}"

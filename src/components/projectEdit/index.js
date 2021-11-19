@@ -62,6 +62,7 @@ class ProjectEditPage extends Component {
     const { project } = this.props
     this.props.fetchSchemas(project.id, project.subtype)
   }
+  
   componentDidUpdate() {
 
     this.scroll()
@@ -77,7 +78,7 @@ class ProjectEditPage extends Component {
         isMobile: true
       })
     }
-   
+
     this.scroll()
 
     const search = this.props.location.search
@@ -87,13 +88,12 @@ class ProjectEditPage extends Component {
 
     if (viewParameter === 'deadlines') {
       this.setState({ ...this.state, showEditProjectTimetableForm: true })
-      this.props.history.replace( { ...this.props.location, search: ''} )
+      this.props.history.replace({ ...this.props.location, search: '' })
     }
     if (viewParameter === 'floorarea') {
       this.setState({ ...this.state, showEditFloorAreaForm: true })
-      this.props.history.replace( { ...this.props.location, search: ''} )
+      this.props.history.replace({ ...this.props.location, search: '' })
     }
-
   }
 
   componentWillUnmount() {
@@ -108,8 +108,8 @@ class ProjectEditPage extends Component {
 
     const element = document.getElementById(param)
 
-    if ( param && element ) {
-      this.props.history.replace( { ...this.props.location, search: ''} )
+    if (param && element) {
+      this.props.history.replace({ ...this.props.location, search: '' })
     }
 
     element && element.scrollIntoView()
@@ -128,6 +128,10 @@ class ProjectEditPage extends Component {
     this.props.saveProject()
   }
   handleAutoSave = () => {
+    if ( this.state.showEditFloorAreaForm || this.state.showEditProjectTimetableForm ) {
+      return
+    }
+
     if (this.props.syncErrors && !_.isEmpty(this.props.syncErrors)) {
       return
     }
@@ -209,8 +213,10 @@ class ProjectEditPage extends Component {
   }
 
   showTimelineModal = show => {
-
-    const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, this.props.users)
+    const showCreate = projectUtils.isUserPrivileged(
+      this.props.currentUserId,
+      this.props.users
+    )
 
     if (showCreate) {
       this.setState({ showEditProjectTimetableForm: show })
@@ -251,9 +257,10 @@ class ProjectEditPage extends Component {
     if (!schema) {
       return <LoadingSpinner className="loader-icon" />
     }
-  
 
-    const currentSchemaIndex = schema.phases.findIndex(s => s.id === this.getSelectedPhase())
+    const currentSchemaIndex = schema.phases.findIndex(
+      s => s.id === this.getSelectedPhase()
+    )
 
     const currentSchema = schema.phases[currentSchemaIndex]
     const projectPhaseIndex = schema.phases.findIndex(s => s.id === phase)
@@ -265,22 +272,33 @@ class ProjectEditPage extends Component {
     if (currentSchemaIndex === -1) {
       return <LoadingSpinner className="loader-icon" />
     }
-   
 
-    const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, this.props.users)
-    
+    const showCreate = projectUtils.isUserPrivileged(
+      this.props.currentUserId,
+      this.props.users
+    )
+
     return (
       <div>
-        {!this.state.isMobile && <div className="timeline" onClick={() => this.showTimelineModal(true)}>
-          <ProjectTimeline
-            deadlines={currentProject.deadlines}
-            projectView={true}
-            onhold={currentProject.onhold}
-          />
-        </div>}
+        {!this.state.isMobile && (
+          <div className="timeline" onClick={() => this.showTimelineModal(true)}>
+            <ProjectTimeline
+              deadlines={currentProject.deadlines}
+              projectView={true}
+              onhold={currentProject.onhold}
+            />
+          </div>
+        )}
         {currentProject.phase_documents_creation_started === true &&
           currentProject.phase_documents_created === false && (
-            <InfoComponent>{t('project.documents-created')}</InfoComponent>
+            <InfoComponent>
+              {t('project.documents-created', {
+                email:
+                  currentProject && currentProject.attribute_data
+                    ? currentProject.attribute_data.vastuuhenkilo_sahkoposti
+                    : t('project.default-email')
+              })}
+            </InfoComponent>
           )}
         <div className={`project-input-container ${highlightGroup}`}>
           <div className="project-input-left">
@@ -318,7 +336,7 @@ class ProjectEditPage extends Component {
                 <Prompt
                   onCancel={onCancel}
                   onConfirm={onConfirm}
-                  message="Hankkeessa on tallentamattomia muutoksia. Haluatteko silti jatkaa?"
+                  message={t('project.save-warning')}
                 />
               )}
             </NavigationPrompt>

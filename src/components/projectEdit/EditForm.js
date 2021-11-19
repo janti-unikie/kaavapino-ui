@@ -8,10 +8,7 @@ import Shoutbox from '../shoutbox'
 import {Button, IconArrowUp } from 'hds-react'
 
 class EditForm extends Component {
-  componentDidMount() {
-    this.autoSave = setInterval(() => this.props.handleSave(), 180000)
-  }
-
+ 
   componentWillUnmount() {
     clearTimeout(this.timeout)
     clearInterval(this.autoSave)
