@@ -296,7 +296,7 @@ class ProjectEditPage extends Component {
                 email:
                   currentProject && currentProject.attribute_data
                     ? currentProject.attribute_data.vastuuhenkilo_sahkoposti
-                    : 'etunimi.sukunimi@hel.fi'
+                    : t('project.default-email')
               })}
             </InfoComponent>
           )}
@@ -336,7 +336,7 @@ class ProjectEditPage extends Component {
                 <Prompt
                   onCancel={onCancel}
                   onConfirm={onConfirm}
-                  message="Hankkeessa on tallentamattomia muutoksia. Haluatteko silti jatkaa?"
+                  message={t('project.save-warning')}
                 />
               )}
             </NavigationPrompt>
