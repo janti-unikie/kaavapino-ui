@@ -1,28 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { getFormValues } from 'redux-form'
 import { EDIT_PROJECT_TIMETABLE_FORM } from '../../constants'
 import { getFieldAutofillValue } from '../../utils/projectAutofillUtils'
 import { useSelector } from 'react-redux'
 import { Checkbox } from 'hds-react'
 
-const DeadlineCheckbox = ({
+const CustomCheckbox = ({
   input: { name, value, onChange },
   meta: { error },
   autofillRule,
   label,
   className,
   disabled,
-  updated
+  updated,
+  formName,
+  display
 }) => {
+  const formValues = useSelector(getFormValues(formName ? formName : EDIT_PROJECT_TIMETABLE_FORM))
 
-  const formValues = useSelector(getFormValues(EDIT_PROJECT_TIMETABLE_FORM))
-  let inputValue = value
+  const [checked, setChecked] = useState()
 
-  if (autofillRule) {
-    inputValue = getFieldAutofillValue(autofillRule, formValues)
-  }
-  const [checked, setChecked] = useState(inputValue)
+  useEffect(() => {
 
+    let inputValue = value
+
+    if (autofillRule) {
+      inputValue = getFieldAutofillValue(autofillRule, formValues, name)
+
+      if ( display === 'readonly_checkbox') {
+        onChange( inputValue )
+      }
+    }
+
+    setChecked( inputValue )
+  }, [value])
+ 
   const onChangeSave = () => {
     onChange(!checked)
     setChecked( !checked )
@@ -43,4 +55,4 @@ const DeadlineCheckbox = ({
   )
 }
 
-export default DeadlineCheckbox
+export default CustomCheckbox

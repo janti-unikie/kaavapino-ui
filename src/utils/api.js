@@ -45,7 +45,8 @@ class Api {
 
 // Different API endpoints
 export const commentApi = new Api('/v1/projects/:id/comments/')
-export const documentApi = new Api('/v1/projects/:id/documents/')
+export const documentsApi = new Api('/v1/projects/:id/documents/')
+
 export const phaseApi = new Api('/v1/phases/')
 export const projectApi = new Api('/v1/projects/')
 export const projectDeadlinesApi = new Api('/v1/deadlines/')
@@ -55,3 +56,16 @@ export const schemaApi = new Api('/v1/schemas/')
 export const userApi = new Api('/v1/users/')
 export const reportApi = new Api('/v1/reports/')
 export const footerApi = new Api('/v1/footer')
+export const overviewFloorAreaApi = new Api('v1/projects/overview/floor_area/')
+export const overviewBySubtypeApi = new Api('v1/projects/overview/by_subtype/')
+export const overviewFiltersApi = new Api('v1/projects/overview/filters')
+export const overviewMapApi = new Api('/v1/projects/overview/on_map/')
+export const overviewFloorAreaTargetApi = new Api('/v1/targetfloorareas')
+
+export const cardSchemaApi = new Api('/v1/cardschema')
+export const externalDocumentsApi = new Api('/v1/projects/:id/external_documents/')
+export const attributesApi = new Api('/v1/attributes')
+export const personnelApi = new Api('/v1/personnel')
+export const legendApi = new Api('/v1/legend')
+
+

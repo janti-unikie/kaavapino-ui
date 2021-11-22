@@ -5,17 +5,25 @@ import {
   saveProjectBase,
   changeProjectPhase,
   getProjectSnapshot,
-  setSelectedPhaseId
+  setSelectedPhaseId,
+  getExternalDocuments
 } from '../../actions/projectActions'
 import { fetchUsers } from '../../actions/userActions'
+import { getProjectCardFields, getAttributes } from '../../actions/schemaActions'
+
 import {
   currentProjectSelector,
   currentProjectLoadedSelector,
   changingPhaseSelector,
-  selectedPhaseSelector
+  selectedPhaseSelector,
+  externalDocumentsSelector,
+  creatorSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
-import { allEditFieldsSelector } from '../../selectors/schemaSelector'
+import {
+  allEditFieldsSelector,
+  projectCardFieldsSelector
+} from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader } from '../common/NavHeader'
 import ProjectEditPage from '../projectEdit'
@@ -29,11 +37,13 @@ import { withTranslation } from 'react-i18next'
 import DownloadProjectDataModal from './DownloadProjectDataModal'
 import { DOWNLOAD_PROJECT_DATA_FORM } from '../../constants'
 import { getFormValues } from 'redux-form'
-import moment from 'moment'
 import { userIdSelector } from '../../selectors/authSelector'
-import { Button, IconPen, IconPrinter, IconDownload, LoadingSpinner } from 'hds-react'
+import { IconPen, IconPrinter, IconDownload, LoadingSpinner, Button } from 'hds-react'
 import { withRouter } from 'react-router-dom'
+import dayjs from 'dayjs'
+
 class ProjectPage extends Component {
+  test = React.createRef()
   constructor(props) {
     super(props)
     if (props.currentProject) {
@@ -43,7 +53,6 @@ class ProjectPage extends Component {
     }
 
     this.state = {
-      showDeadlineModal: false,
       showBaseInformationForm: false,
       showPrintProjectDataModal: false,
       deadlines: null
@@ -51,12 +60,29 @@ class ProjectPage extends Component {
   }
 
   componentDidMount() {
-    const { currentProjectLoaded, users } = this.props
-    if (!currentProjectLoaded) {
+    const { currentProjectLoaded, users, getAttributes, currentProject } = this.props
+
+    getAttributes()
+    if (
+      !currentProjectLoaded ||
+      !currentProject ||
+      currentProject.id !== +this.props.id
+    ) {
       this.props.initializeProject(this.props.id)
     }
     if (!users || users.length === 0) {
       this.props.fetchUsers()
+    }
+    window.scrollTo({ top: 0, behavior: 'auto' })
+
+    const search = this.props.location.search
+    const params = new URLSearchParams(search)
+
+    const viewParameter = params.get('property')
+
+    if (viewParameter) {
+      this.setState({ ...this.state, showBaseInformationForm: true })
+      this.props.history.replace( { ...this.props.location, search: ''} )
     }
   }
 
@@ -71,6 +97,8 @@ class ProjectPage extends Component {
       document.title = currentProject.name
     }
     if (prevProps.edit && !edit) this.props.setSelectedPhaseId(currentProject.phase)
+
+    getExternalDocuments(this.props.id)
   }
 
   switchDisplayedPhase = phase => {
@@ -93,14 +121,6 @@ class ProjectPage extends Component {
     return path
   }
 
-  getSubTitle = () => {
-    const { edit } = this.props
-    if (edit) {
-      return 'Tietojen muokkaus'
-    }
-    return null
-  }
-
   getCurrentPhases() {
     let { currentProject, phases } = this.props
     const { type, subtype } = currentProject
@@ -117,74 +137,183 @@ class ProjectPage extends Component {
     })
   }
 
-  getProjectPageContent = () => {
-    const { edit, documents, currentProject, phases } = this.props
-    const { selectedPhase } = this.props
-    const currentPhases = this.getCurrentPhases()
+  getProjectEditContent = () => {
+    const { currentProject, users, projectSubtypes, selectedPhase } = this.props
 
-    if (edit) {
-      return (
+    const currentPhases = this.getCurrentPhases()
+    return (
+      <div key="edit">
+        <NavHeader
+          routeItems={this.getRouteItems()}
+          title={currentProject.name}
+          actions={this.getEditNavActions()}
+          infoOptions={this.getAllChanges()}
+        />
+        <NewProjectFormModal
+          currentProject={currentProject}
+          modalOpen={this.state.showBaseInformationForm}
+          initialValues={{
+            name: currentProject.name,
+            public: currentProject.public,
+            subtype: currentProject.subtype,
+            user: currentProject.user,
+            create_principles: currentProject.create_principles,
+            create_draft: currentProject.create_draft
+          }}
+          handleSubmit={this.props.saveProjectBase}
+          handleClose={() => this.toggleBaseInformationForm(false)}
+          users={users}
+          projectSubtypes={projectSubtypes}
+        />
+        <DownloadProjectDataModal
+          currentProject={currentProject}
+          open={this.state.showPrintProjectDataModal}
+          initialValues={{}}
+          handleClose={() => this.togglePrintProjectDataModal(false)}
+        />
         <ProjectEditPage
           currentPhases={currentPhases}
           selectedPhase={selectedPhase}
           switchDisplayedPhase={this.switchDisplayedPhase}
           project={currentProject}
         />
-      )
-    }
-    if (documents) {
-      return <ProjectDocumentsPage />
-    }
+      </div>
+    )
+  }
+  getProjectDocumentsContent = () => {
+    const { currentProject, users, projectSubtypes } = this.props
+
     return (
-      <ProjectCardPage
-        attributeData={currentProject.attribute_data}
-        type={currentProject.type}
-        deadlines={currentProject.deadlines}
-        name={currentProject.name}
-        subtype={currentProject.subtype}
-        phases={phases}
-      />
+      <div key="documents">
+        <NavHeader
+          routeItems={this.getRouteItems()}
+          title={currentProject.name}
+          actions={this.getDocumentsNavActions()}
+          infoOptions={this.getAllChanges()}
+        />
+        <NewProjectFormModal
+          currentProject={currentProject}
+          modalOpen={this.state.showBaseInformationForm}
+          initialValues={{
+            name: currentProject.name,
+            public: currentProject.public,
+            subtype: currentProject.subtype,
+            user: currentProject.user,
+            create_principles: currentProject.create_principles,
+            create_draft: currentProject.create_draft
+          }}
+          handleSubmit={this.props.saveProjectBase}
+          handleClose={() => this.toggleBaseInformationForm(false)}
+          users={users}
+          projectSubtypes={projectSubtypes}
+        />
+        <DownloadProjectDataModal
+          currentProject={currentProject}
+          open={this.state.showPrintProjectDataModal}
+          initialValues={{}}
+          handleClose={() => this.togglePrintProjectDataModal(false)}
+        />
+        <ProjectDocumentsPage />
+      </div>
     )
   }
 
-  getNavActions = () => {
-    const { edit, documents, users, t } = this.props
+  getProjectCardContent = () => {
+    const { currentProject, externalDocuments, users, projectSubtypes } = this.props
+
+    return (
+      <div key="project-card">
+        <NavHeader
+          routeItems={this.getRouteItems()}
+          title={currentProject.name}
+          actions={this.getProjectCardNavActions()}
+          infoOptions={this.getAllChanges()}
+        />
+        <NewProjectFormModal
+          currentProject={currentProject}
+          modalOpen={this.state.showBaseInformationForm}
+          initialValues={{
+            name: currentProject.name,
+            public: currentProject.public,
+            subtype: currentProject.subtype,
+            user: currentProject.user,
+            create_principles: currentProject.create_principles,
+            create_draft: currentProject.create_draft
+          }}
+          handleSubmit={this.props.saveProjectBase}
+          handleClose={() => this.toggleBaseInformationForm(false)}
+          users={users}
+          projectSubtypes={projectSubtypes}
+        />
+        <DownloadProjectDataModal
+          currentProject={currentProject}
+          open={this.state.showPrintProjectDataModal}
+          initialValues={{}}
+          handleClose={() => this.togglePrintProjectDataModal(false)}
+        />
+        <ProjectCardPage projectId={this.props.id} documents={externalDocuments} />
+      </div>
+    )
+  }
+
+  getProjectPageContent = () => {
+    const { edit, documents } = this.props
+    if (edit) {
+      return this.getProjectEditContent()
+    }
+    if (documents) {
+      return this.getProjectDocumentsContent()
+    }
+    return this.getProjectCardContent()
+  }
+  getProjectCardNavActions = () => {
+    const { users, t } = this.props
 
     const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
 
-    return !(edit || documents) ? (
+    return (
       <span className="header-buttons">
         {showCreate && (
           <Button
             variant="secondary"
             className="header-button"
             onClick={this.modifyContent}
-            iconLeft={<IconPen/>}
+            iconLeft={<IconPen />}
           >
             {t('project.modify')}
           </Button>
         )}
-        <Button variant="secondary" iconLeft={<IconPen/>} onClick={this.createDocuments}>
-          {t('project.create-documents')}
-        </Button>
-        <Button variant="secondary" iconLeft={<IconPrinter/>} onClick={() => window.print()}>
-          {t('project.print-project-card')}
-        </Button>
+        {showCreate && (
+          <Button
+            variant="secondary"
+            iconLeft={<IconPen />}
+            onClick={this.createDocuments}
+          >
+            {t('project.create-documents')}
+          </Button>
+        )}
         <Button
           variant="secondary"
-          iconLeft={<IconPen/>}
-          onClick={() => this.setState({ showDeadlineModal: true })}
+          iconLeft={<IconPrinter />}
+          onClick={() => window.print()}
         >
-          Määräajat
+          {t('project.print-project-card')}
         </Button>
       </span>
-    ) : (
+    )
+  }
+  getEditNavActions = () => {
+    const { users, t } = this.props
+
+    const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
+
+    return (
       <span className="header-buttons">
         <Button
           variant="secondary"
           className="header-button"
           onClick={this.openProjectDataModal}
-          iconLeft={<IconDownload/>}
+          iconLeft={<IconDownload />}
         >
           Tulosta projektin tiedot
         </Button>
@@ -193,17 +322,46 @@ class ProjectPage extends Component {
             variant="secondary"
             className="header-button"
             onClick={() => this.toggleBaseInformationForm(true)}
-            iconLeft={<IconPen/>}
+            iconLeft={<IconPen />}
           >
             {t('project.modify-project')}
           </Button>
-          )
-        }
-        <Button  variant="primary" iconLeft={<IconPen/>} onClick={this.checkProjectCard}>
+        )}
+        <Button variant="primary" iconLeft={<IconPen />} onClick={this.checkProjectCard}>
           {t('project.check-project-card')}
         </Button>
       </span>
     )
+  }
+
+  getDocumentsNavActions = () => {
+    const { users, t } = this.props
+
+    const showCreate = projectUtils.isUserPrivileged(this.props.currentUserId, users)
+
+    return (
+      <span className="header-buttons">
+       
+       {showCreate && (
+          <Button
+            variant="secondary"
+            className="header-button"
+            onClick={this.modifyContent}
+            iconLeft={<IconPen />}
+          >
+            {t('project.modify')}
+          </Button>
+        )}
+        <Button variant="primary" iconLeft={<IconPen />} onClick={this.checkProjectCard}>
+          {t('project.check-project-card')}
+        </Button>
+      </span>
+    )
+  }
+
+  getNavActions = () => {
+    const { edit } = this.props
+    return !edit ? this.getProjectCardButtons() : this.getEditButtons()
   }
 
   modifyContent = () => {
@@ -229,22 +387,41 @@ class ProjectPage extends Component {
   }
   openProjectDataModal = () => this.togglePrintProjectDataModal(true)
 
-  toggleBaseInformationForm = opened => this.setState({ ...this.state, showBaseInformationForm: opened })
+  toggleBaseInformationForm = opened =>
+    this.setState({ ...this.state, showBaseInformationForm: opened })
 
   getAllChanges = () => {
-    const { allEditFields, edit } = this.props
+    const { allEditFields, edit, creator, t } = this.props
 
     if (!edit) return []
-    return allEditFields.map((f, i) => {
-      const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.name} ${f.user_name}`
+
+    const returnValues = allEditFields.map((f, i) => {
+      const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.label} ${
+        f.user_name
+      }`
       return {
+        name: f.name,
+        label: f.attribute_label,
         text: value,
         value: `${value}-${i}`,
         key: `${value}-${i}`,
         oldValue: f.old_value,
-        newValue: f.new_value
+        newValue: f.new_value,
+        labels: f.labels
       }
     })
+
+    returnValues.push({
+      name: 'Project created',
+      label: creator.user_name,
+      text: t('project.project-created-log', {
+        timestamp: projectUtils.formatDateTime(creator.timestamp),
+        name: creator.user_name
+      }),
+      hideChangeValue: true
+    })
+
+    return returnValues
   }
 
   togglePrintProjectDataModal = opened =>
@@ -261,9 +438,7 @@ class ProjectPage extends Component {
           ]}
         />
         <div className="project-page-content">
-          <LoadingSpinner className="loader-icon">
-            {t('loading')}
-          </LoadingSpinner>
+          <LoadingSpinner className="loader-icon">{t('loading')}</LoadingSpinner>
         </div>
       </div>
     )
@@ -275,17 +450,11 @@ class ProjectPage extends Component {
     const phase = formValues['phase']
     const date = formValues['date']
 
-    getProjectSnapshot(currentProject.id, moment(date).format(), phase)
+    getProjectSnapshot(currentProject.id, dayjs(date), phase)
   }
 
   render() {
-    const {
-      currentProject,
-      phases,
-      currentProjectLoaded,
-      users,
-      projectSubtypes
-    } = this.props
+    const { phases, currentProjectLoaded } = this.props
 
     const loading = !currentProjectLoaded || !phases
 
@@ -295,35 +464,6 @@ class ProjectPage extends Component {
 
     return (
       <div className="project-container">
-        <NavHeader
-          routeItems={this.getRouteItems()}
-          title={currentProject.name}
-          subTitle={this.getSubTitle()}
-          actions={this.getNavActions()}
-          infoOptions={this.getAllChanges()}
-        />
-        <NewProjectFormModal
-          currentProject={currentProject}
-          modalOpen={this.state.showBaseInformationForm}
-          initialValues={{
-            name: currentProject.name,
-            public: currentProject.public,
-            subtype: currentProject.subtype,
-            user: currentProject.user,
-            create_principles: currentProject.create_principles,
-            create_draft: currentProject.create_draft
-          }}
-          handleSubmit={this.props.saveProjectBase}
-          handleClose={() => this.toggleBaseInformationForm(false)}
-          users={users}
-          projectSubtypes={projectSubtypes}
-        />
-        <DownloadProjectDataModal
-          currentProject={currentProject}
-          open={this.state.showPrintProjectDataModal}
-          initialValues={{}}
-          handleClose={() => this.togglePrintProjectDataModal(false)}
-        />
         <div className="project-page-content">{this.getProjectPageContent()}</div>
       </div>
     )
@@ -336,7 +476,10 @@ const mapDispatchToProps = {
   fetchUsers,
   changeProjectPhase,
   getProjectSnapshot,
-  setSelectedPhaseId
+  setSelectedPhaseId,
+  getProjectCardFields,
+  getExternalDocuments,
+  getAttributes
 }
 
 const mapStateToProps = state => {
@@ -350,11 +493,13 @@ const mapStateToProps = state => {
     allEditFields: allEditFieldsSelector(state),
     formValues: getFormValues(DOWNLOAD_PROJECT_DATA_FORM)(state),
     currentUserId: userIdSelector(state),
-    selectedPhase: selectedPhaseSelector(state)
+    selectedPhase: selectedPhaseSelector(state),
+    projectCardFields: projectCardFieldsSelector(state),
+    externalDocuments: externalDocumentsSelector(state),
+    creator: creatorSelector(state)
   }
 }
 
-export default withRouter( connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withTranslation()(ProjectPage)))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ProjectPage))
+)

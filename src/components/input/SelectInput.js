@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import inputUtils from '../../utils/inputUtils'
 import { Select } from 'hds-react'
+import { isArray } from 'lodash'
 
 const SelectInput = ({
   input,
@@ -14,34 +15,49 @@ const SelectInput = ({
 }) => {
   const currentValue = []
 
-  const getValue = value => {
-    const current = options.find(option => option.value === value)
-    return current && current.label
+  const getLabel = value => {
+    const current = options && options.find(option => option.value === value)
+    if (current && current.label && current.label !== ' ') {
+      return current.label
+    } else {
+      return value
+    }
   }
   let currentSingleValue
 
   if (multiple) {
-    input.value.forEach(value =>
-      currentValue.push({ label: getValue(value), value: value })
-    )
+    if (isArray(input && input.value)) {
+      input.value.forEach(value =>
+        currentValue.push({ label: getLabel(value), value: value })
+      )
+    } else {
+      currentValue.push(input.value)
+    }
   } else {
-    const current = options.find(option => option.value === input.value)
-    currentSingleValue = {
-      label: current && current.label,
-      value: current && current.value
+    const current = options && options.find(option => option.value === input.value)
+
+    if (current) {
+      currentSingleValue = {
+        label: current && current.label,
+        value: current && current.value
+      }
     }
   }
+
+  options = options
+    ? options.filter(option => option.label && option.label.trim() !== '')
+    : []
 
   return (
     <Select
       placeholder={placeholder}
       className="selection"
       id={input.name}
-          name={input.name}
+      name={input.name}
       multiselect={multiple}
       error={inputUtils.hasError(error)}
       onBlur={onBlur}
-      clearable="true"
+      clearable={true}
       disabled={disabled}
       defaultValue={multiple ? currentValue : currentSingleValue}
       options={options}

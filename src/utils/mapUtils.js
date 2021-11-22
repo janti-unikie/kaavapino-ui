@@ -2,34 +2,44 @@ import L from 'leaflet'
 import 'proj4'
 import 'proj4leaflet'
 
+export const helsinkiCenter = [60.192059, 24.945831]
+
 export const EPSG3879 = () => {
   const crsName = 'EPSG:3879'
   const projDef =
-    '+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
-  const bounds = L.bounds(L.point(-548576, 6291456), L.point(1548576, 8388608))
-  const originNw = [bounds.min.x, bounds.max.y]
+    '+proj=tmerc +lat_0=0 +lon_0=25 +k=1 +x_0=25500000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
+  const boundPoints = [
+    [24451424, 6291456],
+    [26548576, 8388608]
+  ]
+  const resolutions = [
+    8192,
+    4096,
+    2048,
+    1024,
+    512,
+    256,
+    128,
+    64,
+    32,
+    16,
+    8,
+    4,
+    2,
+    1,
+    0.5,
+    0.25,
+    0.125,
+    0.0625
+  ]
+  const origin = [24451424, 8388608]
+  const bounds = L.bounds(L.point(boundPoints[0]), L.point(boundPoints[1]))
+
   const crsOpts = {
-    resolutions: [
-      8192,
-      4096,
-      2048,
-      1024,
-      512,
-      256,
-      128,
-      64,
-      32,
-      16,
-      8,
-      4,
-      2,
-      1,
-      0.5,
-      0.25,
-      0.125
-    ],
+    origin,
+    resolutions,
     bounds,
-    transformation: new L.Transformation(1, -originNw[0], -1, originNw[1])
+    transformation: new L.Transformation(1, -bounds.min.x, -1, bounds.max.y)
   }
   return new L.Proj.CRS(crsName, projDef, crsOpts)
 }
@@ -40,7 +50,8 @@ export const formatGeoJSONToPositions = geoJSON => {
     return [[]]
   }
   geoJSON.forEach(polygon => {
-    if (polygon.length === 0) {
+
+    if (polygon === null || !polygon[0] || polygon.length === 0) {
       result.push([])
     } else {
       result.push(polygon[0].slice(0, -1).map(([lat, lng]) => ({ lat, lng })))

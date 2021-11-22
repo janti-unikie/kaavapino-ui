@@ -20,12 +20,11 @@ const FormSection = ({
   formName,
   formValues,
   syncronousErrors,
-  submitErrors
+  submitErrors,
+  setRef
 }) => {
   const handleBlurSave = () => {
-    setTimeout(function () {
-      handleSave()
-    }, 500)
+    handleSave()
   }
   return (
     <Segment>
@@ -48,6 +47,7 @@ const FormSection = ({
           syncronousErrors={syncronousErrors}
           submitErrors={submitErrors}
           className={field.highlight_group}
+          setRef={setRef}
         />
       ))}
     </Segment>

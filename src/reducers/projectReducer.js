@@ -32,7 +32,30 @@ import {
   GET_PROJECT_SUCCESSFUL,
   GET_PROJECT_SNAPSHOT_SUCCESSFUL,
   RESET_PROJECT_SNAPSHOT,
-  SET_SELECTED_PHASE_ID
+  SET_SELECTED_PHASE_ID,
+  GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL,
+  GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL,
+  GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL,
+  GET_EXTERNAL_DOCUMENTS_SUCCESSFUL,
+  CLEAR_PROJECTS_OVERVIEW_FLOOR_AREA,
+  GET_PROJECTS_OVERVIEW_MAP_DATA_SUCCESSFUL,
+  CLEAR_PROJECTS_OVERVIEW_MAP_DATA,
+  CLEAR_PROJECTS_OVERVIEW_PROJECT_TYPE_DATA,
+  SET_OVERVIEW_MAP_FILTERS,
+  SET_OVERVIEW_FLOOR_AREA_FILTERS,
+  SET_OVERVIEW_PROJECT_TYPE_FILTERS,
+  GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL,
+  GET_PROJECT_MAP_LEGENDS_SUCCESSFUL,
+  CLEAR_PROJECTS_OVERVIEW,
+  CLEAR_PROJECTS,
+  CLEAR_EXTERNAL_DOCUMENTS,
+  SAVE_PROJECT_BASE_PAYLOAD,
+  FETCH_ARCHIVED_PROJECTS_SUCCESSFUL,
+  FETCH_ONHOLD_PROJECTS_SUCCESSFUL,
+  SET_TOTAL_ARCHIVED_PROJECTS,
+  SET_TOTAL_ONHOLD_PROJECTS,
+  SET_ONHOLD_PROJECTS,
+  SET_ARCHIVED_PROJECTS
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -41,7 +64,11 @@ export const initialState = {
   amountOfProjectsToIncrease: 10,
   amountOfProjectsToShow: 10,
   totalOwnProjects: null,
+  totalOnholdProjects: null,
+  totalArchivedProjects: null,
   ownProjects: [],
+  onholdProjects: [],
+  archivedProjects: [],
   loadingProjects: false,
   users: [],
   currentProject: null,
@@ -53,7 +80,16 @@ export const initialState = {
   checking: false,
   pollingProjects: false,
   timelineProject: [],
-  selectedPhase: 0
+  selectedPhase: 0,
+  currentProjectExternalDocuments: null,
+  overview: {
+    floorArea: {},
+    bySubtype: {},
+    filters: [],
+    mapData: {},
+    floorAreaTargets: {},
+    legends: []
+  }
 }
 
 export const reducer = (state = initialState, action) => {
@@ -67,7 +103,11 @@ export const reducer = (state = initialState, action) => {
         projects: [],
         ownProjects: [],
         amountOfProjectsToIncrease: 10,
-        amountOfProjectsToShow: 10
+        amountOfProjectsToShow: 10,
+        totalOnholdProjects: null,
+        totalArchivedProjects: null,
+        onholdProjects: [],
+        archivedProjects: []
       }
     }
 
@@ -93,6 +133,39 @@ export const reducer = (state = initialState, action) => {
       }
     }
 
+    case FETCH_ONHOLD_PROJECTS_SUCCESSFUL: {
+      return {
+        ...state,
+        onholdProjects: state.onholdProjects.concat(action.payload)
+      }
+    }
+
+    case FETCH_ARCHIVED_PROJECTS_SUCCESSFUL: {
+      return {
+        ...state,
+        archivedProjects: state.archivedProjects.concat(action.payload)
+      }
+    }
+    case CLEAR_PROJECTS: {
+      return {
+        ...state,
+        ownProjects: [],
+        projects: [],
+        archivedProjects: [],
+        onholdProjects: [],
+        totalOwnProjects: null,
+        totalProjects: null,
+        totalOnholdProjects: null,
+        totalArchivedProjects: null
+      }
+    }
+    case CLEAR_EXTERNAL_DOCUMENTS: {
+      return {
+        ...state,
+        currentProjectExternalDocuments: null
+      }
+    }
+
     case SET_PROJECTS: {
       return {
         ...state,
@@ -104,6 +177,18 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         ownProjects: action.payload
+      }
+    }
+    case SET_ONHOLD_PROJECTS: {
+      return {
+        ...state,
+        onholdProjects: action.payload
+      }
+    }
+    case SET_ARCHIVED_PROJECTS: {
+      return {
+        ...state,
+       archivedProjects: action.payload
       }
     }
 
@@ -142,6 +227,18 @@ export const reducer = (state = initialState, action) => {
         totalOwnProjects: action.payload
       }
     }
+    case SET_TOTAL_ARCHIVED_PROJECTS: {
+      return {
+        ...state,
+        totalArchivedProjects: action.payload
+      }
+    }
+    case SET_TOTAL_ONHOLD_PROJECTS: {
+      return {
+        ...state,
+        totalOnholdProjects: action.payload
+      }
+    }
 
     case CREATE_PROJECT_SUCCESSFUL: {
       return {
@@ -160,10 +257,6 @@ export const reducer = (state = initialState, action) => {
     case INITIALIZE_PROJECT: {
       return {
         ...state,
-        projects: [],
-        ownProjects: [],
-        amountOfProjectsToIncrease: 10,
-        amountOfProjectsToShow: 10,
         currentProject: null,
         currentProjectLoaded: false
       }
@@ -194,7 +287,8 @@ export const reducer = (state = initialState, action) => {
     }
 
     case SAVE_PROJECT:
-    case SAVE_PROJECT_BASE: {
+    case SAVE_PROJECT_BASE:
+    case SAVE_PROJECT_BASE_PAYLOAD: {
       return {
         ...state,
         saving: true
@@ -212,7 +306,8 @@ export const reducer = (state = initialState, action) => {
     case VALIDATE_PROJECT_FIELDS: {
       return {
         ...state,
-        validating: true
+        validating: true,
+        hasErrors: false
       }
     }
 
@@ -309,6 +404,134 @@ export const reducer = (state = initialState, action) => {
         currentProject: {
           ...state.currentProject,
           projectSnapshot: null
+        }
+      }
+    }
+    case GET_PROJECTS_OVERVIEW_FLOOR_AREA_SUCCESSFUL: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          floorArea: action.payload
+        }
+      }
+    }
+    case GET_PROJECTS_OVERVIEW_BY_SUBTYPE_SUCCESSFUL: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          bySubtype: action.payload
+        }
+      }
+    }
+    case GET_PROJECTS_OVERVIEW_FILTERS_SUCCESSFUL: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          filters: action.payload
+        }
+      }
+    }
+    case GET_EXTERNAL_DOCUMENTS_SUCCESSFUL: {
+      return {
+        ...state,
+        currentProjectExternalDocuments: action.payload
+      }
+    }
+    case GET_PROJECTS_OVERVIEW_MAP_DATA_SUCCESSFUL: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          mapData: action.payload
+        }
+      }
+    }
+    case GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          floorAreaTargets: action.payload
+        }
+      }
+    }
+    case CLEAR_PROJECTS_OVERVIEW_MAP_DATA: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          mapData: {}
+        }
+      }
+    }
+    case CLEAR_PROJECTS_OVERVIEW_FLOOR_AREA: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          floorArea: {},
+          mapData: {}
+        }
+      }
+    }
+    case CLEAR_PROJECTS_OVERVIEW_PROJECT_TYPE_DATA: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          bySubtype: {}
+        }
+      }
+    }
+    case CLEAR_PROJECTS_OVERVIEW: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          floorArea: {},
+          bySubtype: {},
+          mapData: {},
+          floorAreaTargets: {}
+        }
+      }
+    }
+
+    case SET_OVERVIEW_MAP_FILTERS: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          mapFilters: action.payload
+        }
+      }
+    }
+    case SET_OVERVIEW_FLOOR_AREA_FILTERS: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          floorAreaFilters: action.payload
+        }
+      }
+    }
+    case SET_OVERVIEW_PROJECT_TYPE_FILTERS: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          projectTypeFilters: action.payload
+        }
+      }
+    }
+    case GET_PROJECT_MAP_LEGENDS_SUCCESSFUL: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          legends: action.payload
         }
       }
     }

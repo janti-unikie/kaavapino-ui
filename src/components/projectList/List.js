@@ -116,7 +116,7 @@ class List extends Component {
 
     items.forEach(
       (
-        { attribute_data, name, id, modified_at, user, subtype, phase, pino_number },
+        { attribute_data, name, id, modified_at, user, subtype, phase, pino_number, deadlines, onhold },
         i
       ) => {
         const listItem = {
@@ -137,6 +137,8 @@ class List extends Component {
             showGraph={showGraph}
             phases={phases}
             isUserPrivileged={isUserPrivileged}
+            deadlines={deadlines}
+            onhold={onhold}
           />
         )
       }

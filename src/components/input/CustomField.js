@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import CustomInput from './CustomInput'
 import DeadLineInput from './DeadlineInput'
 import SelectInput from './SelectInput'
-import BooleanRadio from './RadioBooleanButton'
+import RadioBooleanButton from './RadioBooleanButton'
 import CustomTextArea from './CustomTextArea'
 import File from './File'
 import FieldSet from './FieldSet'
@@ -14,7 +14,7 @@ import CustomRadioButton from './CustomRadioButton'
 import ToggleButton from './ToggleButton'
 import RichTextEditor from '../RichTextEditor'
 import OnHoldCheckbox from './OnholdCheckbox'
-import DeadlineCheckbox from './DeadlineCheckbox'
+import CustomCheckbox from './CustomCheckbox'
 
 import AutofillInputCalculations from './AutofillInputCalculation/AutofillInputCalculations'
 
@@ -23,6 +23,9 @@ import projectUtils from '../../utils/projectUtils'
 import AutofillInput from './AutofillInput/AutofillInput'
 import _ from 'lodash'
 import DeadlineInfoText from './DeadlineInfoText'
+import { get } from 'lodash'
+import { EDIT_PROJECT_TIMETABLE_FORM } from '../../constants'
+import CustomADUserCombobox from './CustomADUserCombobox'
 class CustomField extends Component {
   yearOptions = []
   shouldComponentUpdate(p) {
@@ -90,9 +93,11 @@ class CustomField extends Component {
   }
 
   renderNumber = props => {
-    const { onBlur } = this.props
+    const { onBlur, setRef } = this.props
 
-    return <CustomInput onBlur={onBlur} {...props} type="number" />
+    return (
+      <CustomInput setRef={setRef} min={0} onBlur={onBlur} {...props} type="number" />
+    )
   }
 
   renderYearSelect = props => {
@@ -115,8 +120,9 @@ class CustomField extends Component {
   }
 
   renderString = props => {
-    const { onBlur } = this.props
-    return <CustomInput onBlur={onBlur} type="text" {...props} />
+    const { onBlur, setRef } = this.props
+
+    return <CustomInput setRef={setRef} onBlur={onBlur} type="text" {...props} />
   }
 
   renderTextArea = props => {
@@ -126,14 +132,20 @@ class CustomField extends Component {
 
   renderRichText = props => {
     const { onBlur, meta, formName } = this.props
-    return <RichTextEditor onBlur={onBlur} meta={meta} {...props} formName={formName} largeField />
+    return (
+      <RichTextEditor
+        onBlur={onBlur}
+        meta={meta}
+        {...props}
+        formName={formName}
+        largeField
+      />
+    )
   }
 
   renderRichTextShort = props => {
-    const { onBlur, meta } = this.props
-    return (
-      <RichTextEditor onBlur={onBlur} meta={meta} {...props} />
-    )
+    const { onBlur, meta, setRef } = this.props
+    return <RichTextEditor setRef={setRef} onBlur={onBlur} meta={meta} {...props} />
   }
 
   renderDate = props => {
@@ -152,6 +164,7 @@ class CustomField extends Component {
           type="date"
           editable={field.editable}
           currentDeadline={current}
+          autofillRule={field.autofill_rule}
           {...props}
         />
       )
@@ -160,8 +173,8 @@ class CustomField extends Component {
   }
 
   renderGeometry = props => {
-    const { attributeData, onBlur } = this.props
-    return <Geometry onBlur={onBlur} attributeData={attributeData} {...props} />
+    const { onBlur } = this.props
+    return <Geometry onBlur={onBlur} {...props} />
   }
 
   renderSelect = props => {
@@ -182,17 +195,25 @@ class CustomField extends Component {
 
   renderRadio = props => {
     const { field, onBlur } = this.props
-    return <CustomRadioButton options={this.formatOptions(field.options)} onBlur={onBlur} {...props} />
+    return (
+      <CustomRadioButton
+        options={this.formatOptions(field.options)}
+        onBlur={onBlur}
+        {...props}
+      />
+    )
   }
 
   renderBooleanRadio = props => {
     const { input, onRadioChange, defaultValue } = this.props
+   
     return (
-      <BooleanRadio
+      <RadioBooleanButton
         onBlur={props.onBlur}
         input={input}
         onRadioChange={onRadioChange}
         defaultValue={defaultValue}
+        autofillReadonly={this.props.field.autofill_readonly}
         {...props}
       />
     )
@@ -262,13 +283,16 @@ class CustomField extends Component {
     return <CustomInput type="number" step="0.01" onBlur={onBlur} {...props} />
   }
 
-  renderDeadlineCheckbox = props => {
-    const { field } = this.props
+  renderCustomCheckbox = props => {
+    const { field, formName } = this.props
+
     return (
-      <DeadlineCheckbox
+      <CustomCheckbox
         {...props}
         label={field.label}
         autofillRule={field.autofill_rule}
+        formName={formName}
+        display={field.display}
       />
     )
   }
@@ -278,7 +302,7 @@ class CustomField extends Component {
 
     return (
       <OnHoldCheckbox
-       {...props}
+        {...props}
         projectOnhold={onhold}
         saveProjectBase={saveProjectBase}
         disabled={disabled}
@@ -297,17 +321,43 @@ class CustomField extends Component {
       />
     )
   }
+  renderADUserSelection = props => {
+    const { field, onBlur } = this.props
+
+    return (
+      <CustomADUserCombobox
+        label={field.label}
+        multiselect={false}
+        onBlur={onBlur}
+        {...props}
+      />
+    )
+  }
 
   getInput = field => {
+    if (field.type === 'set' || field.type === 'multiple') {
+      return this.renderSelect
+    }
+
     // Since there might be rules which has boolean type and choices, avoid selecting select and select
     // boolean radiobutton intead
     if (field.choices && field.type !== 'boolean') {
       /* Should perhaps check (field.type === 'select' && field.choices), but there were tests against it.
       Will get back to this. */
-      return this.renderSelect
+      if (field.autofill_readonly) {
+        return this.renderString
+      } else {
+        return this.renderSelect
+      }
     }
-    if (field.display === 'dropdown') {
+    if (field.display === 'dropdown' || field.display === 'simple_integer')  {
       return this.renderYearSelect
+    }
+    if (
+      field.display === 'readonly_checkbox' &&
+      this.props.formName === EDIT_PROJECT_TIMETABLE_FORM
+    ) {
+      return this.renderCustomCheckbox
     }
 
     if (field.type === 'radio' && field.options) {
@@ -344,9 +394,11 @@ class CustomField extends Component {
       case 'checkbox-onhold':
         return this.renderOnholdCheckbox
       case 'checkbox':
-        return this.renderDeadlineCheckbox
+        return this.renderCustomCheckbox
       case 'readonly':
         return this.renderDeadlineInfo
+      case 'personnel':
+        return this.renderADUserSelection
       default:
         return this.renderNumber
     }
@@ -362,11 +414,12 @@ class CustomField extends Component {
       error,
       updated,
       defaultValue,
-      className
+      className,
+      handleSave
     } = this.props
     const type = field.type
     if (type === 'file' || type === 'image') {
-      const file = attributeData[field.name]
+      let file = get(attributeData, field.name)
       const src = file ? file.link : null
       const description = file ? file.description : null
 
@@ -378,6 +431,7 @@ class CustomField extends Component {
           description={description}
           formValues={formValues}
           attributeData={attributeData}
+          handleSave={handleSave}
         />
       )
     }
@@ -419,7 +473,8 @@ class CustomField extends Component {
         />
       )
     }
-    if (field.autofill_rule && field.display !== 'readonly') {
+
+    if (field.autofill_rule && formName !== EDIT_PROJECT_TIMETABLE_FORM) {
       return <AutofillInput field={field} fieldProps={fieldProps} formName={formName} />
     }
 

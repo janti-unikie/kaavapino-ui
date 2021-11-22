@@ -1,7 +1,7 @@
 import { EDIT_PROJECT_TIMETABLE_FORM } from '../../../constants'
 import { getFieldAutofillValue } from '../../../utils/projectAutofillUtils'
 describe('Autofill tests', () => {
-  it('Autofill rule succeeds (string)', () => {
+ it('Autofill rule succeeds (string)', () => {
     const field = {}
     const conditionObject = {}
     conditionObject.variable = 'a'
@@ -300,298 +300,7 @@ describe('Autofill tests', () => {
     }
     expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(undefined)
   })
-  it('Autofill rule succeeds combine rule (boolean)', () => {
-    const field = {}
-    const conditionObject1 = {}
-    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
-    conditionObject1.operator = '=='
-    conditionObject1.comparison_value = true
-    conditionObject1.comparison_value_type = 'boolean'
-
-    const conditionObject2 = {}
-    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
-    conditionObject2.operator = '=='
-    conditionObject2.comparison_value = true
-    conditionObject2.comparison_value_type = 'boolean'
-
-    const condition = { condition: conditionObject1, then_branch: 'asemakaava ja' }
-    const condition2 = {
-      condition: conditionObject2,
-      then_branch: 'asemakaavan muuttaminen'
-    }
-
-    field.autofill_rule = [condition, condition2]
-
-    const formValues = {
-      sisaltyyko_kaavoittamatonta: true,
-      sisaltyyko_kaavoitettua: false
-    }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(' asemakaava ja')
-  })
-  it('Autofill rule combine rule (boolean) 2', () => {
-    const field = {}
-    const conditionObject1 = {}
-    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
-    conditionObject1.operator = '=='
-    conditionObject1.comparison_value = true
-    conditionObject1.comparison_value_type = 'boolean'
-
-    const conditionObject2 = {}
-    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
-    conditionObject2.operator = '=='
-    conditionObject2.comparison_value = true
-    conditionObject2.comparison_value_type = 'boolean'
-
-    const condition = { condition: conditionObject1, then_branch: 'asemakaava ja' }
-    const condition2 = {
-      condition: conditionObject2,
-      then_branch: 'asemakaavan muuttaminen'
-    }
-
-    field.autofill_rule = [condition, condition2]
-
-    const formValues = {
-      sisaltyyko_kaavoittamatonta: false,
-      sisaltyyko_kaavoitettua: true
-    }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(
-      ' asemakaavan muuttaminen'
-    )
-  })
-  it('Autofill rule succeeds combine rule (boolean) 3', () => {
-    const field = {}
-    const conditionObject1 = {}
-    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
-    conditionObject1.operator = '=='
-    conditionObject1.comparison_value = true
-    conditionObject1.comparison_value_type = 'boolean'
-
-    const conditionObject2 = {}
-    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
-    conditionObject2.operator = '=='
-    conditionObject2.comparison_value = true
-    conditionObject2.comparison_value_type = 'boolean'
-
-    const condition = { condition: conditionObject1, then_branch: 'asemakaava ja' }
-    const condition2 = {
-      condition: conditionObject2,
-      then_branch: 'asemakaavan muuttaminen'
-    }
-
-    field.autofill_rule = [condition, condition2]
-
-    const formValues = {
-      sisaltyyko_kaavoittamatonta: true,
-      sisaltyyko_kaavoitettua: true
-    }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(
-      ' asemakaava ja asemakaavan muuttaminen'
-    )
-  })
-
-  it('Autofill rule succeeds combine rule (boolean) 4', () => {
-    const field = {}
-    const conditionObject1 = {}
-    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
-    conditionObject1.operator = '=='
-    conditionObject1.comparison_value = true
-    conditionObject1.comparison_value_type = 'boolean'
-
-    const conditionObject2 = {}
-    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
-    conditionObject2.operator = '=='
-    conditionObject2.comparison_value = true
-    conditionObject2.comparison_value_type = 'boolean'
-
-    const condition = { condition: conditionObject1, then_branch: 'asemakaava ja' }
-    const condition2 = {
-      condition: conditionObject2,
-      then_branch: 'asemakaavan muuttaminen'
-    }
-
-    field.autofill_rule = [condition, condition2]
-
-    const formValues = {
-      sisaltyyko_kaavoittamatonta: false,
-      sisaltyyko_kaavoitettua: false
-    }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(undefined)
-  })
-  it('Autofill rule succeeds combine rule with variables (boolean) 1', () => {
-    const field = {}
-    const conditionObject1 = {}
-    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
-    conditionObject1.operator = '=='
-    conditionObject1.comparison_value = true
-    conditionObject1.comparison_value_type = 'boolean'
-
-    const conditionObject2 = {}
-    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
-    conditionObject2.operator = '=='
-    conditionObject2.comparison_value = true
-    conditionObject2.comparison_value_type = 'boolean'
-
-    const condition = {
-      condition: conditionObject1,
-      then_branch: 'asemakaava ja',
-      variables: ['projektin_nimi']
-    }
-    const condition2 = {
-      condition: conditionObject2,
-      then_branch: 'asemakaavan muuttaminen',
-      variables: ['projektin_nimi']
-    }
-
-    field.autofill_rule = [condition, condition2]
-
-    const formValues = {
-      sisaltyyko_kaavoittamatonta: true,
-      sisaltyyko_kaavoitettua: true,
-      projektin_nimi: 'testiprojekti'
-    }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(
-      'testiprojekti asemakaava ja asemakaavan muuttaminen'
-    )
-  })
-  it('Autofill rule succeeds combine rule with variables (boolean) 2', () => {
-    const field = {}
-    const conditionObject1 = {}
-    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
-    conditionObject1.operator = '=='
-    conditionObject1.comparison_value = true
-    conditionObject1.comparison_value_type = 'boolean'
-
-    const conditionObject2 = {}
-    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
-    conditionObject2.operator = '=='
-    conditionObject2.comparison_value = true
-    conditionObject2.comparison_value_type = 'boolean'
-
-    const condition = {
-      condition: conditionObject1,
-      then_branch: 'asemakaava ja',
-      variables: ['projektin_nimi']
-    }
-    const condition2 = {
-      condition: conditionObject2,
-      then_branch: 'asemakaavan muuttaminen',
-      variables: ['projektin_nimi']
-    }
-    const variables = { variables: ['projektin_nimi'] }
-    field.autofill_rule = [condition, condition2, variables]
-
-    const formValues = {
-      sisaltyyko_kaavoittamatonta: false,
-      sisaltyyko_kaavoitettua: true,
-      projektin_nimi: 'testiprojekti'
-    }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(
-      'testiprojekti asemakaavan muuttaminen'
-    )
-  })
-  it('Autofill rule succeeds combine rule with variables (boolean) 3', () => {
-    const field = {}
-    const conditionObject1 = {}
-    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
-    conditionObject1.operator = '=='
-    conditionObject1.comparison_value = true
-    conditionObject1.comparison_value_type = 'boolean'
-
-    const conditionObject2 = {}
-    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
-    conditionObject2.operator = '=='
-    conditionObject2.comparison_value = true
-    conditionObject2.comparison_value_type = 'boolean'
-
-    const condition = {
-      condition: conditionObject1,
-      then_branch: 'asemakaava ja',
-      variables: ['projektin_nimi']
-    }
-    const condition2 = {
-      condition: conditionObject2,
-      then_branch: 'asemakaavan muuttaminen',
-      variables: ['projektin_nimi']
-    }
-
-    field.autofill_rule = [condition, condition2]
-
-    const formValues = {
-      sisaltyyko_kaavoittamatonta: true,
-      sisaltyyko_kaavoitettua: false,
-      projektin_nimi: 'testiprojekti'
-    }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(
-      'testiprojekti asemakaava ja'
-    )
-  })
-  it('Autofill rule succeeds combine rule with variables (boolean) 4', () => {
-    const field = {}
-    const conditionObject1 = {}
-    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
-    conditionObject1.operator = '=='
-    conditionObject1.comparison_value = true
-    conditionObject1.comparison_value_type = 'boolean'
-
-    const conditionObject2 = {}
-    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
-    conditionObject2.operator = '=='
-    conditionObject2.comparison_value = true
-    conditionObject2.comparison_value_type = 'boolean'
-
-    const condition = {
-      condition: conditionObject1,
-      then_branch: 'asemakaava ja',
-      variables: ['projektin_nimi']
-    }
-    const condition2 = {
-      condition: conditionObject2,
-      then_branch: 'asemakaavan muuttaminen',
-      variables: ['projektin_nimi']
-    }
-    field.autofill_rule = [condition, condition2]
-
-    const formValues = {
-      sisaltyyko_kaavoittamatonta: false,
-      sisaltyyko_kaavoitettua: false,
-      projektin_nimi: 'testiprojekti'
-    }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe('testiprojekti')
-  })
-  it('Autofill rule succeeds combine rule with variables (boolean) 5', () => {
-    const field = {}
-    const conditionObject1 = {}
-    conditionObject1.variable = 'sisaltyyko_kaavoittamatonta'
-    conditionObject1.operator = '=='
-    conditionObject1.comparison_value = true
-    conditionObject1.comparison_value_type = 'boolean'
-
-    const conditionObject2 = {}
-    conditionObject2.variable = 'sisaltyyko_kaavoitettua'
-    conditionObject2.operator = '=='
-    conditionObject2.comparison_value = true
-    conditionObject2.comparison_value_type = 'boolean'
-
-    const condition = {
-      condition: conditionObject1,
-      then_branch: 'asemakaava ja',
-      variables: ['projektin_nimi']
-    }
-    const condition2 = {
-      condition: conditionObject2,
-      then_branch: 'asemakaavan muuttaminen',
-      variables: ['projektin_nimi']
-    }
-    field.autofill_rule = [condition, condition2]
-
-    const formValues = {
-      sisaltyyko_kaavoittamatonta: true,
-      sisaltyyko_kaavoitettua: true
-    }
-    expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(
-      ' asemakaava ja asemakaavan muuttaminen'
-    )
-  })
+ 
   it('Autofill rule fails boolean if/else', () => {
     const field = {}
     const conditionObject1 = {}
@@ -1482,10 +1191,10 @@ describe('Autofill tests', () => {
     conditionObject3.comparison_value_type = 'boolean'
 
     const conditionObject4 = {}
-    conditionObject3.variable = 'tehty_muutos_muistutusten_johdosta'
-    conditionObject3.operator = '!='
-    conditionObject3.comparison_value = true
-    conditionObject3.comparison_value_type = 'boolean'
+    conditionObject4.variable = 'tehty_muutos_muistutusten_johdosta'
+    conditionObject4.operator = '!='
+    conditionObject4.comparison_value = true
+    conditionObject4.comparison_value_type = 'boolean'
 
     const condition = { condition: conditionObject1, then_branch: 'True' }
     const condition2 = { condition: conditionObject2, then_branch: 'True' }
@@ -1500,3 +1209,486 @@ describe('Autofill tests', () => {
     expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
   })
 })
+it('New autofill rule', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'lautakunta_paatti_tarkistettu_ehdotus_4'
+  conditionObject1.operator = '=='
+  conditionObject1.comparison_value = 'hyvaksytty'
+  conditionObject1.comparison_value_type = 'string'
+
+  const conditionObject2 = {}
+  conditionObject2.variable = 'lautakunta_paatti_tarkistettu_ehdotus_3'
+  conditionObject2.operator = '=='
+  conditionObject2.comparison_value = 'hyvaksytty'
+  conditionObject2.comparison_value_type = 'string'
+
+  const conditionObject3 = {}
+  conditionObject3.variable = 'lautakunta_paatti_tarkistettu_ehdotus_2'
+  conditionObject3.operator = '=='
+  conditionObject3.comparison_value = 'hyvaksytty'
+  conditionObject3.comparison_value_type = 'string'
+
+  const conditionObject4 = {}
+  conditionObject4.variable = 'lautakunta_paatti_tarkistettu_ehdotus'
+  conditionObject4.operator = '=='
+  conditionObject4.comparison_value = 'hyvaksytty'
+  conditionObject4.comparison_value_type = 'string'
+
+  const condition = { condition: conditionObject1, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_4' }
+  const condition2 = { condition: conditionObject2, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_3' }
+  const condition3 = { condition: conditionObject3, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_2' }
+  const condition4 = { condition: conditionObject4, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa' }
+
+  field.autofill_rule = [condition, condition2, condition3, condition4]
+
+  const formValues = {
+    lautakunta_paatti_tarkistettu_ehdotus_3: "hyvaksytty",
+    milloin_tarkistettu_ehdotus_lautakunnassa_3: "10-12-1977"
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe("10-12-1977")
+})
+
+it('New autofill rule', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'lautakunta_paatti_tarkistettu_ehdotus_4'
+  conditionObject1.operator = '=='
+  conditionObject1.comparison_value = 'hyvaksytty'
+  conditionObject1.comparison_value_type = 'string'
+
+  const conditionObject2 = {}
+  conditionObject2.variable = 'lautakunta_paatti_tarkistettu_ehdotus_3'
+  conditionObject2.operator = '=='
+  conditionObject2.comparison_value = 'hyvaksytty'
+  conditionObject2.comparison_value_type = 'string'
+
+  const conditionObject3 = {}
+  conditionObject3.variable = 'lautakunta_paatti_tarkistettu_ehdotus_2'
+  conditionObject3.operator = '=='
+  conditionObject3.comparison_value = 'hyvaksytty'
+  conditionObject3.comparison_value_type = 'string'
+
+  const conditionObject4 = {}
+  conditionObject4.variable = 'lautakunta_paatti_tarkistettu_ehdotus'
+  conditionObject4.operator = '=='
+  conditionObject4.comparison_value = 'hyvaksytty'
+  conditionObject4.comparison_value_type = 'string'
+
+  const condition = { condition: conditionObject1, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_4' }
+  const condition2 = { condition: conditionObject2, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_3' }
+  const condition3 = { condition: conditionObject3, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_2' }
+  const condition4 = { condition: conditionObject4, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa' }
+
+  field.autofill_rule = [condition, condition2, condition3, condition4]
+
+  const formValues = {
+    lautakunta_paatti_tarkistettu_ehdotus: "hyvaksytty",
+    milloin_tarkistettu_ehdotus_lautakunnassa: "10-12-2977"
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe("10-12-2977")
+})
+
+it('New autofill rule 2', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'lautakunta_paatti_tarkistettu_ehdotus_4'
+  conditionObject1.operator = '=='
+  conditionObject1.comparison_value = 'hyvaksytty'
+  conditionObject1.comparison_value_type = 'string'
+
+  const conditionObject2 = {}
+  conditionObject2.variable = 'lautakunta_paatti_tarkistettu_ehdotus_3'
+  conditionObject2.operator = '=='
+  conditionObject2.comparison_value = 'hyvaksytty'
+  conditionObject2.comparison_value_type = 'string'
+
+  const conditionObject3 = {}
+  conditionObject3.variable = 'lautakunta_paatti_tarkistettu_ehdotus_2'
+  conditionObject3.operator = '=='
+  conditionObject3.comparison_value = 'hyvaksytty'
+  conditionObject3.comparison_value_type = 'string'
+
+  const conditionObject4 = {}
+  conditionObject4.variable = 'lautakunta_paatti_tarkistettu_ehdotus'
+  conditionObject4.operator = '=='
+  conditionObject4.comparison_value = 'hyvaksytty'
+  conditionObject4.comparison_value_type = 'string'
+
+  const condition = { condition: conditionObject1, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_4' }
+  const condition2 = { condition: conditionObject2, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_3' }
+  const condition3 = { condition: conditionObject3, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa_2' }
+  const condition4 = { condition: conditionObject4, then_branch: 'milloin_tarkistettu_ehdotus_lautakunnassa' }
+
+  field.autofill_rule = [condition, condition2, condition3, condition4]
+
+  const formValues = {
+    lautakunta_paatti_tarkistettu_ehdotus_3: "jotain muuta",
+    milloin_tarkistettu_ehdotus_lautakunnassa_3: "10-12-1977"
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(undefined)
+})
+it('New autofill bug', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'periaatteet_mielipiteet_maara'
+  conditionObject1.operator = '>'
+  conditionObject1.comparison_value = 0
+  conditionObject1.comparison_value_type = 'number'
+  conditionObject1.variables = []
+
+  const conditionObject2 = {}
+  conditionObject2.variable = 'oas_mielipiteet_maara'
+  conditionObject2.operator = '>'
+  conditionObject2.comparison_value = 0
+  conditionObject2.comparison_value_type = 'number'
+  conditionObject2.variables = []
+
+  const conditionObject3 = {}
+  conditionObject3.variable = 'luonnos_mielipiteet_maara'
+  conditionObject3.operator = '>'
+  conditionObject3.comparison_value = 0
+  conditionObject3.comparison_value_type = 'number'
+  conditionObject3.variables = []
+
+  const conditionObject4 = {}
+  conditionObject4.variable = 'muistutusten_lukumaara'
+  conditionObject4.operator = '>'
+  conditionObject4.comparison_value = 0
+  conditionObject4.comparison_value_type = 'number'
+  conditionObject4.variables = []
+
+
+  const conditionObject5 = {}
+  conditionObject5.variable = 'nahtavillaolo_ulkopuolella_kirjeet_maara'
+  conditionObject5.operator = '>'
+  conditionObject5.comparison_value = 0
+  conditionObject5.comparison_value_type = 'number'
+  conditionObject5.variables = []
+
+
+  const condition = { condition: conditionObject1, then_branch: 'True' }
+  const condition2 = { condition: conditionObject2, then_branch: 'True' }
+  const condition3 = { condition: conditionObject3, then_branch: 'True' }
+  const condition4 = { condition: conditionObject4, then_branch: 'True' }
+  const condition5 = { condition: conditionObject5, then_branch: 'True' }
+
+  field.autofill_rule = [condition, condition2, condition3, condition4, condition5]
+
+  const formValues = {
+    nahtavillaolo_ulkopuolella_kirjeet_maara: 1 
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+})
+
+it('New autofill bug 2', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'periaatteet_mielipiteet_maara'
+  conditionObject1.operator = '>'
+  conditionObject1.comparison_value = 0
+  conditionObject1.comparison_value_type = 'number'
+  conditionObject1.variables = []
+
+  const conditionObject2 = {}
+  conditionObject2.variable = 'oas_mielipiteet_maara'
+  conditionObject2.operator = '>'
+  conditionObject2.comparison_value = 0
+  conditionObject2.comparison_value_type = 'number'
+  conditionObject2.variables = []
+
+  const conditionObject3 = {}
+  conditionObject3.variable = 'luonnos_mielipiteet_maara'
+  conditionObject3.operator = '>'
+  conditionObject3.comparison_value = 0
+  conditionObject3.comparison_value_type = 'number'
+  conditionObject3.variables = []
+
+  const conditionObject4 = {}
+  conditionObject4.variable = 'muistutusten_lukumaara'
+  conditionObject4.operator = '>'
+  conditionObject4.comparison_value = 0
+  conditionObject4.comparison_value_type = 'number'
+  conditionObject4.variables = []
+
+
+  const conditionObject5 = {}
+  conditionObject5.variable = 'nahtavillaolo_ulkopuolella_kirjeet_maara'
+  conditionObject5.operator = '>'
+  conditionObject5.comparison_value = 0
+  conditionObject5.comparison_value_type = 'number'
+  conditionObject5.variables = []
+
+
+  const condition = { condition: conditionObject1, then_branch: 'True' }
+  const condition2 = { condition: conditionObject2, then_branch: 'True' }
+  const condition3 = { condition: conditionObject3, then_branch: 'True' }
+  const condition4 = { condition: conditionObject4, then_branch: 'True' }
+  const condition5 = { condition: conditionObject5, then_branch: 'True' }
+
+  field.autofill_rule = [condition, condition2, condition3, condition4, condition5]
+
+  const formValues = {
+    periaatteet_mielipiteet_maara: 1,
+    nahtavillaolo_ulkopuolella_kirjeet_maara: 0
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+})
+
+it('New autofill bug false', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'periaatteet_mielipiteet_maara'
+  conditionObject1.operator = '>'
+  conditionObject1.comparison_value = 0
+  conditionObject1.comparison_value_type = 'number'
+  conditionObject1.variables = []
+
+  const conditionObject2 = {}
+  conditionObject2.variable = 'oas_mielipiteet_maara'
+  conditionObject2.operator = '>'
+  conditionObject2.comparison_value = 0
+  conditionObject2.comparison_value_type = 'number'
+  conditionObject2.variables = []
+
+  const conditionObject3 = {}
+  conditionObject3.variable = 'luonnos_mielipiteet_maara'
+  conditionObject3.operator = '>'
+  conditionObject3.comparison_value = 0
+  conditionObject3.comparison_value_type = 'number'
+  conditionObject3.variables = []
+
+  const conditionObject4 = {}
+  conditionObject4.variable = 'muistutusten_lukumaara'
+  conditionObject4.operator = '>'
+  conditionObject4.comparison_value = 0
+  conditionObject4.comparison_value_type = 'number'
+  conditionObject4.variables = []
+
+
+  const conditionObject5 = {}
+  conditionObject5.variable = 'nahtavillaolo_ulkopuolella_kirjeet_maara'
+  conditionObject5.operator = '>'
+  conditionObject5.comparison_value = 0
+  conditionObject5.comparison_value_type = 'number'
+  conditionObject5.variables = []
+
+
+  const condition = { condition: conditionObject1, then_branch: 'True' }
+  const condition2 = { condition: conditionObject2, then_branch: 'True' }
+  const condition3 = { condition: conditionObject3, then_branch: 'True' }
+  const condition4 = { condition: conditionObject4, then_branch: 'True' }
+  const condition5 = { condition: conditionObject5, then_branch: 'True' }
+
+  field.autofill_rule = [condition, condition2, condition3, condition4, condition5]
+
+  const formValues = {
+    nahtavillaolo_ulkopuolella_kirjeet_maara: 0
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+})
+
+it('New autofill bug false', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'periaatteet_mielipiteet_maara'
+  conditionObject1.operator = '>'
+  conditionObject1.comparison_value = 0
+  conditionObject1.comparison_value_type = 'number'
+  conditionObject1.variables = []
+
+  const conditionObject2 = {}
+  conditionObject2.variable = 'oas_mielipiteet_maara'
+  conditionObject2.operator = '>'
+  conditionObject2.comparison_value = 0
+  conditionObject2.comparison_value_type = 'number'
+  conditionObject2.variables = []
+
+  const conditionObject3 = {}
+  conditionObject3.variable = 'luonnos_mielipiteet_maara'
+  conditionObject3.operator = '>'
+  conditionObject3.comparison_value = 0
+  conditionObject3.comparison_value_type = 'number'
+  conditionObject3.variables = []
+
+  const conditionObject4 = {}
+  conditionObject4.variable = 'muistutusten_lukumaara'
+  conditionObject4.operator = '>'
+  conditionObject4.comparison_value = 0
+  conditionObject4.comparison_value_type = 'number'
+  conditionObject4.variables = []
+
+
+  const conditionObject5 = {}
+  conditionObject5.variable = 'nahtavillaolo_ulkopuolella_kirjeet_maara'
+  conditionObject5.operator = '>'
+  conditionObject5.comparison_value = 0
+  conditionObject5.comparison_value_type = 'number'
+  conditionObject5.variables = []
+
+
+  const condition = { condition: conditionObject1, then_branch: 'True' }
+  const condition2 = { condition: conditionObject2, then_branch: 'True' }
+  const condition3 = { condition: conditionObject3, then_branch: 'True' }
+  const condition4 = { condition: conditionObject4, then_branch: 'True' }
+  const condition5 = { condition: conditionObject5, then_branch: 'True' }
+
+  field.autofill_rule = [condition, condition2, condition3, condition4, condition5]
+
+  const formValues = {
+   
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+})
+
+it('New autofill bug true', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'periaatteet_mielipiteet_maara'
+  conditionObject1.operator = '>'
+  conditionObject1.comparison_value = 0
+  conditionObject1.comparison_value_type = 'number'
+  conditionObject1.variables = []
+
+  const conditionObject2 = {}
+  conditionObject2.variable = 'oas_mielipiteet_maara'
+  conditionObject2.operator = '>'
+  conditionObject2.comparison_value = 0
+  conditionObject2.comparison_value_type = 'number'
+  conditionObject2.variables = []
+
+  const conditionObject3 = {}
+  conditionObject3.variable = 'luonnos_mielipiteet_maara'
+  conditionObject3.operator = '>'
+  conditionObject3.comparison_value = 0
+  conditionObject3.comparison_value_type = 'number'
+  conditionObject3.variables = []
+
+  const conditionObject4 = {}
+  conditionObject4.variable = 'muistutusten_lukumaara'
+  conditionObject4.operator = '>'
+  conditionObject4.comparison_value = 0
+  conditionObject4.comparison_value_type = 'number'
+  conditionObject4.variables = []
+
+
+  const conditionObject5 = {}
+  conditionObject5.variable = 'nahtavillaolo_ulkopuolella_kirjeet_maara'
+  conditionObject5.operator = '>'
+  conditionObject5.comparison_value = 0
+  conditionObject5.comparison_value_type = 'number'
+  conditionObject5.variables = []
+
+
+  const condition = { condition: conditionObject1, then_branch: 'True' }
+  const condition2 = { condition: conditionObject2, then_branch: 'True' }
+  const condition3 = { condition: conditionObject3, then_branch: 'True' }
+  const condition4 = { condition: conditionObject4, then_branch: 'True' }
+  const condition5 = { condition: conditionObject5, then_branch: 'True' }
+
+  field.autofill_rule = [condition, condition2, condition3, condition4, condition5]
+
+  const formValues = {
+    muistutusten_lukumaara: 2
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+})
+
+it('New autofill first false then true', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'periaatteet_mielipiteet_maara'
+  conditionObject1.operator = '>'
+  conditionObject1.comparison_value = 0
+  conditionObject1.comparison_value_type = 'number'
+  conditionObject1.variables = []
+
+  const conditionObject2 = {}
+  conditionObject2.variable = 'oas_mielipiteet_maara'
+  conditionObject2.operator = '>'
+  conditionObject2.comparison_value = 0
+  conditionObject2.comparison_value_type = 'number'
+  conditionObject2.variables = []
+
+  const conditionObject3 = {}
+  conditionObject3.variable = 'luonnos_mielipiteet_maara'
+  conditionObject3.operator = '>'
+  conditionObject3.comparison_value = 0
+  conditionObject3.comparison_value_type = 'number'
+  conditionObject3.variables = []
+
+  const conditionObject4 = {}
+  conditionObject4.variable = 'muistutusten_lukumaara'
+  conditionObject4.operator = '>'
+  conditionObject4.comparison_value = 0
+  conditionObject4.comparison_value_type = 'number'
+  conditionObject4.variables = []
+
+
+  const conditionObject5 = {}
+  conditionObject5.variable = 'nahtavillaolo_ulkopuolella_kirjeet_maara'
+  conditionObject5.operator = '>'
+  conditionObject5.comparison_value = 0
+  conditionObject5.comparison_value_type = 'number'
+  conditionObject5.variables = []
+
+
+  const condition = { condition: conditionObject1, then_branch: 'True' }
+  const condition2 = { condition: conditionObject2, then_branch: 'True' }
+  const condition3 = { condition: conditionObject3, then_branch: 'True' }
+  const condition4 = { condition: conditionObject4, then_branch: 'True' }
+  const condition5 = { condition: conditionObject5, then_branch: 'True' }
+
+  field.autofill_rule = [condition, condition2, condition3, condition4, condition5]
+
+  const formValues = {
+    muistutusten_lukumaara: 0,
+    nahtavillaolo_ulkopuolella_kirjeet_maara: 1
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+})
+
+it('Autofill rule project visibility check', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'luodaanko_nakyvaksi'
+  conditionObject1.operator = '=='
+  conditionObject1.comparison_value = true
+  conditionObject1.comparison_value_type = 'boolean'
+
+  const condition = {
+    condition: conditionObject1,
+    then_branch: '',
+    variables: ['luodaanko_nakyvaksi']
+  }
+  field.autofill_rule = [condition]
+
+  const formValues = {
+    luodaanko_nakyvaksi: true
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(true)
+})
+
+it('Autofill rule project visibility check 2', () => {
+  const field = {}
+  const conditionObject1 = {}
+  conditionObject1.variable = 'luodaanko_nakyvaksi'
+  conditionObject1.operator = '=='
+  conditionObject1.comparison_value = true
+  conditionObject1.comparison_value_type = 'boolean'
+
+  const condition = {
+    condition: conditionObject1,
+    then_branch: '',
+    variables: ['luodaanko_nakyvaksi']
+  }
+  field.autofill_rule = [condition]
+
+  const formValues = {
+    luodaanko_nakyvaksi: false
+  }
+  expect(getFieldAutofillValue(field.autofill_rule, formValues)).toBe(false)
+})
+
+
+

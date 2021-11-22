@@ -1,5 +1,6 @@
 import { createUserManager } from 'redux-oidc'
 import { WebStorageStateStore, InMemoryWebStorage } from 'oidc-client'
+import { logout } from '../actions/authActions'
 
 const baseUrl = `${window.location.protocol}//${window.location.hostname}${
   window.location.port ? `:${window.location.port}` : ''
@@ -27,5 +28,9 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 const userManager = createUserManager(userManagerConfig)
+
+userManager.events.addSilentRenewError( () => {
+  logout()
+})
 
 export default userManager

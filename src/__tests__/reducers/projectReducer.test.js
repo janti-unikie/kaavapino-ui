@@ -113,8 +113,6 @@ describe('project reducer', () => {
     const state = {
       ...initialState,
       currentProject: 1,
-      projects: [1, 2, 3],
-      ownProjects: [1, 7],
       currentProjectLoaded: true
     }
     expect(project(state, { type: INITIALIZE_PROJECT })).toEqual({

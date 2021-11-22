@@ -1,32 +1,27 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { fetchReports } from '../../actions/reportActions'
+import React from 'react'
 import { NavHeader } from '../common/NavHeader'
 import ReportBuilder from './ReportBuilder'
+import { useTranslation } from 'react-i18next'
 
-class Reports extends Component {
-  componentDidMount() {
-    this.props.fetchReports()
-  }
+function Reports() {
 
-  render() {
-    return (
-      <div className="reports-page">
-        <NavHeader
-          routeItems={[
-            { value: 'Kaavaprojektit', path: '/projects' },
-            { value: 'Raportit', path: '/reports' }
-          ]}
-          title="Raportit"
-        />
-        <ReportBuilder />
-      </div>
-    )
-  }
+  const {t} = useTranslation()
+  
+
+  return (
+    <div className="reports-page">
+      <NavHeader
+        routeItems={[
+          { value: t('projects.title'), path: '/projects' },
+          { value: t('reports.title'), path: '/reports' }
+        ]}
+        title={t('reports.title')}
+      />
+      <ReportBuilder />
+    </div>
+  )
 }
 
-const mapDispatchToProps = {
-  fetchReports
-}
 
-export default connect(null, mapDispatchToProps)(Reports)
+
+export default Reports

@@ -3,37 +3,37 @@ import { Navigation, IconSignout } from 'hds-react'
 import { ReactComponent as HistogramMobileIcon } from '../../assets/histogram-mobile.svg'
 import { ReactComponent as ChecklistMobile } from '../../assets/checklist-mobile.svg'
 import { ReactComponent as PagesMobile } from '../../assets/pages-mobile.svg'
-
 import { withRouter } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const Header = props => {
   const navigateToProjects = () => {
-    props.history.push('../projects')
+    props.history.push('/projects')
   }
 
   const navigateToHome = () => {
-    props.history.push('../')
+    props.history.push('/')
   }
 
   const navigateToReports = () => {
-    props.history.push('../reports')
+    props.history.push('/reports')
   }
 
   const logout = () => {
-    props.history.push('../Logout')
+    props.history.push('/Logout')
   }
-  const { user } = props
+  const { user, userRole } = props
+
+  const { t } = useTranslation()
+
+  const label = userRole ? `${user && user.profile.name} (${userRole})` : user && user.profile.name
 
   return (
     <Navigation
       logoLanguage="fi"
-      menuToggleAriaLabel="Valikko"
-      searchLabel="Search"
-      searchPlaceholder="Search page"
-      skipTo="#content"
-      skipToContentLabel="Siirry sivun pääsisältöön"
-      title="Kaavapino"
-      titleAriaLabel="Helsinki: Kaavapino"
+      menuToggleAriaLabel={t('header.choices-label')}
+      title={t('title')}
+      titleAriaLabel={t('title')}
       titleUrl="./"
       className="header"
       theme={{
@@ -51,19 +51,19 @@ const Header = props => {
       <Navigation.Row variant="inline">
         <Navigation.Item
           as="a"
-          label="Yleisnäkymä"
+          label={t('header.overview')}
           onClick={navigateToHome}
           icon={<HistogramMobileIcon />}
         />
         <Navigation.Item
           as="a"
-          label="Projektit"
+          label={t('header.projects')}
           onClick={navigateToProjects}
           icon={<ChecklistMobile />}
         />
         <Navigation.Item
           as="a"
-          label="Raportit"
+          label={t('header.reports')}
           icon={<PagesMobile />}
           onClick={navigateToReports}
         />
@@ -71,7 +71,7 @@ const Header = props => {
       <Navigation.Actions>
         <Navigation.User authenticated={true}>
           <Navigation.Item
-            label={user && user.profile.name}
+            label={label}
             href="/"
             target="_blank"
             variant="primary"
@@ -79,7 +79,7 @@ const Header = props => {
           <Navigation.Item
             href="#"
             icon={<IconSignout aria-hidden />}
-            label="Sign out"
+            label={t('header.sign-out')}
             onClick={logout}
             variant="supplementary"
           />

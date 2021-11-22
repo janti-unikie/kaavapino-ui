@@ -3,36 +3,37 @@ import PropTypes from 'prop-types'
 import { Grid } from 'semantic-ui-react'
 import { useTranslation } from 'react-i18next'
 
-function FloorAreaInformation({ fields }) {
+function FloorAreaInformation({ fields, hideTitle }) {
+  const { t } = useTranslation()
 
-    const { t } = useTranslation()
-
-    const renderField = (field, index) => {
-        if (field.unit === 'k-m2') {
-        return (
-            <Grid.Column key={field.label + index}>
-            <div >
-                {field.label}
-                <div className="floor-area-value">{field.value} k-m&sup2;</div>
+  const renderField = (field, index) => {
+    if (field.unit === 'k-m2') {
+      return (
+        <Grid.Column key={field.label + index}>
+          <div>
+            {field.label}
+            <div className="floor-area-value">{field.value} k-m&sup2;</div>
+          </div>
+        </Grid.Column>
+      )
+    } else {
+      return (
+        <Grid.Column key={field.label + index}>
+          <div className="floor-area-field">
+            <div>{field.label}</div>
+            <div className="floor-area-value">
+              {field.value} {field.unit}
             </div>
-            </Grid.Column>
-        )
-        } else {
-        return (
-            <Grid.Column key={field.label + index}>
-            <div>
-                <div>{field.label}</div>
-                <div className="floor-area-value">{field.value} {field.unit}</div>
-            </div>
-            </Grid.Column>
-        )
-        }
+          </div>
+        </Grid.Column>
+      )
+    }
   }
   const renderFields = () => {
     return (
       <div>
-        <h3>{t('project.floor-area-title')}</h3>
-        <Grid stackable columns='equal'>
+        {!hideTitle && <h3>{t('project.floor-area-title')}</h3>}
+        <Grid stackable columns="equal">
           {fields &&
             fields.map((field, index) => {
               return renderField(field, index)

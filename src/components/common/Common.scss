@@ -274,9 +274,7 @@ h4 {
     border: 1px solid #a3a3a3;
     padding: 2px;
   }
-}
-.changelog-item {
-  color: #a3a3a3 !important;
+  width: 500px;
 }
 
 .header {
@@ -366,10 +364,17 @@ h4 {
         display: none;
       }
     }
+    
+
 
     .nav-header-content {
       margin-top: 32px;
 
+      @media screen and (max-width: 725px) { 
+        margin-top: 0;
+
+
+      }
       .nav-header-titles {
         align-items: flex-end;
         display: flex;
@@ -382,10 +387,9 @@ h4 {
           margin: 0 0 0 32px;
         }
 
-        @media screen and (max-width: 599px) {
+        @media screen and (max-width: 725px) {
           flex-direction: column;
           align-items: flex-start;
-
           .nav-header-subtitle {
             margin: 0;
           }
@@ -393,7 +397,6 @@ h4 {
       }
 
       .nav-header-info {
-        color: $gray3;
         font-size: 14px;
         line-height: 24px;
         margin-top: 32px;
@@ -458,4 +461,62 @@ h4 {
   margin-left: auto;
   margin-right: auto;
 }
+.loader-icon-right-margin {
+   margin-right: 10px;
+}
+.full-width {
+  width: 100%;
+}
 
+.log-item:not(:last-child) {
+  padding-bottom: 10px;
+}
+.log-item {
+  &.deleted {
+   background-color: red;
+  }
+}
+.log-card {
+  max-height: 200px;
+  overflow: auto;
+  .ui.grid>.row {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
+.inline {
+  display: inline;
+}
+.latest-update {
+  text-align: left;
+}
+.info-box {
+  height: 44px;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+
+
+  .icon-area {
+    background-color: $yellow2;
+    display: inline-flex;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    .icon {
+      height: 42px;
+    }
+    
+  }
+  .content {
+    background-color: $yellow;
+    display: inline-flex;
+
+    .text {
+      margin: auto;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+  }
+
+}

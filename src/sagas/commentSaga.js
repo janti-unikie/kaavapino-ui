@@ -30,7 +30,7 @@ import {
   FETCH_SINGLE_FIELD_COMMENTS,
   fetchSingleFieldCommentsSuccessful
 } from '../actions/commentActions'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { error } from '../actions/apiActions'
 import {
   totalCommentsSelector,
@@ -114,7 +114,7 @@ function* fetchUnreadCommentsCountSaga({ payload: projectId }) {
 }
 
 function* markCommentsAsReadSaga({ payload: projectId }) {
-  const timestamp = moment().format('YYYY-MM-DDTHH:mm:ss')
+  const timestamp = dayjs().format('YYYY-MM-DDTHH:mm:ss')
 
   try {
     yield call(
@@ -258,15 +258,40 @@ function* fetchSingleFieldCommentsSaga({ payload: { projectId, fieldName } }) {
 }
 
 function* createFieldCommentSaga({ payload: { projectId, fieldName, content } }) {
+  let fieldset_path = []
+  let currentFieldName = fieldName
+
+  const lastIndex = fieldName.lastIndexOf('.')
+
+  if (lastIndex !== -1) {
+    const splitted = fieldName.split('.')
+    currentFieldName = fieldName.substring( lastIndex + 1, fieldName.length )
+
+    splitted.forEach(value => {
+      const firstBracket = value.indexOf('[')
+      const secondBracket = value.indexOf(']')
+
+      const fieldSet = fieldName.substring(0, firstBracket)
+      const index = fieldName.substring(firstBracket + 1, secondBracket)
+
+      if (fieldSet !== '' && index !== '') {
+        const returnObject = {
+          parent: fieldSet,
+          index: index
+        }
+        fieldset_path.push(returnObject)
+      }
+    })
+  }
   try {
     const newFieldComment = yield call(
       commentApi.post,
-      { content, field: fieldName },
+      { content, fieldset_path: fieldset_path, field: currentFieldName },
       { path: { id: projectId } },
       'fields/'
     )
     yield put(createFieldCommentSuccessful(newFieldComment))
-    yield call(fetchSingleFieldCommentsSaga, { payload: { projectId, fieldName } })
+    yield call(fetchFieldCommentsSaga, { payload: projectId })
   } catch (e) {
     yield put(error(e))
   }

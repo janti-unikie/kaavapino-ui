@@ -1,4 +1,5 @@
-import { includes } from 'lodash'
+import { includes, get } from 'lodash'
+import projectUtils from './projectUtils'
 // Field returns info whether field given as a parameter should be shown or not.
 export const showField = (field, formValues, currentName) => {
   let returnValue = false
@@ -11,41 +12,17 @@ export const showField = (field, formValues, currentName) => {
     if (!formValues) {
       return null
     }
-    let value = formValues[variable]
-
-    const fieldNames = currentName && currentName.split('.')
-    // Nested fieldsets are not supported
-    if (!fieldNames || fieldNames.length > 2) {
-      return value
-    }
-
     const lastIndex = currentName ? currentName.lastIndexOf('.') : -1
 
-    if (lastIndex !== -1) {
-      const testChar = currentName.length > 3 && currentName[lastIndex - 4]
-      let fieldSet
-      let currentFieldSet
+    const fieldsetPart = currentName ? currentName.substring(0, lastIndex) + '.' : ''
 
-      // Support for fieldset bigger than 9.
-      // Eg. if value is test[11] then substring one more
-      if (testChar === '[') {
-        fieldSet = currentName.substring(0, lastIndex - 4)
-        // Get current fieldset number
-        currentFieldSet = currentName.substring(lastIndex - 3, lastIndex - 1)
-      } else {
-        fieldSet = currentName.substring(0, lastIndex - 3)
-        // Get current fieldset number
-        currentFieldSet = currentName.substring(lastIndex - 2, lastIndex - 1)
-      }
-
-      let currentValue
-      if (formValues && formValues[fieldSet] && formValues[fieldSet][currentFieldSet] ) {
-        currentValue = formValues[fieldSet][currentFieldSet][variable]
-      }
-
-      value = !currentValue && currentValue !== false ? '' : currentValue
+    let currentValue = get(formValues, `${fieldsetPart}${variable}`)
+    
+    if  ( currentValue === undefined ) {
+      currentValue = projectUtils.findValueFromObject( formValues, variable)
     }
-    return value
+
+    return currentValue
   }
 
   if (field.hide_conditions && field.hide_conditions.length > 0) {

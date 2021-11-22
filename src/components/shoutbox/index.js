@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { Button, Responsive } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 import './shoutbox.scss'
 import Comments from './comments'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
@@ -41,28 +41,12 @@ const Shoutbox = props => {
 
   return (
     <>
-      <Responsive
-        as={ShoutBoxButton}
-        maxWidth={599}
-        onClick={toggleOpen}
-        unreadCommentsCount={countToShow}
-      />
       <div className={`shoutbox ${open ? 'open' : ''}`} ref={shoutboxRef}>
-        <Responsive
-          as={ShoutBoxButton}
-          minWidth={600}
-          onClick={toggleOpen}
-          unreadCommentsCount={countToShow}
-        />
+        <ShoutBoxButton onClick={toggleOpen} unreadCommentsCount={countToShow} />
         <div className="comment-list-wrapper">
-          <Responsive
-            as={'div'}
-            maxWidth={599}
-            onClick={toggleOpen}
-            className="shoutbox-close-icon"
-          >
-           <IconCross />
-          </Responsive>
+          <button onClick={toggleOpen} className="shoutbox-close-icon">
+            <IconCross />
+          </button>
           <Comments project={project} />
         </div>
       </div>

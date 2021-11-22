@@ -7,6 +7,9 @@
   }
   .modal-field {
     max-width: 80%;
+    input[type=checkbox] {
+      opacity: initial !important;
+    } 
   }
   .input-header {
     width: 80%;
@@ -33,6 +36,7 @@
   .ui.label {
     font-size: 12px;
     margin-top: 5px;
+    width: 100%;
   }
   .ui.form .field>.selection.dropdown {
     padding: 6px 16px 6px 4px;

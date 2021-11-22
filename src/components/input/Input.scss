@@ -17,6 +17,7 @@
     display: flex;
     font-weight: bold;
     justify-content: space-between;
+    position: relative;
     z-index: 1;
   }
 
@@ -385,6 +386,7 @@
 .geometry-input-container {
   .geometry-input {
     height: 300px;
+    z-index: 0;
   }
 
   .geometry-input-actions {
@@ -445,6 +447,7 @@
 }
 .error-text {
   color: $color-error-border;
+  position: relative;
 }
 .checkbox {
   display: flex;
@@ -452,4 +455,8 @@
 .checkbox-item {
   margin-top: 0 !important;
   margin-right: 10px;
+}
+
+.ad-combobox {
+  text-align: left;
 }

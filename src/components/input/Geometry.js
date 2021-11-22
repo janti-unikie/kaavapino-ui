@@ -1,120 +1,67 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Map, TileLayer } from 'react-leaflet'
 import Polygon from '../common/Polygon'
-import { Button } from 'hds-react'
-import {
-  EPSG3879,
-  formatGeoJSONToPositions,
-  formatPositionsToGeoJSON
-} from '../../utils/mapUtils'
+import { EPSG3879, formatGeoJSONToPositions, helsinkiCenter } from '../../utils/mapUtils'
 
-class Geometry extends Component {
-  constructor(props) {
-    super(props)
+function Geometry(props) {
+  const crs = EPSG3879()
 
-    this.mapRef = React.createRef()
+  const disabled = false
 
-    this.state = {
-      userActions: [],
-      center: [60.192059, 24.945831]
-    }
-  }
-
-  componentDidMount() {
-    if (this.props.input.value) {
-      this.goToArea()
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (!prevProps.input.value && this.props.input.value) {
-      this.goToArea()
-    }
-  }
-
-  goToArea = () => {
-    if (this.props.input.value.coordinates[0][0]) {
-      const newCenter = this.props.input.value.coordinates[0][0][0]
-      if (!this.mapRef.current.leafletElement.getBounds().contains(newCenter)) {
-        this.setState({ center: this.props.input.value.coordinates[0][0][0] })
+  const getCoordinates = () => {
+    const value = props.input.value
+    if (!value) {
+      if (props.value) {
+        return props.value.coordinates
       }
+      return {}
     }
+    const coordinates = value[0] && value[0].geometry && value[0].geometry.coordinates
+    return coordinates || {}
   }
 
-  handleUpdate = positions =>
-    this.props.input.onChange(formatPositionsToGeoJSON(positions))
+  const getCenterCoordinates = () => {
+    const coordinates = getCoordinates()
 
-  handleDoubleClick = ({ latlng }) => {
-    const { disabled } = this.props
-    if (disabled) return
-    const { userActions } = this.state
-    const { coordinates } = this.props.input.value
-    const positions = formatGeoJSONToPositions(coordinates)
-    const newUserActions = userActions.concat([positions])
-    const newPositions = [...positions]
-    newPositions[newPositions.length - 1] = newPositions[newPositions.length - 1].concat(
-      latlng
-    )
-    this.setState({ userActions: newUserActions })
-    this.handleUpdate(newPositions)
-  }
-
-  clear = () => this.handleUpdate([[]])
-
-  addArea = () => {
-    const { coordinates } = this.props.input.value
-    const positions = formatGeoJSONToPositions(coordinates)
-    const newPositions = positions.concat([[]])
-    this.handleUpdate(newPositions)
-  }
-
-  revert = () => {
-    const { userActions } = this.state
-    if (userActions.length > 0) {
-      const prevPositions = userActions.pop()
-      this.handleUpdate(prevPositions)
+    if (!coordinates || !coordinates[0] || !coordinates[0][0]) {
+      return helsinkiCenter
     }
+    return coordinates[0][0]
   }
 
-  render() {
-    const { userActions } = this.state
-    const { coordinates } = this.props.input.value
-    const { disabled } = this.props
-    const crs = EPSG3879()
-    return (
-      <div className="geometry-input-container">
-        <Map
-          className={`geometry-input${disabled ? ' disabled' : ''}`}
-          center={this.state.center}
-          doubleClickZoom={false}
-          scrollWheelZoom={false}
-          maxZoom={16}
-          zoomControl={!disabled}
-          dragging={!disabled}
-          zoom={12}
-          crs={crs}
-          ondblclick={this.handleDoubleClick}
-          ref={this.mapRef}
-          style={!disabled ? { cursor: 'pointer' } : {}}
-        >
-          <TileLayer
-            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://geoserver.hel.fi/mapproxy/wmts/osm-sm-hq/etrs_tm35fin_hq/{z}/{x}/{y}.png"
-          />
-          <Polygon positions={formatGeoJSONToPositions(coordinates)} />
-        </Map>
-        {!disabled && (
-          <div className="geometry-input-actions">
-            <Button variant="secondary" onClick={this.clear}>Tyhjennä</Button>
-            <Button variant="primary" onClick={this.addArea}>Lisää uusi alue</Button>
-            <Button variant="secondary" onClick={this.revert} disabled={!userActions.length}>
-              Peruuta muutos
-            </Button>
-          </div>
-        )}
-      </div>
-    )
-  }
+  return (
+    <div className="geometry-input-container">
+      <Map
+        className={`geometry-input${disabled ? ' disabled' : ''}`}
+        center={getCenterCoordinates()}
+        doubleClickZoom={true}
+        scrollWheelZoom={true}
+        maxZoom={18}
+        zoomControl={!disabled}
+        dragging={!disabled}
+        crs={crs}
+        style={!disabled ? { cursor: 'pointer' } : {}}
+        zoom={9}
+        minZoom={9}
+        clusterPopupVisibility={11}
+        unitZoom={12}
+        mobileZoom={9}
+        detailZoom={14}
+        mapBounds={[
+          [60.402200415095926, 25.271114398151653],
+          [60.402200415095926, 24.49246149510767],
+          [60.00855312110063, 24.49246149510767],
+          [60.00855312110063, 25.271114398151653]
+        ]}
+      >
+        <TileLayer
+          attribution="Leaflet | © Helsingin, Espoon, Vantaan ja Kauniaisen kaupungit, karttasarja"
+          url="https://kartta.hel.fi/ws/geoserver/avoindata/gwc/service/wmts?layer=avoindata:Karttasarja_harmaa&tilematrixset=ETRS-GK25&Service=WMTS&Request=GetTile&Version=1.0.0&TileMatrix=ETRS-GK25:{z}&TileCol={x}&TileRow={y}&Format=image%2Fpng"
+        />
+        <Polygon positions={formatGeoJSONToPositions([getCoordinates()])} />
+      </Map>
+    </div>
+  )
 }
 
 export default Geometry

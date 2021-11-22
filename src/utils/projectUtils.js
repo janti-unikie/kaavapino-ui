@@ -1,4 +1,5 @@
 import { concat, difference, flattenDeep, isBoolean } from 'lodash'
+import { showField } from './projectVisibilityUtils'
 
 const addZeroPrefixIfNecessary = value => (value < 10 ? `0${value}` : value)
 
@@ -43,10 +44,11 @@ const formatDeadlines = ({ name, deadlines, subtype }, phases) => {
   }
 }
 
-const isFieldMissing = (fieldName, isFieldRequired, attributeData) => {
+const isFieldMissing = (fieldName, isFieldRequired, attributeData, autofill_readonly) => {
   return (
     isFieldRequired &&
-    (!attributeData.hasOwnProperty(fieldName) ||
+    !autofill_readonly &&
+    (attributeData[fieldName] === undefined ||
       attributeData[fieldName] === null ||
       attributeData[fieldName] === '')
   )
@@ -93,7 +95,8 @@ const formatFilterProject = (project, sort = false, phases, users) => {
   const { subtype } = project
   const { name } = project
   const projectId = project.pino_number || '-'
-  const { hankenumero } = project.attribute_data
+  const hankenumero = project.attribute_data.hankenumero || '-'
+
   return { name, hankenumero, user, modified_at, phase, subtype, projectId }
 }
 
@@ -211,13 +214,24 @@ const getDefaultValue = (parentName, attributeData, name) => {
   }
 }
 
-const generateArrayOfYears = () => {
+const generateArrayOfYears = parameter => {
   const max = new Date().getFullYear()
   const min = max - 20
   const years = []
 
   // eslint-disable-next-line for-direction
   for (let year = max; year >= min; year--) {
+    years.push({ parameter, key: year.toString(), label: year.toString(), value: year })
+  }
+  return years
+}
+const generateArrayOfYearsForChart = () => {
+  const max = new Date().getFullYear() + 10
+  const min = new Date().getFullYear() - 5
+  const years = []
+
+  // eslint-disable-next-line for-direction
+  for (let year = min; year < max; year++) {
     years.push({ key: year.toString(), label: year.toString(), value: year })
   }
   return years
@@ -232,6 +246,25 @@ const findValueFromObject = (object, key) => {
     }
     if (object[currentKey] && typeof object[currentKey] === 'object') {
       value = findValueFromObject(object[currentKey], key)
+      return value !== undefined
+    }
+    return false
+  })
+  return value
+}
+const findValuesFromObject = (object, key, returnArray) => {
+  let value
+
+  Object.keys(object).some(currentKey => {
+    if (currentKey === key) {
+      if (!object['_deleted']) {
+        returnArray.push(object[currentKey])
+      }
+
+      return true
+    }
+    if (object[currentKey] && typeof object[currentKey] === 'object') {
+      value = findValuesFromObject(object[currentKey], key, returnArray)
       return value !== undefined
     }
     return false
@@ -256,6 +289,77 @@ const isUserPrivileged = (currentUserId, users) => {
 
   return userRole === 'admin' || userRole === 'create' || userRole === 'edit'
 }
+
+function hasMissingFields(formValues, currentProject, schema) {
+  const currentSchema = schema.phases.find(s => s.id === currentProject.phase)
+  const { sections } = currentSchema
+  const attributeData = currentProject.attribute_data
+
+  let missingFields = false
+  // Go through every single field
+  sections.forEach(({ fields }) => {
+    fields.forEach((field, fieldIndex) => {
+      // Only validate visible fields
+      if (showField(field, formValues)) {
+        // Matrices can contain any kinds of fields, so
+        // we must go through them separately
+        if (field.type === 'matrix') {
+          const { matrix } = field
+          matrix.fields.forEach(({ required, name }) => {
+            if (isFieldMissing(name, required, attributeData)) {
+              missingFields = true
+            }
+          })
+          // Fieldsets can contain any fields (except matrices)
+          // multiple times, so we need to go through them all
+        } else if (field.type === 'fieldset') {
+          const { fieldset_attributes } = field
+
+          if (fieldset_attributes) {
+            fieldset_attributes.forEach(field => {
+              if (attributeData[fields[fieldIndex].name]) {
+                attributeData[fields[fieldIndex].name].forEach(attribute => {
+                  if (
+                    attribute._deleted === false &&
+                    isFieldMissing(
+                      field.name,
+                      field.required,
+                      attribute,
+                      field.autofill_readonly
+                    )
+                  ) {
+                    missingFields = true
+                  }
+                })
+              } else {
+                if (
+                  isFieldMissing(
+                    field.name,
+                    field.required,
+                    attributeData,
+                    field.autofill_readonly
+                  )
+                ) {
+                  missingFields = true
+                }
+              }
+            })
+          }
+        } else if (
+          isFieldMissing(
+            field.name,
+            field.required,
+            attributeData,
+            field.autofill_readonly
+          )
+        ) {
+          missingFields = true
+        }
+      }
+    })
+  })
+  return missingFields
+}
 export default {
   formatDate,
   formatTime,
@@ -276,5 +380,8 @@ export default {
   generateArrayOfYears,
   getFieldsetAttributes,
   findValueFromObject,
-  isUserPrivileged
+  isUserPrivileged,
+  findValuesFromObject,
+  generateArrayOfYearsForChart,
+  hasMissingFields
 }

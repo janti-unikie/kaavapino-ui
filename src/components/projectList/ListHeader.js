@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Radio } from 'semantic-ui-react'
-import SearchBar from '../SearchBar'
-import { IconAngleUp, IconAngleDown } from 'hds-react'
+import { IconAngleUp, IconAngleDown, Button } from 'hds-react'
 
 const ListHeader = ({
   items,
@@ -10,11 +9,7 @@ const ListHeader = ({
   selected,
   dir,
   toggleGraph,
-  toggleSearch,
-  searchOpen,
-  graphToggled,
-  buttonAction
-}) => {
+  graphToggled}) => {
   const getArrowIcon = () => {
     return dir === 0 ? (
       <IconAngleUp size="xs" display="none" />
@@ -28,13 +23,13 @@ const ListHeader = ({
       <div className="project-list-header">
         {items.map((item, index) => {
           return (
-            <span className="header-item" key={index} onClick={() => sort(index)}>
+            <Button variant="supplementary" className="header-item" key={index} onClick={() => sort(index)}>
               {item}
               {selected === index && getArrowIcon()}
-            </span>
+            </Button>
           )
         })}
-        <span className="header-item project-timeline-toggle">
+        <span className="timeline-header-item  project-timeline-toggle">
           Aikajana
           <Radio onChange={toggleGraph} toggle checked={graphToggled} />
         </span>
@@ -48,11 +43,6 @@ const ListHeader = ({
             label="Näytä aikajanat"
           />
         </span>
-        <SearchBar
-          toggleSearch={toggleSearch}
-          searchOpen={searchOpen}
-          buttonAction={buttonAction}
-        />
       </div>
     </div>
   )

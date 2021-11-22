@@ -10,7 +10,7 @@
 
   .timeline-error-message {
     position: absolute;
-    z-index: 1;
+    z-index: 10;
     margin-left: -160px;
     left: 50%;
     top: 10px;
@@ -28,8 +28,35 @@
       position: absolute;
       top: 18px;
       left: 68px;
+      opacity: 1;
     }
   }
+    .timeline-onhold-message {
+      position: absolute;
+      z-index: 10;
+      margin-left: -160px;
+      left: 50%;
+      top: 10px;
+      width: 320px;
+      height: 56px;
+      border-left: 4px solid $color-warning;
+      background-color: $color-warning2;
+      text-align: center;
+      
+      svg {
+        position: absolute;
+        top: 10px !important;
+        left: 26px !important;
+      }
+      span {
+        position: absolute;
+        top: 18px;
+        left: 68px;
+        opacity: 1;
+      }
+   
+  }
+ 
   .timeline-load-project-message {
     position: absolute;
     z-index: 1;
@@ -70,7 +97,8 @@
         .milestone-message {
           position: absolute;
           top: 20px;
-          width: 100px;
+          max-width: 140px;
+          min-width: 120px;
           font-size: 12px;
           &.under {
             top: 32px;
@@ -125,9 +153,9 @@
     grid-template-columns: repeat(13, 1fr);
 
     .timeline-month {
-      border-bottom: 2px solid $gray;
-      border-left: 2px solid $gray;
-      color: $gray;
+      border-bottom: 2px solid $color-disabled;
+      border-left: 2px solid $color-disabled;
+      color: $color-disabled;
       text-align: center;
       position: relative;
       height: 10px;
@@ -156,5 +184,8 @@
   }
 }
 .timeline-error {
-  filter: opacity(0.2);
+  color: 	$color-disabled
+}
+.hide-background {
+  opacity: 0.8;
 }

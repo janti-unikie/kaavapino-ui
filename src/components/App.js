@@ -30,6 +30,7 @@ import FakeLoginPage from './auth/FakeLogin'
 import Overview from './overview'
 import Terms from './common/Terms'
 import { withTranslation } from 'react-i18next'
+import { usersSelector } from '../selectors/userSelector'
 
 import { authUserSelector } from '../selectors/authSelector'
 
@@ -47,7 +48,7 @@ class App extends Component {
   }
 
   render() {
-    const { t, user } = this.props
+    const { t, user, users } = this.props
     if (
       this.props.loadingApiToken ||
       this.props.userLoading ||
@@ -55,7 +56,9 @@ class App extends Component {
     ) {
       return <p>{t('loading')}</p>
     }
-
+    
+    const currentUser = users.find( item => user && user.profile && item.id === user.profile.sub )
+    
     return (
       <ConnectedRouter history={history}>
         <Switch>
@@ -72,7 +75,7 @@ class App extends Component {
           />
           <Route path="/logout/callback" render={() => <LogoutCallbackPage />} />
           <ProtectedRoute path="/" pred={this.props.apiToken !== null} redirect="/login">
-            <Header user={user} />
+            <Header user={user} userRole={currentUser && currentUser.privilege_name}/>
             <Switch>
               <Route exact path="/" render={() => <Overview />} />
               <Route exact path="/terms" render={() => <Terms />} />
@@ -122,7 +125,8 @@ const mapStateToProps = state => {
     apiToken: apiTokenSelector(state),
     loadingApiToken: apiLoadingTokenSelector(state),
     apiInitialized: apiInitializedSelector(state),
-    user: authUserSelector(state)
+    user: authUserSelector(state),
+    users: usersSelector(state)
   }
 }
 

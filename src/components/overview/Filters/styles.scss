@@ -1,0 +1,42 @@
+@import '../../common/colors.scss';
+
+.filters-list {
+  height: auto;
+  
+  .filter-button {
+    height: 49px !important;  
+    font-size: 14px !important;
+ }
+ ul {
+   overflow: hidden;
+ }
+ 
+}
+.filter-modal {
+  font-size: 12px;
+ 
+}
+
+.filter-modal-header {
+  margin: 10px !important;
+}
+.filter-modal-content {
+  padding: 5px !important; 
+  margin: 5px !important;
+
+}
+.filter-modal-actions {
+    button {
+      max-height: 32px !important;
+      min-height: 32px !important
+    }
+}
+.filter-modal-button {
+    margin-left: 10px;
+}
+.filter-accordion {
+  font-size: 14px;
+}
+
+
+

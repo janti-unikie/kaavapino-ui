@@ -80,7 +80,7 @@ const AutofillInputCalculations = ({
       {autofill_readonly && calculations ? (
         <div className="autofill-readonly-input">
           <div className="autofill-readonly-input-value">
-            {`${value || 0}`} k-m&sup2;
+            {`${value ? value : 0}`} k-m&sup2;
           </div>
         </div>
       ) : (
@@ -88,14 +88,13 @@ const AutofillInputCalculations = ({
       )}
       </div>
   )
-
   const renderOriginalComponent = () => (
     <div className="autofill-input">
       {autofill_readonly ? (
         <div className="autofill-readonly-input">
           <div className="autofill-readonly-input-value">
 
-          {`${value || 0}${value && unit ? ` ${unit}` : ''}`}
+          {`${value ? value : 0}${value && unit ? ` ${unit}` : ''}`}
 
           </div>
         </div>

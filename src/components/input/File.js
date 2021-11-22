@@ -42,7 +42,7 @@ class File extends Component {
       }
       const urlParts = src.split('/')
       this.setState({ current: urlParts[urlParts.length - 1] })
-      if (image) {
+      if (image && this.imageRef.current) {
         this.imageRef.current.src = src
       }
     }
@@ -65,7 +65,8 @@ class File extends Component {
   reset = () => {
     const {
       projectFileRemove,
-      field: { name }
+      field: { name },
+      handleSave
     } = this.props
     const { current } = this.state
     const confirm = window.confirm(
@@ -75,6 +76,7 @@ class File extends Component {
       this.inputRef.current.value = ''
       this.setState({ current: null })
       projectFileRemove(name)
+      handleSave()
     }
   }
 
@@ -161,7 +163,7 @@ class File extends Component {
     )
 
     if (current) {
-      if (current.includes('.pdf')) {
+      if (current.includes('.pdf') && src ) {
         filePreview = (
           <Document
             style={{

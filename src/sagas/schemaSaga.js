@@ -3,27 +3,33 @@ import {
   FETCH_SCHEMAS,
   fetchSchemasSuccessful,
   SET_ALL_EDIT_FIELDS,
-  setAllEditFieldsSuccessful
+  setAllEditFieldsSuccessful,
+  GET_PROJECT_CARD_FIELDS,
+  getProjectCardFieldsSuccessful,
+  GET_ATTRIBUTES,
+  getAttributesSuccessful
 } from '../actions/schemaActions'
 import { updatesSelector } from '../selectors/projectSelector'
 import { schemaSelector } from '../selectors/schemaSelector'
 import { error } from '../actions/apiActions'
-import { schemaApi } from '../utils/api'
+import { schemaApi, cardSchemaApi, attributesApi } from '../utils/api'
 import projectUtils from '../utils/projectUtils'
 
 export default function* schemaSaga() {
   yield all([
     takeLatest(FETCH_SCHEMAS, fetchSchemas),
-    takeLatest(SET_ALL_EDIT_FIELDS, allEditedFieldsSaga)
+    takeLatest(SET_ALL_EDIT_FIELDS, allEditedFieldsSaga),
+    takeLatest(GET_PROJECT_CARD_FIELDS, getProjectCardFields),
+    takeLatest(GET_ATTRIBUTES, getAttributes)
   ])
 }
 
-function* fetchSchemas({ payload: {
-  project,
-  subtype
-   } }) {
+function* fetchSchemas({ payload: { project, subtype } }) {
   try {
-    const [{ subtypes }] = yield call(schemaApi.get, { query: { project: project, subtypes: subtype } })
+    const [{ subtypes }] = yield call(schemaApi.get, {
+      query: { project: project, subtypes: subtype }
+    })
+
     yield put(fetchSchemasSuccessful(subtypes[0]))
     yield call(allEditedFieldsSaga)
   } catch (e) {
@@ -44,7 +50,13 @@ function* allEditedFieldsSaga() {
       fields.forEach(({ name, label, autofill_readonly }, i) => {
         if (!autofill_readonly) {
           return updates[name]
-            ? result.push({ name: label, ...updates[name], autofill: autofill_readonly, id: i })
+            ? result.push({
+                name: name,
+                label: label,
+                ...updates[name],
+                autofill: autofill_readonly,
+                id: i
+              })
             : ''
         }
       })
@@ -56,4 +68,22 @@ function* allEditedFieldsSaga() {
     )
   )
   yield put(setAllEditFieldsSuccessful(uniques))
+}
+
+function* getProjectCardFields() {
+  try {
+    const projectFields = yield call(cardSchemaApi.get)
+    yield put(getProjectCardFieldsSuccessful(projectFields))
+  } catch (e) {
+    yield put(error(e))
+  }
+}
+
+function* getAttributes() {
+  try {
+    const attributes = yield call(attributesApi.get)
+    yield put(getAttributesSuccessful(attributes))
+  } catch (e) {
+    yield put(error(e))
+  }
 }

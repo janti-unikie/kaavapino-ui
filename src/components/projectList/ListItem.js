@@ -20,6 +20,8 @@ const ListItem = ({
   showGraph,
   isUserPrivileged,
   modifyProject,
+  deadlines,
+  onhold,
   item: {
     phaseName,
     phaseColor,
@@ -32,6 +34,7 @@ const ListItem = ({
    pino_number
   }
 }) => {
+
   return (
     <div className="project-list-item-container">
       <div className="project-list-item">
@@ -74,7 +77,7 @@ const ListItem = ({
         </span>
       </div>
       <div className="project-list-item-graph">
-        {showGraph && <ProjectTimeline id={id} />}
+        {showGraph && <ProjectTimeline deadlines={deadlines} projectView={true} onhold={onhold}/>}
       </div>
     </div>
   )

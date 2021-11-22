@@ -2,11 +2,19 @@ import { createSelector } from 'reselect'
 
 const selectProject = state => state.project
 
-export const projectsSelector = createSelector(selectProject, project => project.projects)
+export const projectsSelector = createSelector(selectProject, ({ projects }) => projects)
 
 export const ownProjectsSelector = createSelector(
   selectProject,
   ({ ownProjects }) => ownProjects
+)
+export const onholdProjectsSelector = createSelector(
+  selectProject,
+  ({ onholdProjects }) => onholdProjects
+)
+export const archivedProjectsSelector = createSelector(
+  selectProject,
+  ({ archivedProjects }) => archivedProjects
 )
 
 export const amountOfProjectsToShowSelector = createSelector(
@@ -73,7 +81,7 @@ export const changingPhaseSelector = createSelector(
 
 export const validatingSelector = createSelector(
   selectProject,
-  ({ validating }) => validating
+  project => project.validating
 )
 
 export const hasErrorsSelector = createSelector(
@@ -101,9 +109,30 @@ export const usersSelector = createSelector(
     currentProject && currentProject._metadata ? currentProject._metadata.users : []
 )
 
+export const personnelSelector = createSelector(
+  currentProjectSelector,
+  (currentProject = {}) =>
+    currentProject && currentProject._metadata ? currentProject._metadata.personnel : []
+)
+
+export const creatorSelector = createSelector(
+  currentProjectSelector,
+  (currentProject = {}) =>
+    currentProject && currentProject._metadata ? currentProject._metadata.created : []
+)
+
 export const deadlinesSelector = createSelector(
   currentProjectSelector,
   (currentProject = { deadlines: [] }) => currentProject.deadlines
+)
+
+export const currentProjectArchivedSelector = createSelector(
+  currentProjectSelector,
+  currentProject => currentProject.archived
+)
+export const currentProjectOnholdSelector = createSelector(
+  currentProjectSelector,
+  currentProject => currentProject.onhold
 )
 
 export const selectedPhaseSelector = createSelector(
@@ -111,12 +140,53 @@ export const selectedPhaseSelector = createSelector(
   project => project.selectedPhase
 )
 
-export const onHoldProjectSelector = createSelector(
+export const onholdProjectSelector = createSelector(
   selectProject,
-  project => project.projects.filter(proj => proj.onhold)
+  project => project.onholdProjects
 )
 
 export const archivedProjectSelector = createSelector(
   selectProject,
-  project => project.projects.filter(proj => proj.archived)
+  project => project.archivedProjects
+)
+
+export const projectOverviewFloorAreaSelector = createSelector(
+  selectProject,
+  project => project.overview.floorArea
+)
+export const projectOverviewBySubtypeSelector = createSelector(
+  selectProject,
+  project => project.overview.bySubtype
+)
+export const projectOverviewFiltersSelector = createSelector(
+  selectProject,
+  project => project.overview.filters
+)
+export const externalDocumentsSelector = createSelector(
+  selectProject,
+  project => project.currentProjectExternalDocuments
+)
+export const projectOverviewMapDataSelector = createSelector(
+  selectProject,
+  project => project.overview.mapData
+)
+export const projectOverviewMapFiltersSelector = createSelector(
+  selectProject,
+  project => project.overview.mapFilters
+)
+export const projectOverviewFloorAreaFiltersSelector = createSelector(
+  selectProject,
+  project => project.overview.floorAreaFilters
+)
+export const projectOverviewProjectTypeFiltersSelector = createSelector(
+  selectProject,
+  project => project.overview.projectTypeFilters
+)
+export const projectOverviewFloorAreaTargetsSelector = createSelector(
+  selectProject,
+  project => project.overview.floorAreaTargets
+)
+export const projectMapLegendsSelector = createSelector(
+  selectProject,
+  project => project.overview.legends
 )

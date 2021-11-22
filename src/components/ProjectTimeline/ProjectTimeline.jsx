@@ -6,16 +6,14 @@ import { connect } from 'react-redux'
 import { getProject, getProjectSuccessful } from '../../actions/projectActions'
 import { timelineProjectSelector } from '../../selectors/projectSelector'
 import { findWeek } from './helpers/helpers'
-import { IconError, IconRefresh, Button, LoadingSpinner } from 'hds-react'
+import { IconError } from 'hds-react'
+import { useTranslation } from 'react-i18next'
 
 function ProjectTimeline(props) {
-  const { deadlines, projectView } = props
+  const { deadlines, projectView, onhold } = props
   const [showError, setShowError] = useState(false)
   const [drawMonths, setDrawMonths] = useState([])
   const [drawItems, setDrawItems] = useState([])
-  const [showLoadProject, setShowLoadProject] = useState(false)
-  const [loadingProject, setLoadingProject] = useState(false)
-  const [timelineLoaded, setTimelineLoaded] = useState(false)
   const monthNames = {
     0: 'Tammi',
     1: 'Helmi',
@@ -30,11 +28,11 @@ function ProjectTimeline(props) {
     10: 'Marras',
     11: 'Joulu'
   }
+
+  const { t } = useTranslation()
+
   useEffect(() => {
     if (!projectView) {
-      if (!timelineLoaded) {
-        setShowLoadProject(true)
-      }
       const months = createMonths(deadlines)
       createDrawMonths(months.months)
     } else {
@@ -42,11 +40,9 @@ function ProjectTimeline(props) {
     }
   }, [])
   useEffect(() => {
-    if (props.timelineProject && loadingProject) {
+    if (props.timelineProject) {
       props.timelineProject.forEach(timelineProject => {
         if (timelineProject.id === props.id) {
-          setLoadingProject(false)
-          setShowLoadProject(false)
           createTimelineItems(timelineProject.deadlines)
         }
       })
@@ -325,12 +321,7 @@ function ProjectTimeline(props) {
       return null
     }
   }
-  function loadProject() {
-    if (!loadingProject) {
-      props.getProject(props.id)
-      setLoadingProject(true)
-    }
-  }
+
   function createTimelineItems(timelineDeadlines) {
     const months = createMonths(timelineDeadlines)
     const deadlineArray = createDeadlines(timelineDeadlines)
@@ -339,38 +330,32 @@ function ProjectTimeline(props) {
     }
     createDrawMonths(months.months)
     createDrawItems(deadlineArray.deadlines)
-    setTimelineLoaded(true)
   }
-
-  const showButtons = () =>
-    loadingProject ? (
-      <LoadingSpinner />
-    ) : (
-      <Button
-        variant="supplementary"
-        aria-label="Lataa aikajana"
-        onClick={() => loadProject()}
-        iconRight={loadingProject ? <LoadingSpinner /> : <IconRefresh />}
-      />
-    )
+  const containerClass =
+    onhold || showError
+      ? 'timeline-graph-container hide-background'
+      : 'timeline-graph-container'
   return (
-    <div className="timeline-graph-container">
-      {showError ? (
-        <div className="timeline-error-message">
+    <div className={containerClass}>
+      {onhold ? (
+        <div className="timeline-onhold-message">
           <IconError />
-          <span>Projektin aikataulu ei ole ajan tasalla.</span>
+          <span>{t('deadlines.project-stopped')}</span>
         </div>
       ) : null}
-      {showLoadProject ? (
-        <div className="timeline-load-project-message">{showButtons()} </div>
+      {showError && !onhold ? (
+        <div className="timeline-error-message">
+          <IconError />
+          <span>{t('deadlines.timeline-error')}</span>
+        </div>
       ) : null}
       <div
-        className={`timeline-item-container ${showError ? 'timeline-error' : null}`}
+        className={`timeline-item-container ${showError ? 'timeline-error' : ''}`}
         style={{ gridTemplateColumns: `repeat(${drawItems.length}, 1fr)` }}
       >
         {drawItems}
       </div>
-      <div className={`timeline-months ${showError ? 'timeline-error' : null}`}>
+      <div className={`timeline-months ${showError ? 'timeline-error' : ''}`}>
         {drawMonths}
       </div>
     </div>
