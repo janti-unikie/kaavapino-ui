@@ -1,4 +1,4 @@
-FROM node:10.6.0-alpine
+FROM node:17.4-alpine
 
 WORKDIR /kaavapino-ui
 
