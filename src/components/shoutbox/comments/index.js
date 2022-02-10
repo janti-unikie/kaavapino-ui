@@ -9,7 +9,8 @@ import {
   deleteComment,
   increaseAmountOfCommentsToShow,
   fetchFieldComments,
-  pollFieldComments
+  pollFieldComments,
+  clearComments
 } from '../../../actions/commentActions'
 import {
   commentsSelector,
@@ -63,6 +64,7 @@ class Comments extends Component {
 
   componentWillUnmount() {
     clearInterval(this.poll)
+    this.props.clearComments()
   }
 
   handleChange = e => {
@@ -155,7 +157,8 @@ const mapDispatchToProps = {
   deleteComment,
   increaseAmountOfCommentsToShow,
   fetchFieldComments,
-  pollFieldComments
+  pollFieldComments,
+  clearComments
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comments)

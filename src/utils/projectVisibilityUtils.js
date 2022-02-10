@@ -1,4 +1,5 @@
 import { includes, get } from 'lodash'
+import projectUtils from './projectUtils'
 // Field returns info whether field given as a parameter should be shown or not.
 export const showField = (field, formValues, currentName) => {
   let returnValue = false
@@ -18,7 +19,7 @@ export const showField = (field, formValues, currentName) => {
     let currentValue = get(formValues, `${fieldsetPart}${variable}`)
     
     if  ( currentValue === undefined ) {
-      currentValue = get( formValues, variable)
+      currentValue = projectUtils.findValueFromObject( formValues, variable)
     }
 
     return currentValue

@@ -12,7 +12,8 @@ import {
   SET_UNREAD_COMMENTS_COUNT,
   FETCH_FIELD_COMMENTS_SUCCESSFUL,
   FETCH_FIELD_COMMENTS,
-  FETCH_SINGLE_FIELD_COMMENTS_SUCCESSFUL
+  FETCH_SINGLE_FIELD_COMMENTS_SUCCESSFUL,
+  CLEAR_COMMENTS
 } from '../actions/commentActions'
 
 import { INITIALIZE_PROJECT } from '../actions/projectActions'
@@ -24,7 +25,8 @@ export const initialState = {
   amountOfCommentsToShow: 10,
   totalComments: 0,
   unreadCommentsCount: 0,
-  pollingComments: false
+  pollingComments: false,
+  fieldCommentsLoading: false
 }
 
 export const reducer = (state = initialState, { type, payload }) => {
@@ -123,6 +125,10 @@ export const reducer = (state = initialState, { type, payload }) => {
       return {
         ...initialState
       }
+    case CLEAR_COMMENTS: 
+      return {
+        ...initialState
+      }  
 
     default:
       return state

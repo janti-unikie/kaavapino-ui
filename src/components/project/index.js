@@ -16,13 +16,13 @@ import {
   currentProjectLoadedSelector,
   changingPhaseSelector,
   selectedPhaseSelector,
-  externalDocumentsSelector
+  externalDocumentsSelector,
+  creatorSelector
 } from '../../selectors/projectSelector'
 import { phasesSelector } from '../../selectors/phaseSelector'
 import {
   allEditFieldsSelector,
-  projectCardFieldsSelector,
-  attributesSelector
+  projectCardFieldsSelector
 } from '../../selectors/schemaSelector'
 import { usersSelector } from '../../selectors/userSelector'
 import { NavHeader } from '../common/NavHeader'
@@ -53,25 +53,37 @@ class ProjectPage extends Component {
     }
 
     this.state = {
-      showDeadlineModal: false,
       showBaseInformationForm: false,
       showPrintProjectDataModal: false,
       deadlines: null
     }
-
   }
 
   componentDidMount() {
     const { currentProjectLoaded, users, getAttributes, currentProject } = this.props
 
     getAttributes()
-    if (!currentProjectLoaded || !currentProject || currentProject.id !== +this.props.id ) {
+    if (
+      !currentProjectLoaded ||
+      !currentProject ||
+      currentProject.id !== +this.props.id
+    ) {
       this.props.initializeProject(this.props.id)
     }
     if (!users || users.length === 0) {
       this.props.fetchUsers()
     }
     window.scrollTo({ top: 0, behavior: 'auto' })
+
+    const search = this.props.location.search
+    const params = new URLSearchParams(search)
+
+    const viewParameter = params.get('property')
+
+    if (viewParameter) {
+      this.setState({ ...this.state, showBaseInformationForm: true })
+      this.props.history.replace( { ...this.props.location, search: ''} )
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -87,8 +99,6 @@ class ProjectPage extends Component {
     if (prevProps.edit && !edit) this.props.setSelectedPhaseId(currentProject.phase)
 
     getExternalDocuments(this.props.id)
-
-   
   }
 
   switchDisplayedPhase = phase => {
@@ -241,10 +251,7 @@ class ProjectPage extends Component {
           initialValues={{}}
           handleClose={() => this.togglePrintProjectDataModal(false)}
         />
-        <ProjectCardPage
-          projectId={this.props.id}
-          documents={externalDocuments}
-        />
+        <ProjectCardPage projectId={this.props.id} documents={externalDocuments} />
       </div>
     )
   }
@@ -276,9 +283,15 @@ class ProjectPage extends Component {
             {t('project.modify')}
           </Button>
         )}
-        <Button variant="secondary" iconLeft={<IconPen />} onClick={this.createDocuments}>
-          {t('project.create-documents')}
-        </Button>
+        {showCreate && (
+          <Button
+            variant="secondary"
+            iconLeft={<IconPen />}
+            onClick={this.createDocuments}
+          >
+            {t('project.create-documents')}
+          </Button>
+        )}
         <Button
           variant="secondary"
           iconLeft={<IconPrinter />}
@@ -328,20 +341,15 @@ class ProjectPage extends Component {
 
     return (
       <span className="header-buttons">
-        <Button
-          variant="secondary"
-          onClick={this.openProjectDataModal}
-          iconLeft={<IconDownload />}
-        >
-          Tulosta projektin tiedot
-        </Button>
-        {showCreate && (
+       
+       {showCreate && (
           <Button
             variant="secondary"
-            onClick={() => this.toggleBaseInformationForm(true)}
+            className="header-button"
+            onClick={this.modifyContent}
             iconLeft={<IconPen />}
           >
-            {t('project.modify-project')}
+            {t('project.modify')}
           </Button>
         )}
         <Button variant="primary" iconLeft={<IconPen />} onClick={this.checkProjectCard}>
@@ -383,12 +391,14 @@ class ProjectPage extends Component {
     this.setState({ ...this.state, showBaseInformationForm: opened })
 
   getAllChanges = () => {
-    const { allEditFields, edit } = this.props
+    const { allEditFields, edit, creator, t } = this.props
 
     if (!edit) return []
 
-    return allEditFields.map((f, i) => {
-      const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.label} ${f.user_name}`
+    const returnValues = allEditFields.map((f, i) => {
+      const value = `${projectUtils.formatDateTime(f.timestamp)} ${f.label} ${
+        f.user_name
+      }`
       return {
         name: f.name,
         label: f.attribute_label,
@@ -400,6 +410,18 @@ class ProjectPage extends Component {
         labels: f.labels
       }
     })
+
+    returnValues.push({
+      name: 'Project created',
+      label: creator.user_name,
+      text: t('project.project-created-log', {
+        timestamp: projectUtils.formatDateTime(creator.timestamp),
+        name: creator.user_name
+      }),
+      hideChangeValue: true
+    })
+
+    return returnValues
   }
 
   togglePrintProjectDataModal = opened =>
@@ -474,7 +496,7 @@ const mapStateToProps = state => {
     selectedPhase: selectedPhaseSelector(state),
     projectCardFields: projectCardFieldsSelector(state),
     externalDocuments: externalDocumentsSelector(state),
-    attributes: attributesSelector(state)
+    creator: creatorSelector(state)
   }
 }
 

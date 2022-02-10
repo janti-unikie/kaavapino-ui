@@ -8,7 +8,10 @@ export const latestEditFieldSelector = createSelector(
   selectSchema,
   ({ latestEditField }) => latestEditField
 )
-
+export const allPhases = createSelector(
+  selectSchema,
+  ({ schema }) => schema && schema.phases
+)
 export const allEditFieldsSelector = createSelector(
   selectSchema,
   ({ allEditFields }) => allEditFields

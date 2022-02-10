@@ -2,13 +2,15 @@ import {
   FETCH_SCHEMAS_SUCCESSFUL,
   SET_ALL_EDIT_FIELDS_SUCCESSFUL,
   GET_PROJECT_CARD_FIELDS_SUCCESSFUL,
-  GET_ATTRIBUTES_SUCCESSFUL
+  GET_ATTRIBUTES_SUCCESSFUL,
+  CLEAR_SCHEMAS
 } from '../actions/schemaActions'
-import { FETCH_PROJECTS } from '../actions/projectActions'
 
 export const initialState = {
   schema: null,
-  allEditFields: []
+  allEditFields: [],
+  attributes: [],
+  projectCardFields: []
 }
 
 export const reducer = (state = initialState, action) => {
@@ -20,19 +22,14 @@ export const reducer = (state = initialState, action) => {
       }
     }
 
-    case FETCH_PROJECTS: {
-      return {
-        ...state,
-        schema: null,
-        allEditFields: []
-      }
-    }
-
     case SET_ALL_EDIT_FIELDS_SUCCESSFUL: {
       return {
         ...state,
         allEditFields: action.payload
       }
+    }
+    case CLEAR_SCHEMAS: {
+      return initialState
     }
 
     case GET_PROJECT_CARD_FIELDS_SUCCESSFUL: {

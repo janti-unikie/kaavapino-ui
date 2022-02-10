@@ -14,14 +14,15 @@ import {
 } from 'recharts'
 import { useTranslation } from 'react-i18next'
 import FilterList from './Filters/FilterList'
-import { Grid, GridColumn, Popup } from 'semantic-ui-react'
+import { Grid, Popup } from 'semantic-ui-react'
 import { isNaN, isEqual, isArray } from 'lodash'
 import {
   getFloorAreaChartData,
   BUSINESS_PREMISES,
   LIVING,
   PREDICTION,
-  LIVING_OVERALL
+  LIVING_OVERALL,
+  TOTAL
 } from './floorAreaChartUtils'
 import {
   projectOverviewFloorAreaSelector,
@@ -39,6 +40,7 @@ import { connect } from 'react-redux'
 import { LoadingSpinner, Button } from 'hds-react'
 import { withRouter } from 'react-router-dom'
 import dayjs from 'dayjs'
+import Legends from './Legends'
 function FloorAreaChart({
   filters,
   chartData,
@@ -78,20 +80,20 @@ function FloorAreaChart({
   useEffect(() => {
     setCurrentChartData(getFloorAreaChartData(chartData))
     const currentValue = filter && filter['vuosi'] ? filter['vuosi'] : currentYear
-    
-    setTotal( floorAreaTargets[currentValue] ? floorAreaTargets[currentValue] : 0)
+
+    setTotal(floorAreaTargets[currentValue] ? floorAreaTargets[currentValue] : 0)
   }, [chartData])
 
   useEffect(() => {
     const graphData = getFloorAreaChartData(chartData)
     const livingOverall = graphData && graphData[LIVING_OVERALL]
-    setCurrent(livingOverall ? livingOverall : 0 )
+    setCurrent(livingOverall ? livingOverall : 0)
   }, [chartData])
 
   useEffect(() => {
     const currentValue = filter && filter['year'] ? filter['year'] : currentYear
-    
-    setTotal( floorAreaTargets[currentValue])
+
+    setTotal(floorAreaTargets[currentValue])
   }, [floorAreaTargets])
 
   const onFilterChange = (values, currentParameter) => {
@@ -122,6 +124,20 @@ function FloorAreaChart({
         [values.parameter]: values.value
       })
     }
+  }
+  const onUserFilterChange = (values, currentParameter) => {
+    if (!values || values.length === 0) {
+      const newFilter = Object.assign({}, filter)
+      delete newFilter[currentParameter]
+      setFilter({
+        ...newFilter
+      })
+      return
+    }
+    setFilter({
+      ...filter,
+      [currentParameter]: values
+    })
   }
 
   const goToProjectCard = id => {
@@ -228,7 +244,7 @@ function FloorAreaChart({
             <Grid.Column>{t('floor-area.tooltip.phase')}</Grid.Column>
             <Grid.Column textAlign="right">
               <span
-                style={{ backgroundColor: project.phase.color }}
+                style={{ backgroundColor: project.phase.color_code }}
                 className="dot"
               ></span>
               <span className="value">{project.phase.name}</span>
@@ -296,136 +312,157 @@ function FloorAreaChart({
 
   return (
     <div className="floor-area">
-      <Grid stackable columns="equal">
-        <Grid.Column width={7}>
-          <h3>
-            {t('floor-area.title', { date: getFormattedHeaderDate(chartData.date) })}
-          </h3>
-        </Grid.Column>
-        <GridColumn className="filters" textAlign="left">
-          <FilterList
-            currentFilter={filter}
-            onChange={onFilterChange}
-            filterList={filters}
-            onClear={onClear}
-            defaultYear={currentYear}
-          />
-        </GridColumn>
-      </Grid>
-      {!currentChartData && <LoadingSpinner className="center" />}
-      {currentChartData && (
-        <div className="chart-area">
-          <div className="total-floor-area">
-            <span className="current-number">
-              {t('floor-area.current-number', { current })}
-            </span>
-            <span>{t('floor-area.total-number', { total })}</span>
+      <h3>{t('floor-area.title', { date: getFormattedHeaderDate(chartData.date) })}</h3>
+      <FilterList
+        currentFilter={filter}
+        onChange={onFilterChange}
+        filterList={filters}
+        onClear={onClear}
+        defaultYear={currentYear}
+        onUserChange={onUserFilterChange}
+      />
+
+      <div>
+        {!currentChartData && <LoadingSpinner className="center" />}
+        {currentChartData && (
+          <div>
+            <div className="total-floor-area">
+              <span className="current-number">
+                {t('floor-area.current-number', { current })}
+              </span>
+              <span>{t('floor-area.total-number', { total: total ? total : '' })}</span>
+            </div>
+            <ResponsiveContainer width="100%" height={350}>
+              <ComposedChart data={currentChartData.floorAreas}>
+                <ReferenceLine
+                  label={t('floor-area.now')}
+                  yAxisId="left"
+                  type="number"
+                  x={new Date().getTime()}
+                  stroke="red"
+                />
+
+                <XAxis
+                  interval={1}
+                  scale="time"
+                  height={65}
+                  tickCount={100}
+                  domain={['auto', 'auto']}
+                  type="number"
+                  dataKey="date"
+                  angle={-90}
+                  textAnchor="end"
+                  tickFormatter={getFormattedDate}
+                />
+                <YAxis yAxisId="left">
+                  <Label
+                    dx={-30}
+                    angle={-90}
+                    position="centerTop"
+                    style={{ fontSize: '12px' }}
+                    value={t('floor-area.y-axis-title')}
+                  ></Label>
+                </YAxis>
+                <YAxis
+                  yAxisId="right"
+                  orientation="right"
+                  domain={[0, 20]}
+                  scale="linear"
+                  hide={false}
+                >
+                  <Label
+                    angle={-90}
+                    position="centerTop"
+                    style={{ fontSize: '12px' }}
+                    value={t('floor-area.y-axis-title-projects-in-meeting')}
+                  ></Label>
+                </YAxis>
+                <Bar
+                  shape={<CustomizedLabel />}
+                  isAnimationActive={false}
+                  yAxisId="right"
+                  dataKey="meetings"
+                  fill="lightBlue"
+                  legendType="none"
+                />
+                <Legend />
+                <CartesianGrid yAxisId="left" vertical={false} opacity={0.4} />
+
+                <Line
+                  isAnimationActive={false}
+                  legendType="plainline"
+                  name={t('floor-area.living-area')}
+                  type="monotone"
+                  dataKey={LIVING}
+                  stroke="grey"
+                  strokeWidth="2px"
+                  dot={false}
+                  yAxisId="left"
+                />
+
+                <Line
+                  isAnimationActive={false}
+                  legendType="none"
+                  type="monotone"
+                  dataKey={LIVING + PREDICTION}
+                  stroke="grey"
+                  strokeDasharray="3 3"
+                  strokeWidth="2px"
+                  dot={false}
+                  yAxisId="left"
+                />
+
+                <Line
+                  isAnimationActive={false}
+                  legendType="plainline"
+                  name={t('floor-area.business-area')}
+                  type="monotone"
+                  dataKey={BUSINESS_PREMISES}
+                  stroke="green"
+                  strokeWidth="2px"
+                  dot={false}
+                  yAxisId="left"
+                />
+                <Line
+                  isAnimationActive={false}
+                  legendType="none"
+                  type="monotone"
+                  dataKey={BUSINESS_PREMISES + PREDICTION}
+                  stroke="green"
+                  strokeDasharray="3 3"
+                  strokeWidth="2px"
+                  dot={false}
+                  yAxisId="left"
+                />
+                <Line
+                  isAnimationActive={false}
+                  legendType="plainline"
+                  name={t('floor-area.total-area')}
+                  type="monotone"
+                  dataKey={TOTAL}
+                  stroke="black"
+                  strokeWidth="2px"
+                  dot={false}
+                  yAxisId="left"
+                />
+                <Line
+                  isAnimationActive={false}
+                  legendType="none"
+                  type="monotone"
+                  dataKey={TOTAL + PREDICTION}
+                  stroke="green"
+                  strokeDasharray="3 3"
+                  strokeWidth="2px"
+                  dot={false}
+                  yAxisId="left"
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
           </div>
-          <ResponsiveContainer width="100%" height={350}>
-            <ComposedChart data={currentChartData.floorAreas}>
-              <ReferenceLine
-                label={t('floor-area.now')}
-                yAxisId="left"
-                type="number"
-                x={new Date().getTime()}
-                stroke="red"
-              />
-
-              <XAxis
-                interval={1}
-                scale="time"
-                tickCount={104}
-                domain={['auto', 'auto']}
-                type="number"
-                dataKey="date"
-                angle={-45}
-                textAnchor="end"
-                tickFormatter={getFormattedDate}
-              />
-              <YAxis yAxisId="left">
-                <Label
-                  dx={-30}
-                  angle={-90}
-                  position="centerTop"
-                  style={{ fontSize: '12px' }}
-                  value={t('floor-area.y-axis-title')}
-                ></Label>
-              </YAxis>
-              <YAxis
-                yAxisId="right"
-                orientation="right"
-                domain={[0, 20]}
-                scale="linear"
-                hide={false}
-              >
-                <Label
-                  angle={-90}
-                  position="centerTop"
-                  style={{ fontSize: '12px' }}
-                  value={t('floor-area.y-axis-title-projects-in-meeting')}
-                ></Label>
-              </YAxis>
-              <Bar
-                shape={<CustomizedLabel />}
-                isAnimationActive={false}
-                yAxisId="right"
-                dataKey="meetings"
-                fill="lightBlue"
-                legendType="none"
-              />
-              <Legend />
-              <CartesianGrid yAxisId="left" vertical={false} opacity={0.4} />
-
-              <Line
-                isAnimationActive={false}
-                legendType="plainline"
-                name={t('floor-area.living-area')}
-                type="monotone"
-                dataKey={LIVING}
-                stroke="grey"
-                strokeWidth="2px"
-                dot={false}
-                yAxisId="left"
-              />
-
-              <Line
-                isAnimationActive={false}
-                legendType="none"
-                type="monotone"
-                dataKey={LIVING + PREDICTION}
-                stroke="grey"
-                strokeDasharray="3 3"
-                strokeWidth="2px"
-                dot={false}
-                yAxisId="left"
-              />
-
-              <Line
-                isAnimationActive={false}
-                legendType="plainline"
-                name={t('floor-area.business-area')}
-                type="monotone"
-                dataKey={BUSINESS_PREMISES}
-                stroke="green"
-                strokeWidth="2px"
-                dot={false}
-                yAxisId="left"
-              />
-              <Line
-                isAnimationActive={false}
-                legendType="none"
-                type="monotone"
-                dataKey={BUSINESS_PREMISES + PREDICTION}
-                stroke="green"
-                strokeDasharray="3 3"
-                strokeWidth="2px"
-                dot={false}
-                yAxisId="left"
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
-        </div>
-      )}
+        )}
+        
+      </div>
+      <Legends centered={true} />
     </div>
   )
 }

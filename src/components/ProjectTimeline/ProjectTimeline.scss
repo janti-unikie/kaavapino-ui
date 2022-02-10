@@ -97,7 +97,8 @@
         .milestone-message {
           position: absolute;
           top: 20px;
-          width: 100px;
+          max-width: 140px;
+          min-width: 120px;
           font-size: 12px;
           &.under {
             top: 32px;

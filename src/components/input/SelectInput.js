@@ -16,13 +16,17 @@ const SelectInput = ({
   const currentValue = []
 
   const getLabel = value => {
-    const current = options.find(option => option.value === value)
-    return current && current.label
+    const current = options && options.find(option => option.value === value)
+    if (current && current.label && current.label !== ' ') {
+      return current.label
+    } else {
+      return value
+    }
   }
   let currentSingleValue
 
   if (multiple) {
-    if (isArray(input.value)) {
+    if (isArray(input && input.value)) {
       input.value.forEach(value =>
         currentValue.push({ label: getLabel(value), value: value })
       )
@@ -30,12 +34,19 @@ const SelectInput = ({
       currentValue.push(input.value)
     }
   } else {
-    const current = options.find(option => option.value === input.value)
-    currentSingleValue = {
-      label: current && current.label,
-      value: current && current.value
+    const current = options && options.find(option => option.value === input.value)
+
+    if (current) {
+      currentSingleValue = {
+        label: current && current.label,
+        value: current && current.value
+      }
     }
   }
+
+  options = options
+    ? options.filter(option => option.label && option.label.trim() !== '')
+    : []
 
   return (
     <Select

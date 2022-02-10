@@ -1,135 +1,184 @@
-{ 
-    "title": "Kaavapino",
-    "loading": "Ladataan....",
-    "header" : {
-        "overview": "Yleisnäkymä",
-        "projects": "Projektit",
-        "reports": "Raportit",
-        "sign-out": "Kirjaudu ulos",
-        "choices-label": "Valikko"
+{
+  "title": "Kaavapino",
+  "loading": "Ladataan....",
+  "header": {
+    "overview": "Yleisnäkymä",
+    "projects": "Projektit",
+    "reports": "Raportit",
+    "sign-out": "Kirjaudu ulos",
+    "choices-label": "Valikko"
+  },
+  "document-loading": {
+    "title": "Dokumentin lataus",
+    "preview-title": "Esikatseludokumentin lataus",
+    "preview-content": "Esikatseludokumenttia {{name}} ladataan.",
+    "content": "Dokumenttia {{name}} ladataan.",
+    "error": "Dokumentin {{name}} lataus epäonnistui.",
+    "document-preview-loaded": "Dokumentin esikatselu ladattu onnistuneesti",
+    "document-loaded": "Dokumentti ladattu onnistuneesti"
+  },
+  "projects": {
+    "own-short": "Omat",
+    "all-short": "Kaikki",
+    "own-long": "Omat projektit",
+    "all-long": "Kaikki projektit",
+    "amount": "({{pieces}} kpl)",
+    "title": "Kaavaprojektit",
+    "createNewProject": "Luo uusi projekti",
+    "createReports": "Luo raportteja",
+    "onhold-short": "Keskeytyneet",
+    "archived-short": "Arkistoidut",
+    "onhold-long": "Keskeytyneet projektit",
+    "archived-long": "Arkistoidut projektit",
+    "logging": {
+      "modified": "Muokattu",
+      "old": "Vanha"
     },
-    "projects": {
-        "own-short": "Omat",
-        "all-short": "Kaikki",
-        "own-long": "Omat projektit",
-        "all-long": "Kaikki projektit",
-        "amount": "({{pieces}} kpl)",
-        "title": "Kaavaprojektit",
-        "createNewProject": "Luo uusi projekti",
-        "createReports": "Luo raportteja",
-        "onhold-short": "Keskeytyneet",
-        "archived-short": "Arkistoidut",
-        "onhold-long": "Keskeytyneet projektit",
-        "archived-long": "Arkistoidut projektit",
-        "logging" : {
-            "modified": "Muokattu",
-            "old": "Vanha"
-        }
+    "person-search": "Henkilöhaku"
+  },
+  "deadlines": {
+    "title": "Päivitä aikataulut",
+    "error": "Virhe: {{error}}",
+    "warning": "Päivitettyjen aikataulutietojen tallentaminen saattaa kestää hieman pidempään kun Kaavapino tekee laskutoimituksia.",
+    "estimated": "Kaavapinon arvio",
+    "project-stopped": "Projekti on toistaiseksi keskeytetty.",
+    "timeline-error": "Projekti ei ole ajan tasalla."
+  },
+  "common": {
+    "cancel": "Peruuta",
+    "save": "Tallenna"
+  },
+  "messages": {
+    "deadlines-successfully-saved": "Aikataulut tallennettu",
+    "min-distance": "Valitse myöhempi päivä, koska tämä on liian lähellä edellistä etappia.",
+    "max-distance": "Valitse aikaisempi päivä, koska tämä on liian lähellä seuraavaa etappia.",
+    "check-timetable": "Tekemäsi aikataulumuutos vaikuttaa myöhempiin vaiheisiin. Siirrä myöhempiä vaiheita eteenpäin, jotta saat koko aikataulun ajantasalle.",
+    "timelines-successfully-saved": "Kerrosalatiedot tallennettu onnistuneesti"
+  },
+  "floor-areas": {
+    "title": "Päivitä kerrosalatiedot"
+  },
+  "project": {
+    "modify": "Muokkaa",
+    "create-documents": "Luo dokumentteja",
+    "print-project-card": "Tulosta projektikortti",
+    "deadlines": "Määräajat",
+    "modify-project": "Muokkaa luontitietoja",
+    "check-project-card": "Katso projektikortti",
+    "last-edit": "Viimeisin muokkaus: {{fieldName}} {{date}} {{userName}}",
+    "floor-area-title": "Kerrosalatiedot",
+    "basic-information-title": "Perustiedot",
+    "description-title": "Suunnittelualueen kuvaus",
+    "photo-title": "Kuva",
+    "contract-title": "Maanomistus ja maankäyttösopimus",
+    "strategy-connection-title": "Strategiakytkentä",
+    "timetable-title": "Aikataulu",
+    "contact-title": "Yhteyshenkilöt",
+    "photo-description": "Kuvaus",
+    "planning-area-constraints": "Suunnittelualueen rajaus",
+    "documents-title": "Valmiit dokumentit",
+    "yes": "Kyllä",
+    "no": "Ei",
+    "documents-created": "Osa tämän vaiheen dokumenteista on jo ladattu ulos. Ole tarvittaessa yhteydessä projektin vastuuhenkilöön {{email}}.",
+    "no-documents": "Ei dokumentteja",
+    "phase-passed": "Vaihe ohitettu",
+    "load": "Lataa ulos kun valmis",
+    "load-preview": "Esikatsele keskeneräistä",
+    "phase": "Kaavan vaihe:",
+    "document-last-loaded": "Ladattu ulos viimeksi:",
+    "project-created-log": "{{timestamp}} Projekti luotu {{name}}",
+    "default-email": "etunimi.sukunimi@hel.fi",
+    "save-warning": "Hankkeessa on tallentamattomia muutoksia. Haluatteko silti jatkaa?"
+
+  },
+  "nav-header": {
+    "latest-update": "Viimeisin muokkaus: {{latestUpdate}}"
+  },
+  "print-project-data": {
+    "title": "Tulosta projektin tiedot",
+    "info": "Valitse toinen seuraavista:",
+    "phase-label": "Vaihe",
+    "date-label": "Päivämäärä",
+    "load-project-data": "Lataa projektin tiedot",
+    "project-data-loaded": "Tiedot ladattu. Paina oheista linkkiä lataaksesi CSV-tiedoston",
+    "load-csv": "Lataa tiedosto",
+    "button-close": "Sulje"
+  },
+  "quick-nav": {
+    "check": "Tarkista",
+    "check-help-text": "Korostaa pakolliset puuttuvat kentät",
+    "save-help": "Tallentaa projektin",
+    "end-phase": "Lopeta vaihe",
+    "end-phase-help": "Yrittää lopettaa vaiheen",
+    "archive": "Arkistoi projekti",
+    "archive-help": "Yrittää arkistoida projektin",
+    "onhold-lable": "Projekti on toistaiseksi keskeytynyt",
+    "set-onhold-lable": "Aseta projekti toistaiseksi keskeytyneeksi",
+    "change-phase-error": "Vaihetta ei voida vielä lopettaa",
+    "change-phase-error-message": "Täytä puuttuvat kentät"
+  },
+  "map-area": {
+    "title": "Kaavaprojektit kartalla",
+    "loading-data": "Ladataan kaavaprojektien rajauksia"
+  },
+  "overview": {
+    "title": "Yleisnäkymä",
+    "clear-selections": "Tyhjennä valinnat",
+    "filter-button": "Suodata",
+    "filter-modal-title": "Suodata",
+    "clear": "Tyhjennä",
+    "selected": "{{amount}} valittu"
+  },
+
+  "floor-area": {
+    "title": "Tarkistettujen kaavaehdotusten asuinkerrosala {{date}}",
+    "mobile-title": "Kaavoitettu kerrosala nyt",
+    "total-number": " / {{total}} k-m²",
+    "current-number": " {{current}} k-m²",
+    "y-axis-title": "k-m²",
+    "living-area": "Asuinkerrosala",
+    "business-area": "Toimitilakerrosala",
+    "other-area": "Muu kerrosala",
+    "y-axis-title-projects-in-meeting": "Projekteja lautakunnan kokouksessa kpl",
+    "tooltip": {
+      "modify": "Muokkaa",
+      "show-project-card": "Katso projektikortti",
+      "phase": "Vaihe",
+      "process-size": "Prosessin koko",
+      "responsible-person": "Vastuuhenkilö"
     },
-    "deadlines": {
-        "title": "Päivitä aikataulut",
-        "error": "Virhe: {{error}}",
-        "warning": "Päivitettyjen aikataulutietojen tallentaminen saattaa kestää hieman pidempään kun Kaavapino tekee laskutoimituksia.",
-        "estimated": "Kaavapinon arvio",
-        "project-stopped": "Projekti on toistaikseksi keskeytetty.",
-        "timeline-error": "Projekti ei ole ajan tasalla."
+    "now": "Nyt",
+    "meetings-title": "Lautakunnan kokoukset",
+    "total-area": "Kokonaiskerrosala"
+  },
+  "project-types": {
+    "title": "Kaavaprojektien jakauma",
+    "kaynnistys": "Käynnistys-vaihe",
+    "OAS": "OAS-vaihe",
+    "ehdotus": "Ehdotus-vaihe",
+    "hyvaksyminen": "Hyväksyminen-vaihe",
+    "luonnos": "Luonnos-vaihe",
+    "tarkastettuEhdotus": "Tarkastettu ehdotus -vaihe",
+    "voimaantulo": "Voimaantulo-vaihe",
+    "periaatteet": "Periaatteet-vaihe"
+  },
+  "reports": {
+    "title": "Raportit",
+    "choose-report": "Valitse raporttityyppi",
+    "filters": "Suodattimet",
+    "create-report": "Lataa raportti (.xlxs)",
+    "create-preview": "Esikatselu",
+    "preview-title": "Esikatseluraportin lataus",
+    "preview-content": "Raporttia ladataan esikatseluun.",
+    "content": "Raporttia ladataan.",
+    "error": "Raportin lataus epäonnistui.",
+    "presentation-report": {
+      "title": "Esittelysuunnitelma",
+      "infoText": " Kaupunkiympäristölautakunnalle (KYLK) esitettäväksi suunniteltuja MAKA:n asioita",
+      "empty-report": "Tyhjä raportti",
+      "kylk-title": "Kylk {{date}}"
     },
-    "common": {
-        "cancel": "Peruuta",
-        "save": "Tallenna"
-    },
-    "messages": {
-        "deadlines-successfully-saved": "Aikataulut tallennettu",
-        "min-distance": "Valitse myöhempi päivä, koska tämä on liian lähellä edellistä etappia.",
-        "max-distance": "Valitse aikaisempi päivä, koska tämä on liian lähellä seuraavaa etappia.",
-        "check-timetable": "Tekemäsi aikataulumuutos vaikuttaa myöhempiin vaiheisiin. Siirrä myöhempiä vaiheita eteenpäin, jotta saat koko aikataulun ajantasalle."
-    },
-    "floor-areas": {
-        "title": "Päivitä kerrosalatiedot"
-    },
-    "project": {
-        "modify": "Muokkaa",
-        "create-documents": "Luo dokumentteja",
-        "print-project-card": "Tulosta projektikortti",
-        "deadlines": "Määräajat",
-        "modify-project": "Muokkaa luontitietoja",
-        "check-project-card": "Katso projektikortti",
-        "last-edit": "Viimeisin muokkaus: {{fieldName}} {{date}} {{userName}}",
-        "floor-area-title" : "Kerrosalatiedot",
-        "basic-information-title": "Perustiedot",
-        "description-title": "Suunnittelualueen kuvaus",
-        "contract-title": "Maanomistus ja maankäyttösopimus",
-        "strategy-connection-title": "Strategiakytkentä",
-        "timetable-title": "Aikataulu",
-        "contact-title": "Yhteyshenkilöt",
-        "photo-description": "Kuvaus",
-        "planning-area-constraints": "Suunnittelualueen rajaus",
-        "documents-title": "Valmiit dokumentit",
-        "yes": "Kyllä",
-        "no": "Ei"
-    },    
-    "nav-header": {
-        "latest-update": "Viimeisin muokkaus: {{latestUpdate}}"
-    },
-    "print-project-data": {
-        "title": "Tulosta projektin tiedot",
-        "info": "Valitse toinen seuraavista:",
-        "phase-label": "Vaihe",
-        "date-label": "Päivämäärä",
-        "load-project-data": "Lataa projektin tiedot",
-        "project-data-loaded": "Tiedot ladattu. Paina oheista linkkiä lataaksesi CSV-tiedoston",
-        "load-csv": "Lataa tiedosto",
-        "button-close": "Sulje"
-    },
-    "quick-nav" : {
-        "check": "Tarkista",
-        "check-help-text": "Korostaa pakolliset puuttuvat kentät",
-        "save-help": "Tallentaa projektin",
-        "end-phase": "Lopeta vaihe",
-        "end-phase-help": "Yrittää lopettaa vaiheen",
-        "archive": "Arkistoi projekti",
-        "archive-help": "Yrittää arkistoida projektin",
-        "onhold-lable": "Projekti on toistaiseksi keskeytynyt",
-        "set-onhold-lable": "Aseta projekti toistaiseksi keskeytyneeksi",
-        "change-phase-error": "Vaihetta ei voida vielä lopettaa",
-        "change-phase-error-message": "Täytä puuttuvat kentät"
-    },
-    "map-area": {
-        "title": "Kaavaprojektit kartalla",
-        "loading-data": "Ladataan kaavaprojektien rajauksia"
-    },
-    "overview": {
-        "title": "Yleisnäkymä",
-        "clear-selections": "Tyhjennä valinnat"
-    },
-    "floor-area": {
-        "title": "Tarkistettujen kaavaehdotusten asuinkerrosala {{date}}",
-        "total-number": " / {{total}} k-m²",
-        "current-number": " {{current}} k-m²",
-        "y-axis-title": "k-m²",
-        "living-area": "Asuinkerrosala",
-        "business-area": "Toimitilakerrosala",
-        "other-area": "Muu kerrosala",
-        "y-axis-title-projects-in-meeting": "Projekteja lautakunnan kokouksessa kpl",
-        "tooltip": {
-            "modify": "Muokkaa",
-            "show-project-card": "Katso projektikortti",
-            "phase": "Vaihe",
-            "process-size": "Prosessin koko",
-            "responsible-person": "Vastuuhenkilö"
-        },
-        "now": "Nyt"
-    },
-    "project-types": {
-        "title": "Kaavaprojektien jakauma",
-        "kaynnistys" : "Käynnistys-vaihe",
-        "OAS": "OAS-vaihe",
-        "ehdotus": "Ehdotus-vaihe",
-        "hyvaksyminen": "Hyväksyminen-vaihe",
-        "luonnos": "Luonnos-vaihe",
-        "tarkastettuEhdotus": "Tarkastettu ehdotus -vaihe",
-        "voimaantulo": "Voimaantulo-vaihe",
-        "periaatteet": "Periaatteet-vaihe"
-    }
-    
+    "report-preview-loaded": "Raportin esikatselu ladattu onnistuneesti",
+    "report-loaded": "Raportti ladattu onnistuneesti"
+  }
 }

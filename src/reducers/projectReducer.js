@@ -44,7 +44,18 @@ import {
   SET_OVERVIEW_MAP_FILTERS,
   SET_OVERVIEW_FLOOR_AREA_FILTERS,
   SET_OVERVIEW_PROJECT_TYPE_FILTERS,
-  GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL
+  GET_PROJECTS_OVERVIEW_FLOOR_AREA_TARGETS_SUCCESSFUL,
+  GET_PROJECT_MAP_LEGENDS_SUCCESSFUL,
+  CLEAR_PROJECTS_OVERVIEW,
+  CLEAR_PROJECTS,
+  CLEAR_EXTERNAL_DOCUMENTS,
+  SAVE_PROJECT_BASE_PAYLOAD,
+  FETCH_ARCHIVED_PROJECTS_SUCCESSFUL,
+  FETCH_ONHOLD_PROJECTS_SUCCESSFUL,
+  SET_TOTAL_ARCHIVED_PROJECTS,
+  SET_TOTAL_ONHOLD_PROJECTS,
+  SET_ONHOLD_PROJECTS,
+  SET_ARCHIVED_PROJECTS
 } from '../actions/projectActions'
 
 export const initialState = {
@@ -53,7 +64,11 @@ export const initialState = {
   amountOfProjectsToIncrease: 10,
   amountOfProjectsToShow: 10,
   totalOwnProjects: null,
+  totalOnholdProjects: null,
+  totalArchivedProjects: null,
   ownProjects: [],
+  onholdProjects: [],
+  archivedProjects: [],
   loadingProjects: false,
   users: [],
   currentProject: null,
@@ -66,12 +81,14 @@ export const initialState = {
   pollingProjects: false,
   timelineProject: [],
   selectedPhase: 0,
+  currentProjectExternalDocuments: null,
   overview: {
     floorArea: {},
     bySubtype: {},
     filters: [],
     mapData: {},
-    floorAreaTargets: {}
+    floorAreaTargets: {},
+    legends: []
   }
 }
 
@@ -86,7 +103,11 @@ export const reducer = (state = initialState, action) => {
         projects: [],
         ownProjects: [],
         amountOfProjectsToIncrease: 10,
-        amountOfProjectsToShow: 10
+        amountOfProjectsToShow: 10,
+        totalOnholdProjects: null,
+        totalArchivedProjects: null,
+        onholdProjects: [],
+        archivedProjects: []
       }
     }
 
@@ -112,6 +133,39 @@ export const reducer = (state = initialState, action) => {
       }
     }
 
+    case FETCH_ONHOLD_PROJECTS_SUCCESSFUL: {
+      return {
+        ...state,
+        onholdProjects: state.onholdProjects.concat(action.payload)
+      }
+    }
+
+    case FETCH_ARCHIVED_PROJECTS_SUCCESSFUL: {
+      return {
+        ...state,
+        archivedProjects: state.archivedProjects.concat(action.payload)
+      }
+    }
+    case CLEAR_PROJECTS: {
+      return {
+        ...state,
+        ownProjects: [],
+        projects: [],
+        archivedProjects: [],
+        onholdProjects: [],
+        totalOwnProjects: null,
+        totalProjects: null,
+        totalOnholdProjects: null,
+        totalArchivedProjects: null
+      }
+    }
+    case CLEAR_EXTERNAL_DOCUMENTS: {
+      return {
+        ...state,
+        currentProjectExternalDocuments: null
+      }
+    }
+
     case SET_PROJECTS: {
       return {
         ...state,
@@ -123,6 +177,18 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         ownProjects: action.payload
+      }
+    }
+    case SET_ONHOLD_PROJECTS: {
+      return {
+        ...state,
+        onholdProjects: action.payload
+      }
+    }
+    case SET_ARCHIVED_PROJECTS: {
+      return {
+        ...state,
+       archivedProjects: action.payload
       }
     }
 
@@ -159,6 +225,18 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         totalOwnProjects: action.payload
+      }
+    }
+    case SET_TOTAL_ARCHIVED_PROJECTS: {
+      return {
+        ...state,
+        totalArchivedProjects: action.payload
+      }
+    }
+    case SET_TOTAL_ONHOLD_PROJECTS: {
+      return {
+        ...state,
+        totalOnholdProjects: action.payload
       }
     }
 
@@ -209,7 +287,8 @@ export const reducer = (state = initialState, action) => {
     }
 
     case SAVE_PROJECT:
-    case SAVE_PROJECT_BASE: {
+    case SAVE_PROJECT_BASE:
+    case SAVE_PROJECT_BASE_PAYLOAD: {
       return {
         ...state,
         saving: true
@@ -227,7 +306,8 @@ export const reducer = (state = initialState, action) => {
     case VALIDATE_PROJECT_FIELDS: {
       return {
         ...state,
-        validating: true
+        validating: true,
+        hasErrors: false
       }
     }
 
@@ -392,7 +472,8 @@ export const reducer = (state = initialState, action) => {
         ...state,
         overview: {
           ...state.overview,
-          floorArea: {}
+          floorArea: {},
+          mapData: {}
         }
       }
     }
@@ -405,6 +486,19 @@ export const reducer = (state = initialState, action) => {
         }
       }
     }
+    case CLEAR_PROJECTS_OVERVIEW: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          floorArea: {},
+          bySubtype: {},
+          mapData: {},
+          floorAreaTargets: {}
+        }
+      }
+    }
+
     case SET_OVERVIEW_MAP_FILTERS: {
       return {
         ...state,
@@ -429,6 +523,15 @@ export const reducer = (state = initialState, action) => {
         overview: {
           ...state.overview,
           projectTypeFilters: action.payload
+        }
+      }
+    }
+    case GET_PROJECT_MAP_LEGENDS_SUCCESSFUL: {
+      return {
+        ...state,
+        overview: {
+          ...state.overview,
+          legends: action.payload
         }
       }
     }

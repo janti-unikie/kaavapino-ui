@@ -6,6 +6,7 @@ export const GET_PROJECT_CARD_FIELDS = 'Get project card fields'
 export const GET_PROJECT_CARD_FIELDS_SUCCESSFUL = 'Get project card fields successful'
 export const GET_ATTRIBUTES = 'Get attributes'
 export const GET_ATTRIBUTES_SUCCESSFUL = 'Get attributes successful'
+export const CLEAR_SCHEMAS = "Clear schemas"
 
 
 export const fetchSchemas = (project, subtype) => ({ type: FETCH_SCHEMAS, payload: { project, subtype } })
@@ -29,4 +30,8 @@ export const getAttributes = () => ({ type: GET_ATTRIBUTES })
 export const getAttributesSuccessful = attributes => ({
   type: GET_ATTRIBUTES_SUCCESSFUL,
   payload: attributes
+})
+
+export const clearSchemas = () => ({
+  type: CLEAR_SCHEMAS
 })

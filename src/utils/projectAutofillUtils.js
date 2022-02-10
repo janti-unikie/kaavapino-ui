@@ -30,182 +30,329 @@ export const getFieldAutofillValue = (
       const autofill = autofill_rule[index]
       const condition = autofill.condition
       const thenBranch = autofill.then_branch
-      if (!condition) {
-        continue
-      }
+      const conditions = autofill.conditions
 
-      const variable = condition.variable
-      const operator = condition.operator
-      const comparisonValue = condition.comparison_value
-      const comparisonValueType = condition.comparison_value_type
-      const extraVariables = autofill.variables
+      if (conditions && conditions.length > 0) {
+        const extraVariables = autofill.variables
+        const conditions = autofill.conditions
 
-      const lastIndex = fieldName ? fieldName.lastIndexOf('.') : -1
-      const fieldNameFieldsetPart = fieldName ? fieldName.substring(0, lastIndex) : ''
-      let formValue = projectUtils.findValueFromObject(formValues, variable)
-      
-      if (fieldNameFieldsetPart) {
-        formValue = get(formValues, `${fieldNameFieldsetPart}.${variable}`)
-      }
-      let formExtraValue
-      if (extraVariables && extraVariables[0]) {
-        // Check first if value is not inside fieldset
-        formExtraValue = formValues[extraVariables[0]]
-       
-        if (formExtraValue === undefined) {
-          formExtraValue = projectUtils.findValueFromObject( formValues, extraVariables[0] )
+        const lastIndex = fieldName ? fieldName.lastIndexOf('.') : -1
+        const fieldNameFieldsetPart = fieldName ? fieldName.substring(0, lastIndex) : ''
+
+        let formExtraValue
+
+          if (extraVariables && extraVariables[0]) {
+            // Check first if value is not inside fieldset
+            formExtraValue = formValues[extraVariables[0]]
+
+            if (formExtraValue === undefined) {
+              formExtraValue = projectUtils.findValueFromObject(
+                formValues,
+                extraVariables[0]
+              )
+
+              if (formExtraValue === undefined) {
+                formExtraValue = get(
+                  formValues,
+                  `${fieldNameFieldsetPart}${extraVariables[0]}`
+                )
+              }
+            }
+          }
+
+          if (formExtraValue === undefined || formExtraValue === null) {
+            formExtraValue = ''
+          }
+
+        let results = []
+        if (conditions && conditions.length > 0) {
+          
+
+          results = []
+          let notFoundValues = 0
+
+          for (let conditionIndex in conditions) {
+            const condition = conditions[conditionIndex]
+
+            const variable = condition.variable
+            const operator = condition.operator
+            const comparisonValue = condition.comparison_value
+            const comparisonValueType = condition.comparison_value_type
+
+            const lastIndex = fieldName ? fieldName.lastIndexOf('.') : -1
+            const fieldNameFieldsetPart = fieldName
+              ? fieldName.substring(0, lastIndex)
+              : ''
+
+            let formValue = projectUtils.findValueFromObject(formValues, variable)
+
+            if (fieldNameFieldsetPart) {
+              formValue = get(formValues, `${fieldNameFieldsetPart}.${variable}`)
+            }
+
+            // Special case to check "Aloituspäivä" for timetable modal
+            if (callerFormName === EDIT_PROJECT_TIMETABLE_FORM) {
+              formValue =
+                formValues[variable] === undefined
+                  ? projectUtils.findValueFromObject(formValues, variable)
+                  : formValues[variable]
+
+              // Now only one variable is expected
+              formExtraValue = extraVariables
+                ? projectUtils.findValueFromObject(formValues, extraVariables[0])
+                : ''
+            }
+
+            // List rule
+            if (comparisonValueType === 'list<string>') {
+              if (formValue === undefined || formValue === null) {
+                notFoundValues++
+              }
+              if (comparisonValue.includes(formValue)) {
+                results.push(comparisonValue.includes(formValue))
+              }
+            }
+            // Boolean type
+            if (comparisonValueType === 'boolean') {
+              let realValue = false
+
+              if (formValue === undefined || formValue === null) {
+                notFoundValues++
+              }
+
+              // First check if formValue is quill delta format or normal value
+              if (formValue && formValue.ops) {
+                const richTextValue =
+                  formValue && formValue.ops
+                    ? toPlaintext(formValue.ops).trim()
+                    : undefined
+                realValue = richTextValue && richTextValue.trim() !== '' ? true : false
+              } else {
+                if (!isBoolean(formValue)) {
+                  realValue = !formValue ? false : true
+                } else {
+                  realValue = formValue ? formValue === true : false
+                }
+              }
+
+              if (operator === EQUAL) {
+                const value = comparisonValue === realValue
+                results.push(value)
+              }
+              if (operator === NOT_EQUAL) {
+                const value = comparisonValue !== realValue
+                results.push(value)
+              }
+            }
+            if (comparisonValueType === 'number' || comparisonValueType === 'string') {
+              if (formValue === undefined || formValue === null) {
+                notFoundValues++
+              }
+              if (operator === EQUAL) {
+                results.push(comparisonValue === formValue)
+              }
+              if (operator === NOT_EQUAL) {
+                results.push(comparisonValue !== formValue)
+              }
+              if (operator === BIGGER_THAN && formValue > comparisonValue) {
+                results.push(formValue > comparisonValue)
+              }
+            }
+          }
+           
+          if (!results.includes(false) ) {
+            return formExtraValue + thenBranch
+          }
+
+          
+
+          if (notFoundValues == conditions.length ) {
+            return formExtraValue
+          }
+
+         
+        }
+        
+      } else {
+        if (!condition) {
+          continue
+        }
+        const variable = condition.variable
+        const operator = condition.operator
+        const comparisonValue = condition.comparison_value
+        const comparisonValueType = condition.comparison_value_type
+        const extraVariables = autofill.variables
+
+        const lastIndex = fieldName ? fieldName.lastIndexOf('.') : -1
+        const fieldNameFieldsetPart = fieldName ? fieldName.substring(0, lastIndex) : ''
+        let formValue = projectUtils.findValueFromObject(formValues, variable)
+
+        if (fieldNameFieldsetPart) {
+          formValue = get(formValues, `${fieldNameFieldsetPart}.${variable}`)
+        }
+        let formExtraValue
+        if (extraVariables && extraVariables[0]) {
+          // Check first if value is not inside fieldset
+          formExtraValue = formValues[extraVariables[0]]
 
           if (formExtraValue === undefined) {
-            formExtraValue = get(
+            formExtraValue = projectUtils.findValueFromObject(
               formValues,
-              `${fieldNameFieldsetPart}${extraVariables[0]}`
+              extraVariables[0]
             )
-          }
-        }
-      }
 
-      if (formExtraValue === undefined || formExtraValue === null) {
-        formExtraValue = ''
-      }
-      // Special case to check "Aloituspäivä" for timetable modal
-      if (callerFormName === EDIT_PROJECT_TIMETABLE_FORM) {
-
-        formValue =
-          formValues[variable] === undefined
-            ? projectUtils.findValueFromObject(formValues, variable)
-            : formValues[variable]
-       
-        // Now only one variable is expected
-        formExtraValue = extraVariables
-          ? projectUtils.findValueFromObject(formValues, extraVariables[0])
-          : ''
-      }
-
-      // List rule
-      if (comparisonValueType === 'list<string>') {
-        if (comparisonValue.includes(formValue)) {
-          if (thenBranch === TRUE_STRING) {
-            returnValue = true
-            continue
-          }
-          if (thenBranch === FALSE_STRING) {
-            returnValue = false
-            continue
-          }
-          returnValue = thenBranch
-          break
-        }
-      }
-      // Boolean type
-      if (comparisonValueType === 'boolean') {
-        let realValue = false
-
-        // First check if formValue is quill delta format or normal value
-        if (formValue && formValue.ops) {
-          const richTextValue =
-            formValue && formValue.ops ? toPlaintext(formValue.ops).trim() : undefined
-          realValue = richTextValue && richTextValue.trim() !== '' ? true : false
-        } else {
-          if (!isBoolean(formValue)) {
-            realValue = !formValue ? false : true
-          } else {
-            realValue = formValue ? formValue === true : false
+            if (formExtraValue === undefined) {
+              formExtraValue = get(
+                formValues,
+                `${fieldNameFieldsetPart}${extraVariables[0]}`
+              )
+            }
           }
         }
 
-        if (operator === EQUAL && comparisonValue === realValue) {
-          if (thenBranch === TRUE_STRING) {
-            returnValue = true
+        if (formExtraValue === undefined || formExtraValue === null) {
+          formExtraValue = ''
+        }
+        // Special case to check "Aloituspäivä" for timetable modal
+        if (callerFormName === EDIT_PROJECT_TIMETABLE_FORM) {
+          formValue =
+            formValues[variable] === undefined
+              ? projectUtils.findValueFromObject(formValues, variable)
+              : formValues[variable]
+
+          // Now only one variable is expected
+          formExtraValue = extraVariables
+            ? projectUtils.findValueFromObject(formValues, extraVariables[0])
+            : ''
+        }
+
+        // List rule
+        if (comparisonValueType === 'list<string>') {
+          if (comparisonValue.includes(formValue)) {
+            if (thenBranch === TRUE_STRING) {
+              returnValue = true
+              continue
+            }
+            if (thenBranch === FALSE_STRING) {
+              returnValue = false
+              continue
+            }
+            returnValue = thenBranch
             break
-          } else if (thenBranch === FALSE_STRING) {
-            returnValue = false
-            continue
-          } else if (thenBranch === '' && !formExtraValue) {
-            returnValue = true
-            break
+          }
+        }
+        // Boolean type
+        if (comparisonValueType === 'boolean') {
+          let realValue = false
+
+          // First check if formValue is quill delta format or normal value
+          if (formValue && formValue.ops) {
+            const richTextValue =
+              formValue && formValue.ops ? toPlaintext(formValue.ops).trim() : undefined
+            realValue = richTextValue && richTextValue.trim() !== '' ? true : false
           } else {
-            if (returnValue) {
-              if (formExtraValue && !projectNameAdded) {
-                returnValue = `${formExtraValue} ${returnValue} ${thenBranch}`
-                projectNameAdded = true
-              } else {
-                returnValue = `${returnValue} ${thenBranch}`
-              }
+            if (!isBoolean(formValue)) {
+              realValue = !formValue ? false : true
             } else {
-              if (!projectNameAdded) {
-                if (thenBranch && thenBranch !== '') {
-                  returnValue = `${formExtraValue} ${thenBranch}`
+              realValue = formValue ? formValue === true : false
+            }
+          }
+
+          if (operator === EQUAL && comparisonValue === realValue) {
+            if (thenBranch === TRUE_STRING) {
+              returnValue = true
+              break
+            } else if (thenBranch === FALSE_STRING) {
+              returnValue = false
+              continue
+            } else if (thenBranch === '' && !formExtraValue) {
+              returnValue = true
+              break
+            } else {
+              if (returnValue) {
+                if (formExtraValue && !projectNameAdded) {
+                  returnValue = `${formExtraValue} ${returnValue} ${thenBranch}`
+                  projectNameAdded = true
                 } else {
-                  returnValue = formExtraValue
+                  returnValue = `${returnValue} ${thenBranch}`
                 }
-                projectNameAdded = true
+              } else {
+                if (!projectNameAdded) {
+                  if (thenBranch && thenBranch !== '') {
+                    returnValue = `${formExtraValue} ${thenBranch}`
+                  } else {
+                    returnValue = formExtraValue
+                  }
+                  projectNameAdded = true
+                } else {
+                  returnValue = thenBranch
+                }
+              }
+            }
+          } else {
+            if (extraVariables && !projectNameAdded) {
+              returnValue = formExtraValue
+              projectNameAdded = true
+            }
+            if (thenBranch === '' && !extraVariables) {
+              returnValue = false
+            }
+          }
+          if (operator === NOT_EQUAL && comparisonValue !== realValue) {
+            if (thenBranch === TRUE_STRING) {
+              returnValue = true
+              continue
+            } else if (thenBranch === FALSE_STRING) {
+              returnValue = false
+              continue
+            } else {
+              if (returnValue) {
+                returnValue = `${returnValue} ${thenBranch}`
               } else {
                 returnValue = thenBranch
               }
             }
           }
-        } else {
-          if (extraVariables && !projectNameAdded) {
-            returnValue = formExtraValue
-            projectNameAdded = true
-          }
-          if (thenBranch === '' && !extraVariables) {
-            returnValue = false
-          }
         }
-        if (operator === NOT_EQUAL && comparisonValue !== realValue) {
-          if (thenBranch === TRUE_STRING) {
-            returnValue = true
-            continue
-          } else if (thenBranch === FALSE_STRING) {
+        if (comparisonValueType === 'number' || comparisonValueType === 'string') {
+          const thenFormValue =
+            formValues[thenBranch] === undefined
+              ? projectUtils.findValueFromObject(formValues, thenBranch)
+              : formValues[thenBranch]
+          if (
+            !formValue &&
+            formValue !== false &&
+            formValue !== '' &&
+            comparisonValueType === 'number'
+          ) {
             returnValue = false
             continue
-          } else {
-            if (returnValue) {
-              returnValue = `${returnValue} ${thenBranch}`
-            } else {
-              returnValue = thenBranch
-            }
           }
-        }
-      }
-      if (comparisonValueType === 'number' || comparisonValueType === 'string') {
-        const thenFormValue =
-          formValues[thenBranch] === undefined
-            ? projectUtils.findValueFromObject(formValues, thenBranch)
-            : formValues[thenBranch]
-        if (
-          !formValue &&
-          formValue !== false &&
-          formValue !== '' &&
-          comparisonValueType === 'number'
-        ) {
-          returnValue = false
-          continue
-        }
 
-        if (operator === EQUAL && comparisonValue === formValue) {
-          returnValue = thenFormValue || thenBranch
-          continue
-        }
-        if (operator === NOT_EQUAL && comparisonValue !== formValue) {
-          returnValue = thenFormValue || thenBranch
-          continue
-        }
-        if (operator === BIGGER_THAN && formValue > comparisonValue) {
-          if (thenBranch === 'True') {
-            returnValue = true
-          } else {
+          if (operator === EQUAL && comparisonValue === formValue) {
             returnValue = thenFormValue || thenBranch
+            continue
           }
-          break
-        }
-        if (operator === BIGGER_THAN && formValue <= comparisonValue) {
-          returnValue = false
-          continue
+          if (operator === NOT_EQUAL && comparisonValue !== formValue) {
+            returnValue = thenFormValue || thenBranch
+            continue
+          }
+          if (operator === BIGGER_THAN && formValue > comparisonValue) {
+            if (thenBranch === 'True') {
+              returnValue = true
+            } else {
+              returnValue = thenFormValue || thenBranch
+            }
+            break
+          }
+          if (operator === BIGGER_THAN && formValue <= comparisonValue) {
+            returnValue = false
+            continue
+          }
         }
       }
     }
   }
+
   return returnValue
 }

@@ -8,17 +8,14 @@ import Shoutbox from '../shoutbox'
 import {Button, IconArrowUp } from 'hds-react'
 
 class EditForm extends Component {
-  componentDidMount() {
-    this.autoSave = setInterval(() => this.props.handleSave(), 180000)
-  }
-
+ 
   componentWillUnmount() {
     clearTimeout(this.timeout)
     clearInterval(this.autoSave)
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, initialize, attributeData, geoServerData, submitErrors } = this.props
+    const { saving, initialize, attributeData, geoServerData, submitErrors, initialized } = this.props
 
     if (
       prevProps.saving &&
@@ -30,6 +27,10 @@ class EditForm extends Component {
       
       initialize( newInitialize )
     }
+    if ( initialized !== prevProps.initialized ) {
+      this.props.setFormInitialized(true)
+    }
+
   }
 
   render() {
@@ -76,6 +77,7 @@ class EditForm extends Component {
             section={section}
             disabled={disabled}
             attributeData={attributeData}
+            setRef={ this.props.setRef }
           />
         ))}
         <Button variant="supplementary"
@@ -92,5 +94,6 @@ class EditForm extends Component {
 
 export default reduxForm({
   form: EDIT_PROJECT_FORM,
-  enableReinitialize: true
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true
 })(EditForm)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { getFormValues } from 'redux-form'
 import { EDIT_PROJECT_TIMETABLE_FORM } from '../../constants'
 import { getFieldAutofillValue } from '../../utils/projectAutofillUtils'
@@ -13,17 +13,28 @@ const CustomCheckbox = ({
   className,
   disabled,
   updated,
-  formName
+  formName,
+  display
 }) => {
- 
   const formValues = useSelector(getFormValues(formName ? formName : EDIT_PROJECT_TIMETABLE_FORM))
-  let inputValue = value
 
-  if (autofillRule) {
-    inputValue = getFieldAutofillValue(autofillRule, formValues, name)
-  }
-  const [checked, setChecked] = useState(inputValue)
+  const [checked, setChecked] = useState()
 
+  useEffect(() => {
+
+    let inputValue = value
+
+    if (autofillRule) {
+      inputValue = getFieldAutofillValue(autofillRule, formValues, name)
+
+      if ( display === 'readonly_checkbox') {
+        onChange( inputValue )
+      }
+    }
+
+    setChecked( inputValue )
+  }, [value])
+ 
   const onChangeSave = () => {
     onChange(!checked)
     setChecked( !checked )

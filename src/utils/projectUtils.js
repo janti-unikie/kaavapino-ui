@@ -1,4 +1,5 @@
 import { concat, difference, flattenDeep, isBoolean } from 'lodash'
+import { showField } from './projectVisibilityUtils'
 
 const addZeroPrefixIfNecessary = value => (value < 10 ? `0${value}` : value)
 
@@ -43,10 +44,11 @@ const formatDeadlines = ({ name, deadlines, subtype }, phases) => {
   }
 }
 
-const isFieldMissing = (fieldName, isFieldRequired, attributeData) => {
+const isFieldMissing = (fieldName, isFieldRequired, attributeData, autofill_readonly) => {
   return (
     isFieldRequired &&
-    ( attributeData[fieldName] === undefined ||
+    !autofill_readonly &&
+    (attributeData[fieldName] === undefined ||
       attributeData[fieldName] === null ||
       attributeData[fieldName] === '')
   )
@@ -76,10 +78,9 @@ const sortProjects = (projects, options) => {
   return projects
     .slice(0, amountOfProjectsToShow)
     .sort((a, b) => {
-      const p1 = formatFilterProject(a, true, phases, users)[targetAttributes[sort]] 
-      const p2 = formatFilterProject(b, true, phases, users)[targetAttributes[sort]] 
-      
-      
+      const p1 = formatFilterProject(a, true, phases, users)[targetAttributes[sort]]
+      const p2 = formatFilterProject(b, true, phases, users)[targetAttributes[sort]]
+
       return dir === 0 ? (p1 > p2 ? 1 : -1) : p1 < p2 ? 1 : -1
     })
     .concat(projects.slice(amountOfProjectsToShow, projects.length))
@@ -94,7 +95,7 @@ const formatFilterProject = (project, sort = false, phases, users) => {
   const { subtype } = project
   const { name } = project
   const projectId = project.pino_number || '-'
-  const hankenumero = project.attribute_data.hankenumero || '-' 
+  const hankenumero = project.attribute_data.hankenumero || '-'
 
   return { name, hankenumero, user, modified_at, phase, subtype, projectId }
 }
@@ -226,7 +227,7 @@ const generateArrayOfYears = parameter => {
 }
 const generateArrayOfYearsForChart = () => {
   const max = new Date().getFullYear() + 10
-  const min =new Date().getFullYear() - 5
+  const min = new Date().getFullYear() - 5
   const years = []
 
   // eslint-disable-next-line for-direction
@@ -256,9 +257,9 @@ const findValuesFromObject = (object, key, returnArray) => {
 
   Object.keys(object).some(currentKey => {
     if (currentKey === key) {
-        if ( !object['_deleted' ]) {
-          returnArray.push(object[currentKey])
-        }
+      if (!object['_deleted']) {
+        returnArray.push(object[currentKey])
+      }
 
       return true
     }
@@ -288,6 +289,77 @@ const isUserPrivileged = (currentUserId, users) => {
 
   return userRole === 'admin' || userRole === 'create' || userRole === 'edit'
 }
+
+function hasMissingFields(formValues, currentProject, schema) {
+  const currentSchema = schema.phases.find(s => s.id === currentProject.phase)
+  const { sections } = currentSchema
+  const attributeData = currentProject.attribute_data
+
+  let missingFields = false
+  // Go through every single field
+  sections.forEach(({ fields }) => {
+    fields.forEach((field, fieldIndex) => {
+      // Only validate visible fields
+      if (showField(field, formValues)) {
+        // Matrices can contain any kinds of fields, so
+        // we must go through them separately
+        if (field.type === 'matrix') {
+          const { matrix } = field
+          matrix.fields.forEach(({ required, name }) => {
+            if (isFieldMissing(name, required, attributeData)) {
+              missingFields = true
+            }
+          })
+          // Fieldsets can contain any fields (except matrices)
+          // multiple times, so we need to go through them all
+        } else if (field.type === 'fieldset') {
+          const { fieldset_attributes } = field
+
+          if (fieldset_attributes) {
+            fieldset_attributes.forEach(field => {
+              if (attributeData[fields[fieldIndex].name]) {
+                attributeData[fields[fieldIndex].name].forEach(attribute => {
+                  if (
+                    attribute._deleted === false &&
+                    isFieldMissing(
+                      field.name,
+                      field.required,
+                      attribute,
+                      field.autofill_readonly
+                    )
+                  ) {
+                    missingFields = true
+                  }
+                })
+              } else {
+                if (
+                  isFieldMissing(
+                    field.name,
+                    field.required,
+                    attributeData,
+                    field.autofill_readonly
+                  )
+                ) {
+                  missingFields = true
+                }
+              }
+            })
+          }
+        } else if (
+          isFieldMissing(
+            field.name,
+            field.required,
+            attributeData,
+            field.autofill_readonly
+          )
+        ) {
+          missingFields = true
+        }
+      }
+    })
+  })
+  return missingFields
+}
 export default {
   formatDate,
   formatTime,
@@ -310,5 +382,6 @@ export default {
   findValueFromObject,
   isUserPrivileged,
   findValuesFromObject,
-  generateArrayOfYearsForChart
+  generateArrayOfYearsForChart,
+  hasMissingFields
 }

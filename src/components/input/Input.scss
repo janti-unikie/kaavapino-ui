@@ -17,8 +17,8 @@
     display: flex;
     font-weight: bold;
     justify-content: space-between;
-    z-index: 1;
     position: relative;
+    z-index: 1;
   }
 
   .input-header-icons {
@@ -456,6 +456,7 @@
   margin-top: 0 !important;
   margin-right: 10px;
 }
-.error {
-  outline: 2px solid $color-error-border;
+
+.ad-combobox {
+  text-align: left;
 }

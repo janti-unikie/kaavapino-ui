@@ -165,7 +165,8 @@ class EditProjectTimeTableModal extends Component {
             <Button
               variant="primary"
               disabled={loading}
-              loading={loading.toString()}
+              loadingText={t('common.save')}
+              isLoading={loading}
               type="submit"
               onClick={this.handleSubmit}
             >

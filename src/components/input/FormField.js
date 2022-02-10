@@ -51,6 +51,7 @@ const FormField = props => {
             formName={formName}
             formValues={formValues}
             syncronousErrors={syncronousErrors}
+            setRef={props.setRef }
           />
         )
     }
@@ -147,7 +148,7 @@ const FormField = props => {
       >
         {!isOneLineField && (
           <div className="input-header">
-            <Label className={`input-title${required ? ' highlight' : ''}`}>
+            <Label id={field.name} className={`input-title${required ? ' highlight' : ''}`}>
               {title}
             </Label>
             <div className="input-header-icons">

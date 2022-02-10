@@ -53,6 +53,9 @@ const getOptionName = id => {
       return 'vähemmän tai yhtäsuuri kuin'
     case 'date__gte':
       return 'suurempi tai yhtäsuuri kuin'
+    case 'isnull': {
+      return 'käyttäjä vastuuhenkilö'
+    }  
     default:
       return 'ei tietoa'
   }

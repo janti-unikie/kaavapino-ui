@@ -27,12 +27,14 @@ const ConfirmModal = ({ open, callback, notLastPhase, currentProject }) => {
         )}
       </Modal.Content>
       <Modal.Actions>
+      <div className="form-buttons">
         <Button variant="secondary" onClick={() => callback(false)}>
           Peruuta
         </Button>
         <Button variant="primary" onClick={() => callback(true)}>
           OK
         </Button>
+        </div>
       </Modal.Actions>
     </Modal>
   )

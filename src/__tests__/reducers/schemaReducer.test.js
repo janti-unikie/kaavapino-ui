@@ -26,7 +26,9 @@ describe('schema reducer', () => {
       allEditFields: [1, 2, 3]
     }
     expect(schema(state, { type: FETCH_PROJECTS })).toEqual({
-      ...initialState
+      ...initialState,
+      schema: 1,
+      allEditFields: [1, 2, 3]
     })
   })
 

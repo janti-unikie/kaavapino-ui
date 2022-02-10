@@ -1,18 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchProjects } from '../../actions/projectActions'
+import {
+  fetchProjects,
+  fetchOnholdProjects,
+  fetchArchivedProjects
+} from '../../actions/projectActions'
 import { fetchProjectSubtypes } from '../../actions/projectTypeActions'
 import { fetchUsers } from '../../actions/userActions'
 import { projectSubtypesSelector } from '../../selectors/projectTypeSelector'
 import { usersSelector } from '../../selectors/userSelector'
-import { createProject } from '../../actions/projectActions'
+import { createProject, clearProjects } from '../../actions/projectActions'
 import {
   ownProjectsSelector,
   projectsSelector,
   amountOfProjectsToShowSelector,
   totalOwnProjectsSelector,
   totalProjectsSelector,
-  onHoldProjectSelector,
+  onholdProjectSelector,
   archivedProjectSelector
 } from '../../selectors/projectSelector'
 import { NavHeader } from '../common/NavHeader'
@@ -39,18 +43,27 @@ class ProjectListPage extends Component {
   }
 
   componentDidMount() {
-    const { t } = this.props
+    const {
+      t,
+      fetchProjects,
+      fetchUsers,
+      fetchProjectSubtypes,
+     fetchOnholdProjects,
+      fetchArchivedProjects
+    } = this.props
 
     document.title = t('title')
-    this.props.fetchProjects()
-    this.props.fetchUsers()
-    this.props.fetchProjectSubtypes()
+    fetchProjects()
+    fetchUsers()
+    fetchProjectSubtypes()
+    fetchOnholdProjects()
+    fetchArchivedProjects()
     window.addEventListener('resize', this.handleWindowSizeChange)
-
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowSizeChange)
+    this.props.clearProjects()
   }
 
   handleWindowSizeChange = () => {
@@ -64,12 +77,18 @@ class ProjectListPage extends Component {
 
     if (!opened) {
       this.props.fetchProjects()
+      this.props.fetchOnholdProjects()
+      this.props.fetchArchivedProjects()
     }
   }
 
   fetchFilteredItems = value => {
     this.setState({ filter: value }, () => {
+      this.props.clearProjects()
       this.props.fetchProjects(this.state.filter)
+      this.props.fetchOnholdProjects(this.state.filter)
+      this.props.fetchArchivedProjects(this.state.filter)
+      
     })
   }
 
@@ -91,10 +110,10 @@ class ProjectListPage extends Component {
       totalOwnProjects,
       totalProjects,
       currentUserId,
-      onHoldProjects,
+      onholdProjects,
       archivedProjects
     } = this.props
-
+ 
     const { searchOpen, screenWidth } = this.state
 
     const { t } = this.props
@@ -136,7 +155,7 @@ class ProjectListPage extends Component {
       <List
         projectSubtypes={projectSubtypes}
         users={users}
-        items={onHoldProjects}
+        items={onholdProjects}
         total={totalProjects}
         setFilter={this.setFilter}
         isUserPrivileged={showCreate}
@@ -158,7 +177,7 @@ class ProjectListPage extends Component {
       />
     )
 
-    const getOwnProjectsTitle =  `${
+    const getOwnProjectsTitle = `${
       screenWidth < 600 ? t('projects.own-short') : t('projects.own-long')
     } ${totalOwnProjects > 0 ? t('projects.amount', { pieces: totalOwnProjects }) : ''}`
 
@@ -169,8 +188,8 @@ class ProjectListPage extends Component {
     const getOnholdProjectsTitle = `${
       screenWidth < 600 ? t('projects.onhold-short') : t('projects.onhold-long')
     } ${
-      onHoldProjects && onHoldProjects.length > 0
-        ? t('projects.amount', { pieces: onHoldProjects.length })
+      onholdProjects && onholdProjects.length > 0
+        ? t('projects.amount', { pieces: onholdProjects.length })
         : ''
     }`
     const getArchivedProjectsTitle = `${
@@ -185,31 +204,28 @@ class ProjectListPage extends Component {
       this.props.history.push(`/${id}/edit`)
     }
 
-    const createTabPanes = () => (
-      showCreate
-      ? (
-          <Tabs>
-            <TabList onTabChange={this.handleTabChange}>
-              <Tab key={1}>{getOwnProjectsTitle}</Tab>
-              <Tab key={2}>{getTotalProjectsTitle}</Tab>
-              <Tab key={3}>{getOnholdProjectsTitle}</Tab>
-              <Tab key={4}>{getArchivedProjectsTitle}</Tab>
-            </TabList>
-            <TabPanel>{getOwnProjectsPanel()}</TabPanel>
-            <TabPanel>{getTotalProjectsPanel()}</TabPanel>
-            <TabPanel>{getOnholdProjectsPanel()}</TabPanel>
-            <TabPanel>{getArchivedProjectsPanel()}</TabPanel>
-          </Tabs>
-        )
-      :  (
+    const createTabPanes = () =>
+      showCreate ? (
         <Tabs>
-            <TabList onTabChange={this.handleTabChange}>
-              <Tab>{getTotalProjectsTitle}</Tab>
-            </TabList>
-            <TabPanel>{getTotalProjectsPanel()}</TabPanel>
-          </Tabs>
-        )
-    )
+          <TabList onTabChange={this.handleTabChange}>
+            <Tab key={1}>{getOwnProjectsTitle}</Tab>
+            <Tab key={2}>{getTotalProjectsTitle}</Tab>
+            <Tab key={3}>{getOnholdProjectsTitle}</Tab>
+            <Tab key={4}>{getArchivedProjectsTitle}</Tab>
+          </TabList>
+          <TabPanel>{getOwnProjectsPanel()}</TabPanel>
+          <TabPanel>{getTotalProjectsPanel()}</TabPanel>
+          <TabPanel>{getOnholdProjectsPanel()}</TabPanel>
+          <TabPanel>{getArchivedProjectsPanel()}</TabPanel>
+        </Tabs>
+      ) : (
+        <Tabs>
+          <TabList onTabChange={this.handleTabChange}>
+            <Tab>{getTotalProjectsTitle}</Tab>
+          </TabList>
+          <TabPanel>{getTotalProjectsPanel()}</TabPanel>
+        </Tabs>
+      )
 
     let headerActions = (
       <span className="header-buttons">
@@ -273,7 +289,7 @@ const mapStateToProps = state => {
     totalOwnProjects: totalOwnProjectsSelector(state),
     totalProjects: totalProjectsSelector(state),
     currentUserId: userIdSelector(state),
-    onHoldProjects: onHoldProjectSelector(state),
+    onholdProjects: onholdProjectSelector(state),
     archivedProjects: archivedProjectSelector(state)
   }
 }
@@ -282,7 +298,10 @@ const mapDispatchToProps = {
   createProject,
   fetchProjects,
   fetchUsers,
-  fetchProjectSubtypes
+  fetchProjectSubtypes,
+  clearProjects,
+  fetchArchivedProjects,
+  fetchOnholdProjects
 }
 
 export default withRouter(

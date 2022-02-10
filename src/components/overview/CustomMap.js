@@ -8,16 +8,19 @@ import {
   projectOverviewMapFiltersSelector
 } from '../../selectors/projectSelector'
 import { connect } from 'react-redux'
+import { Grid } from 'semantic-ui-react'
 
 import {
   getProjectsOverviewMapData,
   clearProjectsOverviewMapData,
   setProjectsOverviewMapFilter
 } from '../../actions/projectActions'
+
 import { LoadingSpinner } from 'hds-react'
-import { isEmpty, isEqual } from 'lodash'
+import { isEqual, isEmpty } from 'lodash'
 import { EPSG3879 } from '../../utils/mapUtils'
 import CustomMapPolygon from './CustomMapPolygon'
+import Legends from './Legends'
 
 function CustomMap({
   filters,
@@ -26,7 +29,8 @@ function CustomMap({
   clearProjectsOverviewMapData,
   setProjectsOverviewMapFilter,
   storedFilter,
-  isPrivileged
+  isPrivileged,
+  isMobile
 }) {
   const crs = EPSG3879()
 
@@ -37,6 +41,11 @@ function CustomMap({
     getProjectsOverviewMapData(filter)
     setCurrentMapData(mapData)
   }, [])
+
+  useEffect(() => {
+    getProjectsOverviewMapData(filter)
+    setCurrentMapData(mapData)
+  }, [filter])
 
   useEffect(() => {
     if (!storedFilter || !isEqual(storedFilter, filter)) {
@@ -78,6 +87,7 @@ function CustomMap({
   const [current] = useState(helsinkiCenter)
 
   const onFilterChange = (values, currentParameter) => {
+
     if (!values || values.length === 0) {
       const newFilter = Object.assign({}, filter)
       delete newFilter[currentParameter]
@@ -97,6 +107,20 @@ function CustomMap({
     setFilter({
       ...filter,
       [parameter]: valueArray
+    })
+  }
+  const onUserFilterChange = (values, currentParameter) => {
+    if (!values || values.length === 0) {
+      const newFilter = Object.assign({}, filter)
+      delete newFilter[currentParameter]
+      setFilter({
+        ...newFilter
+      })
+      return
+    }
+    setFilter({
+      ...filter,
+      [currentParameter]: values
     })
   }
   const onClear = () => {
@@ -125,16 +149,54 @@ function CustomMap({
     )
   }
 
-  return (
+  const renderMap = () => (
+    <Map
+      className={isMobile ? 'geometry-input-mobile' : 'geometry-input'}
+      center={current}
+      scrollWheelZoom={true}
+      zoom={9}
+      minZoom={8}
+      clusterPopupVisibility={11}
+      unitZoom={12}
+      mobileZoom={8}
+      detailZoom={14}
+      mapBounds={[
+        [60.402200415095926, 25.271114398151653],
+        [60.402200415095926, 24.49246149510767],
+        [60.00855312110063, 24.49246149510767],
+        [60.00855312110063, 25.271114398151653]
+      ]}
+      doubleClickZoom={true}
+      crs={crs}
+    >
+      {getPolygonArea()}
+      <TileLayer
+        attribution="Leaflet | © Helsingin, Espoon, Vantaan ja Kauniaisen kaupungit, karttasarja"
+        url="https://kartta.hel.fi/ws/geoserver/avoindata/gwc/service/wmts?layer=avoindata:Karttasarja_harmaa&tilematrixset=ETRS-GK25&Service=WMTS&Request=GetTile&Version=1.0.0&TileMatrix=ETRS-GK25:{z}&TileCol={x}&TileRow={y}&Format=image%2Fpng"
+      />
+    </Map>
+  )
+
+  const renderNormalView = () => (
     <div className="map-area">
       <div className="geometry-input-container">
-        <h3>{t('map-area.title')} </h3>
-        {isEmpty(mapData) && (
-          <span className="loading-info">
-            <LoadingSpinner small={true} className="loader-icon header-spinner" />
-            {t('map-area.loading-data')}
-          </span>
-        )}
+        <Grid colums="equal" className="full-width">
+          <Grid.Column width={4}>
+            <h3>{t('map-area.title')}</h3>
+          </Grid.Column>
+          <Grid.Column width={6}>
+            {isEmpty(mapData) && (
+              <span className="loading-info">
+                <LoadingSpinner
+                  small={true}
+                  className="loader-icon-right-margin header-spinner"
+                />
+                {t('map-area.loading-data')}
+              </span>
+            )}
+          </Grid.Column>
+        </Grid>
+        <Legends />
 
         <FilterList
           currentFilter={filter}
@@ -142,24 +204,29 @@ function CustomMap({
           filterList={filters}
           showClearButton={true}
           onClear={onClear}
+          onUserChange={onUserFilterChange}
         />
-        <Map
-          className="geometry-input"
-          center={current}
-          scrollWheelZoom={true}
-          zoom={8}
-          doubleClickZoom={true}
-          crs={crs}
-         >
-          {getPolygonArea()}
-          <TileLayer
-            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://geoserver.hel.fi/mapproxy/wmts/osm-sm-hq/etrs_tm35fin_hq/{z}/{x}/{y}.png"
-          />
-        </Map>
+        {renderMap()}
       </div>
     </div>
   )
+
+  const renderMobileView = () => (
+    <div className="map-area">
+      <div className="geometry-input-container">
+        <h3 className="mobile-header">{t('map-area.title')}</h3>
+        {isEmpty(mapData) && (
+          <span className="loading-info">
+            <LoadingSpinner small={true} className="loader-icon header-spinner" />
+            {t('map-area.loading-data')}
+          </span>
+        )}
+        {renderMap()}
+      </div>
+    </div>
+  )
+
+  return isMobile ? renderMobileView() : renderNormalView()
 }
 const mapDispatchToProps = {
   getProjectsOverviewMapData,

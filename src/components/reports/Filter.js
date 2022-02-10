@@ -1,51 +1,36 @@
-import React, { Component } from 'react'
-import { Dropdown, Header } from 'semantic-ui-react'
+import React from 'react'
 import FilterField from './FilterField'
-import reportUtils from '../../utils/reportUtils'
 
-class Filter extends Component {
-  state = {
-    selectedOption: null
-  }
-
-  formatOptions = options => {
-    return options.map(option => {
+function Filter({ filter, disabled }) {  
+  const formatChoices = choices => {
+    if ( !choices ) {
+      return []
+    }
+    return  choices.map(choice => {
       return {
-        key: option,
-        value: option,
-        text: reportUtils.getOptionName(option)
+        key: choice.identifier,
+        value: choice.identifier,
+        label: choice.value
       }
     })
   }
-
-  render() {
-    const { id, options, type } = this.props
-    const { selectedOption } = this.state
-    return (
-      <div className="filter">
-        <Header as="h4">
-          <Header.Content>
-            {`${reportUtils.getFilterName(id)} `}
-            <Dropdown
-              inline
-              clearable
-              header="Valitse suodatin"
-              options={this.formatOptions(options)}
-              onChange={(e, data) => this.setState({ selectedOption: data.value })}
-            />
-          </Header.Content>
-        </Header>
-        {selectedOption && (
-          <FilterField
-            key={`${id}__${selectedOption}`}
-            type={type}
-            id={id}
-            selectedOption={selectedOption}
-          />
-        )}
-      </div>
-    )
-  }
+  return (
+    <div className="report-filter">
+      <h4>
+        {filter.name}
+      </h4>
+        <div className="filter-field">
+        <FilterField
+          key={`${filter.identifier}`}
+          type={filter.type}
+          id={filter.identifier}
+          options={formatChoices(filter.choices)}
+          disabled={disabled}
+          inputType={filter.input_type}
+        />
+         </div>
+    </div>
+  )
 }
 
 export default Filter

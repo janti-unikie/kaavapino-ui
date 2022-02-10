@@ -42,7 +42,7 @@ const CustomMapPolygon = ({
           <Grid.Column>{t('floor-area.tooltip.phase')}</Grid.Column>
           <Grid.Column textAlign="right">
             <span
-              style={{ backgroundColor: project.phase && project.phase.color }}
+              style={{ backgroundColor: project.phase && project.phase.color_code }}
               className="dot"
             ></span>
             <span className="value">{project.phase && project.phase.name}</span>
@@ -87,7 +87,7 @@ const CustomMapPolygon = ({
   }
 
   return (
-    <Polygon color="red" fillColor={color} positions={positions} fillOpacity={0.8}>
+    <Polygon color={color} fillColor={color} positions={positions} fillOpacity={0.8}>
       {children}
       <Popup closeButton={false}>{renderPopupValue()}</Popup>
     </Polygon>
